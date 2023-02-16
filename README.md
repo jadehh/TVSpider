@@ -7,6 +7,8 @@
 * [当贝影视](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/dangbei.apk)
 * [飞视浏览器](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/feishi_4.41_289.apk)
 * [蜗牛云盘](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/woniuyunpanTV2.0.8.apk)
+* [电视应用管家](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/dsyygj_2.6.3_dangbei.apk)
+
 
 <details onclose>
 <summary>查看更多下载地址</summary>
