@@ -13,6 +13,16 @@ https://ghproxy.com/https://github.com/jadehh/tvbox_source/releases/download/v1.
 https://ghproxy.com/https://github.com/jadehh/tvbox_source/releases/download/v1.0.1/xiaopingguo.json
 ```
 
+3. 豆瓣接口
+```bash
+https://ghproxy.com/https://github.com/jadehh/tvbox_source/releases/download/v1.0.1/douban.json
+```
+
+4. 自用接口
+```bash
+https://ghproxy.com/https://github.com/jadehh/tvbox_source/releases/download/v1.0.1/ziyong.json
+```
+
 1、云星接口
 
 点击复制代码 ActionScript
