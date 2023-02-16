@@ -1,7 +1,12 @@
 # tvbox_source
 
-源失效可多更换几个测试
+## 直播地址
 
+```bash
+https://ghproxy.com/https://github.com/jadehh/tvbox_source/releases/download/v1.0.1/live_plus.txt
+```
+
+## 点播地址
 
 1 4K云盘接口
 ```bash
