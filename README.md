@@ -2,50 +2,50 @@
 
 ## TV App 下载
 
-* [TV Box下载](https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/TVBox_takagen99_20230208-0730.apk)
-* [阿里云TV官方版本](https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/aliyundrive_2.1.619.apk)
-* [当贝影视](https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/dangbei.apk)
-* [飞视浏览器](https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/feishi_4.41_289.apk)
-* [蜗牛云盘](https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/woniuyunpanTV2.0.8.apk)
+* [TV Box下载](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/TVBox_takagen99_20230208-0730.apk)
+* [阿里云TV官方版本](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/aliyundrive_2.1.619.apk)
+* [当贝影视](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/dangbei.apk)
+* [飞视浏览器](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/feishi_4.41_289.apk)
+* [蜗牛云盘](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/woniuyunpanTV2.0.8.apk)
 
 <details onclose>
 <summary>查看更多下载地址</summary>
 
-* [斗鱼TV](https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/doyuTV_v2.7.4_xfdown.com.apk)
-* [虎牙TV](https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/huyaTV_1.13.20_cr173.com.apk)
-* [网易云音乐TV](https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/wangyiyun_music_TV_19906.apk)
-* [小苹果](https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/xiaopingguo736038.apk)
-* [BiliTV](https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/iBiliTV-master.apk)
-* [超级TV](https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/superitv-v5.1.5.apk)
+* [斗鱼TV](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/doyuTV_v2.7.4_xfdown.com.apk)
+* [虎牙TV](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/huyaTV_1.13.20_cr173.com.apk)
+* [网易云音乐TV](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/wangyiyun_music_TV_19906.apk)
+* [小苹果](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/xiaopingguo736038.apk)
+* [BiliTV](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/iBiliTV-master.apk)
+* [超级TV](https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/superitv-v5.1.5.apk)
 
 </details>
 
 ## 直播地址
 
 ```bash
-https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/live_plus.txt
+https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/live_plus.txt
 ```
 
 ## 点播地址
 
 1 4K云盘接口
 ```bash
-https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/4k.json
+https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/4k.json
 ```
 2. 小苹果接口
 
 ```bash
-https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/xiaopingguo.json
+https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/xiaopingguo.json
 ```
 
 3. 豆瓣接口
 ```bash
-https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/douban.json
+https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/douban.json
 ```
 
 4. 自用接口
 ```bash
-https://ghproxy.com/https://github.com/jadehh/TV/releases/download/v1.0.1/ziyong.json
+https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/ziyong.json
 ```
 
 <details onclose>
