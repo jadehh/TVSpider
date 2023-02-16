@@ -5,13 +5,12 @@
 
 1 4K云盘接口
 ```bash
-http://9xi4o.tk/0725.json
-
+https://ghproxy.com/https://github.com/jadehh/tvbox_source/releases/download/v1.0.1/4k.json
 ```
 2. 小苹果接口
 
 ```bash
-https://agit.ai/nbwzlyd/xiaopingguo/raw/branch/master/xiaopingguo/xiaopingguo.json
+https://ghproxy.com/https://github.com/jadehh/tvbox_source/releases/download/v1.0.1/xiaopingguo.json
 ```
 
 1、云星接口
