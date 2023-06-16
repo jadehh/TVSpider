@@ -25,6 +25,7 @@
 ## 直播地址
 
 ```bash
+https://gitcode.net/brokenway/iptv/-/raw/master/iptv.m3u
 https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/iptv.m3u
 https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/live_plus.txt
 ```
