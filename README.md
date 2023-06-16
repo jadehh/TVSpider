@@ -32,12 +32,13 @@ https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/live_plu
 
 ## 点播地址
 
-老刘接口
+
 ```bash
 https://raw.liucn.cc/box/m.json
 https://freed.yuanhsing.cf/TVBox/meowcf.json
 https://pastebin.com/raw/gtbKvnE1
 https://0a.fit/ewKZv
+https://too.st/4Vk
 ```
 
 1 4K云盘接口
