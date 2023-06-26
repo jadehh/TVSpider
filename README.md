@@ -38,6 +38,7 @@ IOS
 
 ```bash
 https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/madou.json
+https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/iwant.json
 ```
 
 Android
