@@ -32,7 +32,15 @@ https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/live_plu
 
 ## 点播地址
 
+IOS
 
+麻豆地址
+
+```bash
+https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/madou.json
+```
+
+Android
 ```bash
 https://raw.liucn.cc/box/m.json
 https://freed.yuanhsing.cf/TVBox/meowcf.json
