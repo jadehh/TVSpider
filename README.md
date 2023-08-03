@@ -31,9 +31,6 @@ https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/live_plu
 ```
 
 ## 点播地址
-
-IOS
-
 18+
 路飞大神磁力搜索
 ```bash
