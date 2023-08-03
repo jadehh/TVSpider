@@ -51,6 +51,10 @@ https://too.st/4Vk
 https://cdn.jsdelivr.net/gh/Cyril0563/lanjing_live@main/TVbox_Free/tv.txt
 https://raw.liucn.cc/box/dm.txt
 ```
+路飞大神磁力搜索
+```bash
+https://qu.ax/hUWC.json
+```
 
 1 4K云盘接口
 ```bash
