@@ -34,6 +34,7 @@ https://gh.con.sh/https://github.com/jadehh/TV/releases/download/v1.0.1/live_plu
 18+
 路飞大神磁力搜索
 ```bash
+https://qu.ax/nwXz.json
 https://qu.ax/hUWC.json
 https://qu.ax/TJSq.json
 https://qu.ax/WpLF.json
