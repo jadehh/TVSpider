@@ -40,6 +40,10 @@ https://qu.ax/WpLF.json
 https://qu.ax/OQVq.json
 https://qu.ax/wdcu.json
 ```
+香雅琴线路
+```bash
+https://ghproxy.com/raw.githubusercontent.com/gaotianliuyun/gao/master/XYQ.json
+```
 
 带直播
 
