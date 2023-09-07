@@ -20,9 +20,3 @@ https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/master/18.json
 https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/master/changyong.json
 ```
 
-2. 猫影视配置
-
-(1) 常用
-```bash
-https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/master/mao/config_open.json
-```
