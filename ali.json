@@ -1,0 +1,140 @@
+{
+  "spider": "./ali/ali.jar;md5;DCA763763437C38A12A495C2C9846423",
+  "wallpaper": "https://jianbian.chuqiuyu.tk",
+  "lives": [
+    {
+      "name": "影视",
+      "url": "./lives/lives.txt",
+      "type": 0,
+      "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}",
+      "logo": "https://epg.112114.xyz/logo/{name}.png"
+    },
+    {
+      "group": "redirect",
+      "channels": [
+        {
+          "name": "live",
+          "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}",
+          "urls": [
+            "proxy://do=live&type=txt&ext=aHR0cHM6Ly9iaXRidWNrZXQub3JnL3hkdW8vZHVvYXBpL3Jhdy9tYXN0ZXIvdi50eHQ="
+          ]
+        }
+      ]
+    }
+  ],
+  "sites": [
+    {
+      "key": "js豆瓣",
+      "name": "🍥┃豆瓣┃🍥",
+      "type": 3,
+      "api": "https://jihulab.com/duomv/duox/-/raw/main/js/drpymin2.js",
+      "searchable": 0,
+      "quickSearch": 0,
+      "filterable": 1,
+      "ext": "https://jihulab.com/duomv/duox/-/raw/main/js/douban.js"
+    },
+    {
+      "key": "新片热播",
+      "name": "🔷┃新片┃热播",
+      "type": 1,
+      "api": "https://api.iku.cool/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "categories": [
+        "连续剧",
+        "动漫"
+      ]
+    },
+    {
+      "key": "直播转点播",
+      "name": "📺︎┃电视┃点播",
+      "type": 3,
+      "api": "https://jihulab.com/duomv/duox/-/raw/main/js/zbzdb.js",
+      "searchable": 1,
+      "quickSearch": 0,
+      "filterable": 0,
+      "ext": "https://bitbucket.org/xduo/json/raw/master/zb.json"
+    },
+    {
+      "key": "csp_WoGG",
+      "name": "💂‍┃阿里┃玩偶",
+      "type": 3,
+      "api": "csp_WoGG",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "aa4b41693e064b6c87e609b67e9d9401"
+    },
+    {
+      "key": "csp_纸条",
+      "name": "🏷️┃阿里┃纸条",
+      "type": 3,
+      "api": "csp_Gitcafe",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "ext": "aa4b41693e064b6c87e609b67e9d9401"
+    },
+    {
+      "key": "csp_阿里七夜",
+      "name": "🔎┃阿里┃七夜",
+      "type": 3,
+      "api": "csp_Dovx",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "ext": "aa4b41693e064b6c87e609b67e9d9401"
+    },
+    {
+      "key": "PanSearch",
+      "name": "🏵️‍┃阿里┃PanS",
+      "type": 3,
+      "api": "csp_PanSearch",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "ext": "aa4b41693e064b6c87e609b67e9d9401"
+    },
+    {
+      "key": "Upyunso",
+      "name": "🌤️┃阿里┃云搜",
+      "type": 3,
+      "api": "csp_UpYun",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "ext": "aa4b41693e064b6c87e609b67e9d9401"
+    },
+    {
+      "key": "Alips",
+      "name": "📀┃阿里┃盘搜",
+      "type": 3,
+      "api": "csp_PanSou",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "ext": "aa4b41693e064b6c87e609b67e9d9401"
+    },
+    {
+      "key": "Yisou",
+      "name": "🎯┃阿里┃易搜",
+      "type": 3,
+      "api": "csp_YiSo",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "ext": "aa4b41693e064b6c87e609b67e9d9401"
+    },
+    {
+      "key": "Zhaozy",
+      "name": "🔍┃阿里┃找片",
+      "type": 3,
+      "api": "csp_Zhaozy",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "ext": "aa4b41693e064b6c87e609b67e9d9401"
+    }
+  ]
+}

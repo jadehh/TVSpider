@@ -1,0 +1,9 @@
+{
+    "wallpaper": "https://picsum.photos/1280/720/?blur=2",
+    "sites": [
+      {"key": "路飞转点播","name": "路飞_MV","type": 3,"api": "https://ghproxy.com/https://raw.githubusercontent.com/lystv/short/main/影视/tvb/lf_live.js","ext": "https://ghproxy.com/https://raw.githubusercontent.com/lystv/short/main/影视/tvb/lf_live.txt"},
+      {"key": "路飞ikanbot","name": "路飞_爱看","type": 3,"api": "https://ghproxy.com/https://raw.githubusercontent.com/lystv/short/main/影视/tvb/ikanbot.js","ext": ""},
+      {"key": "路飞搜索","name": "路飞_搜索","type": 3,"api": "https://ghproxy.com/https://raw.githubusercontent.com/lystv/short/main/影视/tvb/ss.js","ext": ""},
+      {"key": "路飞磁力","name": "路飞_🧲磁力","type": 3,"api": "https://ghproxy.com/https://raw.githubusercontent.com/lystv/short/main/影视/tvb/cili.js","ext": "18+"}
+    ]
+}
