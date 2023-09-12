@@ -1,7 +1,22 @@
+/**
+ * File: d:\VSPrograms\Github\TV\mitao\mtsp_open.js
+ * Project: d:\VSPrograms\Github\TV\mitao
+ * Created Date: Tuesday, September 12th 2023, 9:50:49 pm
+ * Author: jade
+ * -----
+ * Last Modified: Tue Sep 12 2023
+ * Modified By: jade
+ * -----
+ * Copyright (c) 2023 samples
+ * ------------------------------------
+ * Javascript will save your soul!
+ */
+
+
 import { Crypto, _ } from './lib/cat.js';
 
 let key = 'mtsp';
-let main = 'http://mt77.pw';
+let main = 'http://mt77.top';
 let url = '';
 let siteKey = '';
 let siteType = 0;

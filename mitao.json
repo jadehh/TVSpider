@@ -1,0 +1,10 @@
+{
+    "sites": [
+        {
+            "key": "mtsp",
+            "name": "🟡 蜜桃",
+            "type": 3,
+            "api": "mitao/mtsp_open.js"
+        }
+    ]
+}
