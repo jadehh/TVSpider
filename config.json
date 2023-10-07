@@ -11,7 +11,7 @@
       "ext": "../plugins/py_ali.py"
     }
   ],
-    "doh": [
+  "doh": [
     {
       "name": "Google",
       "url": "https://dns.google/dns-query",
@@ -53,5 +53,6 @@
         "9.9.9.9",
         "149.112.112.112"
       ]
-    },
+    }
+  ]
 }
