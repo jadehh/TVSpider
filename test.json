@@ -1,8 +1,7 @@
 {
-  "spider": "./ali/ali.jar;md5;DCA763763437C38A12A495C2C9846423",
+  "spider": "",
   "wallpaper": "https://jianbian.chuqiuyu.tk",
-  "lives": [
-  ],
+  "lives": [],
   "sites": [
     {
       "key": "js豆瓣",
