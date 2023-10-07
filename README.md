@@ -12,4 +12,3 @@ https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/py/config.json
 https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/py/test.json
 ```
 
-https://gh-proxy.com/https://raw.githubusercontent.com/UndCover/PyramidStore/main/py.json
