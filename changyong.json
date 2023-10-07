@@ -27,7 +27,7 @@
       "key": "js豆瓣",
       "name": "🍥┃豆瓣┃🍥",
       "type": 3,
-      "api": "https://jihulab.com/duomv/duox/-/raw/main/js/drpymin2.js",
+      "api": "https://jihulab.com/duomv/duox/-/raw/main/js/drpy2.js",
       "searchable": 0,
       "quickSearch": 0,
       "filterable": 1,
@@ -202,7 +202,6 @@
       "changeable": 1,
       "ext": "http://饭太硬.top/tv/nmys.json"
     },
-    //磁力
     {
       "key": "csp_Mp4Mov",
       "name": "🧲Mp4电影",
