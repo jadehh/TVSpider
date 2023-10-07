@@ -22,5 +22,5 @@ https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/master/changyon
 
 （5）测试接口
 ```text
-https://ghproxy.com/https://raw.githubusercontent.com/jadehh/TV/master/test.json
+https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/master/test.json
 ```
