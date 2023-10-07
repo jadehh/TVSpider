@@ -11,6 +11,8 @@
       "ext": "../plugins/py_ali.py"
     }
   ],
+  "rules": [
+  ],
   "doh": [
     {
       "name": "Google",
@@ -57,16 +59,5 @@
   ],
   "spider": "https://ghproxy.com/https://raw.githubusercontent.com/FongMi/CatVodSpider/main/jar/custom_spider.jar",
   "lives": [
-    {
-      "group": "redirect",
-      "channels": [
-        {
-          "name": "live",
-          "urls": [
-            "proxy://do=live&type=txt&ext=aHR0cDovL3R2Lmp0aG4uY24vbGl2ZXMvbGl2ZV9wbHVzLnR4dA=="
-          ]
-        }
-      ]
-    }
   ]
 }
