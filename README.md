@@ -20,3 +20,7 @@ https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/master/18.json
 https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/master/changyong.json
 ```
 
+（5）测试接口
+```text
+https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/master/test.json
+```
