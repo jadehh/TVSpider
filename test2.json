@@ -1,25 +1,15 @@
 {
   "sites": [
     {
-      "key": "姐姐",
-      "name": "玩偶💁姐姐|影视",
+      "key": "csp_黄仓库",
+      "name": "黄仓库 ",
+      "api": "csp_Hsck",
       "type": 3,
-      "api": "csp_XBPQ",
-      "ext": {
-        "直接播放": "1",
-        "分类url": "https://hongkongdollvideo.com/{cateId}/{catePg}.html",
-        "分类": "麻豆$麻豆传媒#天美$天美传媒#91$91制片厂#蜜桃$蜜桃传媒#香港$Hongkong Doll#皇家$皇家华人#精东$精东影业#乐播$乐播传媒#成人$成人头条#乌鸦$乌鸦传媒#兔子$兔子先生#杏吧$杏吧原创#mini$mini传媒#大象$大象传媒#开心鬼$开心鬼传媒#pass$PsychoPorn#糖心$糖心Vlog",
-        "图片": "data-src=\"&&\""
-      },
-      "jar": "./jar/xbpq5.jar"
-    },
-    {
-      "key": "玩偶",
-      "name": "❤玩偶",
-      "type": 3,
-      "api": "csp_Doll",
+      "filterable": 1,
+      "quickSearch": 1,
       "searchable": 1,
-      "jar": "https://qu.ax/bmJu.js;md5;6976f6560b0b5ff9182651d9e4c43dac"
+      "ext": "https://www.javsee.men,#genre#/",
+        "jar": "./jar/18.jar"
     },
     {
       "key": "csp_xBPQ_聚优国产传媒",
