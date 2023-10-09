@@ -20,6 +20,19 @@
       "filterable": 0
     },
     {
+      "key": "新片热播",
+      "name": "🔷┃新片┃热播",
+      "type": 1,
+      "api": "https://api.iku.cool/api.php/provide/vod/?ac=list",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "categories": [
+        "连续剧",
+        "动漫"
+      ]
+    },
+    {
       "key": "csp_WoGG",
       "name": "💂‍┃阿里玩偶┃💂",
       "type": 3,
@@ -31,6 +44,17 @@
         "filter": "https://jihulab.com/duomv/xduo/-/raw/main/wogg.json"
       },
       "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;EE387668B0B9E8465B9FBF69EC55EEAB"
+    },
+    {
+      "key": "七七",
+      "name": "🌈┃七七┃影视",
+      "type": 3,
+      "api": "csp_Kunyu77",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "jar": "http://我不是.肥猫.love:63/Jar/pandaQ230928.jar;md5;02c40490ea14c433b66fcc0ce2f2ed94"
+
     },
     {
       "key": "js_ikanbot2",
@@ -54,14 +78,14 @@
       "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;EE387668B0B9E8465B9FBF69EC55EEAB"
     },
     {
-      "key": "磁力熊",
-      "name": "🐻┃熊熊┃磁力",
+      "key": "js_czsapp",
+      "name": "🏭️┃厂长┃资源",
       "type": 3,
-      "api": "http://alist.xn--z7x900a.love:63/ddrpy2.m.js",
-      "ext": "http://alist.xn--z7x900a.love:63/磁力熊.js",
+      "api": "https://jihulab.com/duomv/xduo/-/raw/main/js/drpy2.js",
       "searchable": 1,
       "quickSearch": 1,
-      "filterable": 1
+      "filterable": 1,
+      "ext": "https://jihulab.com/duomv/xduo/-/raw/main/js/czspp.js"
     }
   ],
   "rules": [
