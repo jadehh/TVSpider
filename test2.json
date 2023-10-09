@@ -14,6 +14,14 @@
       "jar": "./jar/xbpq5.jar"
     },
     {
+      "key": "玩偶",
+      "name": "❤玩偶",
+      "type": 3,
+      "api": "csp_Doll",
+      "searchable": 1,
+      "jar": "https://qu.ax/bmJu.js;md5;6976f6560b0b5ff9182651d9e4c43dac"
+    },
+    {
       "key": "csp_xBPQ_聚优国产传媒",
       "name": "国产传媒",
       "type": 3,
