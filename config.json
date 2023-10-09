@@ -321,23 +321,13 @@
   "lives": [
     {
       "name": "live",
-      "url": "http://52bsj.vip:81/api/v3/file/get/79119/ZB.txt?sign=iChDXDC7WJRTp7yWAyVdbY3si5sJ5eFwEgaR35YQGSo%3D%3A0",
       "type": 0,
-      "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}",
-      "logo": "https://epg.112114.xyz/logo/{name}.png",
-      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
-    },
-    {
-      "group": "redirect",
-      "channels": [
-        {
-          "name": "redirect",
-          "urls": [
-            "proxy://do=live&type=txt&ext=aHR0cDovLzUyYnNqLnZpcDo4MS9hcGkvdjMvZmlsZS9nZXQvNzkxMTkvWkIudHh0P3NpZ249aUNoRFhEQzdXSlJUcDd5V0F5VmRiWTNzaTVzSjVlRndFZ2FSMzVZUUdTbyUzRCUzQTA="
-          ]
-        }
-      ]
+      "url": "https://agit.ai/fantaiying/0/raw/branch/main/tvlive.txt",
+      "playerType": 1,
+      "ua": "okhttp/3.15",
+      "epg": "http://epg.112114.xyz/?ch={name}&date={date}",
+      "logo": "https://epg.112114.xyz/logo/{name}.png"
     }
   ],
-  "wallpaper": "https://picsum.photos/1080/"
+  "wallpaper": "http://饭太硬.top/深色壁纸/api.php"
 }
