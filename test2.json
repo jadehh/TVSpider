@@ -10,7 +10,7 @@
         "分类url": "https://hongkongdollvideo.com/{cateId}/{catePg}.html",
         "分类": "麻豆$麻豆传媒#电天美$天美传媒"
       },
-      "jar":"https://qu.ax/jKoN.js"
+      "jar": "./jar/18.jar"
     },
     {
       "key": "csp_xBPQ_聚优国产传媒",
