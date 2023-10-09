@@ -8,15 +8,17 @@
       "ext": "./js/drpy.js"
     },
     {
-      "key": "csp_XYQHikerAL_玩偶哥哥",
-      "name": "💂‍┃阿里玩偶哥哥┃💂‍",
+      "key": "csp_WoGG",
+      "name": "💂‍┃阿里┃玩偶",
       "type": 3,
-      "api": "csp_XYQHikerAL",
-      "playerType": 1,
+      "api": "csp_Wogg",
       "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "ext": "b41cbbefb2b942db96959409346c4064"
+      "changeable": 0,
+      "ext": {
+        "token": "b41cbbefb2b942db96959409346c4064",
+        "filter": "https://jihulab.com/duomv/xduo/-/raw/main/wogg.json"
+      },
+      "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;EE387668B0B9E8465B9FBF69EC55EEAB"
     },
     {
       "key": "Gitcafe",
