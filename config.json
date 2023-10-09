@@ -169,7 +169,8 @@
       "quickSearch": 1,
       "changeable": 1,
       "timeout": 30,
-      "ext": "vip.lyyytv.cn"
+      "ext": "vip.lyyytv.cn",
+      "jar": "https://agit.ai/guot54/ygbh/raw/branch/master/JAR/0606.jar;md5;3A017244A8B8691E10152BBCA9C4DE6F"
     },
     {
       "key": "一起看 ",
@@ -178,7 +179,8 @@
       "api": "csp_YQKan",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1
+      "changeable": 1,
+      "jar": "https://agit.ai/guot54/ygbh/raw/branch/master/JAR/0606.jar;md5;3A017244A8B8691E10152BBCA9C4DE6F"
     },
     {
       "key": "毛驴",
@@ -188,7 +190,8 @@
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "ext": "https://www.maolvys.com/"
+      "ext": "https://www.maolvys.com/",
+      "jar": "https://agit.ai/guot54/ygbh/raw/branch/master/JAR/0606.jar;md5;3A017244A8B8691E10152BBCA9C4DE6F"
     },
     {
       "key": "蚂蚁",
@@ -317,7 +320,7 @@
       ]
     }
   ],
-  "spider": "https://agit.ai/guot54/ygbh/raw/branch/master/JAR/0606.jar;md5;3A017244A8B8691E10152BBCA9C4DE6F",
+  "spider": "./jar/XYQ.jar;md5;80a3cb3f8b19c815d0dc0c1cdd06fd92",
   "lives": [
     {
       "name": "live",
