@@ -54,7 +54,6 @@
       "quickSearch": 1,
       "filterable": 1,
       "jar": "http://我不是.肥猫.love:63/Jar/pandaQ230928.jar;md5;02c40490ea14c433b66fcc0ce2f2ed94"
-
     },
     {
       "key": "js_ikanbot2",
@@ -149,6 +148,17 @@
         "日韩综艺",
         "欧美综艺"
       ]
+    },
+    {
+      "key": "csp_liteApple",
+      "name": "🍎小苹果",
+      "type": 3,
+      "api": "csp_XBPQ",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://jihulab.com/ygbh1/box/-/raw/main/H/nmys2.json",
+      "jar": "https://agit.ai/guot54/ygbh/raw/branch/master/JAR/0606.jar;md5;3A017244A8B8691E10152BBCA9C4DE6F"
     }
   ],
   "rules": [
