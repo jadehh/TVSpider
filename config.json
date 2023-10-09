@@ -150,7 +150,7 @@
       ]
     }
   ],
-  "spider": "http://我不是.肥猫.love:63/Jar/pandaQ230928.jar;md5;02c40490ea14c433b66fcc0ce2f2ed94",
+  "spider": "./jar/XYQ.jar;md5;80a3cb3f8b19c815d0dc0c1cdd06fd92",
   "lives": [
     {
       "name": "live",
