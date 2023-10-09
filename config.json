@@ -39,10 +39,7 @@
       "playerType": 1,
       "api": "csp_XYQHikerAL",
       "jar": "https://jihulab.com/duomv/xduo/-/raw/main/spider.txt;md5;FE7A16C03308099ADE4ED6A63B4ADC4C",
-      "ext": {
-        "token": "b41cbbefb2b942db96959409346c4064",
-        "filter": "https://agit.ai/leevi/duo/raw/branch/master/json/4khdr.json"
-      }
+      "ext": "https://agit.ai/leevi/duo/raw/branch/master/json/4khdr.json"
     },
     {
       "key": "cps_aliyunpan",
@@ -50,10 +47,7 @@
       "type": 3,
       "api": "csp_XYQHikerAL",
       "jar": "https://jihulab.com/duomv/xduo/-/raw/main/spider.txt;md5;FE7A16C03308099ADE4ED6A63B4ADC4C",
-      "ext": {
-        "token": "b41cbbefb2b942db96959409346c4064",
-        "filter": "https://agit.ai/leevi/duo/raw/branch/master/json/aliyunpan.json"
-      }
+      "ext": "https://agit.ai/leevi/duo/raw/branch/master/json/aliyunpan.json"
     },
     {
       "key": "csp_XiaoZhiTiao",
