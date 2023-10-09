@@ -33,6 +33,17 @@
       "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;EE387668B0B9E8465B9FBF69EC55EEAB"
     },
     {
+      "key": "cps_aliyunpan",
+      "name": "👩‍🔬┃玩偶妹妹┃‍👩‍🔬",
+      "type": 3,
+      "api": "csp_XYQHikerAL",
+      "jar": "https://jihulab.com/duomv/xduo/-/raw/main/spider.txt;md5;FE7A16C03308099ADE4ED6A63B4ADC4C",
+      "ext": {
+        "token": "b41cbbefb2b942db96959409346c4064",
+        "filter": "https://agit.ai/leevi/duo/raw/branch/master/json/aliyunpan.json"
+      }
+    },
+    {
       "key": "csp_XiaoZhiTiao",
       "name": "🏷️┃阿里纸条┃🏷️",
       "type": 3,
