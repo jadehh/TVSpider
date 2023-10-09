@@ -20,6 +20,17 @@
       "ext": "b41cbbefb2b942db96959409346c4064"
     },
     {
+      "key": "Gitcafe",
+      "name": "📀小纸条(搜索)",
+      "type": 3,
+      "api": "csp_Gitcafe",
+      "playerType": 1,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "b41cbbefb2b942db96959409346c4064"
+    },
+    {
       "key": "磁力熊",
       "name": "🐻┃熊熊┃磁力",
       "type": 3,
@@ -36,7 +47,7 @@
       "api": "csp_XBPQ",
       "ext": "http://我不是.肥猫.love:63/json/素白白.json"
     },
-        {
+    {
       "key": "虎虎",
       "name": "🐯┃虎虎┃影视",
       "type": 3,
