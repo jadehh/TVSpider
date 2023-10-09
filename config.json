@@ -157,7 +157,8 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "ext": "https://jihulab.com/ygbh1/box/-/raw/main/H/nmys2.json"
+      "ext": "https://jihulab.com/ygbh1/box/-/raw/main/H/nmys2.json",
+      "jar": "https://agit.ai/guot54/ygbh/raw/branch/master/JAR/0606.jar;md5;3A017244A8B8691E10152BBCA9C4DE6F"
     },
     {
       "key": "探探",
@@ -190,8 +191,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "changeable": 1,
-      "ext": "https://www.maolvys.com/",
-      "jar": "https://agit.ai/guot54/ygbh/raw/branch/master/JAR/0606.jar;md5;3A017244A8B8691E10152BBCA9C4DE6F"
+      "ext": "https://www.maolvys.com/"
     },
     {
       "key": "蚂蚁",
