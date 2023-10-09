@@ -4,7 +4,7 @@
       "key": "姐姐",
       "name": "玩偶姐姐|影视",
       "type": 3,
-      "api": "csp_XBPQ",
+      "api": "csp_xBPQ",
       "ext": {
         "直接播放": "1",
         "分类url": "https://hongkongdollvideo.com/{cateId}/{catePg}.html",
