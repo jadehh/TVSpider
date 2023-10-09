@@ -1,16 +1,6 @@
 {
   "sites": [
     {
-      "key": "js豆瓣",
-      "name": "🍥┃豆瓣┃🍥",
-      "type": 3,
-      "api": "https://jihulab.com/duomv/duox/-/raw/main/js/drpy2.js",
-      "searchable": 0,
-      "quickSearch": 0,
-      "filterable": 1,
-      "ext": "https://jihulab.com/duomv/duox/-/raw/main/js/douban.js"
-    },
-    {
       "key": "豆瓣",
       "name": "🐼┃豆瓣┃🐼",
       "type": 3,
@@ -28,16 +18,6 @@
       "quickSearch": 1,
       "filterable": 1,
       "ext": "b41cbbefb2b942db96959409346c4064"
-    },
-    {
-      "key": "alist",
-      "name": "🍰┃小鸭网盘┃🍰",
-      "type": 3,
-      "api": "csp_AList",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "ext": "http://alist.xn--z7x900a.love:63/alist.json"
     }
   ],
   "rules": [
