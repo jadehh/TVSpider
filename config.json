@@ -19,20 +19,38 @@
       "filterable": 1,
       "ext": "b41cbbefb2b942db96959409346c4064"
     },
-        {
-      "key": "YGP",
-      "name": "🚀┃叨观┃荐影",
+    {
+      "key": "磁力熊",
+      "name": "🐻┃熊熊┃磁力",
       "type": 3,
-      "api": "csp_YGP",
-      "searchable": 0,
-      "quickSearch": 0
+      "api": "http://alist.xn--z7x900a.love:63/ddrpy2.m.js",
+      "ext": "http://alist.xn--z7x900a.love:63/磁力熊.js",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
     },
     {
-      "key": "荐片",
-      "name": "🎬┃荐片┃影视",
+      "key": "素白",
+      "name": "🦢┃素白┃影视",
       "type": 3,
-      "api": "https://agit.ai/fantaiying/fty/raw/branch/master/JS/drpy1.min.js",
-      "ext": "https://agit.ai/fantaiying/fty/raw/branch/master/JS/js/jp.js"
+      "api": "csp_XBPQ",
+      "ext": "http://我不是.肥猫.love:63/json/素白白.json"
+    },
+        {
+      "key": "虎虎",
+      "name": "🐯┃虎虎┃影视",
+      "type": 3,
+      "api": "csp_XBPQ",
+      "ext": "http://我不是.肥猫.love:63/json/虎虎.json"
+    },
+    {
+      "key": "七七",
+      "name": "🌈┃七七┃影视",
+      "type": 3,
+      "api": "csp_Kunyu77",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
     }
   ],
   "rules": [
