@@ -10,7 +10,23 @@
         "分类url": "https://hongkongdollvideo.com/{cateId}/{catePg}.html",
         "分类": "麻豆$麻豆传媒#天美$天美传媒#91$91制片厂#蜜桃$蜜桃传媒#香港$Hongkong Doll#皇家$皇家华人#精东$精东影业#乐播$乐播传媒#成人$成人头条#乌鸦$乌鸦传媒#兔子$兔子先生#杏吧$杏吧原创#mini$mini传媒#大象$大象传媒#开心鬼$开心鬼传媒#pass$PsychoPorn#糖心$糖心Vlog",
         "图片": "data-src=\"&&\""
-      }
+      },
+      "jar": "./jar/XYQ.jar;md5;ab7a2bf5947c745657f25c80b337224b"
+    },
+    {
+      "key": "csp_xBPQ_聚优国产传媒",
+      "name": "国产传媒",
+      "type": 3,
+      "style": {
+        "type": "rect",
+        "ratio": 1.433
+      },
+      "api": "csp_xBPQ",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "./json/聚优国产传媒.json",
+      "jar": "./jar/18.jar"
     }
   ],
   "rules": [
