@@ -12,8 +12,10 @@
       "name": "💂‍┃阿里┃玩偶",
       "type": 3,
       "api": "csp_Wogg",
+      "playerType": 1,
       "searchable": 1,
-      "changeable": 0,
+      "quickSearch": 1,
+      "filterable": 1,
       "ext": {
         "token": "b41cbbefb2b942db96959409346c4064",
         "filter": "https://jihulab.com/duomv/xduo/-/raw/main/wogg.json"
