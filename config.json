@@ -1,11 +1,23 @@
 {
   "sites": [
     {
-      "key": "豆瓣",
-      "name": "🐼┃豆瓣┃🐼",
+      "key": "js豆瓣",
+      "name": "🍥┃豆瓣┃🍥",
       "type": 3,
-      "api": "./lib/drpy2.min.js",
-      "ext": "./js/drpy.js"
+      "api": "https://jihulab.com/duomv/xduo/-/raw/main/js/drpy2.js",
+      "searchable": 0,
+      "quickSearch": 0,
+      "filterable": 1,
+      "ext": "https://jihulab.com/duomv/xduo/-/raw/main/js/douban.js"
+    },
+    {
+      "key": "js豆瓣备用",
+      "name": "🍥┃豆瓣备用┃🍥",
+      "type": 3,
+      "api": "https://jihulab.com/duomv/xduo/-/raw/main/js/doubanbf.js",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0
     },
     {
       "key": "csp_WoGG",
