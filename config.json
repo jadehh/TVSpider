@@ -12,7 +12,7 @@
     },
     {
       "key": "豆瓣",
-      "name": "🐼┃豆瓣┃",
+      "name": "🐼┃豆瓣┃🐼",
       "type": 3,
       "api": "csp_DouDou",
       "searchable": 0,
@@ -21,13 +21,23 @@
     },
     {
       "key": "csp_WoGG",
-      "name": "💂‍┃阿里玩偶哥哥┃",
+      "name": "💂‍┃阿里玩偶哥哥┃💂‍",
       "type": 3,
       "api": "csp_WoGG",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
       "ext": "b41cbbefb2b942db96959409346c4064"
+    },
+    {
+      "key": "alist",
+      "name": "🍰┃小鸭网盘┃🍰",
+      "type": 3,
+      "api": "csp_AList",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "http://alist.xn--z7x900a.love:63/alist.json"
     }
   ],
   "rules": [
