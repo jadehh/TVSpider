@@ -5,11 +5,10 @@
       "name": "玩偶姐姐|影视",
       "type": 3,
       "api": "csp_xBPQ",
-      "ext": {
-        "直接播放": "1",
-        "分类url": "https://hongkongdollvideo.com/{cateId}/{catePg}.html",
-        "分类": "麻豆$麻豆传媒#电天美$天美传媒"
-      },
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "./json/麻豆.json",
       "jar": "./jar/18.jar"
     },
     {
