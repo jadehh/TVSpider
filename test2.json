@@ -1,15 +1,16 @@
 {
   "sites": [
     {
-      "key": "csp_黄仓库",
-      "name": "黄仓库 ",
-      "api": "csp_Hsck",
+      "key": "姐姐",
+      "name": "玩偶姐姐|影视",
       "type": 3,
-      "filterable": 1,
-      "quickSearch": 1,
-      "searchable": 1,
-      "ext": "https://www.javsee.men,#genre#/",
-        "jar": "./jar/18.jar"
+      "api": "csp_XBPQ",
+      "ext": {
+        "直接播放": "1",
+        "分类url": "https://hongkongdollvideo.com/{cateId}/{catePg}.html",
+        "分类": "麻豆$麻豆传媒#电天美$天美传媒"
+      },
+      "jar": "./jar/18.jar"
     },
     {
       "key": "csp_xBPQ_聚优国产传媒",
