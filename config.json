@@ -21,7 +21,7 @@
     },
     {
       "key": "csp_WoGG",
-      "name": "💂‍┃阿里┃玩偶",
+      "name": "💂‍┃阿里玩偶┃💂",
       "type": 3,
       "api": "csp_Wogg",
       "searchable": 1,
@@ -33,15 +33,15 @@
       "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;EE387668B0B9E8465B9FBF69EC55EEAB"
     },
     {
-      "key": "Gitcafe",
-      "name": "📀小纸条(搜索)",
+      "key": "csp_XiaoZhiTiao",
+      "name": "🏷️┃阿里纸条┃🏷️",
       "type": 3,
-      "api": "csp_Gitcafe",
-      "playerType": 1,
+      "api": "csp_XiaoZhiTiao",
       "searchable": 1,
       "quickSearch": 1,
-      "filterable": 1,
-      "ext": "b41cbbefb2b942db96959409346c4064"
+      "filterable": 0,
+      "ext": "b41cbbefb2b942db96959409346c4064",
+      "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;EE387668B0B9E8465B9FBF69EC55EEAB"
     },
     {
       "key": "磁力熊",
