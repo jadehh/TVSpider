@@ -46,6 +46,38 @@
       "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;EE387668B0B9E8465B9FBF69EC55EEAB"
     },
     {
+      "key": "saohuo",
+      "name": "🎬烟火┃直连",
+      "type": 3,
+      "searchable": 1,
+      "quickSearch": 1,
+      "playerType": "2",
+      "jar": "http://xhww.fun:63/小米/ab.jar;md5;8f51d26ffe142c2a4a6d757292eb6730",
+      "api": "csp_XBPQ",
+      "ext": {
+        "分类url": "https://saohuo.vip//list/{cateId}-{catePg}.html;;r1da",
+        "分类": "电影$1#电视剧$2#韩剧$22#美剧$23#动漫$4",
+        "ocr": "https://api.xhofe.top/ocr/b64/text",
+        "数组二次截取": "class=\"v_list\">&&</ul>",
+        "数组": "\"v_img\"&&/div>",
+        "标题": "title=\"&&\"",
+        "副标题": "v_note\"&&</div",
+        "跳转播放链接": "<iframe*src=\"&&\"",
+        "二次跳转播放链接": "https://hkjx.hhplayer.com/api.php;post;url=+var url*\"&&\"+&t=+var t*\"&&\"+&key=+var key*\"&&\"+&act=0+&play=1",
+        "三次跳转播放链接": "\"url\"*\"&&\""
+      }
+    },
+    {
+      "key": "世界",
+      "name": "🎉世界┃APP",
+      "type": 3,
+      "api": "http://kudian.51qwtt.xyz/uploads/itvbox/lib/drpy2.min.js",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "http://smallmi.xiaohewanwan.love:63/sj.js"
+    },
+    {
       "key": "七七",
       "name": "🌈┃七七┃影视",
       "type": 3,
@@ -54,6 +86,44 @@
       "quickSearch": 1,
       "filterable": 1,
       "jar": "http://我不是.肥猫.love:63/Jar/pandaQ230928.jar;md5;02c40490ea14c433b66fcc0ce2f2ed94"
+    },
+    {
+      "key": "🦐",
+      "name": "皮皮🦐┃影视",
+      "type": 3,
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "jar": "http://xhww.fun:63/小米/ab.jar;md5;8f51d26ffe142c2a4a6d757292eb6730",
+      "api": "csp_XBPQ",
+      "ext": {
+        "主页url": "http://pipixia.vip/index.php/ajax/data?mid=1&tid=1&page=1&limit=20",
+        "请求头": "User-Agent$Mozilla/5.0 (iPhone; CPU iPhone OS 15_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1#Referer$http://pipixia.vip/",
+        "强制解析": "0",
+        "图片代理": "0",
+        "二次截取": "\"list\"*[&&]",
+        "数组": "{&&\"vod_content\"",
+        "图片": "vod_pic\":\"&&\"",
+        "标题": "vod_name\":\"&&\"",
+        "副标题": "vod_version\":\"&&\"+vod_remarks\":\"&&\"",
+        "链接": "http://pipixia.vip/v/+vod_id\":&&,+.html",
+        "分类url": "http://pipixia.vip/index.php/ajax/data?mid=1&tid={cateId}&page=1&limit=20",
+        "嗅探词": ".mp4#.m3u8#.flv#obj/tos#x-oss-signature=",
+        "过滤词": ".html#=http#=https",
+        "分类": "搜索看吧$1",
+        "搜索模式": "1",
+        "搜索url": "http://pipixia.vip/vodsearch.html?wd={wd}",
+        "搜索数组": "public-list-exp\"&&thumb-else cor5 hide\"",
+        "搜索链接": "href=\"&&\"",
+        "搜索链接前缀": "http://pipixia.vip",
+        "搜索标题": "thumb-txt cor4 hide\">&&</div",
+        "搜索图片": "data-original=\"&&\"",
+        "播放数组": "anthology-list-play size&&</ul>",
+        "搜索副标题": "class=\"public-list-prb hide ft2\">&&</span",
+        "播放链接前缀": "http://pipixia.vip",
+        "线路数组": "<a class=\"swiper-slide\"><i&&</a>",
+        "二次跳转播放链接": "\"url\"*\"&&\""
+      }
     },
     {
       "key": "js_ikanbot2",
