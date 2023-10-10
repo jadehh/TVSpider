@@ -318,6 +318,17 @@
       "filterable": 1,
       "changeable": 0,
       "jar": "https://files.zohopublic.com.cn/public/workdrive-public/download/uyv0t678c488189af47bb91dc108484d17431;md5;5388d60fb0519fa359339c3252fa5e69"
+    },
+    {
+      "key": "csp_好戏",
+      "name": "好戏影视|T追剧",
+      "type": 3,
+      "api": "csp_XBPQ",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "http://rihou.vip:88/hccx/好戏影视.json",
+      "jar": "http://rihou.vip:88/hccx/HeChengChaXiu.jar"
     }
   ],
   "rules": [
