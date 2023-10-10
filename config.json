@@ -46,8 +46,32 @@
       "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;EE387668B0B9E8465B9FBF69EC55EEAB"
     },
     {
+      "key": "csp_XBPQ_JOJO",
+      "name": "JOJO",
+      "type": 3,
+      "api": "csp_XBPQ",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": {
+        "二次截取": "class=\"content-body\"&&class=\"content-lift\"",
+        "数组": "<a&&</a>",
+        "图片": "src=\"&&\"",
+        "标题": "class=\"card-title\">&&</p>",
+        "副标题": "class=\"item-speed\">&&</p>",
+        "链接": "href=\"&&\"",
+        "播放数组": "class=\"tabs-plyr-list\">&&</div>",
+        "嗅探词": "/ts/#/file/#.data.#.bin",
+        "过滤词": "m3u8",
+        "搜索url": "https://jiohub.top/video/search?q={wd}&pid=-qlDbwwDcZ8t1hJN7H0sGh36bnsUqsuyQ2drIL4zs0s=",
+        "分类": "电影$电影#国产$国产#美剧$美剧#日剧$日剧#韩剧$韩剧#动漫$动漫#纪录$纪录",
+        "分类url": "https://jiohub.top/video/{cateId}?page={catePg}&size=18"
+      },
+      "jar": "http://xhww.fun:63/小米/ab.jar;md5;8f51d26ffe142c2a4a6d757292eb6730"
+    },
+    {
       "key": "saohuo",
-      "name": "🎬骚火┃直连",
+      "name": "🎬烟火┃直连",
       "type": 3,
       "searchable": 1,
       "quickSearch": 1,
