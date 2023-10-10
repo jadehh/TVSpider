@@ -1,15 +1,15 @@
 {
   "sites": [
     {
-      "key": "drpy_js_aoao",
-      "name": "嗷嗷",
+      "key": "csp_好戏",
+      "name": "好戏影视|T追剧",
       "type": 3,
-      "style": {
-        "type": "rect",
-        "ratio": 1.433
-      },
-      "api": "./lib/drpy2.min.js",
-      "ext": "./js/aoao.js"
+      "api": "csp_XBPQ",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "http://rihou.vip:88/hccx/好戏影视.json",
+      "jar": "http://rihou.vip:88/hccx/HeChengChaXiu.jar"
     }
   ],
   "rules": [
