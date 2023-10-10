@@ -67,7 +67,7 @@
         "分类": "电影$电影#国产$国产#美剧$美剧#日剧$日剧#韩剧$韩剧#动漫$动漫#纪录$纪录",
         "分类url": "https://jiohub.top/video/{cateId}?page={catePg}&size=18"
       },
-      "jar": "http://xhww.fun:63/小米/ab.jar;md5;8f51d26ffe142c2a4a6d757292eb6730"
+      "jar": "./js/jojo_open.js"
     },
     {
       "key": "saohuo",
