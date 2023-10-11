@@ -10,6 +10,16 @@
         "ratio": 1.33
       },
       "ext": "./py/py_douyin.py"
+    },
+    {
+      "key": "py_ali",
+      "name": "阿里",
+      "type": 3,
+      "api": "py_ali",
+      "searchable": 0,
+      "quickSearch": 0,
+      "filterable": 0,
+      "ext": "plugins/py_ali.py"
     }
   ],
   "rules": [
