@@ -34,16 +34,14 @@
     },
     {
       "key": "csp_WoGG",
-      "name": "💂‍┃阿里玩偶┃💂",
+      "name": "💂‍┃阿里┃玩偶",
       "type": 3,
-      "api": "csp_Wogg",
+      "api": "csp_WoGG",
       "searchable": 1,
-      "changeable": 0,
-      "ext": {
-        "token": "0451d36320604eccb2de0e2c94ad7f7b",
-        "filter": "https://jihulab.com/duomv/xduo/-/raw/main/wogg.json"
-      },
-      "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;EE387668B0B9E8465B9FBF69EC55EEAB"
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "6eac908ce9f64c5989cd6ba869653aee",
+      "jar": "./ali/ali.jar"
     },
     {
       "key": "saohuo",
