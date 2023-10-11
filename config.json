@@ -1,0 +1,30 @@
+{
+  "sites": [
+    {
+      "key": "py_kunyu77",
+      "name": "🔥七七",
+      "type": 3,
+      "api": "py_kunyu77",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "plugins/py_kunyu77.py"
+    },
+    {
+      "key": "py_ali",
+      "name": "阿里",
+      "type": 3,
+      "api": "py_ali",
+      "searchable": 0,
+      "quickSearch": 0,
+      "filterable": 0,
+      "ext": "plugins/py_ali.py"
+    }
+  ],
+  "rules": [
+  ],
+  "doh": [
+  ],
+  "spider": "",
+  "lives": []
+}
