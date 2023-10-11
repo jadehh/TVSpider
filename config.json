@@ -1,27 +1,58 @@
 {
   "sites": [
     {
-      "key": "py_kunyu77",
-      "name": "🔥七七",
+      "key": "csp_好戏",
+      "name": "好戏影视|T追剧",
       "type": 3,
-      "api": "py_kunyu77",
+      "api": "csp_XBPQ",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "ext": "plugins/py_kunyu77.py"
-    },
-    {
-      "key": "py_ali",
-      "name": "阿里",
-      "type": 3,
-      "api": "py_ali",
-      "searchable": 0,
-      "quickSearch": 0,
-      "filterable": 0,
-      "ext": "plugins/py_ali.py"
+      "ext": "http://rihou.vip:88/hccx/好戏影视.json",
+      "jar": "http://rihou.vip:88/hccx/HeChengChaXiu.jar"
     }
   ],
   "rules": [
+    {
+      "name": "量子",
+      "hosts": [
+        "vip.lz",
+        "hd.lz"
+      ],
+      "regex": [
+        "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:6.433333,[\\s\\S]*?#EXT-X-DISCONTINUITY",
+        "#EXTINF.*?\\s+.*?1o.*?\\.ts\\s+"
+      ]
+    },
+    {
+      "name": "非凡",
+      "hosts": [
+        "vip.ffzy",
+        "hd.ffzy"
+      ],
+      "regex": [
+        "#EXT-X-DISCONTINUITY\\r*\\n*#EXTINF:6.666667,[\\s\\S]*?#EXT-X-DISCONTINUITY",
+        "#EXTINF.*?\\s+.*?1o.*?\\.ts\\s+"
+      ]
+    },
+    {
+      "name": "火山",
+      "hosts": [
+        "huoshan.com"
+      ],
+      "regex": [
+        "item_id="
+      ]
+    },
+    {
+      "name": "抖音",
+      "hosts": [
+        "douyin.com"
+      ],
+      "regex": [
+        "is_play_url="
+      ]
+    }
   ],
   "doh": [
     {
