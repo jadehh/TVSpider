@@ -40,10 +40,35 @@
       "searchable": 1,
       "changeable": 0,
       "ext": {
-        "token": "6eac908ce9f64c5989cd6ba869653aee",
-        "filter": "https://jihulab.com/duomv/xduo/-/raw/main/wogg.json"
+        "token": "6eac908ce9f64c5989cd6ba869653aee"
       },
-      "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;EE387668B0B9E8465B9FBF69EC55EEAB"
+      "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;12448C1378668FEEA8ADDAB73E53CEA9"
+    },
+    {
+      "key": "csp_阿里七夜",
+      "name": "🔎┃阿里┃七夜",
+      "type": 3,
+      "api": "csp_Dovx",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "ext": {
+        "token": "6eac908ce9f64c5989cd6ba869653aee"
+      },
+      "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;12448C1378668FEEA8ADDAB73E53CEA9"
+    },
+    {
+      "key": "Yisou",
+      "name": "🎯┃阿里┃易搜",
+      "type": 3,
+      "api": "csp_YiSo",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 0,
+      "ext": {
+        "token": "6eac908ce9f64c5989cd6ba869653aee"
+      },
+      "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;12448C1378668FEEA8ADDAB73E53CEA9"
     },
     {
       "key": "saohuo",
