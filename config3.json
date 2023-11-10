@@ -30,6 +30,7 @@
       "searchable": 0,
       "quickSearch": 0,
       "filterable": 1,
+      "api": "./js/drpy2.min.js",
       "ext": "./js/douban.js"
     },
     {
