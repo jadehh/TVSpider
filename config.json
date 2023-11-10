@@ -43,6 +43,15 @@
       "api": "./js/doubanbf.js"
     },
     {
+      "key": "wogg_T4",
+      "name": "💂‍┃玩偶┃T4",
+      "type": 4,
+      "api": "./json/csp_Wogg.json",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1
+    },
+    {
       "key": "csp_WoGG",
       "name": "💂‍┃阿里玩偶┃💂",
       "type": 3,
@@ -50,7 +59,8 @@
       "searchable": 1,
       "changeable": 0,
       "ext": {
-        "token": "6eac908ce9f64c5989cd6ba869653aee"
+        "token": "6eac908ce9f64c5989cd6ba869653aee",
+        "filter": "./json/wogg.json"
       },
       "jar": "./jar/ali.jar"
     },
@@ -65,7 +75,7 @@
       "ext": {
         "token": "6eac908ce9f64c5989cd6ba869653aee"
       },
-       "jar": "./jar/ali.jar"
+      "jar": "./jar/ali.jar"
     },
     {
       "key": "Yisou",
@@ -78,7 +88,7 @@
       "ext": {
         "token": "6eac908ce9f64c5989cd6ba869653aee"
       },
-       "jar": "./jar/ali.jar"
+      "jar": "./jar/ali.jar"
     }
   ],
   "parses": [

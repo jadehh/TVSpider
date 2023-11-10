@@ -1,0 +1,606 @@
+{
+  "class": [
+    {
+      "type_id": "1",
+      "type_name": "自营电影"
+    },
+    {
+      "type_id": "20",
+      "type_name": "自营剧集"
+    },
+    {
+      "type_id": "24",
+      "type_name": "动漫"
+    },
+    {
+      "type_id": "28",
+      "type_name": "综艺"
+    },
+    {
+      "type_id": "32",
+      "type_name": "音乐"
+    }
+  ],
+  "filters": {
+    "1": [
+      {
+        "key": "3",
+        "name": "类型",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "喜剧",
+            "v": "喜剧"
+          },
+          {
+            "n": "爱情",
+            "v": "爱情"
+          },
+          {
+            "n": "动作",
+            "v": "动作"
+          },
+          {
+            "n": "恐怖",
+            "v": "恐怖"
+          },
+          {
+            "n": "科幻",
+            "v": "科幻"
+          },
+          {
+            "n": "剧情",
+            "v": "剧情"
+          },
+          {
+            "n": "犯罪",
+            "v": "犯罪"
+          },
+          {
+            "n": "奇幻",
+            "v": "奇幻"
+          },
+          {
+            "n": "战争",
+            "v": "战争"
+          },
+          {
+            "n": "悬疑",
+            "v": "悬疑"
+          },
+          {
+            "n": "武侠",
+            "v": "武侠"
+          },
+          {
+            "n": "冒险",
+            "v": "冒险"
+          },
+          {
+            "n": "古装",
+            "v": "古装"
+          },
+          {
+            "n": "历史",
+            "v": "历史"
+          },
+          {
+            "n": "惊悚",
+            "v": "惊悚"
+          }
+        ]
+      },
+      {
+        "key": "11",
+        "name": "年代",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "2023",
+            "v": "2023"
+          },
+          {
+            "n": "2022",
+            "v": "2022"
+          },
+          {
+            "n": "2021",
+            "v": "2021"
+          },
+          {
+            "n": "2020",
+            "v": "2020"
+          },
+          {
+            "n": "2019",
+            "v": "2019"
+          },
+          {
+            "n": "2018",
+            "v": "2018"
+          },
+          {
+            "n": "2017",
+            "v": "2017"
+          },
+          {
+            "n": "2016",
+            "v": "2016"
+          },
+          {
+            "n": "2015",
+            "v": "2015"
+          },
+          {
+            "n": "2014",
+            "v": "2014"
+          },
+          {
+            "n": "2013",
+            "v": "2013"
+          },
+          {
+            "n": "2012",
+            "v": "2012"
+          },
+          {
+            "n": "2011",
+            "v": "2011"
+          }
+        ]
+      },
+      {
+        "key": "1",
+        "name": "地区",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "大陆",
+            "v": "大陆"
+          },
+          {
+            "n": "中国香港",
+            "v": "香港"
+          },
+          {
+            "n": "中国台湾",
+            "v": "台湾"
+          },
+          {
+            "n": "美国",
+            "v": "美国"
+          },
+          {
+            "n": "韩国",
+            "v": "韩国"
+          },
+          {
+            "n": "日本",
+            "v": "日本"
+          },
+          {
+            "n": "泰国",
+            "v": "泰国"
+          },
+          {
+            "n": "法国",
+            "v": "法国"
+          },
+          {
+            "n": "英国",
+            "v": "英国"
+          },
+          {
+            "n": "德国",
+            "v": "德国"
+          },
+          {
+            "n": "印度",
+            "v": "印度"
+          },
+          {
+            "n": "其他",
+            "v": "其他"
+          }
+        ]
+      }
+    ],
+    "20": [
+      {
+        "key": "11",
+        "name": "年代",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "2023",
+            "v": "2023"
+          },
+          {
+            "n": "2022",
+            "v": "2022"
+          },
+          {
+            "n": "2021",
+            "v": "2021"
+          },
+          {
+            "n": "2020",
+            "v": "2020"
+          },
+          {
+            "n": "2019",
+            "v": "2019"
+          },
+          {
+            "n": "2018",
+            "v": "2018"
+          },
+          {
+            "n": "2017",
+            "v": "2017"
+          },
+          {
+            "n": "2016",
+            "v": "2016"
+          },
+          {
+            "n": "2015",
+            "v": "2015"
+          },
+          {
+            "n": "2014",
+            "v": "2014"
+          },
+          {
+            "n": "2013",
+            "v": "2013"
+          },
+          {
+            "n": "2012",
+            "v": "2012"
+          },
+          {
+            "n": "2011",
+            "v": "2011"
+          }
+        ]
+      },
+      {
+        "key": "1",
+        "name": "地区",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "大陆",
+            "v": "大陆"
+          },
+          {
+            "n": "中国香港",
+            "v": "香港"
+          },
+          {
+            "n": "中国台湾",
+            "v": "台湾"
+          },
+          {
+            "n": "美国",
+            "v": "美国"
+          },
+          {
+            "n": "韩国",
+            "v": "韩国"
+          },
+          {
+            "n": "日本",
+            "v": "日本"
+          },
+          {
+            "n": "泰国",
+            "v": "泰国"
+          },
+          {
+            "n": "法国",
+            "v": "法国"
+          },
+          {
+            "n": "英国",
+            "v": "英国"
+          },
+          {
+            "n": "德国",
+            "v": "德国"
+          },
+          {
+            "n": "印度",
+            "v": "印度"
+          },
+          {
+            "n": "其他",
+            "v": "其他"
+          }
+        ]
+      }
+    ],
+    "28": [
+      {
+        "key": "1",
+        "name": "地区",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "内地",
+            "v": "内地"
+          },
+          {
+            "n": "日韩",
+            "v": "日韩"
+          },
+          {
+            "n": "欧美",
+            "v": "欧美"
+          }
+        ]
+      }
+    ],
+    "24": [
+      {
+        "key": "11",
+        "name": "年代",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "2023",
+            "v": "2023"
+          },
+          {
+            "n": "2022",
+            "v": "2022"
+          },
+          {
+            "n": "2021",
+            "v": "2021"
+          },
+          {
+            "n": "2020",
+            "v": "2020"
+          },
+          {
+            "n": "2019",
+            "v": "2019"
+          },
+          {
+            "n": "2018",
+            "v": "2018"
+          },
+          {
+            "n": "2017",
+            "v": "2017"
+          },
+          {
+            "n": "2016",
+            "v": "2016"
+          },
+          {
+            "n": "2015",
+            "v": "2015"
+          },
+          {
+            "n": "2014",
+            "v": "2014"
+          },
+          {
+            "n": "2013",
+            "v": "2013"
+          },
+          {
+            "n": "2012",
+            "v": "2012"
+          },
+          {
+            "n": "2011",
+            "v": "2011"
+          }
+        ]
+      },
+      {
+        "key": "1",
+        "name": "地区",
+        "value": [
+          {
+            "n": "全部",
+            "v": ""
+          },
+          {
+            "n": "大陆",
+            "v": "大陆"
+          },
+          {
+            "n": "日本",
+            "v": "日本"
+          },
+          {
+            "n": "欧美",
+            "v": "欧美"
+          },
+          {
+            "n": "其他",
+            "v": "其他"
+          }
+        ]
+      }
+    ]
+  },
+  "list": [
+    {
+      "vod_id": "\/index.php\/voddetail\/81892.html",
+      "vod_name": "战士2023",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/11\/05\/8d02b60532e60517e673d94803d5d102.md.webp",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/79897.html",
+      "vod_name": "奥本海默",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/07\/21\/p2891939717.md.jpeg",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81148.html",
+      "vod_name": "威尼斯惊魂夜",
+      "vod_pic": "https:\/\/pic.wujinpp.com\/upload\/vod\/20230915-1\/1e63cd4f46503628503e038842e52ac9.jpg",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/78928.html",
+      "vod_name": "关注公众号防失联",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/06\/16\/wogg2wm.md.jpeg",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81915.html",
+      "vod_name": "死亡血路",
+      "vod_pic": "https:\/\/pic1.zykpic.com\/upload\/vod\/2022-06-18\/16555081541.jpg",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81914.html",
+      "vod_name": "塑料大棚",
+      "vod_pic": "https:\/\/pic1.zykpic.com\/upload\/vod\/2023-10-24\/202310241698079080.jpg",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81913.html",
+      "vod_name": "屠夫十字镇",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/11\/06\/fa1f7f2187f4ff5f2af0df62ff03b3c0.md.webp",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81896.html",
+      "vod_name": "借口公司2",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/11\/05\/cc098168be8ade32450850d94d714fb3.md.webp",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81874.html",
+      "vod_name": "第八个嫌疑人",
+      "vod_pic": "https:\/\/svip.picffzy.com\/upload\/vod\/20231031-1\/01009bd4bbd1232d8cb719e92b007d33.jpg",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81879.html",
+      "vod_name": "中元不信邪",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/11\/04\/6915e1a5085b3add43af9c5a70070843.jpeg",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81878.html",
+      "vod_name": "勇敢的皇后",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/11\/04\/77954d45ee02641ea424eeb2d46799bc.md.webp",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/80186.html",
+      "vod_name": "超异能族",
+      "vod_pic": "https:\/\/img.liangzipic.com\/upload\/vod\/20230809-1\/3a13500754f4efae9a5158dfc67bb203.jpg",
+      "vod_remarks": "玩偶剧集"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81420.html",
+      "vod_name": "汪汪队立大功大电影2：超能大冒险",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/10\/07\/p2897946307.md.jpeg",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81810.html",
+      "vod_name": "最后的真相",
+      "vod_pic": "https:\/\/pic.lzzypic.com\/upload\/vod\/20230708-1\/d34fe0ec2df245561c3cf94f22545d85.jpg",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81857.html",
+      "vod_name": "纳蒂来敲门",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/11\/02\/01a4259b19ab276361f926bc9daf5962.md.webp",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81859.html",
+      "vod_name": "加州怪物",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/11\/02\/4c394a7ed42713dcf97fc7aea6eb5a8c.md.webp",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81864.html",
+      "vod_name": "治愈系恋人",
+      "vod_pic": "https:\/\/svip.picffzy.com\/upload\/vod\/20231102-1\/f8a533f758be4ee375ab2b8fc935921d.jpg",
+      "vod_remarks": "玩偶剧集"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81892.html",
+      "vod_name": "战士2023",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/11\/05\/8d02b60532e60517e673d94803d5d102.md.webp",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81500.html",
+      "vod_name": "BULLBUSTER",
+      "vod_pic": "https:\/\/svip.picffzy.com\/upload\/vod\/20231004-1\/1740361dc9bc277006d5243fbd52b8ac.jpg",
+      "vod_remarks": "动漫"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/80290.html",
+      "vod_name": "盖世帝尊",
+      "vod_pic": "https:\/\/vip.imgffzy.com\/upload\/vod\/20230803-1\/fec8c53d92839bc4b08d70185c051cd0.jpg",
+      "vod_remarks": "动漫"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/79897.html",
+      "vod_name": "奥本海默",
+      "vod_pic": "https:\/\/s1.imagehub.cc\/images\/2023\/07\/21\/p2891939717.md.jpeg",
+      "vod_remarks": "玩偶电影"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81948.html",
+      "vod_name": "快乐老友记",
+      "vod_pic": "https:\/\/pic1.zykpic.com\/upload\/vod\/2023-11-08\/16994161631.jpg",
+      "vod_remarks": "综艺"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/80894.html",
+      "vod_name": "再见爱人第三季",
+      "vod_pic": "https:\/\/pic.wujinpp.com\/upload\/vod\/20230904-1\/f0ea704e96510c2083a960551ed61a46.jpg",
+      "vod_remarks": "综艺"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81332.html",
+      "vod_name": "封神训练营",
+      "vod_pic": "https:\/\/pic.wujinpp.com\/upload\/vod\/20230928-1\/91b64edbf8e9fddc35c77292aa25caa1.jpg",
+      "vod_remarks": "综艺"
+    },
+    {
+      "vod_id": "\/index.php\/voddetail\/81778.html",
+      "vod_name": "反诈风暴",
+      "vod_pic": "https:\/\/img.lzzyimg.com\/upload\/vod\/20231030-1\/57b61bc87a33d1a4330ab611dc363023.jpg",
+      "vod_remarks": "玩偶剧集"
+    }
+  ]
+}
