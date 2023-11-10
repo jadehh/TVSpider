@@ -4,33 +4,34 @@
       "key": "js豆瓣",
       "name": "🍥┃豆瓣┃🍥",
       "type": 3,
-      "api": "https://jihulab.com/duomv/xduo/-/raw/main/js/drpy2.js",
       "searchable": 0,
       "quickSearch": 0,
       "filterable": 1,
-      "ext": "https://jihulab.com/duomv/xduo/-/raw/main/js/douban.js"
+      "api": "./lib/drpy2.min.js",
+      "ext": "./lib/douban.js"
     },
     {
       "key": "js豆瓣备用",
       "name": "🍥┃豆瓣备用┃🍥",
       "type": 3,
-      "api": "https://jihulab.com/duomv/xduo/-/raw/main/js/doubanbf.js",
+      "api": "../js/doubanbf.js",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 0
     },
     {
-      "key": "新片热播",
-      "name": "🔷┃新片┃热播",
-      "type": 1,
-      "api": "https://api.iku.cool/api.php/provide/vod/?ac=list",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 0,
-      "categories": [
-        "连续剧",
-        "动漫"
-      ]
+      "key": "好趣网",
+      "name": "📺电视直播",
+      "type": 3,
+      "api": "../lib/drpy2.min.js",
+      "ext": "../lib/好趣网.js"
+    },
+    {
+      "key": "drpy_js_荐片",
+      "name": "🧲荐片",
+      "type": 3,
+      "api": "./lib/drpy2.min.js",
+      "ext": "./js/jp.js"
     },
     {
       "key": "csp_WoGG",
@@ -42,7 +43,7 @@
       "ext": {
         "token": "6eac908ce9f64c5989cd6ba869653aee"
       },
-      "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;12448C1378668FEEA8ADDAB73E53CEA9"
+      "jar": "../jar/ali.jar"
     },
     {
       "key": "csp_阿里七夜",
@@ -55,7 +56,7 @@
       "ext": {
         "token": "6eac908ce9f64c5989cd6ba869653aee"
       },
-      "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;12448C1378668FEEA8ADDAB73E53CEA9"
+      "jar": "../jar/ali.jar"
     },
     {
       "key": "Yisou",
@@ -68,7 +69,7 @@
       "ext": {
         "token": "6eac908ce9f64c5989cd6ba869653aee"
       },
-      "jar": "https://jihulab.com/duomv/xduo/-/raw/main/ali.jar;md5;12448C1378668FEEA8ADDAB73E53CEA9"
+      "jar": "../jar/ali.jar"
     },
     {
       "key": "saohuo",
@@ -446,12 +447,22 @@
   "lives": [
     {
       "name": "live",
+      "url": "../lives/ZB.txt",
       "type": 0,
-      "url": "https://agit.ai/fantaiying/0/raw/branch/main/tvlive.txt",
-      "playerType": 1,
-      "ua": "okhttp/3.15",
-      "epg": "http://epg.112114.xyz/?ch={name}&date={date}",
-      "logo": "https://epg.112114.xyz/logo/{name}.png"
+      "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}",
+      "logo": "https://epg.112114.xyz/logo/{name}.png",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+    },
+    {
+      "group": "redirect",
+      "channels": [
+        {
+          "name": "redirect",
+          "urls": [
+            "proxy://do=live&type=txt&ext=aHR0cHM6Ly9jb2RlYmVyZy5vcmcveWdiaDg4ODgvQkgvcmF3L2JyYW5jaC9tYWluL1pCL1pCLnR4dA=="
+          ]
+        }
+      ]
     }
   ],
   "wallpaper": "http://饭太硬.top/深色壁纸/api.php"
