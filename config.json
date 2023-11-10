@@ -86,6 +86,7 @@
       ]
     }
   ],
+  "spider": "./jar/0606.jar",
   "lives": [
     {
       "name": "live",
