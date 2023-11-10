@@ -1,7 +1,27 @@
 {
   "spider": "./jar/ali.jar",
   "wallpaper": "http://饭太硬.top/深色壁纸/api.php",
-  "lives": [],
+  "lives": [
+    {
+      "name": "live",
+      "url": "../lives/pro.txt",
+      "type": 0,
+      "epg": "http://epg.51zmt.top:8000/api/diyp/?ch={name}&date={date}",
+      "logo": "https://epg.112114.xyz/logo/{name}.png",
+      "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+    },
+    {
+      "group": "redirect",
+      "channels": [
+        {
+          "name": "redirect",
+          "urls": [
+            "proxy://do=live&type=txt&ext=aHR0cHM6Ly9hZ2l0LmFpL2d1b3Q1NC95Z2JoL3Jhdy9icmFuY2gvbWFzdGVyL3pCL3Byby50eHQ="
+          ]
+        }
+      ]
+    }
+  ],
   "sites": [],
   "parses": [
     {
