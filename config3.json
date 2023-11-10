@@ -1,6 +1,6 @@
 {
-  "spider": "http://xn--5nqxcz3am3cb7e94xzy6aa2935d.xyz/2.jar;md5;0d46d7d1c01cd19b374a3280c8864596",
-  "wallpaper": "https://tool.weetai.cn/api",
+  "spider": "./jar/ali.jar",
+  "wallpaper": "http://饭太硬.top/深色壁纸/api.php",
   "lives": [],
   "sites": [],
   "parses": [
