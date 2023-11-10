@@ -103,6 +103,17 @@
         "token": "6eac908ce9f64c5989cd6ba869653aee"
       },
       "jar": "./jar/ali.jar"
+    },
+    {
+      "key": "AppYs_南瓜",
+      "name": "🎃南瓜影视",
+      "type": 3,
+      "playerType": 2,
+      "api": "./js/drpy2.min.js",
+      "changeable": 0,
+      "searchable": 1,
+      "quickSearch": 1,
+      "ext": "./js/南瓜.js"
     }
   ],
   "parses": [
