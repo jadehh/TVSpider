@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @File     : py_kunyu77.py.py
 # @Author   : jade
-# @Date     : 2023/10/7 15:58
+# @Date     : 2023/11/13 16:40
 # @Email    : jadehh@1ive.com
 # @Software : Samples
 # @Desc     :
@@ -12,7 +12,6 @@ import time
 import hashlib
 import requests
 from urllib.parse import urlparse
-
 sys.path.append('..')
 from base.spider import Spider
 
