@@ -27,7 +27,7 @@ const _0x5c2c6e = _0x13b8;
         return _0x13878a = '\x73\x70\x6c\x69\x74', _0x237c25 = arguments[0x0], _0x237c25 = _0x237c25[_0x13878a](''), _0x201fe5 = '\x72\x65\x76\x65\x72\x73\x65', _0x237c25 = _0x237c25[_0x201fe5]('\x76'), _0x2c2900 = '\x6a\x6f\x69\x6e', (0x13c433, _0x237c25[_0x2c2900](''));
     });
 }(0x314, 0x3b577, _0x1171, 0xc7), _0x1171) && (version_ = _0x1171);
-import {Crypto, dayjs, jinja2, load, Uri, _} from './lib/cat.js';
+import {Crypto, dayjs, jinja2, load, Uri, _} from '../lib/cat.js';
 
 const PC_UA = _0x5c2c6e(0x168, 'ggqV');
 
