@@ -9,6 +9,16 @@
       "quickSearch": 1,
       "filterable": 1,
       "ext": "https://raw.githubusercontent.com/jadehh/TV/py/py/py_kunyu77.py"
+    },
+        {
+      "key": "py_wanou",
+      "name": "🔥玩偶",
+      "type": 3,
+      "api": "py_wanou",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://raw.githubusercontent.com/jadehh/TV/py/py/py_wanou.py"
     }
   ],
   "rules": [
