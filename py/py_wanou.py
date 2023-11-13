@@ -19,8 +19,6 @@ import json
 import time
 import hashlib
 import requests
-from urllib.parse import urlparse
-
 sys.path.append('..')
 from base.spider import Spider
 from lxml import etree
@@ -36,37 +34,16 @@ class Spider(Spider):
         pass
 
     def homeContent(self, filter):
-        # result = {}
-        # url = 'https://tvfan.xxooo.cf/'
-        # rsp = self.fetch(url, headers=self.header)
-        # print(rsp.text)
-        # html = etree.HTML(rsp.text)
-        # result = html.xpath('head')
-        # result = html.xpath("//div[@class='nav-link black']//ul")# 通过名称定位head节点
-        # result1 = html.xpath('//ul[starts-with(@id,"nav-link")]/li//a/text()') # 按节点层级定位title节点
-        #
-        # jo = json.loads(rsp.text)
-        # # print(rsp.text)
-        # classes = []
-        # jData = jo['data']
-        # for cKey in jData.keys():
-        #     classes.append({
-        #         'type_name': jData[cKey][0]['cat'].replace('电视剧', '剧集'),
-        #         'type_id': cKey
-        #     })
-        # result['class'] = classes
-        # if (filter):
-        #     result['filters'] = self.config['filter']
         result = {}
-        url = 'http://api.tyun77.cn/api.php/provide/filter'
+        url = 'https://tvfan.xxooo.cf/'
         rsp = self.fetch(url, headers=self.header)
-        jo = json.loads(rsp.text)
+        soup = BeautifulSoup(rsp.text, 'html.parser')
+        elements = soup.select('.nav-link')
         classes = []
-        jData = jo['data']
-        for cKey in jData.keys():
+        for element in elements:
             classes.append({
-                'type_name': jData[cKey][0]['cat'].replace('电视剧', '剧集'),
-                'type_id': cKey
+                'type_name': element.text,
+                'type_id': element.attrs["href"]
             })
         result['class'] = classes
         if (filter):
