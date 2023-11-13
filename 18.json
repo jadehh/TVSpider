@@ -24,10 +24,16 @@
   ],
   "sites": [
     {
-      "key": "18av",
-      "name": "18AV",
+      "key": "18A貓",
+      "name": "18A貓",
       "type": 3,
-      "api": "./js/18a_open.js"
+      "api": "./js/18a_open.js",
+      "searchable": 1,
+      "recordable": 0,
+      "style": {
+        "type": "rect",
+        "ratio": 1.485
+      }
     }
   ],
   "parses": [
