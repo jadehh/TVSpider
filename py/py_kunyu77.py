@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @File     : py_kunyu77.py.py
+# @File     : py_kunyu77.py
 # @Author   : jade
 # @Date     : 2023/11/13 16:40
 # @Email    : jadehh@1ive.com
