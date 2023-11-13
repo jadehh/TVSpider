@@ -6,14 +6,6 @@
 # @Email    : jadehh@1ive.com
 # @Software : Samples
 # @Desc     :
-# !/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @File     : py_kunyu77.py.py
-# @Author   : jade
-# @Date     : 2023/11/13 16:40
-# @Email    : jadehh@1ive.com
-# @Software : Samples
-# @Desc     :
 import sys
 import json
 import time
@@ -21,7 +13,6 @@ import hashlib
 import requests
 sys.path.append('..')
 from base.spider import Spider
-from lxml import etree
 from bs4 import BeautifulSoup
 
 
