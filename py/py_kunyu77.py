@@ -12,7 +12,6 @@ import time
 import hashlib
 import requests
 from urllib.parse import urlparse
-sys.path.append('..')
 from base.spider import Spider
 
 class Spider(Spider):

@@ -11,12 +11,28 @@ import json
 import time
 import hashlib
 import requests
-sys.path.append('..')
+import re
 from base.spider import Spider
 from bs4 import BeautifulSoup
 
 
+home_url = 'https://tvfan.xxooo.cf/'
+header = {
+    'User-Agent': 'okhttp/3.12.0'
+}
 class Spider(Spider):
+    authorization = ''
+    timeoutTick = 0
+    localTime = 0
+    expiresIn = 0
+    shareTokenMap = {}
+    expiresMap = {}
+    localMedia = {}
+    header = {
+        "Referer": "https://www.aliyundrive.com/",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36"
+    }
+    localProxyUrl = 'http://127.0.0.1:UndCover/proxy'
     def getName(self):
         return "玩偶哥哥"
 
@@ -26,36 +42,36 @@ class Spider(Spider):
 
     def homeContent(self, filter):
         result = {}
-        url = 'https://tvfan.xxooo.cf/'
-        rsp = self.fetch(url, headers=self.header)
+        rsp = self.fetch(home_url, headers=header)
         soup = BeautifulSoup(rsp.text, 'html.parser')
         elements = soup.select('.nav-link')
         classes = []
         for element in elements:
-            classes.append({
-                'type_name': element.text,
-                'type_id': element.attrs["href"]
-            })
+            if element.text != "text":
+                classes.append({
+                    'type_name': element.text,
+                    'type_id': element.attrs["href"]
+                })
         result['class'] = classes
         if (filter):
             result['filters'] = self.config['filter']
         return result
 
     def homeVideoContent(self):
-        url = 'http://api.tyun77.cn/api.php/provide/homeBlock?type_id=0'
-        rsp = self.fetch(url, headers=self.header)
-        jo = json.loads(rsp.text)
-        blockList = jo['data']['blocks']
+        rsp = self.fetch(home_url, headers=header)
+        soup = BeautifulSoup(rsp.text, 'html.parser')
+        elements = soup.select('.module-item')
         videos = []
-        for block in blockList:
-            vodList = block['contents']
-            for vod in vodList:
-                videos.append({
-                    "vod_id": vod['id'],
-                    "vod_name": vod['title'],
-                    "vod_pic": vod['videoCover'],
-                    "vod_remarks": vod['msg']
-                })
+        for element in elements:
+            content_ele = element.select(".module-item-titlebox")[0]
+            pic_ele = element.select(".module-item-pic")[0].contents[1]
+            videos.append({
+                "vod_id": content_ele.next_element.attrs['href'],
+                "vod_name": content_ele.text,
+                "vod_pic": pic_ele.attrs["data-src"],
+                "vod_remarks": element.text
+            })
+
         result = {
             'list': videos
         }
@@ -108,74 +124,108 @@ class Spider(Spider):
         result['total'] = 999999
         return result
 
+    def getToken(self, shareId, sharePwd):
+        self.localTime = int(time.time())
+        shareToken = ''
+        if shareId in self.shareTokenMap:
+            shareToken = self.shareTokenMap[shareId]
+            # todo
+            expire = self.expiresMap[shareId]
+            if len(shareToken) > 0 and expire - self.localTime > 600:
+                return shareToken
+        params = {
+            'share_id': shareId,
+            'share_pwd': sharePwd
+        }
+        url = 'https://api.aliyundrive.com/v2/share_link/get_share_token'
+        rsp = requests.post(url, json=params, headers=self.header)
+        jo = json.loads(rsp.text)
+        newShareToken = jo['share_token']
+        self.expiresMap[shareId] = self.localTime + int(jo['expires_in'])
+        self.shareTokenMap[shareId] = newShareToken
+
+        print(self.expiresMap)
+        print(self.shareTokenMap)
+
+        return newShareToken
+
+    def listFiles(self, map, shareId, shareToken, fileId):
+        url = 'https://api.aliyundrive.com/adrive/v3/file/list'
+        newHeader = self.header.copy()
+        newHeader['x-share-token'] = shareToken
+        params = {
+            'image_thumbnail_process': 'image/resize,w_160/format,jpeg',
+            'image_url_process': 'image/resize,w_1920/format,jpeg',
+            'limit': 200,
+            'order_by': 'updated_at',
+            'order_direction': 'DESC',
+            'parent_file_id': fileId,
+            'share_id': shareId,
+            'video_thumbnail_process': 'video/snapshot,t_1000,f_jpg,ar_auto,w_300'
+        }
+        maker = ''
+        arrayList = []
+        for i in range(1, 51):
+            if i >= 2 and len(maker) == 0:
+                break
+            params['marker'] = maker
+            rsp = requests.post(url, json=params, headers=newHeader)
+            jo = json.loads(rsp.text)
+            ja = jo['items']
+            for jt in ja:
+                if jt['type'] == 'folder':
+                    arrayList.append(jt['file_id'])
+                else:
+                    if 'video' in jt['mime_type'] or 'video' in jt['category']:
+                        repStr = jt['name'].replace("#", "_").replace("$", "_")
+                        map[repStr] = shareId + "+" + shareToken + "+" + jt['file_id'] + "+" + jt['category']
+                    # print(repStr,shareId + "+" + shareToken + "+" + jt['file_id'])
+            maker = jo['next_marker']
+            i = i + 1
+
+        for item in arrayList:
+            self.listFiles(map, shareId, shareToken, item)
+
+
     def detailContent(self, array):
         tid = array[0]
-        ts = int(time.time())
-        params = {
-            'pcode': '010110002',
-            'version': '2.1.6',
-            'devid': hashlib.md5(str(time.time()).encode()).hexdigest(),
-            'package': 'com.sevenVideo.app.android',
-            'sys': 'android',
-            'sysver': 13,
-            'brand': 'Redmi',
-            'model': 'M2104K10AC'
-        }
-        params['ids'] = tid
-        url = 'http://api.tyun77.cn/api.php/provide/videoDetail'
-        header = self.header.copy()
-        header['t'] = str(ts)
-        header['TK'] = self.get_tk(url, params, ts)
-        rsp = requests.get(url, headers=header, params=params, timeout=5)
-        jo = json.loads(rsp.text)
-        if jo['code'] != 1:
-            rsp = requests.get('http://api.tyun77.cn/api.php/provide/getDomain', params=params, headers=header,
-                               timeout=5)
-            if rsp.json()['code'] == 1:
-                rsp = requests.get(url, params=params, headers=header, timeout=5)
-                jo = json.loads(rsp.text)
-            else:
-                return {}
-        node = jo['data']
+        rsp = self.fetch(home_url+tid, headers=header)
+        soup = BeautifulSoup(rsp.text, 'html.parser')
+        page_title = soup.find(attrs={"class":"page-title"}).text
+        video_info_aux_list = soup.find(attrs={"class":"video-info-aux"}).contents
+        video_info_aux_str = ""
+        for video_info_aux in video_info_aux_list[1:-2]:
+            video_info_aux_str = video_info_aux_str + video_info_aux.text
+        video_info_area = video_info_aux_list[-1].text
+        mobile_play =  soup.find(attrs={"class":"mobile-play"}).find(attrs={"class":"lazyload"}).attrs["data-src"]
+        video_info_elements = soup.select(".video-info-item")
+        video_info_director = video_info_elements[0].text.replace("/","") ##导演
+        video_info_actor = video_info_elements[1].text[1:-1].replace("/",",")
+        video_info_year = video_info_elements[2].text
+        video_info_definition = video_info_elements[3].text
+        video_info_content = (video_info_elements[4].text.replace("[收起部分]","").replace("[展开全部]",""))
+        share_url_elements = soup.select('.module-row-title')
+        share_url_list = []
+        for element in share_url_elements:
+            share_url_list.append({"name":element.contents[0].text,"url":element.contents[1].text})
+        # shareId = self.regStr(href,'www.aliyundrive.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?')
+        # todo =========================================================================================
+        # m = re.search('www.aliyundrive.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?', tid)
+        # col = m.groups()
+        # shareId = col[0]
+        # fileId = col[2]
         vod = {
-            "vod_id": node['id'],
-            "vod_name": node['videoName'],
-            "vod_pic": node['videoCover'],
-            "type_name": node['subCategory'],
-            "vod_year": node['year'],
-            "vod_area": node['area'],
-            "vod_remarks": node['msg'],
-            "vod_actor": node['actor'],
-            "vod_director": node['director'],
-            "vod_content": node['brief'].strip()
+            "vod_id": 1111,
+            "vod_name": page_title,
+            "vod_pic": mobile_play,
+            "type_name": video_info_aux_str,
+            "vod_year": video_info_year,
+            "vod_area": video_info_area,
+            "vod_remarks": "清晰度:{}, 制作人:Jade".format(video_info_definition),
+            "vod_actor": video_info_actor,
+            "vod_director": video_info_director,
+            "vod_content": video_info_content
         }
-        listUrl = 'http://api.tyun77.cn/api.php/provide/videoPlaylist'
-        header['TK'] = self.get_tk(listUrl, params, ts)
-        listRsp = requests.get(listUrl, headers=header, params=params, timeout=5)
-        listJo = json.loads(listRsp.text)
-        playMap = {}
-        episodes = listJo['data']['episodes']
-        for ep in episodes:
-            playurls = ep['playurls']
-            for playurl in playurls:
-                source = playurl['playfrom']
-                if source not in playMap.keys():
-                    playMap[source] = []
-                playMap[source].append(playurl['title'].strip() + '$' + playurl['playurl'])
-
-        playFrom = []
-        playList = []
-        for key in playMap.keys():
-            playFrom.append(key)
-            playList.append('#'.join(playMap[key]))
-
-        vod_play_from = '$$$'
-        vod_play_from = vod_play_from.join(playFrom)
-        vod_play_url = '$$$'
-        vod_play_url = vod_play_url.join(playList)
-        vod['vod_play_from'] = vod_play_from
-        vod['vod_play_url'] = vod_play_url
-
         result = {
             'list': [
                 vod
@@ -205,9 +255,7 @@ class Spider(Spider):
         "player": {},
         "filter": {}
     }
-    header = {
-        'User-Agent': 'okhttp/3.12.0'
-    }
+
 
     def playerContent(self, flag, id, vipFlags):
         result = {}

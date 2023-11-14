@@ -7,8 +7,6 @@
 # @Software : Samples
 # @Desc     :
 import sys
-
-sys.path.append('..')
 from base.spider import Spider
 import json
 import requests
@@ -54,8 +52,6 @@ class Spider(Spider):  # 元类 默认的元类 type
             return {}
 
     def fhdContent(self, flag, id, vipFlags):
-        if not self.login():
-            return {}
         ids = id.split('+')
         shareId = ids[0]
         shareToken = ids[1]
@@ -112,8 +108,8 @@ class Spider(Spider):  # 元类 默认的元类 type
 
         return result
 
-    def detailContent(self, array):
-        tid = array[0]
+    def detailContent(self):
+        tid = "https://www.aliyundrive.com/s/hnWeeeNjbdq"
         # shareId = self.regStr(href,'www.aliyundrive.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?')
         # todo =========================================================================================
         m = re.search('www.aliyundrive.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?', tid)
@@ -135,7 +131,7 @@ class Spider(Spider):  # 元类 默认的元类 type
         fileInfo = {}
         # todo
         fileInfo = infoJa[0]
-        print(fileId)
+
         if fileId == None or len(fileId) <= 0:
             fileId = fileInfo['file_id']
 
@@ -316,7 +312,6 @@ class Spider(Spider):  # 元类 默认的元类 type
             'type': 'stream',
             'after': ''
         }
-        print(action)
         return [200, "video/MP2T", action, ""]
 
     def proxyM3U8(self, map):
@@ -365,10 +360,6 @@ class Spider(Spider):  # 元类 默认的元类 type
         newShareToken = jo['share_token']
         self.expiresMap[shareId] = self.localTime + int(jo['expires_in'])
         self.shareTokenMap[shareId] = newShareToken
-
-        print(self.expiresMap)
-        print(self.shareTokenMap)
-
         return newShareToken
 
     def listFiles(self, map, shareId, shareToken, fileId):

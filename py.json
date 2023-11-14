@@ -8,7 +8,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "ext": "https://raw.githubusercontent.com/lm317379829/PyramidStore/pyramid/plugin/py_kunyu77.py"
+      "ext": "http://192.168.29.156:8099/py/py_kunyu77.py"
     },
     {
       "key": "py_wanou",
@@ -18,7 +18,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "ext": "https://raw.githubusercontent.com/jadehh/TV/py/py/py_wanou.py"
+      "ext": "http://192.168.29.156:8099/py/py_wanou.py"
     }
   ],
   "ijk": [
@@ -294,7 +294,7 @@
       ]
     }
   ],
-  "spider": "https://ghproxy.com/https://raw.githubusercontent.com/FongMi/CatVodSpider/main/jar/custom_spider.jar",
+  "spider": "http://192.168.29.156:8099/jar/custom_spider.jar",
   "lives": [
     {
       "group": "redirect",
