@@ -22,4 +22,4 @@ def test_wanou():
     print(spider.homeVideoContent())
 
 if __name__ == '__main__':
-    test_wanou()
+    test_kunyun77()
