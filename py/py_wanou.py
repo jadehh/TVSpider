@@ -15,11 +15,12 @@ import re
 from base.spider import Spider
 from bs4 import BeautifulSoup
 
-
 home_url = 'https://tvfan.xxooo.cf/'
 header = {
     'User-Agent': 'okhttp/3.12.0'
 }
+
+
 class Spider(Spider):
     authorization = ''
     timeoutTick = 0
@@ -33,6 +34,7 @@ class Spider(Spider):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36"
     }
     localProxyUrl = 'http://127.0.0.1:UndCover/proxy'
+
     def getName(self):
         return "玩偶哥哥"
 
@@ -186,28 +188,27 @@ class Spider(Spider):
         for item in arrayList:
             self.listFiles(map, shareId, shareToken, item)
 
-
     def detailContent(self, array):
         tid = array[0]
-        rsp = self.fetch(home_url+tid, headers=header)
+        rsp = self.fetch(home_url + tid, headers=header)
         soup = BeautifulSoup(rsp.text, 'html.parser')
-        page_title = soup.find(attrs={"class":"page-title"}).text
-        video_info_aux_list = soup.find(attrs={"class":"video-info-aux"}).contents
+        page_title = soup.find(attrs={"class": "page-title"}).text
+        video_info_aux_list = soup.find(attrs={"class": "video-info-aux"}).contents
         video_info_aux_str = ""
         for video_info_aux in video_info_aux_list[1:-2]:
             video_info_aux_str = video_info_aux_str + video_info_aux.text
         video_info_area = video_info_aux_list[-1].text
-        mobile_play =  soup.find(attrs={"class":"mobile-play"}).find(attrs={"class":"lazyload"}).attrs["data-src"]
+        mobile_play = soup.find(attrs={"class": "mobile-play"}).find(attrs={"class": "lazyload"}).attrs["data-src"]
         video_info_elements = soup.select(".video-info-item")
-        video_info_director = video_info_elements[0].text.replace("/","") ##导演
-        video_info_actor = video_info_elements[1].text[1:-1].replace("/",",")
+        video_info_director = video_info_elements[0].text.replace("/", "")  ##导演
+        video_info_actor = video_info_elements[1].text[1:-1].replace("/", ",")
         video_info_year = video_info_elements[2].text
         video_info_definition = video_info_elements[3].text
-        video_info_content = (video_info_elements[4].text.replace("[收起部分]","").replace("[展开全部]",""))
+        video_info_content = (video_info_elements[4].text.replace("[收起部分]", "").replace("[展开全部]", ""))
         share_url_elements = soup.select('.module-row-title')
         share_url_list = []
         for element in share_url_elements:
-            share_url_list.append({"name":element.contents[0].text,"url":element.contents[1].text})
+            share_url_list.append({"name": element.contents[0].text, "url": element.contents[1].text})
         # shareId = self.regStr(href,'www.aliyundrive.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?')
         # todo =========================================================================================
         # m = re.search('www.aliyundrive.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?', tid)
@@ -226,6 +227,10 @@ class Spider(Spider):
             "vod_director": video_info_director,
             "vod_content": video_info_content
         }
+        vod_url = "https://cn-beijing-data.aliyundrive.net/j6lhN83P%2F90610381%2F6552be0374ea2b60c5d34f4cbb32091655c788ae%2F6552be038996baa822084040b38a58797d2bc743?callback=eyJjYWxsYmFja1VybCI6Imh0dHA6Ly9iajI5LmFwaS1ocC5hbGl5dW5wZHMuY29tL3YyL2ZpbGUvZG93bmxvYWRfY2FsbGJhY2siLCJjYWxsYmFja0JvZHkiOiJodHRwSGVhZGVyLnJhbmdlPSR7aHR0cEhlYWRlci5yYW5nZX1cdTAwMjZidWNrZXQ9JHtidWNrZXR9XHUwMDI2b2JqZWN0PSR7b2JqZWN0fVx1MDAyNmRvbWFpbl9pZD0ke3g6ZG9tYWluX2lkfVx1MDAyNnVzZXJfaWQ9JHt4OnVzZXJfaWR9XHUwMDI2ZHJpdmVfaWQ9JHt4OmRyaXZlX2lkfVx1MDAyNmZpbGVfaWQ9JHt4OmZpbGVfaWR9IiwiY2FsbGJhY2tCb2R5VHlwZSI6ImFwcGxpY2F0aW9uL3gtd3d3LWZvcm0tdXJsZW5jb2RlZCIsImNhbGxiYWNrU3RhZ2UiOiJiZWZvcmUtZXhlY3V0ZSIsImNhbGxiYWNrRmFpbHVyZUFjdGlvbiI6Imlnbm9yZSJ9&callback-var=eyJ4OmRvbWFpbl9pZCI6ImJqMjkiLCJ4OnVzZXJfaWQiOiJmMjBkYjViMmZmYzk0ZTA4YWRmZTA4Y2VlNzY5YmE3YSIsIng6ZHJpdmVfaWQiOiIyMjg5NDQiLCJ4OmZpbGVfaWQiOiI2NTUyZjBkZWQzZmI5ZTEyZDE5NDRlYjdhNWEzYmM4YWE1ZGMzZTljIn0%3D&di=bj29&dr=228944&f=6552f0ded3fb9e12d1944eb7a5a3bc8aa5dc3e9c&pds-params=%7B%22ap%22%3A%22pJZInNHN2dZWk8qg%22%7D&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27AI%2520%25E5%2588%259B%25E4%25B8%2596%25E8%2580%2585%2520The.Creator.2023.mp4&security-token=CAIS%2BgF1q6Ft5B2yfSjIr5fvG%2FDQ25gY063cVHz1lHgtOe5HvJ%2FIkzz2IHFPeHJrBeAYt%2FoxmW1X5vwSlq5rR4QAXlDfNQKOBVaCqFHPWZHInuDox55m4cTXNAr%2BIhr%2F29CoEIedZdjBe%2FCrRknZnytou9XTfimjWFrXWv%2Fgy%2BQQDLItUxK%2FcCBNCfpPOwJms7V6D3bKMuu3OROY6Qi5TmgQ41Uh1jgjtPzkkpfFtkGF1GeXkLFF%2B97DRbG%2FdNRpMZtFVNO44fd7bKKp0lQLukMWr%2Fwq3PIdp2ma447NWQlLnzyCMvvJ9OVDFyN0aKEnH7J%2Bq%2FzxhTPrMnpkSlacGoABbKIm8CCE%2Fm93zs1bgi8shCgW%2BADKvMg%2FqIXsYCD12ugIrQcVmqeQoNqxvrc5muO5yDsFzTNlRNV7EzlMWIGIbGG0NVc2y16Ry2wgHB%2BgaUOfEHf%2FxLINWMmxwB8XPkC7odhzF6zWfEgY9mu49fJxPmKO8%2BS3dLkaKkbGhe5MR48gAA%3D%3D&sl=hnWeeeNjbdq&u=f20db5b2ffc94e08adfe08cee769ba7a&x-oss-access-key-id=STS.NTZPJd6G9do7VZDpxx5akSZcq&x-oss-expires=1699964505&x-oss-signature=Y9i9Ul5Euu5VsQv8Yu0nR26%2B1HV5i09awjBFSGuYJWs%3D&x-oss-signature-version=OSS2"
+
+        vod['vod_play_from'] = "$$$youku"
+        vod['vod_play_url'] = "$$$封神第一部高清${}".format(vod_url)
         result = {
             'list': [
                 vod
@@ -256,19 +261,14 @@ class Spider(Spider):
         "filter": {}
     }
 
-
     def playerContent(self, flag, id, vipFlags):
-        result = {}
-        result = {
-            'parse': 0,
-            'jx': 0,
-            'playUrl': '',
-            'url': id,
-            'header': ''
-        }
-        if flag != 'ppayun':
-            result['parse'] = 1
-            result['jx'] = 1
+        url = "https://cn-beijing-data.aliyundrive.net/j6lhN83P%2F90610381%2F6552be0374ea2b60c5d34f4cbb32091655c788ae%2F6552be038996baa822084040b38a58797d2bc743?callback=eyJjYWxsYmFja1VybCI6Imh0dHA6Ly9iajI5LmFwaS1ocC5hbGl5dW5wZHMuY29tL3YyL2ZpbGUvZG93bmxvYWRfY2FsbGJhY2siLCJjYWxsYmFja0JvZHkiOiJodHRwSGVhZGVyLnJhbmdlPSR7aHR0cEhlYWRlci5yYW5nZX1cdTAwMjZidWNrZXQ9JHtidWNrZXR9XHUwMDI2b2JqZWN0PSR7b2JqZWN0fVx1MDAyNmRvbWFpbl9pZD0ke3g6ZG9tYWluX2lkfVx1MDAyNnVzZXJfaWQ9JHt4OnVzZXJfaWR9XHUwMDI2ZHJpdmVfaWQ9JHt4OmRyaXZlX2lkfVx1MDAyNmZpbGVfaWQ9JHt4OmZpbGVfaWR9IiwiY2FsbGJhY2tCb2R5VHlwZSI6ImFwcGxpY2F0aW9uL3gtd3d3LWZvcm0tdXJsZW5jb2RlZCIsImNhbGxiYWNrU3RhZ2UiOiJiZWZvcmUtZXhlY3V0ZSIsImNhbGxiYWNrRmFpbHVyZUFjdGlvbiI6Imlnbm9yZSJ9&callback-var=eyJ4OmRvbWFpbl9pZCI6ImJqMjkiLCJ4OnVzZXJfaWQiOiJmMjBkYjViMmZmYzk0ZTA4YWRmZTA4Y2VlNzY5YmE3YSIsIng6ZHJpdmVfaWQiOiIyMjg5NDQiLCJ4OmZpbGVfaWQiOiI2NTUyZjBkZWQzZmI5ZTEyZDE5NDRlYjdhNWEzYmM4YWE1ZGMzZTljIn0%3D&di=bj29&dr=228944&f=6552f0ded3fb9e12d1944eb7a5a3bc8aa5dc3e9c&pds-params=%7B%22ap%22%3A%22pJZInNHN2dZWk8qg%22%7D&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27AI%2520%25E5%2588%259B%25E4%25B8%2596%25E8%2580%2585%2520The.Creator.2023.mp4&security-token=CAIS%2BgF1q6Ft5B2yfSjIr5aHCOPSvKZVwoPaO0vwsVgvbcUaoqvvhzz2IHFPeHJrBeAYt%2FoxmW1X5vwSlq5rR4QAXlDfNTGHOlaCqFHPWZHInuDox55m4cTXNAr%2BIhr%2F29CoEIedZdjBe%2FCrRknZnytou9XTfimjWFrXWv%2Fgy%2BQQDLItUxK%2FcCBNCfpPOwJms7V6D3bKMuu3OROY6Qi5TmgQ41Uh1jgjtPzkkpfFtkGF1GeXkLFF%2B97DRbG%2FdNRpMZtFVNO44fd7bKKp0lQLukMWr%2Fwq3PIdp2ma447NWQlLnzyCMvvJ9OVDFyN0aKEnH7J%2Bq%2FzxhTPrMnpkSlacGoABY5llIAVXpLMZtFQdjv5WMK4tyykU6ZoBsc0eW27iM5f9M%2FGcxVMFieSeqVKwFEh384TZCm%2Fz4Qu7HujPNI57YUkDXztMTjYHXRgZ2QoAIO1OX6CJ73kWTt4bXhAYJK%2FjeBg%2FZX3ANe7gC23zSgIhqFjSK7%2F37gN7DOG3LUMwEpMgAA%3D%3D&sl=hnWeeeNjbdq&u=f20db5b2ffc94e08adfe08cee769ba7a&x-oss-access-key-id=STS.NU2CYfQytuA19mAUXzaJ6MnDe&x-oss-expires=1699972890&x-oss-signature=%2Fbb0ZruNf1AvEjqBYNfvfQedS4575vFx4ZFPkG6UtTk%3D&x-oss-signature-version=OSS2"
+        result = {"format": "application/octet-stream",
+                  "header": "{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36\",\"Referer\":\"https://www.aliyundrive.com/\"}",
+                  "jx": 0,
+                  "parse": 0,
+                  "url": url}
+
         return result
 
     def isVideoFormat(self, url):
