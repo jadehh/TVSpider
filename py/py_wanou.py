@@ -213,7 +213,7 @@ class Ali():
         episode = episode*len(play_foramt_list)
 
         return "$$$".join(play_foramt_list),"$$$".join(episode)
-home_url = 'https://www.wogg.xyz/'
+home_url = 'https://tvfan.xxooo.cf/'
 header = {
     'User-Agent': 'okhttp/3.12.0'
 }
@@ -233,6 +233,7 @@ class Spider(Spider):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36"
     }
     localProxyUrl = 'http://127.0.0.1:UndCover/proxy'
+    session = requests.session()
 
     def getName(self):
         return "玩偶哥哥"
@@ -245,8 +246,7 @@ class Spider(Spider):
         result = {}
         classes = []
         start_time = time.time()
-        session = requests.session()
-        rsp = session.get(home_url)
+        rsp = self.session.get(home_url)
         classes.append({"type_name":str(time.time()-start_time),"type_id":"1"})
         start_time = time.time()
         self.soup = BeautifulSoup(rsp.text, 'html.parser') ## 这一步耗时

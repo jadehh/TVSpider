@@ -24,6 +24,9 @@ def test_wanou():
     start_time = time.time()
     spider = Spider()
     print(spider.homeContent(None))
+    print(spider.homeContent(None))
+    print(spider.homeContent(None))
+
     print(spider.homeVideoContent())
     # array = ['/index.php/voddetail/81437.html']
     # print(spider.detailContent(array))
