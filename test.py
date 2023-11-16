@@ -19,12 +19,15 @@ def test_kunyun77():
 
 def test_wanou():
     from py.py_wanou import Spider
+    import time
     filter = ""
+    start_time = time.time()
     spider = Spider()
     print(spider.homeContent(None))
     print(spider.homeVideoContent())
-    array = ['/index.php/voddetail/81437.html']
-    print(spider.detailContent(array))
+    # array = ['/index.php/voddetail/81437.html']
+    # print(spider.detailContent(array))
+    print(time.time()-start_time)
 
 def test_ali():
     from py.py_ali import Spider

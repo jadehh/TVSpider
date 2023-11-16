@@ -213,7 +213,7 @@ class Ali():
         episode = episode*len(play_foramt_list)
 
         return "$$$".join(play_foramt_list),"$$$".join(episode)
-home_url = 'https://tvfan.xxooo.cf/'
+home_url = 'https://www.wogg.xyz/'
 header = {
     'User-Agent': 'okhttp/3.12.0'
 }
@@ -230,7 +230,6 @@ class Spider(Spider):
     localMedia = {}
     ali = Ali()
     header = {
-        "Referer": "https://www.aliyundrive.com/",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36"
     }
     localProxyUrl = 'http://127.0.0.1:UndCover/proxy'
@@ -244,7 +243,9 @@ class Spider(Spider):
 
     def homeContent(self, filter):
         result = {}
-        rsp = self.fetch(home_url, headers=header)
+        start_time = time.time()
+        rsp = requests.get(home_url,headers={'User-Agent': 'okhttp/3.12.0',	'Connection': 'close'})
+        print(time.time()-start_time)
         self.soup = BeautifulSoup(rsp.text, 'html.parser')
         elements = self.soup.select('.nav-link')
         classes = []
