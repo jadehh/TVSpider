@@ -243,18 +243,23 @@ class Spider(Spider):
 
     def homeContent(self, filter):
         result = {}
-        start_time = time.time()
-        rsp = requests.get(home_url,headers={'User-Agent': 'okhttp/3.12.0',	'Connection': 'close'})
-        print(time.time()-start_time)
-        self.soup = BeautifulSoup(rsp.text, 'html.parser')
-        elements = self.soup.select('.nav-link')
         classes = []
+        start_time = time.time()
+        session = requests.session()
+        rsp = session.get(home_url)
+        classes.append({"type_name":str(time.time()-start_time),"type_id":"1"})
+        start_time = time.time()
+        self.soup = BeautifulSoup(rsp.text, 'html.parser') ## 这一步耗时
+        elements = self.soup.select('.nav-link')
+        classes.append({"type_name":str(time.time()-start_time),"type_id":"1"})
+
         for element in elements:
             if element.text != "text":
                 classes.append({
                     'type_name': element.text,
                     'type_id': element.attrs["href"]
                 })
+
         result['class'] = classes
         if (filter):
             result['filters'] = self.config['filter']
@@ -269,11 +274,12 @@ class Spider(Spider):
         for element in elements:
             content_ele = element.select(".module-item-titlebox")[0]
             pic_ele = element.select(".module-item-pic")[0].contents[1]
+            remarks = element.select(".module-item-text")[0].text
             videos.append({
                 "vod_id": content_ele.next_element.attrs['href'],
                 "vod_name": content_ele.text,
                 "vod_pic": pic_ele.attrs["data-src"],
-                "vod_remarks": element.text
+                "vod_remarks": remarks
             })
 
         result = {
