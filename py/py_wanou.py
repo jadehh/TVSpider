@@ -143,7 +143,7 @@ class Ali():
             self.write_cache_config()
         else:
             print("查看分享文件Token失败")
-            time.sleep(2)
+            time.sleep(60)
 
     def get_all_files(self, share_id, file_id, video_file_list, sub_file_list, is_floder=False, parent=None):
         url = self.APIUrl + "/adrive/v3/file/list"
