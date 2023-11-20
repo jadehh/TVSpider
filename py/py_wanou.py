@@ -142,7 +142,7 @@ class Ali():
             self.ali_json["share_token"] = respose.json()["share_token"]
             self.write_cache_config()
         else:
-            print("查看分享文件Token失败")
+            print("查看分享文件Token失败,失败原因为:{}".format(respose.text))
             time.sleep(60)
 
     def get_all_files(self, share_id, file_id, video_file_list, sub_file_list, is_floder=False, parent=None):
