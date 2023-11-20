@@ -18,19 +18,20 @@ def test_kunyun77():
 
 
 def test_wanou():
-    from py.py_wanou import Spider
+    from py.py_wanou import Spider,Ali
     import time
     filter = ""
     start_time = time.time()
+
     spider = Spider()
     print(spider.homeContent(None))
-    print(spider.homeContent(None))
-    print(spider.homeContent(None))
-
     print(spider.homeVideoContent())
-    # array = ['/index.php/voddetail/81437.html']
-    # print(spider.detailContent(array))
-    print(time.time()-start_time)
+    array = ['/index.php/voddetail/81973.html']
+    print(spider.detailContent(array))
+
+    print(spider.playerContent("原画", "H2oBHmnjymZ+654e150e8d6019d56b014c6488691fe37986eb7c", []))
+    # print(time.time()-start_time)
+
 
 def test_ali():
     from py.py_ali import Spider
@@ -44,6 +45,16 @@ def test_ali():
     play_url = dic["list"][0]["vod_play_url"]
     print(spider.playerContent("AliYun原画", play_url, None))
 
+
+def test_rtmp():
+    import cv2
+    capture = cv2.VideoCapture("http://192.168.40.215:7001/live/rfBd56ti2SMtYvSgD5xAV0YU99zampta7Z7S575KLkIZ9PYk.flv")
+    print(capture.isOpened())
+    while True:
+        ret,frame = capture.read()
+        cv2.namedWindow("result",0)
+        cv2.imshow("result",frame)
+        cv2.waitKey(1)
 
 if __name__ == '__main__':
     test_wanou()
