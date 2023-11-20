@@ -21,40 +21,45 @@ from lxml import html
 
 class Ali():
 
-
     def __init__(self):
         self.APIUrl = "https://api.aliyundrive.com"
         self.PlayFromat = ["超清(720P)", "高清(1080P)", "超清(4k)"]
-        self.ali_json = {"share_token":"",
-                         "auth_token":"",
-                         "qauth_token":""}
+        self.ali_json = {"share_token": "",
+                         "auth_token": "",
+                         "qauth_token": ""}
         self.load_cache_config()
 
     def load_cache_config(self):
-        if os.path.exists("/tmp/ali.json"):
-            with open("/tmp/ali.json","rb") as f:
+        if os.path.exists(os.path.join(os.environ["HOME"], "ali.json")):
+            with open(os.path.join(os.environ["HOME"], "ali.json"), "rb") as f:
                 self.ali_json = json.load(f)
         else:
             self.write_cache_config()
 
     def write_cache_config(self):
-        with open("/tmp/ali.json","wb") as f:
+        with open(os.path.join(os.environ["HOME"], "ali.json"), "wb") as f:
             f.write(json.dumps(self.ali_json).encode("utf-8"))
-    def get_download_url(self,file_id,share_id):
-        if self.ali_json["qauth_token"] :
+
+    def get_download_url(self, file_id, share_id):
+        if self.ali_json["qauth_token"]:
+            pass
+        else:
             self.get_ali_token()
         url = "https://open.aliyundrive.com/adrive/v1.0/openFile/getDownloadUrl"
-        file_id = self.get_batch_file(file_id,share_id)
+        file_id = self.get_batch_file(file_id, share_id)
         params = {"file_id": file_id, "drive_id": "303583582"}
         headers = {
             "Content-Type": "application/json",
-            "authorization": "Bearer {}".format(self.Qauth_Token),
+            "authorization": self.ali_json["qauth_token"],
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
             "Referer": "https://www.aliyundrive.com/"}
-        response = requests.post(url,json.dumps(params),headers=headers)
-        return response,self.Qauth_Token
+        response = requests.post(url, json.dumps(params), headers=headers)
+        if response.status_code == 200:
+            return response.json()["url"]
+        else:
+            print("获取下载链接失败,检查X-share-Token是否设置正确")
 
-    def get_batch_file(self,file_id,share_id):
+    def get_batch_file(self, file_id, share_id):
         params = {
             "requests": [
                 {
@@ -75,18 +80,21 @@ class Ali():
             ],
             "resource": "file"
         }
-        headers = {
-            "Content-Type": "application/json"
-        }
-        if self.Share_Token is None:
+        if self.ali_json["share_token"]:
+            pass
+        else:
             self.get_share_token(share_id)
+        if self.ali_json["auth_token"]:
+            pass
+        else:
+            self.get_ali_logion()
         headers = {
             "Content-Type": "application/json",
-            "x-share-token": self.Share_Token,
-            "authorization": self.Auth_Token
+            "x-share-token": self.ali_json["share_token"],
+            "authorization": self.ali_json["auth_token"]
         }
         url = self.APIUrl + "/adrive/v2/batch"
-        response = requests.post(url,json.dumps(params),headers=headers)
+        response = requests.post(url, json.dumps(params), headers=headers)
         if response.status_code == 200:
             return response.json()["responses"][0]["body"]["file_id"]
         else:
@@ -101,42 +109,43 @@ class Ali():
         headers = {
             "Content-Type": "application/json"
         }
-        response = requests.post(url,json.dumps(params),headers=headers)
+        response = requests.post(url, json.dumps(params), headers=headers)
         if response.status_code != 200:
             print("阿里登录失败,请更新阿里token")
         else:
             self.ali_json["auth_token"] = response.json()['token_type'] + " " + response.json()['access_token']
             self.write_cache_config()
 
-    def get_share_file_id(self,share_id):
+    def get_share_file_id(self, share_id):
         url = self.APIUrl + "/adrive/v3/share_link/get_share_by_anonymous"
         params = {
             "share_id": share_id
         }
-        headers = {'Content-Type':'application/json'}
-        respose = requests.post(url, data=json.dumps(params),headers=headers)
+        headers = {'Content-Type': 'application/json'}
+        respose = requests.post(url, data=json.dumps(params), headers=headers)
         if respose.status_code == 200:
             if (respose.json()["file_infos"][0]["type"]) == "file":
-                return False,respose.json()["file_infos"][0]["file_id"]
+                return False, respose.json()["file_infos"][0]["file_id"]
             elif (respose.json()["file_infos"][0]["type"]) == "folder":
-                return True,respose.json()["file_infos"][0]["file_id"]
+                return True, respose.json()["file_infos"][0]["file_id"]
         else:
             print("查看分享文件ID失败")
 
-    def get_share_token(self,share_id):
+    def get_share_token(self, share_id):
         url = self.APIUrl + "/v2/share_link/get_share_token"
         params = {
             "share_id": share_id
         }
-        headers = {'Content-Type':'application/json'}
-        respose = requests.post(url, data=json.dumps(params),headers=headers)
+        headers = {'Content-Type': 'application/json'}
+        respose = requests.post(url, data=json.dumps(params), headers=headers)
         if respose.status_code == 200:
             self.ali_json["share_token"] = respose.json()["share_token"]
             self.write_cache_config()
         else:
             print("查看分享文件Token失败")
+            time.sleep(2)
 
-    def get_all_files(self,share_id,file_id,video_file_list,sub_file_list,is_floder=False,parent=None):
+    def get_all_files(self, share_id, file_id, video_file_list, sub_file_list, is_floder=False, parent=None):
         url = self.APIUrl + "/adrive/v3/file/list"
         if is_floder:
             params = {
@@ -154,15 +163,18 @@ class Ali():
                 "order_by": "name",
                 "order_direction": "ASC"
             }
-        if self.Share_Token is None:
-             self.get_share_token(share_id)
-        headers = {'Content-Type': 'application/json', "x-share-token": "Bearer " + self.Share_Token}
+        if self.ali_json["share_token"]:
+            pass
+        else:
+            self.get_share_token(share_id)
+        headers = {'Content-Type': 'application/json', "x-share-token": self.ali_json["share_token"]}
         respose = requests.post(url, data=json.dumps(params), headers=headers)
         if respose.status_code == 200:
             file_list = respose.json()["items"]
             for file_id in file_list:
                 if file_id["type"] == 'folder':
-                    self.get_all_files(share_id,file_id["file_id"],video_file_list,sub_file_list,is_floder=True,parent=file_id["name"])
+                    self.get_all_files(share_id, file_id["file_id"], video_file_list, sub_file_list, is_floder=True,
+                                       parent=file_id["name"])
                 elif file_id["type"] == "file":
                     file_id["parent"] = parent
                     if file_id["category"] == "video" or file_id["category"] == "audio":
@@ -170,15 +182,16 @@ class Ali():
                     elif file_id["file_extension"] in ["srt", "ass", "ssa", "vtt"]:
                         sub_file_list.append(file_id)
         else:
-            self.Share_Token = None
-            self.get_all_files(share_id,file_id,video_file_list,sub_file_list,is_floder=False,parent=None)
+            self.ali_json["share_token"] = ""
+            self.write_cache_config()
+            self.get_share_token(share_id)
+            self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=False, parent=None)
 
-
-    def get_size(self,size):
+    def get_size(self, size):
         if (size <= 0): return ""
         if (size > 1024 * 1024 * 1024 * 1024.0):
             size /= (1024 * 1024 * 1024 * 1024.0);
-            return "%.2fTB" %size
+            return "%.2fTB" % size
         elif (size > 1024 * 1024 * 1024.0):
             size /= (1024 * 1024 * 1024.0);
             return "%.2fGB" % size
@@ -189,23 +202,25 @@ class Ali():
             size /= 1024.0;
             return "%.2fKB" % size
 
-
     def get_alist_code(self):
         """
         通过Alist应用去访问阿里云盘
         """
         url = "https://open.aliyundrive.com/oauth/users/authorize?client_id=76917ccccd4441c39457a04f6084fb2f&redirect_uri=https://alist.nn.ci/tool/aliyundrive/callback&scope=user:base,file:all:read,file:all:write&state="
         params = {"authorize": 1, "scope": "user:base,file:all:read,file:all:write"}
-        headers = {'Content-Type':'application/json',"authorization": self.Auth_Token}
-        respose = requests.post(url, data=json.dumps(params),headers=headers)
+        if self.ali_json["auth_token"]:
+            pass
+        else:
+            self.get_ali_logion()
+        headers = {'Content-Type': 'application/json', "authorization": self.ali_json["auth_token"]}
+        respose = requests.post(url, data=json.dumps(params), headers=headers)
         if respose.status_code != 200:
-            print("获取Alist Code失败")
             self.get_ali_logion()
             self.get_alist_code()
         else:
             return (respose.json()["redirectUri"].split("code=")[-1])
 
-    def get_access_token(self,code):
+    def get_access_token(self, code):
         """
         Access Token 有效期较短,需要重新获取 Access Token
         token只有三个小时有效期，三个小时到期后，需要重复获取
@@ -218,33 +233,34 @@ class Ali():
         """
         url = "https://api.xhofe.top/alist/ali_open/code"
         params = {"code": code, "grant_type": "authorization_code"}
-        response = requests.post(url, data=json.dumps(params),headers = {'Content-Type':'application/json'})
+        response = requests.post(url, data=json.dumps(params), headers={'Content-Type': 'application/json'})
         if response.status_code == 200:
-            self.Qauth_Token =  response.json()['token_type'] + " " + response.json()['access_token']
+            self.ali_json["qauth_token"] = response.json()['token_type'] + " " + response.json()['access_token']
+            self.write_cache_config()
         else:
             print("Access Token获取失败,失败原因为:{}".format(response.text))
             time.sleep(60)
             self.get_access_token(self.get_alist_code())
 
-
     def get_ali_token(self):
         alist_code = self.get_alist_code()
         self.get_access_token(alist_code)
 
-
-    def findSubs(self,name,sub_list):
+    def findSubs(self, name, sub_list):
         remove_ext = name = '.'.join(name.split('.')[:-1])
         sub_str = ""
         for sub_file in sub_list:
             if remove_ext in sub_file["name"]:
-                sub_str = "+" + '.'.join(sub_file["name"].split('.')[:-1])  +"@@@" + sub_file['file_extension'] + "@@@" + sub_file["file_id"]
+                sub_str = "+" + '.'.join(sub_file["name"].split('.')[:-1]) + "@@@" + sub_file[
+                    'file_extension'] + "@@@" + sub_file["file_id"]
         return sub_str
 
-    def sort_by_size(self,item):
+    def sort_by_size(self, item):
         return item['size']
 
-
-    def get_vide_metadata(self,format):
+    def sort_by_name(self, item):
+        return item['name']
+    def get_vide_metadata(self, format):
 
         area = (format['width'] * format['height'])
         if area < 2073600:
@@ -254,7 +270,12 @@ class Ali():
         else:
             return self.PlayFromat[1]
 
-    def get_vod_name(self,share_url_list):
+    def find_common_strings(self,string1,string2):
+        set_1 = string1.split(".")
+        set_2 = string2.split(".")
+        return list(set(set_1).intersection(set(set_2)))
+
+    def get_vod_name(self, share_url_list,page_title):
         video_file_list = []
         sub_file_list = []
         for share_url_dic in share_url_list:
@@ -262,33 +283,43 @@ class Ali():
             share_id = m[0]
             is_floder, file_id = self.get_share_file_id(share_id)
             self.Share_Token = None
-            self.get_all_files(share_id,file_id, video_file_list, sub_file_list, is_floder)
-        video_file_list = sorted(video_file_list, key=self.sort_by_size)
+            self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder)
+        video_file_list = sorted(video_file_list, key=self.sort_by_name)
         episode = []
+        repeat_list = []
+        if len(video_file_list) > 10:
+            repeat_list = self.find_common_strings(video_file_list[0]["name"], video_file_list[1]["name"])
+
         for video_file in video_file_list:
+            video_name = video_file["name"]
+            if len(repeat_list) > 5:
+                for repeat_str in repeat_list:
+                    video_name = video_name.replace(repeat_str, "").replace(".", "")
+                video_name = page_title + " - " + (video_name)
             display_name = ""
-            display_name = "[{}] ".format(self.get_vide_metadata(video_file['video_media_metadata']))+ display_name + video_file["name"]+ " [{}]".format(self.get_size(video_file["size"]))
-            sub_str = self.findSubs(video_file["name"],sub_file_list)
+            display_name = "[{}] ".format(self.get_vide_metadata(video_file['video_media_metadata'])) + display_name + \
+                           video_name + " [{}]".format(self.get_size(video_file["size"]))
+            sub_str = self.findSubs(video_file["name"], sub_file_list)
             epi_str = display_name + "$" + share_id + "+" + video_file["file_id"] + sub_str
             episode.append(epi_str)
+
         ## 自定义清晰度
         play_foramt_list = ["原画", "普画"]
-        episode = ["#".join(episode)]*len(play_foramt_list)
-        return "$$$".join(play_foramt_list),"$$$".join(episode)
+        episode = ["#".join(episode)] * len(play_foramt_list)
+        return "$$$".join(play_foramt_list), "$$$".join(episode)
 
 
 class Spider(Spider):
     tree = None
     ali = Ali()
-    ali_token = None
     header = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36"
     }
     session = requests.session()
     home_url = 'https://tvfan.xxooo.cf/'
 
-    def fetch(self,url):
-        rsp = self.session.get(url,headers=self.header)
+    def fetch(self, url):
+        rsp = self.session.get(url, headers=self.header)
         return rsp
 
     def getName(self):
@@ -304,7 +335,7 @@ class Spider(Spider):
         start_time = time.time()
         rsp = self.fetch(self.home_url)
         classes.append({
-            'type_name': str(time.time()-start_time),
+            'type_name': str(time.time() - start_time),
             'type_id': ""
         })
         self.tree = html.fromstring(rsp.text)
@@ -339,7 +370,7 @@ class Spider(Spider):
             remarks = element.findtext('div[@class="module-item-text"]')
             videos.append({
                 "vod_id": vod_id,
-                "vod_name":vod_name,
+                "vod_name": vod_name,
                 "vod_pic": vod_pic,
                 "vod_remarks": remarks
             })
@@ -430,10 +461,10 @@ class Spider(Spider):
             "vod_content": video_info_content
         }
         start_time = time.time()
-        play_from,play_url = self.ali.get_vod_name(share_url_list)
-        print("获取阿里云盘文件地址:",time.time()-start_time)
+        play_from, play_url = self.ali.get_vod_name(share_url_list,page_title)
+        print("获取阿里云盘文件地址:", time.time() - start_time)
         vod['vod_play_from'] = play_from
-        vod['vod_play_url'] =play_url
+        vod['vod_play_url'] = play_url
         result = {
             'list': [
                 vod
@@ -470,15 +501,96 @@ class Spider(Spider):
         share_id = id.split("+")[0]
         file_id = id.split("+")[1]
         url = ""
+        test_result = {"format": "application/octet-stream",
+                       "header": "{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36\",\"Referer\":\"https://www.aliyundrive.com/\"}",
+                       "jx": 0, "parse": 0, "subs": [
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#AI 创世者 The.Creator.2023.mp4 [4.80GB]$hnWeeeNjbdq"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#The.Creator.2023.2160p.WEB-DL.DDP5.1.SDR.H265-AOC.mkv [14.36GB]$hnWeeeNjbdq"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#[4K 高码版 24G] The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.mkv [23.37GB]$hnWeeeNjbdq"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30#[4K高码HDR[外挂字幕]] The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.mkv [14.35GB]$hnWeeeNjbdq"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f$$$AI创世者2023.1080P.官方英语中字.mp4 [2.35GB]$hnWeeeNjbdq"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#AI 创世者 The.Creator.2023.mp4 [4.80GB]$hnWeeeNjbdq"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#The.Creator.2023.2160p.WEB-DL.DDP5.1.SDR.H265-AOC.mkv [14.36GB]$hnWeeeNjbdq"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#[4K 高码版 24G] The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.mkv [23.37GB]$hnWeeeNjbdq"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30#[4K高码HDR[外挂字幕]] The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.mkv [14.35GB]$hnWeeeNjbdq"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f$$$AI创世者2023.1080P.官方英语中字.mp4 [2.35GB]$5FAdyanvsY1"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#AI 创世者 The.Creator.2023.mp4 [4.80GB]$5FAdyanvsY1"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#The.Creator.2023.2160p.WEB-DL.DDP5.1.SDR.H265-AOC.mkv [14.36GB]$5FAdyanvsY1"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#[4K 高码版 24G] The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.mkv [23.37GB]$5FAdyanvsY1"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30#[4K高码HDR[外挂字幕]] The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.mkv [14.35GB]$5FAdyanvsY1"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f$$$AI创世者2023.1080P.官方英语中字.mp4 [2.35GB]$5FAdyanvsY1"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#AI 创世者 The.Creator.2023.mp4 [4.80GB]$5FAdyanvsY1"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#The.Creator.2023.2160p.WEB-DL.DDP5.1.SDR.H265-AOC.mkv [14.36GB]$5FAdyanvsY1"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f#[4K 高码版 24G] The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.mkv [23.37GB]$5FAdyanvsY1"},
+                {"format": "text/x-ssa", "name": "The.Creator.2023.2160p.MA.WEB-DL.DDP5.1.Atmos.DV.HDR.H.265-FLUX.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6553478b0f2bd0a40fd14b16b2c21791c017af30#[4K高码HDR[外挂字幕]] The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.mkv [14.35GB]$5FAdyanvsY1"},
+                {"format": "text/x-ssa",
+                 "name": "The.Creator.2023.2160p.AMZN.WEB-DL.DDP5.1.HDR.H.265-BasicallyMandalorian.chs",
+                 "url": "http://127.0.0.1:-1/proxy?do=ali&type=sub&shareId=hnWeeeNjbdq&fileId=6552f246e413941b16564e39817cd1252694e51f"}],
+                       "url": "https://cn-beijing-data.aliyundrive.net/XWzYu4mA%2F254324%2F6552b5a291af7d9c47c04787a77e4c4a6ef00e82%2F6552b5a2724ef2b998b145be9ea47022c6e25871?di=bj29&dr=303583582&f=655b47ae90a31a338aa84489ab32177aeb79fc33&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27AI%25E5%2588%259B%25E4%25B8%2596%25E8%2580%25852023.1080P.%25E5%25AE%2598%25E6%2596%25B9%25E8%258B%25B1%25E8%25AF%25AD%25E4%25B8%25AD%25E5%25AD%2597.mp4&security-token=CAIS%2BgF1q6Ft5B2yfSjIr5f4c9CNrudV4omIcX%2FUs2I8QNl6gJXCljz2IHFPeHJrBeAYt%2FoxmW1X5vwSlq5rR4QAXlDfNXnHRFyAqFHPWZHInuDox55m4cTXNAr%2BIhr%2F29CoEIedZdjBe%2FCrRknZnytou9XTfimjWFrXWv%2Fgy%2BQQDLItUxK%2FcCBNCfpPOwJms7V6D3bKMuu3OROY6Qi5TmgQ41Uh1jgjtPzkkpfFtkGF1GeXkLFF%2B97DRbG%2FdNRpMZtFVNO44fd7bKKp0lQLukMWr%2Fwq3PIdp2ma447NWQlLnzyCMvvJ9OVDFyN0aKEnH7J%2Bq%2FzxhTPrMnpkSlacGoABmbw1up0Nj6jCE3tUCAaAHKOTesv65IXD0vWM8yif97zB7kCPRZoFEa8dcItcqQeIh9f9swsf4IE3JAZMCMnfhLJ%2BzlV2si9HmO1q8bCZWZlj2QBVhKNtK4518KVkZrT2HeFHIRefzSsYsUFy4k6Bo1J7m7cwKSqtkYqzZI4UFM0gAA%3D%3D&u=f20db5b2ffc94e08adfe08cee769ba7a&x-oss-access-key-id=STS.NTM8j9C8tUKcsYeWbiLVVoPit&x-oss-expires=1700481843&x-oss-signature=E1s6uCDMvqnri3cPqT98Z8cVYBJ0PWZaGIRgCFvzMCE%3D&x-oss-signature-version=OSS2"}
         if flag == "原画":
-            url,ali_token = self.ali.get_download_url(file_id,share_id)
-            self.ali.Qauth_Token = ali_token
-        elif flag == "":
-            print("")
-        result = {"format": str(flag),
+            url = self.ali.get_download_url(file_id, share_id)
+        result = {"format": "application/octet-stream",
                   "header": "{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36\",\"Referer\":\"https://www.aliyundrive.com/\"}",
-                  "jx": str(id),
-                  "parse": str(vipFlags),
+                  "jx": 0,
+                  "parse": 0,
                   "url": url}
         return result
 

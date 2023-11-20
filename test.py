@@ -6,6 +6,12 @@
 # @Email    : jadehh@1ive.com
 # @Software : Samples
 # @Desc     :
+import os
+os.environ['HOME'] = "tmp"
+if os.path.exists("tmp"):
+    pass
+else:
+    os.mkdir("tmp")
 def test_kunyun77():
     from py.py_kunyu77 import Spider
     filter = ""
@@ -24,12 +30,14 @@ def test_wanou():
     start_time = time.time()
 
     spider = Spider()
-    print(spider.homeContent(None))
-    print(spider.homeVideoContent())
-    array = ['/index.php/voddetail/81973.html']
-    print(spider.detailContent(array))
-
-    print(spider.playerContent("原画", "H2oBHmnjymZ+654e150e8d6019d56b014c6488691fe37986eb7c", []))
+    spider.homeContent(None)
+    content_list = (spider.homeVideoContent())["list"]
+    for content in [content_list[0]]:
+        vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
+        for vod_url in vod_url_list:
+            id = vod_url.split("$")[-1]
+            print(spider.playerContent("原画", id, [])["url"])
+        print("######################################################")
     # print(time.time()-start_time)
 
 
