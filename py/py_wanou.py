@@ -67,6 +67,7 @@ class Ali():
         self.load_cache_config()
         self.load_root_file_config()
         self.clear_root_file_json()
+        self.definition_dic = {"高清":'FHD',"超清":'HD',"标清":'SD'}
 
 
     def clear_root_file_json(self):
@@ -118,6 +119,40 @@ class Ali():
         with open(os.path.join(os.environ["HOME"], "root_file.json"), "wb") as f:
             f.write(json.dumps(self.root_file_json).encode("utf-8"))
 
+    def get_video_preview_play_info(self,play_info_type,file_name,size,file_id,share_id):
+        url = "https://open.aliyundrive.com/adrive/v1.0/openFile/getVideoPreviewPlayInfo"
+        file_id = self.get_batch_file(file_name, size, file_id, share_id)
+        if file_id:
+            headers = copy.copy(self.headers)
+            headers["authorization"] = self.ali_json["qauth_token"]
+            params = {"file_id": file_id, "drive_id": self.drive_id, "category": "live_transcoding",
+                      "url_expire_sec": "14400"}
+            response = requests.post(url, json.dumps(params), headers=headers)
+            if response.status_code == 200:
+                video_preview_play_info = response.json()['video_preview_play_info']
+                try:
+                    definition = self.definition_dic[play_info_type]
+                    for live_transcoding_task in video_preview_play_info['live_transcoding_task_list']:
+                        if live_transcoding_task['template_id'] == definition:
+                            logger.info("清晰度为:{}".format(play_info_type))
+                            return live_transcoding_task["url"]
+                except:
+                    logger.warn("没有对应的清晰度,返回默认的清晰度")
+                    return video_preview_play_info['live_transcoding_task_list'][-1]['url']
+            else:
+                if "AccessTokenInvalid" in response.text or "AccessTokenExpired" in response.text:
+                    self.get_ali_token()
+                    return self.get_video_preview_play_info(play_info_type,file_name, size, file_id, share_id)
+                elif "NotFound.File" in response.text:
+                    self.clear_root_file_json()
+                    logger.error("获取普画下载链接失败,转存文件未找到,需要重新保存")
+                    return self.get_video_preview_play_info(play_info_type,file_name, size, file_id, share_id)
+                elif "This operation is forbidden for file in the recycle bin" in response.text:
+                    self.clear_root_file_json()
+                    logger.error("获取普画下载链接失败,转存文件被删除,需要重新保存")
+                    return self.get_video_preview_play_info(play_info_type,file_name, size, file_id, share_id)
+                else:
+                    logger.error("获取普画下载链接失败,失败原因为:{}".format(response.text))
 
     def get_download_url(self,file_name,size, file_id, share_id):
         url = "https://open.aliyundrive.com/adrive/v1.0/openFile/getDownloadUrl"
@@ -135,14 +170,14 @@ class Ali():
                     return self.get_download_url(file_name,size,file_id,share_id)
                 elif "NotFound.File" in response.text:
                     self.clear_root_file_json()
-                    logger.error("获取下载链接失败,转存文件未找到,需要重新保存")
+                    logger.error("获取原画下载链接失败,转存文件未找到,需要重新保存")
                     return self.get_download_url(file_name, size, file_id, share_id)
                 elif "This operation is forbidden for file in the recycle bin" in response.text:
                     self.clear_root_file_json()
-                    logger.error("获取下载链接失败,转存文件被删除,需要重新保存")
+                    logger.error("获取原画下载链接失败,转存文件被删除,需要重新保存")
                     return self.get_download_url(file_name,size,file_id,share_id)
                 else:
-                    logger.error("获取下载链接失败,失败原因为:{}".format(response.text))
+                    logger.error("获取原画下载链接失败,失败原因为:{}".format(response.text))
 
     def delete_file(self, file_id):
         url = "https://api.aliyundrive.com/v2/recyclebin/trash"
@@ -235,6 +270,7 @@ class Ali():
                     self.root_file_json[file_name] = {}
                     self.root_file_json[file_name]["size"] = size
                     self.root_file_json[file_name]["file_id"] = res_json["file_id"]
+                    logger.info("转存文件成功,文件名称为:{},file id为:{}".format(file_name,res_json["file_id"]))
                     self.write_root_file_config()
                     return res_json["file_id"]
                 except:
@@ -469,10 +505,17 @@ class Ali():
         video_file_list = []
         sub_file_list = []
         for share_url_dic in share_url_list:
-            m = re.search('www.aliyundrive.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?', share_url_dic["url"]).groups()
-            share_id = m[0]
-            is_floder, file_id = self.get_share_file_id(share_id)
-            self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder)
+            m = []
+            if "www.aliyundrive.com" in share_url_dic["url"]:
+                m = re.search('www.aliyundrive.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?', share_url_dic["url"]).groups()
+            elif "www.alipan.com" in share_url_dic["url"]:
+                m = re.search('www.alipan.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?', share_url_dic["url"]).groups()
+            else:
+                logger.error("获取分享链接失败,暂不支持此分享链接:{}".format(share_url_dic["url"]))
+            if len(m) > 0:
+                share_id = m[0]
+                is_floder, file_id = self.get_share_file_id(share_id)
+                self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder)
         video_file_list = sorted(video_file_list, key=self.sort_by_name)
         episode = []
         repeat_list = []
@@ -493,12 +536,12 @@ class Ali():
             episode.append(epi_str)
 
         ## 自定义清晰度
-        play_foramt_list = ["原画", "普画"]
+        play_foramt_list = ["原画", "超清","高清","标清"]
         episode = ["#".join(episode)] * len(play_foramt_list)
         return "$$$".join(play_foramt_list), "$$$".join(episode)
 
 class Spider(Spider):
-    home_soup = None
+    tree = None
     header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
     session = requests.session()
     home_url = 'https://tvfan.xxooo.cf/'
@@ -515,55 +558,64 @@ class Spider(Spider):
         self.ali = Ali()
         pass
 
+    ## 分类
     def homeContent(self, filter):
         result = {}
         classes = []
         start_time = time.time()
         rsp = self.fetch(self.home_url)
         logger.info("玩偶哥哥首页打开成功,耗时:{}s".format("%.2f"%(time.time()-start_time)))
-        self.home_soup = BeautifulSoup(rsp.text, 'lxml')
+        self.tree = html.fromstring(rsp.text)
         start_time = time.time()
-        elements = self.home_soup.select(".nav-link")
+        elements = self.tree.xpath('//a[contains(@class,"nav-link")]')
         for element in elements:
-            if element.text != "test":
+            type_name = element.xpath('text()')[0]
+            if element.xpath('text()')[0] != "test":
                 classes.append({
-                    'type_name': element.text,
-                    'type_id': element.attrs["href"]
+                    'type_name': type_name,
+                    'type_id': element.xpath('@href')[0]
                 })
 
         result['class'] = classes
-        result['filters'] = filter
         logger.info("处理玩偶哥哥首页信息成功,耗时:{}s".format(("%.2f" %(time.time()-start_time))))
         return result
     def parseVodListFromDoc(self,doc):
         vod_list = []
-        elements = doc.select(".module-item")
+        elements = doc.xpath('//div[@class="module-item"]')
         for element in elements:
-            vodId = element.select(".video-name  a")[0].attrs["href"]
-            vodPic = element.select(".module-item-pic > img")[0].attrs["data-src"]
-            if "/img.php?url=" in vodPic:
-                vodPic = vodPic.split("/img.php?url=")[-1]
-            vodName = element.select(".video-name")[0].text
-            vodRemarks = element.select(".module-item-text")[0].text
-            vod_list.append({"vod_id":vodId,"vod_name":vodName,"vod_pic":vodPic,"vod_remarks":vodRemarks})
+            module_item_pic = element.xpath('div/div[@class="module-item-pic"]')[0]
+            vod_id = module_item_pic.xpath('a/@href')[0]
+            vod_name = module_item_pic.xpath('a/@title')[0]
+            vod_pic = module_item_pic.find("img").get("data-src")
+            if "/img.php?url=" in vod_pic:
+                vod_pic = vod_pic.split("/img.php?url=")[-1]
+            remarks = element.findtext('div[@class="module-item-text"]')
+            vod_list.append({
+                "vod_id": vod_id,
+                "vod_name": vod_name,
+                "vod_pic": vod_pic,
+                "vod_remarks": remarks
+            })
         return vod_list
-
+    ## 首页界面
     def homeVideoContent(self):
         start_time = time.time()
-        if self.home_soup is None:
+        if self.tree is None:
             rsp = self.fetch(self.home_url)
-            self.home_soup = BeautifulSoup(rsp.text, 'lxml')
-        vod_list = self.parseVodListFromDoc(self.home_soup)
+            self.tree = html.fromstring(rsp.text)
+        videos = self.parseVodListFromDoc(self.tree)
         result = {
-            'list': vod_list
+            'list': videos
         }
         logger.info("解析首页信息成功,耗时:{}s".format("%.2f"%(time.time()-start_time)))
         return result
 
+    ## 分类详情
     def categoryContent(self, tid, pg, filter, extend):
         pass
         return []
 
+    ## 详情界面
     def detailContent(self, array):
         ## 用lxml解析
         tid = array[0]
@@ -645,6 +697,8 @@ class Spider(Spider):
         url = ""
         if flag == "原画":
             url = self.ali.get_download_url(file_name,size,file_id, share_id)
+        else:
+            url = self.ali.get_video_preview_play_info(flag,file_name,size,file_id, share_id)
         result = {"format": "application/octet-stream",
                   "header": "{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36\",\"Referer\":\"https://www.aliyundrive.com/\"}",
                   "jx": 0,
@@ -659,17 +713,6 @@ class Spider(Spider):
     def manualVideoCheck(self):
         pass
 
-    def get_tk(self, url, params, ts):
-        keys = []
-        for key in params:
-            keys.append(key)
-        keys.sort()
-        src = urlparse(url).path
-        for key in keys:
-            src += str(params[key])
-        src += str(ts)
-        src += 'XSpeUFjJ'
-        return hashlib.md5(src.encode()).hexdigest()
 
     def localProxy(self, param):
         return [200, "video/MP2T", action, ""]

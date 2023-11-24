@@ -38,20 +38,12 @@ def test_wanou():
     spider = Spider()
     spider.init()
     spider.homeContent(None)
-
-    content = spider.searchContent("闪电侠")["list"][0]
-    vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
-    for vod_url in vod_url_list:
-        id = vod_url.split("$")[-1]
-        print(spider.playerContent("原画", id, [])["url"])
-    print("######################################################")
-
     content_list = (spider.homeVideoContent())["list"]
-    for content in [content_list[11]]:
+    for content in [content_list[0]]:
         vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
         for vod_url in vod_url_list:
             id = vod_url.split("$")[-1]
-            print(spider.playerContent("原画", id, [])["url"])
+            print(spider.playerContent("超清", id, [])["url"])
         print("######################################################")
 
     # print(time.time()-start_time)
