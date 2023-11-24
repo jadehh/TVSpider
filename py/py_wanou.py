@@ -18,27 +18,84 @@ from base.spider import Spider
 from bs4 import BeautifulSoup
 from lxml import etree
 from lxml import html
-
-
+import logging
+import logging.config
+logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
+LOGGING_CONFIG = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'default': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s: %(message)s',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'default',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(os.environ.get("HOME"),"info.log"),
+            'formatter': 'default',
+        }
+    },
+    'root': {
+        'level': 'DEBUG',
+        'handlers': ['console', 'file'],
+    }
+}
+logging.config.dictConfig(LOGGING_CONFIG)
+logger = logging.getLogger("阿里玩偶")
 class Ali():
 
     def __init__(self):
         self.APIUrl = "https://api.aliyundrive.com"
         self.PlayFromat = ["超清(720P)", "高清(1080P)", "超清(4k)"]
-        self.ali_json = {
-                         "share_token":"",
-                         "auth_token": "",
-                         "qauth_token": ""}
+        self.ali_json = {"auth_token": "test",
+                         "qauth_token": "test"}
+        self.drive_id = "303583582"
         self.headers = {'Content-Type': 'application/json',
                         "X-Canary": "client=Android,app=adrive,version=v4.3.1",
                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
                         "Referer":"https://www.aliyundrive.com/"}
-        self.load_cache_config()
 
+        # self.remove_config()
+        self.root_file_json = {}
+        self.load_cache_config()
+        self.load_root_file_config()
+        self.clear_root_file_json()
+
+
+    def clear_root_file_json(self):
+        for file_name in list(self.root_file_json.keys()):
+            delete_status = self.delete_file(self.root_file_json[file_name]["file_id"])
+            if delete_status:
+                del self.root_file_json[file_name]
+        self.write_root_file_config()
+        logger.info("初始化阿里云盘,删除缓存的文件")
+
+    def remove_config(self):
+        try:
+            os.remove(os.path.join(os.environ["HOME"], "ali.json"))
+            logger.info("删除ali.json成功")
+        except:
+            pass
+        try:
+            os.remove(os.path.join(os.environ["HOME"], "root_file.json"))
+            logger.info("删除root_file.json成功")
+        except:
+            pass
     def load_cache_config(self):
         if os.path.exists(os.path.join(os.environ["HOME"], "ali.json")):
-            with open(os.path.join(os.environ["HOME"], "ali.json"), "rb") as f:
-                self.ali_json = json.load(f)
+            try:
+                with open(os.path.join(os.environ["HOME"], "ali.json"), "rb") as f:
+                    self.ali_json = json.load(f)
+            except:
+                os.remove(os.path.join(os.environ["HOME"], "ali.json"))
+                self.write_cache_config()
         else:
             self.write_cache_config()
 
@@ -46,88 +103,172 @@ class Ali():
         with open(os.path.join(os.environ["HOME"], "ali.json"), "wb") as f:
             f.write(json.dumps(self.ali_json).encode("utf-8"))
 
-    def get_download_url(self, file_id, share_id):
-        if self.ali_json["qauth_token"]:
-            pass
+    def load_root_file_config(self):
+        if os.path.exists(os.path.join(os.environ["HOME"], "root_file.json")):
+            try:
+                with open(os.path.join(os.environ["HOME"], "root_file.json"), "rb") as f:
+                    self.root_file_json = json.load(f)
+            except:
+                os.remove(os.path.join(os.environ["HOME"], "root_file.json"))
+                self.write_root_file_config()
         else:
-            self.get_ali_token()
+            self.write_root_file_config()
+
+    def write_root_file_config(self):
+        with open(os.path.join(os.environ["HOME"], "root_file.json"), "wb") as f:
+            f.write(json.dumps(self.root_file_json).encode("utf-8"))
+
+
+    def get_download_url(self,file_name,size, file_id, share_id):
         url = "https://open.aliyundrive.com/adrive/v1.0/openFile/getDownloadUrl"
-        file_id = self.get_batch_file(file_id, share_id)
+        file_id = self.get_batch_file(file_name,size,file_id, share_id)
         if file_id:
-            params = {"file_id": file_id, "drive_id": "303583582"}
-            headers = {
-                "Content-Type": "application/json",
-                "authorization": self.ali_json["qauth_token"],
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
-                "Referer": "https://www.aliyundrive.com/"
-            }
+            params = {"file_id": file_id, "drive_id": self.drive_id}
+            headers = copy.copy(self.headers)
+            headers["authorization"] =  self.ali_json["qauth_token"]
             response = requests.post(url, json.dumps(params), headers=headers)
             if response.status_code == 200:
                 return response.json()["url"]
             else:
-                print("获取下载链接失败,失败原因为:{}".format(response.text))
+                if  "AccessTokenInvalid" in response.text or "AccessTokenExpired" in response.text:
+                    self.get_ali_token()
+                    return self.get_download_url(file_name,size,file_id,share_id)
+                elif "NotFound.File" in response.text:
+                    self.clear_root_file_json()
+                    logger.error("获取下载链接失败,转存文件未找到,需要重新保存")
+                    return self.get_download_url(file_name, size, file_id, share_id)
+                elif "This operation is forbidden for file in the recycle bin" in response.text:
+                    self.clear_root_file_json()
+                    logger.error("获取下载链接失败,转存文件被删除,需要重新保存")
+                    return self.get_download_url(file_name,size,file_id,share_id)
+                else:
+                    logger.error("获取下载链接失败,失败原因为:{}".format(response.text))
 
-
-    def get_batch_file(self, file_id, share_id):
-        params = {
-            "requests": [
-                {
-                    "body": {
-                        "file_id": file_id,
-                        "share_id": share_id,
-                        "auto_rename": True,
-                        "to_parent_file_id": "root",
-                        "to_drive_id": "303583582"
-                    },
-                    "headers": {
-                        "Content-Type": "application/json"
-                    },
-                    "id": "0",
-                    "method": "POST",
-                    "url": "/file/copy"
-                }
-            ],
-            "resource": "file"
-        }
-        if  self.ali_json["share_token"]:
-           pass
-        else:
-            self.get_share_token(share_id)
-        if self.ali_json["auth_token"]:
-            pass
-        else:
-            self.get_ali_logion()
+    def delete_file(self, file_id):
+        url = "https://api.aliyundrive.com/v2/recyclebin/trash"
+        params = {"drive_id": self.drive_id, "file_id": file_id}
         headers = copy.copy(self.headers)
-        headers["x-share-token"] = self.ali_json["share_token"]
         headers["authorization"] = self.ali_json["auth_token"]
-        url = self.APIUrl + "/adrive/v2/batch"
+        response = requests.post(url, json.dumps(params), headers=headers)
+        if response.status_code == 204:
+            logger.info("删除成功,file id为:{}".format(file_id))
+            return True
+        else:
+            if "AccessTokenInvalid" in response.text:
+                logger.error("删除失败,file id为:{},Token失效,重新登录".format(file_id,response.text))
+                self.get_ali_login()
+                self.delete_file(file_id)
+            else:
+                logger.error("删除失败,file id为:{},失败原因为:{}".format(file_id,response.text))
+
+
+    def get_root_files(self):
+        url = "https://api.aliyundrive.com/adrive/v3/file/list?jsonmask=next_marker%2Citems(name%2Cfile_id%2Cdrive_id%2Ctype%2Csize%2Ccreated_at%2Cupdated_at%2Ccategory%2Cfile_extension%2Cparent_file_id%2Cmime_type%2Cstarred%2Cthumbnail%2Curl%2Cstreams_info%2Ccontent_hash%2Cuser_tags%2Cuser_meta%2Ctrashed%2Cvideo_media_metadata%2Cvideo_preview_metadata%2Csync_meta%2Csync_device_flag%2Csync_flag%2Cpunish_flag)"
+        params = {"all": True,"drive_id":self.drive_id,"fields":"*",
+                  "image_thumbnail_process":"image/resize,w_256/format,avif",
+                  "image_url_process":"image/resize,w_1920/format,avif","limit":200,
+                  "order_by":"updated_at","order_direction":"DESC",
+                  "parent_file_id":"root","url_expire_sec":14400,
+                  "video_thumbnail_process":"video/snapshot,t_120000,f_jpg,m_lfit,w_256,ar_auto,m_fast"
+                  }
+        headers = copy.copy(self.headers)
+        headers["authorization"] = self.ali_json["auth_token"]
         response = requests.post(url, json.dumps(params), headers=headers)
         if response.status_code == 200:
-            try:
-                return response.json()["responses"][0]["body"]["file_id"]
-            except:
-                print("转存文件失败,file id 为:{},share id为:{},失败原因为:{}".format(file_id,share_id,response.text))
-                return None
-        else:
-            print("转存文件失败")
-            try:
-                res_json = response.json()
-                if res_json["message"] == "token expired" or res_json["message"]=="AccessToken is invalid. ErrValidateTokenFailed":
-                    self.get_ali_token()
-                    self.get_batch_file(self, file_id, share_id)
-            except:
+            res_json = response.json()
+            for file in res_json["items"]:
+                if file["type"] == "file":
+                    self.root_file_json[file["name"]] = {}
+                    self.root_file_json[file["name"]]["size"] = str(file["size"])
+                    self.root_file_json[file["name"]]["file_id"] = file["file_id"]
+                    self.write_root_file_config()
+            logger.info("获取资源盘文件成功")
+        elif "AccessTokenInvalid" in response.text:
+            logger.error("获取资源盘文件失败,失败原因为:{},重新登录".format(response.text))
+            self.get_ali_login()
+            self.get_root_files()
+
+    def get_batch_file(self,file_name,size,file_id, share_id):
+        ## 如果文件存在就无需在保存
+        is_exists = False
+        try:
+            if size == self.root_file_json[file_name]["size"]:
+                is_exists = True
+                logger.info("文件名称为:{},已存在,无需转存".format(file_name))
+                return self.root_file_json[file_name]["file_id"]
+        except:
+            pass
+        if is_exists is False:
+            params = {
+                "requests": [
+                    {
+                        "body": {
+                            "file_id": file_id,
+                            "share_id": share_id,
+                            "auto_rename": True,
+                            "to_parent_file_id": "root",
+                            "to_drive_id": self.drive_id
+                        },
+                        "headers": {
+                            "Content-Type": "application/json"
+                        },
+                        "id": "0",
+                        "method": "POST",
+                        "url": "/file/copy"
+                    }
+                ],
+                "resource": "file"
+            }
+
+            headers = copy.copy(self.headers)
+            if share_id in list(self.ali_json.keys()):
                 pass
+            else:
+                self.get_share_token(share_id)
+            headers["x-share-token"] = self.ali_json[share_id]["share_token"]
+            headers["authorization"] = self.ali_json["auth_token"]
+            url = self.APIUrl + "/adrive/v2/batch"
+            response = requests.post(url, json.dumps(params), headers=headers)
+            if response.status_code == 200:
+                try:
+                    res_json = response.json()["responses"][0]["body"]
+                    self.root_file_json[file_name] = {}
+                    self.root_file_json[file_name]["size"] = size
+                    self.root_file_json[file_name]["file_id"] = res_json["file_id"]
+                    self.write_root_file_config()
+                    return res_json["file_id"]
+                except:
+                    if "QuotaExhausted.Drive" in response.text:
+                        logger.error("转存文件失败,检查网盘容量是否已满")
+                    else:
+                        logger.error(
+                            "转存文件失败,file id为:{},share id为:{},失败原因为:{}".format(file_id, share_id,
+                                                                                           response.text))
+                    return None
+            else:
+                logger.error("转存文件失败,失败原因为:{}".format(response.text))
+                try:
+                    res_json = response.json()
+                    if res_json["message"] == "token expired" or res_json[
+                        "message"] == "AccessToken is invalid. ErrValidateTokenFailed":
+                        self.get_ali_token()
+                        return self.get_batch_file(file_name,size, file_id, share_id)
+                except:
+                    pass
 
 
-    def get_ali_logion(self):
+
+
+    def get_ali_login(self):
         url = "https://auth.aliyundrive.com/v2/account/token"
         params = {
-            "refresh_token": "c2ddc8d762a94880a6112065f8ff0512",
+            "refresh_token": "4636d4629ba44a68b207a2d2f4139298",
             "grant_type": "refresh_token"
         }
         response = requests.post(url, json.dumps(params), headers=self.headers)
         if response.status_code != 200:
-            print("阿里登录失败,请更新阿里token")
+            logger.error("获取阿里登录失败,请尝试重新扫码获取Token,程序退出")
+            sys.exit()
         else:
             self.ali_json["auth_token"] = response.json()['token_type'] + " " + response.json()['access_token']
             self.write_cache_config()
@@ -144,7 +285,7 @@ class Ali():
             elif (respose.json()["file_infos"][0]["type"]) == "folder":
                 return True, respose.json()["file_infos"][0]["file_id"]
         else:
-            print("查看分享文件ID失败")
+            logger.error("获取分享文件ID失败,失败原因为:{}".format(respose.text))
 
     def get_share_token(self, share_id):
         url = self.APIUrl + "/v2/share_link/get_share_token"
@@ -153,11 +294,17 @@ class Ali():
         }
         respose = requests.post(url, data=json.dumps(params), headers=self.headers)
         if respose.status_code == 200:
-            self.ali_json["share_token"] = respose.json()["share_token"]
+            if share_id in list(self.ali_json.keys()):
+                self.ali_json[share_id]["share_token"] = respose.json()["share_token"]
+            else:
+                self.ali_json[share_id] = {}
+                self.ali_json[share_id]["share_token"] = respose.json()["share_token"]
             self.write_cache_config()
+            logger.info("获取分享文件Token成功")
         else:
-            print("查看分享文件Token失败,失败原因为:{}".format(respose.text))
-            time.sleep(60)
+            logger.error("取分享文件Token失败,失败原因为:{}".format(respose.text))
+            self.get_share_token(share_id)
+
 
     def get_all_files(self, share_id, file_id, video_file_list, sub_file_list, is_floder=False, parent=None):
         url = self.APIUrl + "/adrive/v3/file/list"
@@ -177,12 +324,12 @@ class Ali():
                 "order_by": "name",
                 "order_direction": "ASC"
             }
-        if self.ali_json["share_token"]:
+        headers = copy.copy(self.headers)
+        if share_id in list(self.ali_json.keys()):
             pass
         else:
             self.get_share_token(share_id)
-        headers = copy.copy(self.headers)
-        headers["x-share-token"] = self.ali_json["share_token"]
+        headers["x-share-token"] = self.ali_json[share_id]["share_token"]
         respose = requests.post(url, data=json.dumps(params), headers=headers)
         if respose.status_code == 200:
             file_list = respose.json()["items"]
@@ -197,18 +344,22 @@ class Ali():
                         video_file_list.append(file_id)
                     elif file_id["file_extension"] in ["srt", "ass", "ssa", "vtt"]:
                         sub_file_list.append(file_id)
-        elif respose.status_code == 429:
-            print("获取文件列表失败,失败原因为:{}".format(respose.text))
-            time.sleep(10)
-            self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=is_floder, parent=None)
-        elif respose.status_code == 401:
-            self.get_share_token(share_id)
-            self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=is_floder, parent=None)
-        elif respose.status_code == 400:
-            self.get_share_token(share_id)
-            self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=is_floder, parent=None)
         else:
-            pass
+            logger.error("获取文件列表失败,在网页中确认分享链接是否存在:https://www.aliyundrive.com/s/{}/folder/{},失败原因为:{}".format(share_id,file_id,respose.text))
+            if respose.status_code == 429:
+                time.sleep(10)
+                self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=is_floder, parent=None)
+            elif respose.status_code == 401:
+                self.get_share_token(share_id)
+                self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=is_floder, parent=None)
+            elif respose.status_code == 400:
+                self.get_share_token(share_id)
+                self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=is_floder, parent=None)
+                #self.get_share_token(share_id)
+                #self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=is_floder, parent=None)
+            else:
+                pass
+
     def get_size(self, size):
         if (size <= 0): return ""
         if (size > 1024 * 1024 * 1024 * 1024.0):
@@ -230,20 +381,34 @@ class Ali():
         """
         url = "https://open.aliyundrive.com/oauth/users/authorize?client_id=76917ccccd4441c39457a04f6084fb2f&redirect_uri=https://alist.nn.ci/tool/aliyundrive/callback&scope=user:base,file:all:read,file:all:write&state="
         params = {"authorize": 1, "scope": "user:base,file:all:read,file:all:write"}
-        if self.ali_json["auth_token"]:
-            pass
-        else:
-            self.get_ali_logion()
         headers = copy.copy(self.headers)
         headers["authorization"] = self.ali_json["auth_token"]
         respose = requests.post(url, data=json.dumps(params), headers=headers)
         if respose.status_code != 200:
-            self.get_ali_logion()
-            self.get_alist_code()
+            if  "not login" in respose.text:
+                logger.error("获取Alist Code失败,失败原因为:{}".format("还未登录,请先登录"))
+                self.get_ali_login()
+                self.get_alist_code()
+            elif "token expired" in respose.text:
+                logger.error("获取Alist Code失败,失败原因为:{}".format("Token失效"))
+                self.get_ali_login()
+                self.get_alist_code()
+            else:
+                logger.error("获取Alist Code失败,失败原因为:{},重新获取Alist Code".format(respose.text))
+                time.sleep(60)
+                self.get_alist_code()
         else:
-            return (respose.json()["redirectUri"].split("code=")[-1])
+            self.alist_code = respose.json()["redirectUri"].split("code=")[-1]
+            logger.info("Alist Code获取成功,Alist Code为:{}".format(self.alist_code))
 
-    def get_access_token(self, code):
+    def get_ali_token(self):
+        self.get_alist_code()
+        try:
+            self.get_access_token(self.alist_code)
+        except:
+            pass
+
+    def get_access_token(self,code):
         """
         Access Token 有效期较短,需要重新获取 Access Token
         token只有三个小时有效期，三个小时到期后，需要重复获取
@@ -260,14 +425,16 @@ class Ali():
         if response.status_code == 200:
             self.ali_json["qauth_token"] = response.json()['token_type'] + " " + response.json()['access_token']
             self.write_cache_config()
+            logger.info("Access Token 获取成功")
         else:
-            print("Access Token获取失败,失败原因为:{}".format(response.text))
-            time.sleep(60)
-            self.get_access_token(self.get_alist_code())
+            if "code not found" in response.text:
+                logger.error("Access Token获取失败,失败原因为:{}".format("Alis Code获取失败,重新获取Alist Code"))
+                self.get_ali_token()
+            elif "Too Many Requests" in response.text:
+                logger.error("Access Token获取失败,失败原因为:{},稍后重试".format("太多请求"))
+                time.sleep(60)
+                self.get_ali_token()
 
-    def get_ali_token(self):
-        alist_code = self.get_alist_code()
-        self.get_access_token(alist_code)
 
     def findSubs(self, name, sub_list):
         remove_ext = name = '.'.join(name.split('.')[:-1])
@@ -322,7 +489,7 @@ class Ali():
             display_name = "[{}] ".format(self.get_vide_metadata(video_file['video_media_metadata'])) + display_name + \
                            video_name + " [{}]".format(self.get_size(video_file["size"]))
             sub_str = self.findSubs(video_file["name"], sub_file_list)
-            epi_str = display_name + "$" + video_file["share_id"] + "+" + video_file["file_id"] + sub_str
+            epi_str = display_name + "$" + video_file["name"] + "+++" + str(video_file["size"]) + "+++" + video_file["share_id"] + "+++" + video_file["file_id"] + sub_str
             episode.append(epi_str)
 
         ## 自定义清晰度
@@ -330,13 +497,9 @@ class Ali():
         episode = ["#".join(episode)] * len(play_foramt_list)
         return "$$$".join(play_foramt_list), "$$$".join(episode)
 
-
 class Spider(Spider):
-    tree = None
-    ali = Ali()
-    header = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36"
-    }
+    home_soup = None
+    header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
     session = requests.session()
     home_url = 'https://tvfan.xxooo.cf/'
 
@@ -348,7 +511,8 @@ class Spider(Spider):
         return "玩偶哥哥"
 
     def init(self, extend=""):
-        print("============{0}============".format(extend))
+        logger.info("##################阿里玩偶爬虫脚本初始化完成##################")
+        self.ali = Ali()
         pass
 
     def homeContent(self, filter):
@@ -356,106 +520,56 @@ class Spider(Spider):
         classes = []
         start_time = time.time()
         rsp = self.fetch(self.home_url)
-        classes.append({
-            'type_name': str(time.time() - start_time),
-            'type_id': ""
-        })
-        classes.append({
-            'type_name': os.environ["HOME"],
-            'type_id': ""
-        })
-        self.tree = html.fromstring(rsp.text)
-        elements = self.tree.xpath('//a[contains(@class,"nav-link")]')
+        logger.info("玩偶哥哥首页打开成功,耗时:{}s".format("%.2f"%(time.time()-start_time)))
+        self.home_soup = BeautifulSoup(rsp.text, 'lxml')
+        start_time = time.time()
+        elements = self.home_soup.select(".nav-link")
         for element in elements:
-            type_name = element.xpath('text()')[0]
-            if element.xpath('text()')[0] != "test":
+            if element.text != "test":
                 classes.append({
-                    'type_name': type_name,
-                    'type_id': element.xpath('@href')[0]
+                    'type_name': element.text,
+                    'type_id': element.attrs["href"]
                 })
 
         result['class'] = classes
-        if (filter):
-            result['filters'] = self.config['filter']
+        result['filters'] = filter
+        logger.info("处理玩偶哥哥首页信息成功,耗时:{}s".format(("%.2f" %(time.time()-start_time))))
         return result
+    def parseVodListFromDoc(self,doc):
+        vod_list = []
+        elements = doc.select(".module-item")
+        for element in elements:
+            vodId = element.select(".video-name  a")[0].attrs["href"]
+            vodPic = element.select(".module-item-pic > img")[0].attrs["data-src"]
+            if "/img.php?url=" in vodPic:
+                vodPic = vodPic.split("/img.php?url=")[-1]
+            vodName = element.select(".video-name")[0].text
+            vodRemarks = element.select(".module-item-text")[0].text
+            vod_list.append({"vod_id":vodId,"vod_name":vodName,"vod_pic":vodPic,"vod_remarks":vodRemarks})
+        return vod_list
 
     def homeVideoContent(self):
-        if self.tree is None:
+        start_time = time.time()
+        if self.home_soup is None:
             rsp = self.fetch(self.home_url)
-            self.tree = html.fromstring(rsp.text)
-        elements = self.tree.xpath('//div[@class="module-item"]')
-        videos = []
-
-        for element in elements:
-            module_item_pic = element.xpath('div/div[@class="module-item-pic"]')[0]
-            vod_id = module_item_pic.xpath('a/@href')[0]
-            vod_name = module_item_pic.xpath('a/@title')[0]
-            vod_pic = module_item_pic.find("img").get("data-src")
-            if "/img.php?url=" in vod_pic:
-                vod_pic = vod_pic.split("/img.php?url=")[-1]
-            remarks = element.findtext('div[@class="module-item-text"]')
-            videos.append({
-                "vod_id": vod_id,
-                "vod_name": vod_name,
-                "vod_pic": vod_pic,
-                "vod_remarks": remarks
-            })
+            self.home_soup = BeautifulSoup(rsp.text, 'lxml')
+        vod_list = self.parseVodListFromDoc(self.home_soup)
         result = {
-            'list': videos
+            'list': vod_list
         }
+        logger.info("解析首页信息成功,耗时:{}s".format("%.2f"%(time.time()-start_time)))
         return result
 
     def categoryContent(self, tid, pg, filter, extend):
-        result = {}
-        ts = int(time.time())
-        if 'type_id' not in extend.keys():
-            extend['type_id'] = tid
-        extend['pagenum'] = pg
-        extend = {
-            'pcode': '010110002',
-            'version': '2.1.6',
-            'devid': hashlib.md5(str(time.time()).encode()).hexdigest(),
-            'package': 'com.sevenVideo.app.android',
-            'sys': 'android',
-            'sysver': 13,
-            'brand': 'Redmi',
-            'model': 'M2104K10AC',
-            'pagesize': 24
-        }
-        url = 'https://api.tyun77.cn/api.php/provide/searchFilter'
-        header = self.header.copy()
-        header['t'] = str(ts)
-        header['TK'] = self.get_tk(url, extend, ts)
-        rsp = requests.get(url, params=extend, headers=header, timeout=5)
-        jo = json.loads(rsp.text)
-        if jo['code'] == 1004:
-            rsp = requests.get('http://api.tyun77.cn/api.php/provide/getDomain', params=extend, headers=header,
-                               timeout=5)
-            if rsp.json()['code'] != 1:
-                rsp = requests.get(url, params=extend, headers=header, timeout=5)
-                jo = json.loads(rsp.text)
-            else:
-                return {}
-        vodList = jo['data']['result']
-        videos = []
-        for vod in vodList:
-            videos.append({
-                "vod_id": vod['id'],
-                "vod_name": vod['title'],
-                "vod_pic": vod['videoCover'],
-                "vod_remarks": vod['msg']
-            })
-        result['list'] = videos
-        result['page'] = pg
-        result['pagecount'] = 9999
-        result['limit'] = 90
-        result['total'] = 999999
-        return result
+        pass
+        return []
 
     def detailContent(self, array):
+        ## 用lxml解析
         tid = array[0]
+        start_time = time.time()
         rsp = self.fetch(self.home_url + tid)
-        soup = BeautifulSoup(rsp.text, 'html.parser')
+        soup = BeautifulSoup(rsp.text, 'lxml')
         page_title = soup.find(attrs={"class": "page-title"}).text
         video_info_aux_list = soup.find(attrs={"class": "video-info-aux"}).contents
         video_info_aux_str = ""
@@ -474,6 +588,7 @@ class Spider(Spider):
         for element in share_url_elements:
             share_url_list.append({"name": element.contents[0].text, "url": element.contents[1].text})
         # fileId = col[2]
+        logger.info("获取视频详情成功,耗时:{}s".format("%.2f" %(time.time()-start_time)))
         vod = {
             "vod_id": tid,
             "vod_name": page_title,
@@ -488,7 +603,7 @@ class Spider(Spider):
         }
         start_time = time.time()
         play_from, play_url = self.ali.get_vod_name(share_url_list,page_title)
-        print("获取阿里云盘文件地址:", time.time() - start_time)
+        logger.info("获取阿里云盘文件地址耗时:{}s".format("%.2f" %(time.time()-start_time)))
         vod['vod_play_from'] = play_from
         vod['vod_play_url'] = play_url
         result = {
@@ -498,42 +613,44 @@ class Spider(Spider):
         }
         return result
 
-    def searchContent(self, key, quick):
-        url = 'http://api.tyun77.cn/api.php/provide/searchVideo?searchName={0}'.format(key)
-        rsp = self.fetch(url, headers=self.header)
-        jo = json.loads(rsp.text)
-        vodList = jo['data']
-        videos = []
-        for vod in vodList:
-            videos.append({
-                "vod_id": vod['id'],
-                "vod_name": vod['videoName'],
-                "vod_pic": vod['videoCover'],
-                "vod_remarks": vod['msg']
-            })
-        result = {
-            'list': videos
-        }
-        return result
-
-    config = {
-        "player": {},
-        "filter": {}
-    }
+    def searchContent(self, key, quick=True):
+        start_time = time.time()
+        url = self.home_url + "/index.php/vodsearch/{}----------1---.html".format(key)
+        rsp = self.fetch(url)
+        soup = BeautifulSoup(rsp.text, 'lxml')
+        results = {"jx":0,"parse":0}
+        elements = soup.select(".module-search-item")
+        vod_list = []
+        for element in elements:
+            vodId = element.select(".video-serial")[0].attrs["href"]
+            vodName = element.select(".video-serial")[0].attrs["title"]
+            vodPic = element.select(".module-item-pic > img")[0].attrs["data-src"]
+            if "/img.php?url=" in vodPic:
+                vodPic = vodPic.split("/img.php?url=")[-1]
+            vodRemarks = element.select(".video-tag-icon")[0].text
+            vod_list.append({"vod_id": vodId, "vod_name": vodName, "vod_pic": vodPic, "vod_remarks": vodRemarks})
+        results["list"] = vod_list
+        logger.info("搜索成功,耗时:{}s".format("%.2f"%(time.time()-start_time)))
+        return results
 
     def playerContent(self, flag, id, vipFlags):
         # flag指的是vod format
         # id 指定的 url share_id+file_id
-        share_id = id.split("+")[0]
-        file_id = id.split("+")[1]
+        start_time = time.time()
+        id_list = id.split("+++")
+        file_name = id_list[0]
+        size = id_list[1]
+        share_id = id_list[2]
+        file_id = id_list[3]
         url = ""
         if flag == "原画":
-            url = self.ali.get_download_url(file_id, share_id)
+            url = self.ali.get_download_url(file_name,size,file_id, share_id)
         result = {"format": "application/octet-stream",
                   "header": "{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36\",\"Referer\":\"https://www.aliyundrive.com/\"}",
                   "jx": 0,
                   "parse": 0,
                   "url": url}
+        logger.info("获取下载链接耗时:{}s,下载链接为:{}".format(('%.2f'%(time.time()-start_time)),url))
         return result
 
     def isVideoFormat(self, url):

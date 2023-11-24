@@ -12,6 +12,12 @@ if os.path.exists("tmp"):
     pass
 else:
     os.mkdir("tmp")
+import logging
+import logging.config
+
+
+
+
 def test_kunyun77():
     from py.py_kunyu77 import Spider
     filter = ""
@@ -24,20 +30,30 @@ def test_kunyun77():
 
 
 def test_wanou():
-    from py.py_wanou import Spider,Ali
+    from py.py_wanou import Spider
     import time
     filter = ""
-    start_time = time.time()
 
+    start_time = time.time()
     spider = Spider()
+    spider.init()
     spider.homeContent(None)
+
+    content = spider.searchContent("闪电侠")["list"][0]
+    vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
+    for vod_url in vod_url_list:
+        id = vod_url.split("$")[-1]
+        print(spider.playerContent("原画", id, [])["url"])
+    print("######################################################")
+
     content_list = (spider.homeVideoContent())["list"]
-    for content in [content_list[10]]:
+    for content in [content_list[11]]:
         vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
         for vod_url in vod_url_list:
             id = vod_url.split("$")[-1]
             print(spider.playerContent("原画", id, [])["url"])
         print("######################################################")
+
     # print(time.time()-start_time)
 
 
@@ -63,6 +79,16 @@ def test_rtmp():
         cv2.namedWindow("result",0)
         cv2.imshow("result",frame)
         cv2.waitKey(1)
+
+
+def test_logger():
+    from py.py_wanou import Ali
+    ali = Ali()
+    ali.logger.error("阿里")
+    # logger_test = Logger()
+    # logger_test.print()
+    # ali = Ali()
+    # ali.logger.error("阿里")
 
 if __name__ == '__main__':
     test_wanou()

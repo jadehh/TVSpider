@@ -1,16 +1,6 @@
 {
   "sites": [
     {
-      "key": "py_kunyu77",
-      "name": "🔥七七",
-      "type": 3,
-      "api": "py_kunyu77",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "ext": "http://192.168.29.156:8099/py/py_kunyu77.py"
-    },
-    {
       "key": "py_wanou",
       "name": "🔥玩偶",
       "type": 3,

@@ -16,7 +16,7 @@ from base.spider import Spider
 
 class Spider(Spider):
 	def getName(self):
-		return "77"
+		return "酷云77"
 
 	def init(self,extend=""):
 		print("============{0}============".format(extend))
