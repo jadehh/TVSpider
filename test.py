@@ -31,14 +31,11 @@ def test_kunyun77():
 def test_wanou():
     from py.py_wanou import Spider
     import time
-    filter = ""
 
-    start_time = time.time()
     spider = Spider()
     spider.init()
-    spider.homeContent(None)
-    content_list = (spider.homeVideoContent())["list"]
-    for content in [content_list[2]]:
+    content_list = spider.searchContent("莲花楼")["list"]
+    for content in content_list:
         vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
         for vod_url in vod_url_list:
             id = vod_url.split("$")[-1]
@@ -88,4 +85,4 @@ def test_douban():
 
 
 if __name__ == '__main__':
-    test_douban()
+    test_wanou()

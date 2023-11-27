@@ -494,14 +494,16 @@ class Ali():
     def sort_by_name(self, item):
         return item['name']
     def get_vide_metadata(self, format):
-
-        area = (format['width'] * format['height'])
-        if area < 2073600:
-            return self.PlayFromat[0]
-        elif area > 2073600:
-            return self.PlayFromat[2]
-        else:
-            return self.PlayFromat[1]
+        try:
+            area = (format['width'] * format['height'])
+            if area < 2073600:
+                return self.PlayFromat[0]
+            elif area > 2073600:
+                return self.PlayFromat[2]
+            else:
+                return self.PlayFromat[1]
+        except:
+            return "未知"
 
     def find_common_strings(self,string1,string2):
         set_1 = string1.split(".")
