@@ -11,5 +11,5 @@ https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/py/py.json
 ```bash
 https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/py/test.json
 ```
-
-655f12676798df537a434d7badc1021a18e31a35
+## 待优化功能
+* 阿里字幕功能优化
