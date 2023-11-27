@@ -82,5 +82,10 @@ def test_logger():
     # ali = Ali()
     # ali.logger.error("阿里")
 
+def test_douban():
+    from py.py_douban import Spider
+    spider = Spider()
+    spider.homeContent(True)
+
 if __name__ == '__main__':
-    test_wanou()
+    test_douban()

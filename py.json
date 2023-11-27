@@ -1,6 +1,15 @@
 {
   "sites": [
     {
+      "key": "py_douban",
+      "name": "豆瓣",
+      "type": 3,
+      "api": "py_douban",
+      "searchable": 0,
+      "changeable": 1,
+      "ext": "http://192.168.29.156:8099/py/py_douban.py"
+    },
+    {
       "key": "py_wanou",
       "name": "🔥玩偶",
       "type": 3,
