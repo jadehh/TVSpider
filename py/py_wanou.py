@@ -72,8 +72,12 @@ class Ali():
 
     def clear_root_file_json(self):
         for file_name in list(self.root_file_json.keys()):
-            delete_status = self.delete_file(self.root_file_json[file_name]["file_id"])
-            if delete_status:
+            try:
+                delete_status = self.delete_file(file_name)
+                if delete_status:
+                    del self.root_file_json[file_name]
+            except:
+                logger.error("删除失败,失败原因为:名称为:{},无法找出file id".format(file_name))
                 del self.root_file_json[file_name]
         self.write_root_file_config()
         logger.info("初始化阿里云盘,删除缓存的文件")
@@ -179,20 +183,23 @@ class Ali():
                 else:
                     logger.error("获取原画下载链接失败,失败原因为:{}".format(response.text))
 
-    def delete_file(self, file_id):
+    def delete_file(self, file_name):
         url = "https://api.aliyundrive.com/v2/recyclebin/trash"
-        params = {"drive_id": self.drive_id, "file_id": file_id}
+        params = {"drive_id": self.drive_id, "file_id": self.root_file_json[file_name]["file_id"]}
         headers = copy.copy(self.headers)
         headers["authorization"] = self.ali_json["auth_token"]
         response = requests.post(url, json.dumps(params), headers=headers)
         if response.status_code == 204:
-            logger.info("删除成功,file id为:{}".format(file_id))
+            logger.info("删除成功,file id为:{}".format(self.root_file_json[file_name]["file_id"]))
             return True
         else:
             if "AccessTokenInvalid" in response.text:
-                logger.error("删除失败,file id为:{},Token失效,重新登录".format(file_id,response.text))
+                logger.error("删除失败,file id为:{},Token失效,重新登录".format(self.root_file_json[file_name]["file_id"],response.text))
                 self.get_ali_login()
-                self.delete_file(file_id)
+                self.delete_file(file_name)
+            elif "NotFound.FileId" in response.text:
+                del self.root_file_json[file_name]
+                self.write_root_file_config()
             else:
                 logger.error("删除失败,file id为:{},失败原因为:{}".format(file_id,response.text))
 
@@ -693,7 +700,13 @@ class Spider(Spider):
         file_name = id_list[0]
         size = id_list[1]
         share_id = id_list[2]
-        file_id = id_list[3]
+        sub_id = ""
+        file_id = ""
+        if "+" in id_list[3]:
+            file_id = id_list[3].split("+")[0]
+            sub_id = id_list[3].split("+")[1]
+        else:
+            file_id = id_list[3]
         url = ""
         if flag == "原画":
             url = self.ali.get_download_url(file_name,size,file_id, share_id)
