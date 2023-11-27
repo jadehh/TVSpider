@@ -7,6 +7,7 @@
 # @Software : Samples
 # @Desc     :
 import os
+
 os.environ['HOME'] = "tmp"
 if os.path.exists("tmp"):
     pass
@@ -14,8 +15,6 @@ else:
     os.mkdir("tmp")
 import logging
 import logging.config
-
-
 
 
 def test_kunyun77():
@@ -67,9 +66,9 @@ def test_rtmp():
     capture = cv2.VideoCapture("http://192.168.40.215:7001/live/rfBd56ti2SMtYvSgD5xAV0YU99zampta7Z7S575KLkIZ9PYk.flv")
     print(capture.isOpened())
     while True:
-        ret,frame = capture.read()
-        cv2.namedWindow("result",0)
-        cv2.imshow("result",frame)
+        ret, frame = capture.read()
+        cv2.namedWindow("result", 0)
+        cv2.imshow("result", frame)
         cv2.waitKey(1)
 
 
@@ -86,6 +85,7 @@ def test_douban():
     from py.py_douban import Spider
     spider = Spider()
     spider.homeContent(True)
+
 
 if __name__ == '__main__':
     test_douban()

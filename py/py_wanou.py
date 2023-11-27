@@ -566,8 +566,9 @@ class Spider(Spider):
         pass
 
     ## 分类
-    def homeContent(self, filter):
-        result = {}
+    ## 分类
+    def homeContent(self, filter=True):
+        result = {"jx": 0, "parse": 0}
         classes = []
         start_time = time.time()
         rsp = self.fetch(self.home_url)
@@ -575,15 +576,21 @@ class Spider(Spider):
         self.tree = html.fromstring(rsp.text)
         start_time = time.time()
         elements = self.tree.xpath('//a[contains(@class,"nav-link")]')
+        index = 0
         for element in elements:
             type_name = element.xpath('text()')[0]
-            if element.xpath('text()')[0] != "test":
+            index = index + 1
+            if type_name != "test":
                 classes.append({
                     'type_name': type_name,
-                    'type_id': element.xpath('@href')[0]
+                    'type_id': index
                 })
-
         result['class'] = classes
+        vod_list = self.parseVodListFromDoc(self.tree)
+        result["list"] = vod_list
+        if filter:
+            response = self.fetch("https://fm.t4tv.hz.cz/json/wogg.json")
+            result["filters"] = response.json()
         logger.info("处理玩偶哥哥首页信息成功,耗时:{}s".format(("%.2f" %(time.time()-start_time))))
         return result
     def parseVodListFromDoc(self,doc):
@@ -604,23 +611,49 @@ class Spider(Spider):
                 "vod_remarks": remarks
             })
         return vod_list
-    ## 首页界面
+    # 首页界面
     def homeVideoContent(self):
-        start_time = time.time()
-        if self.tree is None:
-            rsp = self.fetch(self.home_url)
-            self.tree = html.fromstring(rsp.text)
-        videos = self.parseVodListFromDoc(self.tree)
-        result = {
-            'list': videos
-        }
-        logger.info("解析首页信息成功,耗时:{}s".format("%.2f"%(time.time()-start_time)))
-        return result
+        pass
+
 
     ## 分类详情
     def categoryContent(self, tid, pg, filter, extend):
-        pass
-        return []
+        """
+        String[] urlParams = new String[]{tid, "", "", "", "", "", "", "", pg, "", "", ""};
+        if (extend != null && extend.size() > 0) {
+            for (String key : extend.keySet()) {
+                urlParams[Integer.parseInt(key)] = extend.get(key);
+            }
+        }
+        String url = String.format("%s/index.php/vodshow/%s.html", siteUrl, String.join("-", urlParams));
+        Document doc = Jsoup.parse(OkHttp.string(String.format("%s/index.php/vodshow/%s.html", siteUrl, String.join("-", urlParams)), getHeader()));
+        int page = Integer.parseInt(pg), limit = 72, total = 0;
+        Matcher matcher = regexPageTotal.matcher(doc.html());
+        if (matcher.find()) total = Integer.parseInt(matcher.group(1));
+        int count = total <= limit ? 1 : ((int) Math.ceil(total / (double) limit));
+        return Result.get().vod(parseVodListFromDoc(doc)).page(page, count, limit, total).string();
+
+        :param tid:
+        :param pg:
+        :param filter:
+        :param extend:
+        :return:
+        """
+        urlParams = [str(tid), "", "", "", "", "", "", "", str(pg), "", "", ""]
+        url = "{}/index.php/vodshow/{}.html".format(self.home_url,"-".join(urlParams))
+        response = self.fetch(url)
+        tree = html.fromstring(response.text)
+        limit = 72 ## 一页有72条数据
+        total = 0
+        count = 0
+        matcher = re.search("\\$\\(\"\\.mac_total\"\\)\\.text\\('(\\d+)'\\);", response.text).groups()
+        if len(matcher) > 0:
+            total = int(matcher[0])
+        if total <= limit:
+            count  = 1
+        else:
+            count = math.ceil(total/limit)
+        print(matcher)
 
     ## 详情界面
     def detailContent(self, array):
@@ -700,14 +733,12 @@ class Spider(Spider):
         file_name = id_list[0]
         size = id_list[1]
         share_id = id_list[2]
-        sub_id = ""
-        file_id = ""
         if "+" in id_list[3]:
             file_id = id_list[3].split("+")[0]
             sub_id = id_list[3].split("+")[1]
         else:
             file_id = id_list[3]
-        url = ""
+            sub_id = ""
         if flag == "原画":
             url = self.ali.get_download_url(file_name,size,file_id, share_id)
         else:
