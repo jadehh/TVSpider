@@ -20,6 +20,7 @@ from lxml import etree
 from lxml import html
 import logging
 import logging.config
+import math
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
 LOGGING_CONFIG = {
     'version': 1,
@@ -69,6 +70,14 @@ class Ali():
         self.clear_root_file_json()
         self.definition_dic = {"高清":'FHD',"超清":'HD',"标清":'SD'}
 
+
+    def post(self,url,data,headers):
+        try:
+            rsp = requests.post(url,data=data,headers=headers)
+            return rsp
+        except Exception as e:
+            logger.error("Post请求失败,失败原因为:{}".format(e))
+            sys.exit()
 
     def clear_root_file_json(self):
         for file_name in list(self.root_file_json.keys()):
@@ -131,7 +140,7 @@ class Ali():
             headers["authorization"] = self.ali_json["qauth_token"]
             params = {"file_id": file_id, "drive_id": self.drive_id, "category": "live_transcoding",
                       "url_expire_sec": "14400"}
-            response = requests.post(url, json.dumps(params), headers=headers)
+            response = self.post(url, json.dumps(params), headers=headers)
             if response.status_code == 200:
                 video_preview_play_info = response.json()['video_preview_play_info']
                 try:
@@ -165,7 +174,7 @@ class Ali():
             params = {"file_id": file_id, "drive_id": self.drive_id}
             headers = copy.copy(self.headers)
             headers["authorization"] =  self.ali_json["qauth_token"]
-            response = requests.post(url, json.dumps(params), headers=headers)
+            response = self.post(url, json.dumps(params), headers=headers)
             if response.status_code == 200:
                 return response.json()["url"]
             else:
@@ -188,7 +197,7 @@ class Ali():
         params = {"drive_id": self.drive_id, "file_id": self.root_file_json[file_name]["file_id"]}
         headers = copy.copy(self.headers)
         headers["authorization"] = self.ali_json["auth_token"]
-        response = requests.post(url, json.dumps(params), headers=headers)
+        response = self.post(url, json.dumps(params), headers=headers)
         if response.status_code == 204:
             logger.info("删除成功,file id为:{}".format(self.root_file_json[file_name]["file_id"]))
             return True
@@ -215,7 +224,7 @@ class Ali():
                   }
         headers = copy.copy(self.headers)
         headers["authorization"] = self.ali_json["auth_token"]
-        response = requests.post(url, json.dumps(params), headers=headers)
+        response = self.post(url, json.dumps(params), headers=headers)
         if response.status_code == 200:
             res_json = response.json()
             for file in res_json["items"]:
@@ -270,7 +279,7 @@ class Ali():
             headers["x-share-token"] = self.ali_json[share_id]["share_token"]
             headers["authorization"] = self.ali_json["auth_token"]
             url = self.APIUrl + "/adrive/v2/batch"
-            response = requests.post(url, json.dumps(params), headers=headers)
+            response = self.post(url, json.dumps(params), headers=headers)
             if response.status_code == 200:
                 try:
                     res_json = response.json()["responses"][0]["body"]
@@ -308,7 +317,7 @@ class Ali():
             "refresh_token": "4636d4629ba44a68b207a2d2f4139298",
             "grant_type": "refresh_token"
         }
-        response = requests.post(url, json.dumps(params), headers=self.headers)
+        response = self.post(url, json.dumps(params), headers=self.headers)
         if response.status_code != 200:
             logger.error("获取阿里登录失败,请尝试重新扫码获取Token,程序退出")
             sys.exit()
@@ -321,7 +330,7 @@ class Ali():
         params = {
             "share_id": share_id
         }
-        respose = requests.post(url, data=json.dumps(params), headers=self.headers)
+        respose = self.post(url, data=json.dumps(params), headers=self.headers)
         if respose.status_code == 200:
             if (respose.json()["file_infos"][0]["type"]) == "file":
                 return False, respose.json()["file_infos"][0]["file_id"]
@@ -335,7 +344,7 @@ class Ali():
         params = {
             "share_id": share_id
         }
-        respose = requests.post(url, data=json.dumps(params), headers=self.headers)
+        respose = self.post(url, data=json.dumps(params), headers=self.headers)
         if respose.status_code == 200:
             if share_id in list(self.ali_json.keys()):
                 self.ali_json[share_id]["share_token"] = respose.json()["share_token"]
@@ -373,7 +382,7 @@ class Ali():
         else:
             self.get_share_token(share_id)
         headers["x-share-token"] = self.ali_json[share_id]["share_token"]
-        respose = requests.post(url, data=json.dumps(params), headers=headers)
+        respose = self.post(url, data=json.dumps(params), headers=headers)
         if respose.status_code == 200:
             file_list = respose.json()["items"]
             for file_id in file_list:
@@ -426,7 +435,7 @@ class Ali():
         params = {"authorize": 1, "scope": "user:base,file:all:read,file:all:write"}
         headers = copy.copy(self.headers)
         headers["authorization"] = self.ali_json["auth_token"]
-        respose = requests.post(url, data=json.dumps(params), headers=headers)
+        respose = self.post(url, data=json.dumps(params), headers=headers)
         if respose.status_code != 200:
             if  "not login" in respose.text:
                 logger.error("获取Alist Code失败,失败原因为:{}".format("还未登录,请先登录"))
@@ -464,7 +473,7 @@ class Ali():
         """
         url = "https://api.xhofe.top/alist/ali_open/code"
         params = {"code": code, "grant_type": "authorization_code"}
-        response = requests.post(url, data=json.dumps(params), headers=self.headers)
+        response = self.post(url, data=json.dumps(params), headers=self.headers)
         if response.status_code == 200:
             self.ali_json["qauth_token"] = response.json()['token_type'] + " " + response.json()['access_token']
             self.write_cache_config()
@@ -553,11 +562,15 @@ class Spider(Spider):
     tree = None
     header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
     session = requests.session()
-    home_url = 'https://tvfan.xxooo.cf/'
+    home_url = 'https://tvfan.xxooo.cf'
 
     def fetch(self, url):
-        rsp = self.session.get(url, headers=self.header)
-        return rsp
+        try:
+            rsp = self.session.get(url, headers=self.header)
+            return rsp
+        except Exception as e:
+            logger.error("Get请求失败,失败原因为:{}".format(e))
+            sys.exit()
 
     def getName(self):
         return "玩偶哥哥"
@@ -640,8 +653,19 @@ class Spider(Spider):
         :param filter:
         :param extend:
         :return:
+        {"jx": 0, "limit": 72, "list": [
+            {"vod_id": "/index.php/voddetail/82261.html", "vod_name": "那夜凌晨，我坐上了旺角开往大埔的红VAN",
+             "vod_pic": "https://svip.picffzy.com/upload/vod/20230313-1/f803ec81df8d20baebdb3a15a3880ea6.jpg",
+             "vod_remarks": "HD国语"}],
+         "page": 1, "pagecount": 39, "parse": 0, "total": 2759}
         """
+        start_time = time.time()
         urlParams = [str(tid), "", "", "", "", "", "", "", str(pg), "", "", ""]
+        try:
+            for key in list(extend.keys()):
+                urlParams[key] = extend[key]
+        except:
+            pass
         url = "{}/index.php/vodshow/{}.html".format(self.home_url,"-".join(urlParams))
         response = self.fetch(url)
         tree = html.fromstring(response.text)
@@ -655,8 +679,11 @@ class Spider(Spider):
             count  = 1
         else:
             count = math.ceil(total/limit)
-        print(matcher)
-
+        result =  {"jx": 0, "limit": limit, "page": int(pg), "pagecount": count, "parse": 0, "total": total}
+        vod_list = self.parseVodListFromDoc(tree)
+        result["list"] = vod_list
+        logger.info("分类详情界面获取成功,页数为:{},耗时为:{}s".format(pg,"%.2f"%(time.time()-start_time)))
+        return result
     ## 详情界面
     def detailContent(self, array):
         ## 用lxml解析
@@ -735,12 +762,17 @@ class Spider(Spider):
         file_name = id_list[0]
         size = id_list[1]
         share_id = id_list[2]
+        sub_name = ""
+        sub_type = ""
+        sub_id = ""
         if "+" in id_list[3]:
             file_id = id_list[3].split("+")[0]
-            sub_id = id_list[3].split("+")[1]
+            sub_id_list = id_list[3].split("+")[1].split("@@@")
+            sub_name = sub_id_list[0]
+            sub_type = sub_id_list[1]
+            sub_id = sub_id_list[2]
         else:
             file_id = id_list[3]
-            sub_id = ""
         if flag == "原画":
             url = self.ali.get_download_url(file_name,size,file_id, share_id)
         else:
