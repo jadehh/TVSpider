@@ -21,6 +21,7 @@ from lxml import html
 import logging
 import logging.config
 import math
+
 logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
 LOGGING_CONFIG = {
     'version': 1,
@@ -39,7 +40,7 @@ LOGGING_CONFIG = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(os.environ.get("HOME"),"info.log"),
+            'filename': os.path.join(os.environ.get("HOME"), "info.log"),
             'formatter': 'default',
         }
     },
@@ -50,6 +51,8 @@ LOGGING_CONFIG = {
 }
 logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger("阿里玩偶")
+
+
 class Ali():
 
     def __init__(self):
@@ -61,19 +64,18 @@ class Ali():
         self.headers = {'Content-Type': 'application/json',
                         "X-Canary": "client=Android,app=adrive,version=v4.3.1",
                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
-                        "Referer":"https://www.aliyundrive.com/"}
+                        "Referer": "https://www.aliyundrive.com/"}
 
         # self.remove_config()
         self.root_file_json = {}
         self.load_cache_config()
         self.load_root_file_config()
         self.clear_root_file_json()
-        self.definition_dic = {"高清":'FHD',"超清":'HD',"标清":'SD'}
+        self.definition_dic = {"高清": 'FHD', "超清": 'HD', "标清": 'SD'}
 
-
-    def post(self,url,data,headers):
+    def post(self, url, data, headers):
         try:
-            rsp = requests.post(url,data=data,headers=headers)
+            rsp = requests.post(url, data=data, headers=headers)
             return rsp
         except Exception as e:
             logger.error("Post请求失败,失败原因为:{}".format(e))
@@ -102,6 +104,7 @@ class Ali():
             logger.info("删除root_file.json成功")
         except:
             pass
+
     def load_cache_config(self):
         if os.path.exists(os.path.join(os.environ["HOME"], "ali.json")):
             try:
@@ -132,7 +135,7 @@ class Ali():
         with open(os.path.join(os.environ["HOME"], "root_file.json"), "wb") as f:
             f.write(json.dumps(self.root_file_json).encode("utf-8"))
 
-    def get_video_preview_play_info(self,play_info_type,file_name,size,file_id,share_id):
+    def get_video_preview_play_info(self, play_info_type, file_name, size, file_id, share_id):
         url = "https://open.aliyundrive.com/adrive/v1.0/openFile/getVideoPreviewPlayInfo"
         file_id = self.get_batch_file(file_name, size, file_id, share_id)
         if file_id:
@@ -155,32 +158,32 @@ class Ali():
             else:
                 if "AccessTokenInvalid" in response.text or "AccessTokenExpired" in response.text:
                     self.get_ali_token()
-                    return self.get_video_preview_play_info(play_info_type,file_name, size, file_id, share_id)
+                    return self.get_video_preview_play_info(play_info_type, file_name, size, file_id, share_id)
                 elif "NotFound.File" in response.text:
                     self.clear_root_file_json()
                     logger.error("获取普画下载链接失败,转存文件未找到,需要重新保存")
-                    return self.get_video_preview_play_info(play_info_type,file_name, size, file_id, share_id)
+                    return self.get_video_preview_play_info(play_info_type, file_name, size, file_id, share_id)
                 elif "This operation is forbidden for file in the recycle bin" in response.text:
                     self.clear_root_file_json()
                     logger.error("获取普画下载链接失败,转存文件被删除,需要重新保存")
-                    return self.get_video_preview_play_info(play_info_type,file_name, size, file_id, share_id)
+                    return self.get_video_preview_play_info(play_info_type, file_name, size, file_id, share_id)
                 else:
                     logger.error("获取普画下载链接失败,失败原因为:{}".format(response.text))
 
-    def get_download_url(self,file_name,size, file_id, share_id):
+    def get_download_url(self, file_name, size, file_id, share_id):
         url = "https://open.aliyundrive.com/adrive/v1.0/openFile/getDownloadUrl"
-        file_id = self.get_batch_file(file_name,size,file_id, share_id)
+        file_id = self.get_batch_file(file_name, size, file_id, share_id)
         if file_id:
             params = {"file_id": file_id, "drive_id": self.drive_id}
             headers = copy.copy(self.headers)
-            headers["authorization"] =  self.ali_json["qauth_token"]
+            headers["authorization"] = self.ali_json["qauth_token"]
             response = self.post(url, json.dumps(params), headers=headers)
             if response.status_code == 200:
                 return response.json()["url"]
             else:
-                if  "AccessTokenInvalid" in response.text or "AccessTokenExpired" in response.text:
+                if "AccessTokenInvalid" in response.text or "AccessTokenExpired" in response.text:
                     self.get_ali_token()
-                    return self.get_download_url(file_name,size,file_id,share_id)
+                    return self.get_download_url(file_name, size, file_id, share_id)
                 elif "NotFound.File" in response.text:
                     self.clear_root_file_json()
                     logger.error("获取原画下载链接失败,转存文件未找到,需要重新保存")
@@ -188,7 +191,7 @@ class Ali():
                 elif "This operation is forbidden for file in the recycle bin" in response.text:
                     self.clear_root_file_json()
                     logger.error("获取原画下载链接失败,转存文件被删除,需要重新保存")
-                    return self.get_download_url(file_name,size,file_id,share_id)
+                    return self.get_download_url(file_name, size, file_id, share_id)
                 else:
                     logger.error("获取原画下载链接失败,失败原因为:{}".format(response.text))
 
@@ -203,24 +206,25 @@ class Ali():
             return True
         else:
             if "AccessTokenInvalid" in response.text:
-                logger.error("删除失败,file id为:{},Token失效,重新登录".format(self.root_file_json[file_name]["file_id"],response.text))
+                logger.error(
+                    "删除失败,file id为:{},Token失效,重新登录".format(self.root_file_json[file_name]["file_id"],
+                                                                      response.text))
                 self.get_ali_login()
                 self.delete_file(file_name)
             elif "NotFound.FileId" in response.text:
                 del self.root_file_json[file_name]
                 self.write_root_file_config()
             else:
-                logger.error("删除失败,file id为:{},失败原因为:{}".format(file_id,response.text))
-
+                logger.error("删除失败,file id为:{},失败原因为:{}".format(file_id, response.text))
 
     def get_root_files(self):
         url = "https://api.aliyundrive.com/adrive/v3/file/list?jsonmask=next_marker%2Citems(name%2Cfile_id%2Cdrive_id%2Ctype%2Csize%2Ccreated_at%2Cupdated_at%2Ccategory%2Cfile_extension%2Cparent_file_id%2Cmime_type%2Cstarred%2Cthumbnail%2Curl%2Cstreams_info%2Ccontent_hash%2Cuser_tags%2Cuser_meta%2Ctrashed%2Cvideo_media_metadata%2Cvideo_preview_metadata%2Csync_meta%2Csync_device_flag%2Csync_flag%2Cpunish_flag)"
-        params = {"all": True,"drive_id":self.drive_id,"fields":"*",
-                  "image_thumbnail_process":"image/resize,w_256/format,avif",
-                  "image_url_process":"image/resize,w_1920/format,avif","limit":200,
-                  "order_by":"updated_at","order_direction":"DESC",
-                  "parent_file_id":"root","url_expire_sec":14400,
-                  "video_thumbnail_process":"video/snapshot,t_120000,f_jpg,m_lfit,w_256,ar_auto,m_fast"
+        params = {"all": True, "drive_id": self.drive_id, "fields": "*",
+                  "image_thumbnail_process": "image/resize,w_256/format,avif",
+                  "image_url_process": "image/resize,w_1920/format,avif", "limit": 200,
+                  "order_by": "updated_at", "order_direction": "DESC",
+                  "parent_file_id": "root", "url_expire_sec": 14400,
+                  "video_thumbnail_process": "video/snapshot,t_120000,f_jpg,m_lfit,w_256,ar_auto,m_fast"
                   }
         headers = copy.copy(self.headers)
         headers["authorization"] = self.ali_json["auth_token"]
@@ -239,7 +243,7 @@ class Ali():
             self.get_ali_login()
             self.get_root_files()
 
-    def get_batch_file(self,file_name,size,file_id, share_id):
+    def get_batch_file(self, file_name, size, file_id, share_id):
         ## 如果文件存在就无需在保存
         is_exists = False
         try:
@@ -286,7 +290,7 @@ class Ali():
                     self.root_file_json[file_name] = {}
                     self.root_file_json[file_name]["size"] = size
                     self.root_file_json[file_name]["file_id"] = res_json["file_id"]
-                    logger.info("转存文件成功,文件名称为:{},file id为:{}".format(file_name,res_json["file_id"]))
+                    logger.info("转存文件成功,文件名称为:{},file id为:{}".format(file_name, res_json["file_id"]))
                     self.write_root_file_config()
                     return res_json["file_id"]
                 except:
@@ -304,12 +308,9 @@ class Ali():
                     if res_json["message"] == "token expired" or res_json[
                         "message"] == "AccessToken is invalid. ErrValidateTokenFailed":
                         self.get_ali_token()
-                        return self.get_batch_file(file_name,size, file_id, share_id)
+                        return self.get_batch_file(file_name, size, file_id, share_id)
                 except:
                     pass
-
-
-
 
     def get_ali_login(self):
         url = "https://auth.aliyundrive.com/v2/account/token"
@@ -357,7 +358,6 @@ class Ali():
             logger.error("取分享文件Token失败,失败原因为:{}".format(respose.text))
             self.get_share_token(share_id)
 
-
     def get_all_files(self, share_id, file_id, video_file_list, sub_file_list, is_floder=False, parent=None):
         url = self.APIUrl + "/adrive/v3/file/list"
         if is_floder:
@@ -397,7 +397,9 @@ class Ali():
                     elif file_id["file_extension"] in ["srt", "ass", "ssa", "vtt"]:
                         sub_file_list.append(file_id)
         else:
-            logger.error("获取文件列表失败,在网页中确认分享链接是否存在:https://www.aliyundrive.com/s/{}/folder/{},失败原因为:{}".format(share_id,file_id,respose.text))
+            logger.error(
+                "获取文件列表失败,在网页中确认分享链接是否存在:https://www.aliyundrive.com/s/{}/folder/{},失败原因为:{}".format(
+                    share_id, file_id, respose.text))
             if respose.status_code == 429:
                 time.sleep(10)
                 self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=is_floder, parent=None)
@@ -407,8 +409,8 @@ class Ali():
             elif respose.status_code == 400:
                 self.get_share_token(share_id)
                 self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=is_floder, parent=None)
-                #self.get_share_token(share_id)
-                #self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=is_floder, parent=None)
+                # self.get_share_token(share_id)
+                # self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder=is_floder, parent=None)
             else:
                 pass
 
@@ -437,7 +439,7 @@ class Ali():
         headers["authorization"] = self.ali_json["auth_token"]
         respose = self.post(url, data=json.dumps(params), headers=headers)
         if respose.status_code != 200:
-            if  "not login" in respose.text:
+            if "not login" in respose.text:
                 logger.error("获取Alist Code失败,失败原因为:{}".format("还未登录,请先登录"))
                 self.get_ali_login()
                 self.get_alist_code()
@@ -460,7 +462,7 @@ class Ali():
         except:
             pass
 
-    def get_access_token(self,code):
+    def get_access_token(self, code):
         """
         Access Token 有效期较短,需要重新获取 Access Token
         token只有三个小时有效期，三个小时到期后，需要重复获取
@@ -487,7 +489,6 @@ class Ali():
                 time.sleep(60)
                 self.get_ali_token()
 
-
     def findSubs(self, name, sub_list):
         remove_ext = name = '.'.join(name.split('.')[:-1])
         sub_str = ""
@@ -502,6 +503,7 @@ class Ali():
 
     def sort_by_name(self, item):
         return item['name']
+
     def get_vide_metadata(self, format):
         try:
             area = (format['width'] * format['height'])
@@ -514,18 +516,19 @@ class Ali():
         except:
             return "未知"
 
-    def find_common_strings(self,string1,string2):
+    def find_common_strings(self, string1, string2):
         set_1 = string1.split(".")
         set_2 = string2.split(".")
         return list(set(set_1).intersection(set(set_2)))
 
-    def get_vod_name(self, share_url_list,page_title):
+    def get_vod_name(self, share_url_list, page_title):
         video_file_list = []
         sub_file_list = []
         for share_url_dic in share_url_list:
             m = []
             if "www.aliyundrive.com" in share_url_dic["url"]:
-                m = re.search('www.aliyundrive.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?', share_url_dic["url"]).groups()
+                m = re.search('www.aliyundrive.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?',
+                              share_url_dic["url"]).groups()
             elif "www.alipan.com" in share_url_dic["url"]:
                 m = re.search('www.alipan.com\\/s\\/([^\\/]+)(\\/folder\\/([^\\/]+))?', share_url_dic["url"]).groups()
             else:
@@ -550,17 +553,20 @@ class Ali():
             display_name = "[{}] ".format(self.get_vide_metadata(video_file['video_media_metadata'])) + display_name + \
                            video_name + " [{}]".format(self.get_size(video_file["size"]))
             sub_str = self.findSubs(video_file["name"], sub_file_list)
-            epi_str = display_name + "$" + video_file["name"] + "+++" + str(video_file["size"]) + "+++" + video_file["share_id"] + "+++" + video_file["file_id"] + sub_str
+            epi_str = display_name + "$" + video_file["name"] + "+++" + str(video_file["size"]) + "+++" + video_file[
+                "share_id"] + "+++" + video_file["file_id"] + sub_str
             episode.append(epi_str)
 
         ## 自定义清晰度
-        play_foramt_list = ["原画", "超清","高清","标清"]
+        play_foramt_list = ["原画", "超清", "高清", "标清"]
         episode = ["#".join(episode)] * len(play_foramt_list)
         return "$$$".join(play_foramt_list), "$$$".join(episode)
 
+
 class Spider(Spider):
     tree = None
-    header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
+    header = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
     session = requests.session()
     home_url = 'https://tvfan.xxooo.cf'
 
@@ -587,7 +593,7 @@ class Spider(Spider):
         classes = []
         start_time = time.time()
         rsp = self.fetch(self.home_url)
-        logger.info("玩偶哥哥首页打开成功,耗时:{}s".format("%.2f"%(time.time()-start_time)))
+        logger.info("玩偶哥哥首页打开成功,耗时:{}s".format("%.2f" % (time.time() - start_time)))
         self.tree = html.fromstring(rsp.text)
         start_time = time.time()
         elements = self.tree.xpath('//a[contains(@class,"nav-link")]')
@@ -603,12 +609,1328 @@ class Spider(Spider):
         result['class'] = classes
         vod_list = self.parseVodListFromDoc(self.tree)
         result["list"] = vod_list
-        if filter:
-            response = self.fetch("https://fm.t4tv.hz.cz/json/wogg.json")
-            result["filters"] = response.json()
-        logger.info("处理玩偶哥哥首页信息成功,耗时:{}s".format(("%.2f" %(time.time()-start_time))))
+        result["filters"] = {
+            "1": [
+                {
+                    "key": "3",
+                    "name": "剧情",
+                    "value": [
+                        {
+                            "n": "喜剧",
+                            "v": "喜剧"
+                        },
+                        {
+                            "n": "爱情",
+                            "v": "爱情"
+                        },
+                        {
+                            "n": "恐怖",
+                            "v": "恐怖"
+                        },
+                        {
+                            "n": "动作",
+                            "v": "动作"
+                        },
+                        {
+                            "n": "科幻",
+                            "v": "科幻"
+                        },
+                        {
+                            "n": "剧情",
+                            "v": "剧情"
+                        },
+                        {
+                            "n": "战争",
+                            "v": "战争"
+                        },
+                        {
+                            "n": "警匪",
+                            "v": "警匪"
+                        },
+                        {
+                            "n": "犯罪",
+                            "v": "犯罪"
+                        },
+                        {
+                            "n": "动画",
+                            "v": "动画"
+                        },
+                        {
+                            "n": "奇幻",
+                            "v": "奇幻"
+                        },
+                        {
+                            "n": "武侠",
+                            "v": "武侠"
+                        },
+                        {
+                            "n": "冒险",
+                            "v": "冒险"
+                        },
+                        {
+                            "n": "枪战",
+                            "v": "枪战"
+                        },
+                        {
+                            "n": "恐怖",
+                            "v": "恐怖"
+                        },
+                        {
+                            "n": "悬疑",
+                            "v": "悬疑"
+                        },
+                        {
+                            "n": "惊悚",
+                            "v": "惊悚"
+                        },
+                        {
+                            "n": "经典",
+                            "v": "经典"
+                        },
+                        {
+                            "n": "青春",
+                            "v": "青春"
+                        },
+                        {
+                            "n": "文艺",
+                            "v": "文艺"
+                        },
+                        {
+                            "n": "古装",
+                            "v": "古装"
+                        },
+                        {
+                            "n": "历史",
+                            "v": "历史"
+                        },
+                        {
+                            "n": "微电影",
+                            "v": "微电影"
+                        }
+                    ]
+                },
+                {
+                    "key": "1",
+                    "name": "地区",
+                    "value": [
+                        {
+                            "n": "大陆",
+                            "v": "大陆"
+                        },
+                        {
+                            "n": "香港",
+                            "v": "香港"
+                        },
+                        {
+                            "n": "台湾",
+                            "v": "台湾"
+                        },
+                        {
+                            "n": "美国",
+                            "v": "美国"
+                        },
+                        {
+                            "n": "法国",
+                            "v": "法国"
+                        },
+                        {
+                            "n": "英国",
+                            "v": "英国"
+                        },
+                        {
+                            "n": "日本",
+                            "v": "日本"
+                        },
+                        {
+                            "n": "韩国",
+                            "v": "韩国"
+                        },
+                        {
+                            "n": "德国",
+                            "v": "德国"
+                        },
+                        {
+                            "n": "泰国",
+                            "v": "泰国"
+                        },
+                        {
+                            "n": "印度",
+                            "v": "印度"
+                        },
+                        {
+                            "n": "意大利",
+                            "v": "意大利"
+                        },
+                        {
+                            "n": "西班牙",
+                            "v": "西班牙"
+                        },
+                        {
+                            "n": "加拿大",
+                            "v": "加拿大"
+                        },
+                        {
+                            "n": "其他",
+                            "v": "其他"
+                        }
+                    ]
+                },
+                {
+                    "key": "11",
+                    "name": "年份",
+                    "value": [
+                        {
+                            "n": "2023",
+                            "v": "2023"
+                        },
+                        {
+                            "n": "2022",
+                            "v": "2022"
+                        },
+                        {
+                            "n": "2021",
+                            "v": "2021"
+                        },
+                        {
+                            "n": "2020",
+                            "v": "2020"
+                        },
+                        {
+                            "n": "2019",
+                            "v": "2019"
+                        },
+                        {
+                            "n": "2018",
+                            "v": "2018"
+                        },
+                        {
+                            "n": "2017",
+                            "v": "2017"
+                        },
+                        {
+                            "n": "2016",
+                            "v": "2016"
+                        },
+                        {
+                            "n": "2015",
+                            "v": "2015"
+                        },
+                        {
+                            "n": "2014",
+                            "v": "2014"
+                        },
+                        {
+                            "n": "2013",
+                            "v": "2013"
+                        },
+                        {
+                            "n": "2012",
+                            "v": "2012"
+                        },
+                        {
+                            "n": "2011",
+                            "v": "2011"
+                        },
+                        {
+                            "n": "2010",
+                            "v": "2010"
+                        }
+                    ]
+                },
+                {
+                    "key": "5",
+                    "name": "字母",
+                    "value": [
+                        {
+                            "n": "A",
+                            "v": "A"
+                        },
+                        {
+                            "n": "B",
+                            "v": "B"
+                        },
+                        {
+                            "n": "C",
+                            "v": "C"
+                        },
+                        {
+                            "n": "D",
+                            "v": "D"
+                        },
+                        {
+                            "n": "E",
+                            "v": "E"
+                        },
+                        {
+                            "n": "F",
+                            "v": "F"
+                        },
+                        {
+                            "n": "G",
+                            "v": "G"
+                        },
+                        {
+                            "n": "H",
+                            "v": "H"
+                        },
+                        {
+                            "n": "I",
+                            "v": "I"
+                        },
+                        {
+                            "n": "J",
+                            "v": "J"
+                        },
+                        {
+                            "n": "K",
+                            "v": "K"
+                        },
+                        {
+                            "n": "L",
+                            "v": "L"
+                        },
+                        {
+                            "n": "M",
+                            "v": "M"
+                        },
+                        {
+                            "n": "N",
+                            "v": "N"
+                        },
+                        {
+                            "n": "O",
+                            "v": "O"
+                        },
+                        {
+                            "n": "P",
+                            "v": "P"
+                        },
+                        {
+                            "n": "Q",
+                            "v": "Q"
+                        },
+                        {
+                            "n": "R",
+                            "v": "R"
+                        },
+                        {
+                            "n": "S",
+                            "v": "S"
+                        },
+                        {
+                            "n": "T",
+                            "v": "T"
+                        },
+                        {
+                            "n": "U",
+                            "v": "U"
+                        },
+                        {
+                            "n": "V",
+                            "v": "V"
+                        },
+                        {
+                            "n": "W",
+                            "v": "W"
+                        },
+                        {
+                            "n": "X",
+                            "v": "X"
+                        },
+                        {
+                            "n": "Y",
+                            "v": "Y"
+                        },
+                        {
+                            "n": "Z",
+                            "v": "Z"
+                        },
+                        {
+                            "n": "0-9",
+                            "v": "0-9"
+                        }
+                    ]
+                },
+                {
+                    "key": "2",
+                    "name": "排序",
+                    "value": [
+                        {
+                            "n": "时间",
+                            "v": "time"
+                        },
+                        {
+                            "n": "人气",
+                            "v": "hits"
+                        },
+                        {
+                            "n": "评分",
+                            "v": "score"
+                        }
+                    ]
+                }
+            ],
+            "20": [
+                {
+                    "key": "1",
+                    "name": "地区",
+                    "value": [
+                        {
+                            "n": "大陆",
+                            "v": "大陆"
+                        },
+                        {
+                            "n": "香港",
+                            "v": "香港"
+                        },
+                        {
+                            "n": "台湾",
+                            "v": "台湾"
+                        },
+                        {
+                            "n": "美国",
+                            "v": "美国"
+                        },
+                        {
+                            "n": "法国",
+                            "v": "法国"
+                        },
+                        {
+                            "n": "英国",
+                            "v": "英国"
+                        },
+                        {
+                            "n": "日本",
+                            "v": "日本"
+                        },
+                        {
+                            "n": "韩国",
+                            "v": "韩国"
+                        },
+                        {
+                            "n": "德国",
+                            "v": "德国"
+                        },
+                        {
+                            "n": "泰国",
+                            "v": "泰国"
+                        },
+                        {
+                            "n": "印度",
+                            "v": "印度"
+                        },
+                        {
+                            "n": "意大利",
+                            "v": "意大利"
+                        },
+                        {
+                            "n": "西班牙",
+                            "v": "西班牙"
+                        },
+                        {
+                            "n": "加拿大",
+                            "v": "加拿大"
+                        },
+                        {
+                            "n": "其他",
+                            "v": "其他"
+                        }
+                    ]
+                },
+                {
+                    "key": "4",
+                    "name": "语言",
+                    "value": [
+                        {
+                            "n": "国语",
+                            "v": "国语"
+                        },
+                        {
+                            "n": "英语",
+                            "v": "英语"
+                        },
+                        {
+                            "n": "粤语",
+                            "v": "粤语"
+                        },
+                        {
+                            "n": "闽南语",
+                            "v": "闽南语"
+                        },
+                        {
+                            "n": "韩语",
+                            "v": "韩语"
+                        },
+                        {
+                            "n": "日语",
+                            "v": "日语"
+                        },
+                        {
+                            "n": "法语",
+                            "v": "法语"
+                        },
+                        {
+                            "n": "德语",
+                            "v": "德语"
+                        },
+                        {
+                            "n": "其它",
+                            "v": "其它"
+                        }
+                    ]
+                },
+                {
+                    "key": "11",
+                    "name": "年份",
+                    "value": [
+                        {
+                            "n": "2023",
+                            "v": "2023"
+                        },
+                        {
+                            "n": "2022",
+                            "v": "2022"
+                        },
+                        {
+                            "n": "2021",
+                            "v": "2021"
+                        },
+                        {
+                            "n": "2020",
+                            "v": "2020"
+                        },
+                        {
+                            "n": "2019",
+                            "v": "2019"
+                        },
+                        {
+                            "n": "2018",
+                            "v": "2018"
+                        },
+                        {
+                            "n": "2017",
+                            "v": "2017"
+                        },
+                        {
+                            "n": "2016",
+                            "v": "2016"
+                        },
+                        {
+                            "n": "2015",
+                            "v": "2015"
+                        },
+                        {
+                            "n": "2014",
+                            "v": "2014"
+                        },
+                        {
+                            "n": "2013",
+                            "v": "2013"
+                        },
+                        {
+                            "n": "2012",
+                            "v": "2012"
+                        },
+                        {
+                            "n": "2011",
+                            "v": "2011"
+                        },
+                        {
+                            "n": "2010",
+                            "v": "2010"
+                        }
+                    ]
+                },
+                {
+                    "key": "5",
+                    "name": "字母",
+                    "value": [
+                        {
+                            "n": "A",
+                            "v": "A"
+                        },
+                        {
+                            "n": "B",
+                            "v": "B"
+                        },
+                        {
+                            "n": "C",
+                            "v": "C"
+                        },
+                        {
+                            "n": "D",
+                            "v": "D"
+                        },
+                        {
+                            "n": "E",
+                            "v": "E"
+                        },
+                        {
+                            "n": "F",
+                            "v": "F"
+                        },
+                        {
+                            "n": "G",
+                            "v": "G"
+                        },
+                        {
+                            "n": "H",
+                            "v": "H"
+                        },
+                        {
+                            "n": "I",
+                            "v": "I"
+                        },
+                        {
+                            "n": "J",
+                            "v": "J"
+                        },
+                        {
+                            "n": "K",
+                            "v": "K"
+                        },
+                        {
+                            "n": "L",
+                            "v": "L"
+                        },
+                        {
+                            "n": "M",
+                            "v": "M"
+                        },
+                        {
+                            "n": "N",
+                            "v": "N"
+                        },
+                        {
+                            "n": "O",
+                            "v": "O"
+                        },
+                        {
+                            "n": "P",
+                            "v": "P"
+                        },
+                        {
+                            "n": "Q",
+                            "v": "Q"
+                        },
+                        {
+                            "n": "R",
+                            "v": "R"
+                        },
+                        {
+                            "n": "S",
+                            "v": "S"
+                        },
+                        {
+                            "n": "T",
+                            "v": "T"
+                        },
+                        {
+                            "n": "U",
+                            "v": "U"
+                        },
+                        {
+                            "n": "V",
+                            "v": "V"
+                        },
+                        {
+                            "n": "W",
+                            "v": "W"
+                        },
+                        {
+                            "n": "X",
+                            "v": "X"
+                        },
+                        {
+                            "n": "Y",
+                            "v": "Y"
+                        },
+                        {
+                            "n": "Z",
+                            "v": "Z"
+                        },
+                        {
+                            "n": "0-9",
+                            "v": "0-9"
+                        }
+                    ]
+                },
+                {
+                    "key": "2",
+                    "name": "排序",
+                    "value": [
+                        {
+                            "n": "时间",
+                            "v": "time"
+                        },
+                        {
+                            "n": "人气",
+                            "v": "hits"
+                        },
+                        {
+                            "n": "评分",
+                            "v": "score"
+                        }
+                    ]
+                }
+            ],
+            "24": [
+                {
+                    "key": "1",
+                    "name": "地区",
+                    "value": [
+                        {
+                            "n": "大陆",
+                            "v": "大陆"
+                        },
+                        {
+                            "n": "香港",
+                            "v": "香港"
+                        },
+                        {
+                            "n": "台湾",
+                            "v": "台湾"
+                        },
+                        {
+                            "n": "美国",
+                            "v": "美国"
+                        },
+                        {
+                            "n": "法国",
+                            "v": "法国"
+                        },
+                        {
+                            "n": "英国",
+                            "v": "英国"
+                        },
+                        {
+                            "n": "日本",
+                            "v": "日本"
+                        },
+                        {
+                            "n": "韩国",
+                            "v": "韩国"
+                        },
+                        {
+                            "n": "德国",
+                            "v": "德国"
+                        },
+                        {
+                            "n": "泰国",
+                            "v": "泰国"
+                        },
+                        {
+                            "n": "印度",
+                            "v": "印度"
+                        },
+                        {
+                            "n": "意大利",
+                            "v": "意大利"
+                        },
+                        {
+                            "n": "西班牙",
+                            "v": "西班牙"
+                        },
+                        {
+                            "n": "加拿大",
+                            "v": "加拿大"
+                        },
+                        {
+                            "n": "其他",
+                            "v": "其他"
+                        }
+                    ]
+                },
+                {
+                    "key": "4",
+                    "name": "语言",
+                    "value": [
+                        {
+                            "n": "国语",
+                            "v": "国语"
+                        },
+                        {
+                            "n": "英语",
+                            "v": "英语"
+                        },
+                        {
+                            "n": "粤语",
+                            "v": "粤语"
+                        },
+                        {
+                            "n": "闽南语",
+                            "v": "闽南语"
+                        },
+                        {
+                            "n": "韩语",
+                            "v": "韩语"
+                        },
+                        {
+                            "n": "日语",
+                            "v": "日语"
+                        },
+                        {
+                            "n": "法语",
+                            "v": "法语"
+                        },
+                        {
+                            "n": "德语",
+                            "v": "德语"
+                        },
+                        {
+                            "n": "其它",
+                            "v": "其它"
+                        }
+                    ]
+                },
+                {
+                    "key": "11",
+                    "name": "年份",
+                    "value": [
+                        {
+                            "n": "2023",
+                            "v": "2023"
+                        },
+                        {
+                            "n": "2022",
+                            "v": "2022"
+                        },
+                        {
+                            "n": "2021",
+                            "v": "2021"
+                        },
+                        {
+                            "n": "2020",
+                            "v": "2020"
+                        },
+                        {
+                            "n": "2019",
+                            "v": "2019"
+                        },
+                        {
+                            "n": "2018",
+                            "v": "2018"
+                        },
+                        {
+                            "n": "2017",
+                            "v": "2017"
+                        },
+                        {
+                            "n": "2016",
+                            "v": "2016"
+                        },
+                        {
+                            "n": "2015",
+                            "v": "2015"
+                        },
+                        {
+                            "n": "2014",
+                            "v": "2014"
+                        },
+                        {
+                            "n": "2013",
+                            "v": "2013"
+                        },
+                        {
+                            "n": "2012",
+                            "v": "2012"
+                        },
+                        {
+                            "n": "2011",
+                            "v": "2011"
+                        },
+                        {
+                            "n": "2010",
+                            "v": "2010"
+                        }
+                    ]
+                },
+                {
+                    "key": "5",
+                    "name": "字母",
+                    "value": [
+                        {
+                            "n": "A",
+                            "v": "A"
+                        },
+                        {
+                            "n": "B",
+                            "v": "B"
+                        },
+                        {
+                            "n": "C",
+                            "v": "C"
+                        },
+                        {
+                            "n": "D",
+                            "v": "D"
+                        },
+                        {
+                            "n": "E",
+                            "v": "E"
+                        },
+                        {
+                            "n": "F",
+                            "v": "F"
+                        },
+                        {
+                            "n": "G",
+                            "v": "G"
+                        },
+                        {
+                            "n": "H",
+                            "v": "H"
+                        },
+                        {
+                            "n": "I",
+                            "v": "I"
+                        },
+                        {
+                            "n": "J",
+                            "v": "J"
+                        },
+                        {
+                            "n": "K",
+                            "v": "K"
+                        },
+                        {
+                            "n": "L",
+                            "v": "L"
+                        },
+                        {
+                            "n": "M",
+                            "v": "M"
+                        },
+                        {
+                            "n": "N",
+                            "v": "N"
+                        },
+                        {
+                            "n": "O",
+                            "v": "O"
+                        },
+                        {
+                            "n": "P",
+                            "v": "P"
+                        },
+                        {
+                            "n": "Q",
+                            "v": "Q"
+                        },
+                        {
+                            "n": "R",
+                            "v": "R"
+                        },
+                        {
+                            "n": "S",
+                            "v": "S"
+                        },
+                        {
+                            "n": "T",
+                            "v": "T"
+                        },
+                        {
+                            "n": "U",
+                            "v": "U"
+                        },
+                        {
+                            "n": "V",
+                            "v": "V"
+                        },
+                        {
+                            "n": "W",
+                            "v": "W"
+                        },
+                        {
+                            "n": "X",
+                            "v": "X"
+                        },
+                        {
+                            "n": "Y",
+                            "v": "Y"
+                        },
+                        {
+                            "n": "Z",
+                            "v": "Z"
+                        },
+                        {
+                            "n": "0-9",
+                            "v": "0-9"
+                        }
+                    ]
+                },
+                {
+                    "key": "2",
+                    "name": "排序",
+                    "value": [
+                        {
+                            "n": "时间",
+                            "v": "time"
+                        },
+                        {
+                            "n": "人气",
+                            "v": "hits"
+                        },
+                        {
+                            "n": "评分",
+                            "v": "score"
+                        }
+                    ]
+                }
+            ],
+            "28": [
+                {
+                    "key": "1",
+                    "name": "地区",
+                    "value": [
+                        {
+                            "n": "国产",
+                            "v": "国产"
+                        },
+                        {
+                            "n": "日韩",
+                            "v": "日韩"
+                        },
+                        {
+                            "n": "欧美",
+                            "v": "欧美"
+                        }
+                    ]
+                },
+                {
+                    "key": "11",
+                    "name": "年份",
+                    "value": [
+                        {
+                            "n": "2023",
+                            "v": "2023"
+                        },
+                        {
+                            "n": "2022",
+                            "v": "2022"
+                        },
+                        {
+                            "n": "2021",
+                            "v": "2021"
+                        },
+                        {
+                            "n": "2020",
+                            "v": "2020"
+                        },
+                        {
+                            "n": "2019",
+                            "v": "2019"
+                        },
+                        {
+                            "n": "2018",
+                            "v": "2018"
+                        },
+                        {
+                            "n": "2017",
+                            "v": "2017"
+                        },
+                        {
+                            "n": "2016",
+                            "v": "2016"
+                        },
+                        {
+                            "n": "2015",
+                            "v": "2015"
+                        },
+                        {
+                            "n": "2014",
+                            "v": "2014"
+                        },
+                        {
+                            "n": "2013",
+                            "v": "2013"
+                        },
+                        {
+                            "n": "2012",
+                            "v": "2012"
+                        },
+                        {
+                            "n": "2011",
+                            "v": "2011"
+                        },
+                        {
+                            "n": "2010",
+                            "v": "2010"
+                        }
+                    ]
+                },
+                {
+                    "key": "5",
+                    "name": "字母",
+                    "value": [
+                        {
+                            "n": "A",
+                            "v": "A"
+                        },
+                        {
+                            "n": "B",
+                            "v": "B"
+                        },
+                        {
+                            "n": "C",
+                            "v": "C"
+                        },
+                        {
+                            "n": "D",
+                            "v": "D"
+                        },
+                        {
+                            "n": "E",
+                            "v": "E"
+                        },
+                        {
+                            "n": "F",
+                            "v": "F"
+                        },
+                        {
+                            "n": "G",
+                            "v": "G"
+                        },
+                        {
+                            "n": "H",
+                            "v": "H"
+                        },
+                        {
+                            "n": "I",
+                            "v": "I"
+                        },
+                        {
+                            "n": "J",
+                            "v": "J"
+                        },
+                        {
+                            "n": "K",
+                            "v": "K"
+                        },
+                        {
+                            "n": "L",
+                            "v": "L"
+                        },
+                        {
+                            "n": "M",
+                            "v": "M"
+                        },
+                        {
+                            "n": "N",
+                            "v": "N"
+                        },
+                        {
+                            "n": "O",
+                            "v": "O"
+                        },
+                        {
+                            "n": "P",
+                            "v": "P"
+                        },
+                        {
+                            "n": "Q",
+                            "v": "Q"
+                        },
+                        {
+                            "n": "R",
+                            "v": "R"
+                        },
+                        {
+                            "n": "S",
+                            "v": "S"
+                        },
+                        {
+                            "n": "T",
+                            "v": "T"
+                        },
+                        {
+                            "n": "U",
+                            "v": "U"
+                        },
+                        {
+                            "n": "V",
+                            "v": "V"
+                        },
+                        {
+                            "n": "W",
+                            "v": "W"
+                        },
+                        {
+                            "n": "X",
+                            "v": "X"
+                        },
+                        {
+                            "n": "Y",
+                            "v": "Y"
+                        },
+                        {
+                            "n": "Z",
+                            "v": "Z"
+                        },
+                        {
+                            "n": "0-9",
+                            "v": "0-9"
+                        }
+                    ]
+                },
+                {
+                    "key": "2",
+                    "name": "排序",
+                    "value": [
+                        {
+                            "n": "时间",
+                            "v": "time"
+                        },
+                        {
+                            "n": "人气",
+                            "v": "hits"
+                        },
+                        {
+                            "n": "评分",
+                            "v": "score"
+                        }
+                    ]
+                }
+            ],
+            "32": [
+                {
+                    "key": "5",
+                    "name": "字母",
+                    "value": [
+                        {
+                            "n": "A",
+                            "v": "A"
+                        },
+                        {
+                            "n": "B",
+                            "v": "B"
+                        },
+                        {
+                            "n": "C",
+                            "v": "C"
+                        },
+                        {
+                            "n": "D",
+                            "v": "D"
+                        },
+                        {
+                            "n": "E",
+                            "v": "E"
+                        },
+                        {
+                            "n": "F",
+                            "v": "F"
+                        },
+                        {
+                            "n": "G",
+                            "v": "G"
+                        },
+                        {
+                            "n": "H",
+                            "v": "H"
+                        },
+                        {
+                            "n": "I",
+                            "v": "I"
+                        },
+                        {
+                            "n": "J",
+                            "v": "J"
+                        },
+                        {
+                            "n": "K",
+                            "v": "K"
+                        },
+                        {
+                            "n": "L",
+                            "v": "L"
+                        },
+                        {
+                            "n": "M",
+                            "v": "M"
+                        },
+                        {
+                            "n": "N",
+                            "v": "N"
+                        },
+                        {
+                            "n": "O",
+                            "v": "O"
+                        },
+                        {
+                            "n": "P",
+                            "v": "P"
+                        },
+                        {
+                            "n": "Q",
+                            "v": "Q"
+                        },
+                        {
+                            "n": "R",
+                            "v": "R"
+                        },
+                        {
+                            "n": "S",
+                            "v": "S"
+                        },
+                        {
+                            "n": "T",
+                            "v": "T"
+                        },
+                        {
+                            "n": "U",
+                            "v": "U"
+                        },
+                        {
+                            "n": "V",
+                            "v": "V"
+                        },
+                        {
+                            "n": "W",
+                            "v": "W"
+                        },
+                        {
+                            "n": "X",
+                            "v": "X"
+                        },
+                        {
+                            "n": "Y",
+                            "v": "Y"
+                        },
+                        {
+                            "n": "Z",
+                            "v": "Z"
+                        },
+                        {
+                            "n": "0-9",
+                            "v": "0-9"
+                        }
+                    ]
+                },
+                {
+                    "key": "2",
+                    "name": "排序",
+                    "value": [
+                        {
+                            "n": "时间",
+                            "v": "time"
+                        },
+                        {
+                            "n": "人气",
+                            "v": "hits"
+                        },
+                        {
+                            "n": "评分",
+                            "v": "score"
+                        }
+                    ]
+                }
+            ]
+        }
+        logger.info("处理玩偶哥哥首页信息成功,耗时:{}s".format(("%.2f" % (time.time() - start_time))))
         return result
-    def parseVodListFromDoc(self,doc):
+
+    def parseVodListFromDoc(self, doc):
         vod_list = []
         elements = doc.xpath('//div[@class="module-item"]')
         for element in elements:
@@ -626,10 +1948,10 @@ class Spider(Spider):
                 "vod_remarks": remarks
             })
         return vod_list
+
     # 首页界面
     def homeVideoContent(self):
         pass
-
 
     ## 分类详情
     def categoryContent(self, tid, pg, filter, extend):
@@ -666,24 +1988,25 @@ class Spider(Spider):
                 urlParams[key] = extend[key]
         except:
             pass
-        url = "{}/index.php/vodshow/{}.html".format(self.home_url,"-".join(urlParams))
+        url = "{}/index.php/vodshow/{}.html".format(self.home_url, "-".join(urlParams))
         response = self.fetch(url)
         tree = html.fromstring(response.text)
-        limit = 72 ## 一页有72条数据
+        limit = 72  ## 一页有72条数据
         total = 0
         count = 0
         matcher = re.search("\\$\\(\"\\.mac_total\"\\)\\.text\\('(\\d+)'\\);", response.text).groups()
         if len(matcher) > 0:
             total = int(matcher[0])
         if total <= limit:
-            count  = 1
+            count = 1
         else:
-            count = math.ceil(total/limit)
-        result =  {"jx": 0, "limit": limit, "page": int(pg), "pagecount": count, "parse": 0, "total": total}
+            count = math.ceil(total / limit)
+        result = {"jx": 0, "limit": limit, "page": int(pg), "pagecount": count, "parse": 0, "total": total}
         vod_list = self.parseVodListFromDoc(tree)
         result["list"] = vod_list
-        logger.info("分类详情界面获取成功,页数为:{},耗时为:{}s".format(pg,"%.2f"%(time.time()-start_time)))
+        logger.info("分类详情界面获取成功,页数为:{},耗时为:{}s".format(pg, "%.2f" % (time.time() - start_time)))
         return result
+
     ## 详情界面
     def detailContent(self, array):
         ## 用lxml解析
@@ -709,7 +2032,7 @@ class Spider(Spider):
         for element in share_url_elements:
             share_url_list.append({"name": element.contents[0].text, "url": element.contents[1].text})
         # fileId = col[2]
-        logger.info("获取视频详情成功,耗时:{}s".format("%.2f" %(time.time()-start_time)))
+        logger.info("获取视频详情成功,耗时:{}s".format("%.2f" % (time.time() - start_time)))
         vod = {
             "vod_id": tid,
             "vod_name": page_title,
@@ -723,8 +2046,8 @@ class Spider(Spider):
             "vod_content": video_info_content
         }
         start_time = time.time()
-        play_from, play_url = self.ali.get_vod_name(share_url_list,page_title)
-        logger.info("获取阿里云盘文件地址耗时:{}s".format("%.2f" %(time.time()-start_time)))
+        play_from, play_url = self.ali.get_vod_name(share_url_list, page_title)
+        logger.info("获取阿里云盘文件地址耗时:{}s".format("%.2f" % (time.time() - start_time)))
         vod['vod_play_from'] = play_from
         vod['vod_play_url'] = play_url
         result = {
@@ -739,7 +2062,7 @@ class Spider(Spider):
         url = self.home_url + "/index.php/vodsearch/{}----------1---.html".format(key)
         rsp = self.fetch(url)
         soup = BeautifulSoup(rsp.text, 'lxml')
-        results = {"jx":0,"parse":0}
+        results = {"jx": 0, "parse": 0}
         elements = soup.select(".module-search-item")
         vod_list = []
         for element in elements:
@@ -751,7 +2074,7 @@ class Spider(Spider):
             vodRemarks = element.select(".video-tag-icon")[0].text
             vod_list.append({"vod_id": vodId, "vod_name": vodName, "vod_pic": vodPic, "vod_remarks": vodRemarks})
         results["list"] = vod_list
-        logger.info("搜索成功,耗时:{}s".format("%.2f"%(time.time()-start_time)))
+        logger.info("搜索成功,耗时:{}s".format("%.2f" % (time.time() - start_time)))
         return results
 
     def playerContent(self, flag, id, vipFlags):
@@ -774,15 +2097,15 @@ class Spider(Spider):
         else:
             file_id = id_list[3]
         if flag == "原画":
-            url = self.ali.get_download_url(file_name,size,file_id, share_id)
+            url = self.ali.get_download_url(file_name, size, file_id, share_id)
         else:
-            url = self.ali.get_video_preview_play_info(flag,file_name,size,file_id, share_id)
+            url = self.ali.get_video_preview_play_info(flag, file_name, size, file_id, share_id)
         result = {"format": "application/octet-stream",
                   "header": "{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36\",\"Referer\":\"https://www.aliyundrive.com/\"}",
                   "jx": 0,
                   "parse": 0,
                   "url": url}
-        logger.info("获取下载链接耗时:{}s,下载链接为:{}".format(('%.2f'%(time.time()-start_time)),url))
+        logger.info("获取下载链接耗时:{}s,下载链接为:{}".format(('%.2f' % (time.time() - start_time)), url))
         return result
 
     def isVideoFormat(self, url):
@@ -790,7 +2113,6 @@ class Spider(Spider):
 
     def manualVideoCheck(self):
         pass
-
 
     def localProxy(self, param):
         return [200, "video/MP2T", action, ""]
