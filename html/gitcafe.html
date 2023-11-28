@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <title>小纸条-开放纯粹的资源网站</title>
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="dns-prefetch" href="http://a.gitcafe.net">
+    <link rel="dns-prefetch" href="https://u.gitcafe.net">
+    <link rel="dns-prefetch" href="https://o.gitcafe.net">
+    <meta name="robots" content="index,follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="theme-color" content="#ffb549">
+    <meta name="application-name" content="小纸条-开放纯粹的资源网站">
+    <meta name="description" content="小纸条是一个网友资源互助分享网页，可以实现免注册登陆即可获取资源！立志于提供全网最全面的资源整合；网站内容来源于网友投稿，仅只适用于学习和交流测试">
+    <meta name="color-scheme" content="dark light">
+    <link
+        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQBAMAAADt3eJSAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAKlBMVEUAAADSZDfSZDfryaDSZDe0RjLrh0u/UTTWaTpLP07///9dU2BaT13ryaCZFnJdAAAABHRSTlMAzPl3IDm31QAAAAFiS0dECmjQ9FYAAAAHdElNRQfmAgUJCiJhiWOMAAAAbUlEQVQI12NgcGAAAhYgDhEA0q5ARqgLA4NLKIgR4pbmCmKUeqSlpYUDGSpuQEYKkOGSBgJIDBaXWWlpq9MSGFjcZqelzQEyXNzSIHJ3715LS8u9e5eB+e61zG25dw2A2kAMBjAAmwICvBeABAC90CPadJikOwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMi0wMi0wNVQwNjoxMDozNCswMzowMCU/+JYAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjItMDItMDVUMDY6MTA6MzQrMDM6MDBUYkAqAAAAAElFTkSuQmCC"
+        rel="icon" />
+    <link rel="stylesheet" href="assets/css/ui.css">
+    <style>
+        * {
+            font-family: "Microsoft YaHei";
+        }
+
+        .ui-dialog-footer,
+        .ui-dialog-body,
+        .center,
+        h1,
+        h4 {
+            text-align: center
+        }
+
+        .key_nav td span {
+            float: right;
+            display: block
+        }
+
+        table.GeneratedTable {
+            width: 100%;
+            background-color: #fff;
+            border-collapse: collapse;
+            border: 2px solid #ffb549;
+            color: #000
+        }
+
+        table.GeneratedTable td,
+        table.GeneratedTable th {
+            border: 2px solid #ffb549;
+            padding: 3px
+        }
+
+        table.GeneratedTable thead {
+            background-color: #ffb549
+        }
+
+        .tableizer-table td,
+        table.tableizer-table {
+            border: 1px solid #ccc
+        }
+
+        .tableizer-table td {
+            padding: 4px;
+            margin: 3px
+        }
+
+        .tableizer-title {
+            background-color: #104e8b;
+            color: #fff;
+            font-weight: 700
+        }
+
+        a {
+            text-decoration: none
+        }
+
+        .tableizer-title a {
+            color: #fff
+        }
+
+        .cat {
+            background-color: #ffeead;
+            font-weight: 700;
+            text-align: center;
+            position: -webkit-sticky;
+            position: sticky;
+            padding: 10px;
+            top: 0;
+        }
+
+        #TopBtn {
+            bottom: 45px;
+            right: 15px;
+            position: fixed;
+            z-index: 99
+        }
+
+        .GeneratedTable tbody tr:hover {
+            background-color: #eee
+        }
+
+        .dark {
+            color: #4c5161
+        }
+
+        .blue {
+            color: #2a80eb
+        }
+
+        .gray {
+            color: #a2a9b6
+        }
+
+        .white {
+            color: #fff
+        }
+
+        .green {
+            color: #1cad70
+        }
+
+        .orange {
+            color: #f59b00
+        }
+
+        .red {
+            color: #eb4646
+        }
+
+        .light {
+            color: #f7f9fa
+        }
+
+        .allkey>tr>td:first-child {
+            width: 30% !important
+        }
+
+        [tooltip] {
+            position: relative
+        }
+
+        [tooltip]:after,
+        [tooltip]:before {
+            text-transform: none;
+            font-size: .9em;
+            line-height: 1.5;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+            position: absolute;
+            display: none;
+            opacity: 0
+        }
+
+        [tooltip]:before {
+            content: "";
+            border: 5px solid transparent;
+            z-index: 1001
+        }
+
+        [tooltip]:after {
+            content: attr(tooltip);
+            text-align: left;
+            width: 20em;
+            padding: 1ch 1.5ch;
+            border-radius: .3ch;
+            box-shadow: 0 1em 2em -.5em rgba(0, 0, 0, .35);
+            background: #000;
+            color: #fff;
+            z-index: 1000
+        }
+
+        [tooltip]:hover:after,
+        [tooltip]:hover:before {
+            display: block
+        }
+
+        [tooltip=""]:after,
+        [tooltip=""]:before {
+            display: none !important
+        }
+
+        [tooltip]:not([flow]):before {
+            bottom: 100%;
+            border-bottom-width: 0;
+            border-top-color: #000
+        }
+
+        [tooltip]:not([flow]):after {
+            bottom: calc(100% + 5px)
+        }
+
+        [tooltip]:not([flow]):after,
+        [tooltip]:not([flow]):before {
+            left: 50%;
+            -webkit-transform: translate(-50%, -.5em);
+            transform: translate(-50%, -.5em)
+        }
+
+        @-webkit-keyframes tooltips-vert {
+            to {
+                opacity: .9;
+                -webkit-transform: translate(-50%);
+                transform: translate(-50%)
+            }
+        }
+
+        @keyframes tooltips-vert {
+            to {
+                opacity: .9;
+                -webkit-transform: translate(-50%);
+                transform: translate(-50%)
+            }
+        }
+
+        [tooltip]:not([flow]):hover:after,
+        [tooltip]:not([flow]):hover:before {
+            -webkit-animation: tooltips-vert .15s ease-out forwards;
+            animation: tooltips-vert .15s ease-out forwards
+        }
+
+        input {
+            box-sizing: border-box;
+            padding-left: 50px;
+            height: 40px;
+            outline: 0;
+            border: 1px solid #666;
+            border-radius: 4px;
+            color: #4c5161;
+            font-size: 14px;
+            transition: border-color .2s, background-color .2s;
+            -webkit-appearance: none;
+            appearance: none
+        }
+
+        hr {
+            color: #666;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.5;
+            overflow: visible;
+            text-align: inherit;
+            margin: 0 0 20px;
+            border: 0;
+            border-top: 1px solid #e5e5e5
+        }
+
+        .link_head {
+            line-height: 1.4;
+            color: inherit
+        }
+
+        .subtitle {
+            position: relative;
+            color: #4c5161;
+            height: 45px;
+            line-height: 45px;
+            text-align: center
+        }
+
+        .subtitle:before {
+            left: 2%
+        }
+
+        .subtitle:after,
+        .subtitle:before {
+            content: "";
+            position: absolute;
+            width: 30%;
+            height: 1px;
+            top: 50%;
+            background-color: #a2a9b6
+        }
+
+        .subtitle:after {
+            right: 2%
+        }
+
+        .ui-dropanel-x {
+            width: auto;
+        }
+
+        .btn-size {
+            padding: 2px 10px;
+        }
+
+        ui-drop {
+            display: flex;
+            justify-content: center;
+        }
+
+        .ui-dropanel-x>.ui-button {
+            float: right;
+            margin: 2px
+        }
+
+        .page {
+            display: flex;
+            justify-content: center;
+            margin: 2px;
+            padding: 15px;
+        }
+
+        .backtop {
+            position: fixed;
+            right: 1rem;
+            bottom: 76px;
+            background-color: rgba(0, 0, 0, .5);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            border: 10px solid transparent;
+            display: none;
+            transition: background .15s;
+            font-size: 0;
+            background-image: url("data:image/svg+xml,%3Csvg class='icon' viewBox='0 0 1812 1024' xmlns='http://www.w3.org/2000/svg' width='353.906' height='200'%3E%3Cpath d='M889.849 273.684L194.723 968.809c-44.462 44.462-116.654 44.455-161.186-.076-44.841-44.842-44.565-116.697-.076-161.186L807.674 33.334c44.461-44.462 116.654-44.455 161.185.077a117.133 117.133 0 0 1 5.942 6.4 114.147 114.147 0 0 1 19.08 15.38l774.212 774.212c44.49 44.49 44.766 116.344-.076 161.186-44.532 44.532-116.724 44.539-161.186.077L889.849 273.684z' fill='%23fff'/%3E%3C/svg%3E");
+            background-size: 20px 10px;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        #keywords ul {
+            display:flex;
+            list-style-type: none;
+            flex-flow: wrap;
+        } 
+        #keywords li {
+            align-items:center;
+            margin-bottom:10px;
+        }
+
+        @media (any-hover: hover) {
+            .backtop:hover {
+                background-color: rgba(0, 0, 0, .65)
+            }
+        }
+
+        /* 文档支持移动端 */
+        @media screen and (max-width: 640px) {
+            #keywords ul {
+                display:flex;
+                list-style-type: none;
+                flex-flow: wrap;
+                padding: 0;
+            }
+            #keywords li {
+                align-items:center;
+                margin-bottom:2px;
+            }
+            .m_hide {
+                display: none;
+            }
+
+            .key_nav tr {
+                width: 33%;
+                float: left;
+                height: 185px;
+            }
+
+            .key_nav td {
+                display: block;
+            }
+
+            .allkey [tooltip]:not([flow])::after,
+            .allkey [tooltip]:not([flow])::before {
+                left: 90%;
+            }
+
+            .backtop {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+    <style id="theme-options-filter"></style>
+</head>
+
+<body>
+    <div class="center"><img title="小纸条-开放纯粹的资源网站" alt="小纸条-开放纯粹的资源网站"
+            src="data:image/png;base64,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">
+    </div>
+    <h1 style="margin-top: 0px;"><a class="link_head" href="">小纸条</a></h1>
+    <div class="center"> <a tooltip="你可以把你的资源投稿到小纸条，在打开后的页面中填写好表单即可" style="margin-right:30px;" type="success"
+            class="ui-button button-success" onclick="gotobtn('tougao');" href="javascript:;">投稿资源</a><a
+            tooltip="实际上是腾讯图个槽，作为一个简单的交流区，顺便做吐槽平台" style="margin-right:30px;" onclick="gotobtn('support');"
+            href="javascript:;" type="danger" class="ui-button button-error">交流圈子</a><a
+            tooltip="打开后用微信扫码关注一个公众号，这个是用来推送微信信息的，如果小纸条有资源更新的话，会通过这个公众号发信息提醒你的，强烈建议关注" class="ui-button"
+            onclick="gotobtn('wxqr');" type="primary" href="javascript:;">微信订阅</a></div>
+    <div class="center" style="border:1px dashed #f00;margin: 30px 10px;padding: 20px;">
+        <input type="search" placeholder="回车搜索" id="wp-filter-search-input" class="wp-filter-search">
+        <div id='s-notice' class='green'></div>
+        <h4>当前共收录 <span class="all_num"></span> 个资源</h4>
+        <h4>今天更新 <span class="today_num" style = "color:#f00;"></span> 个资源</h4>
+    </div>
+
+    <div class="center" id="sponsor"
+        style="border:1px dashed #373c42;margin: 10px 10px;padding: 20px;background-color: #eee;"></div>
+
+        <h2 class="navh2 subtitle">昨日热搜</h2>
+        <div class="center" id="keywords"
+        style="border:1px dashed #373c42;margin: 10px 10px;padding: 20px;background-color: #eee;"></div>
+
+    <h2 class="navh2 subtitle">资源导航</h2>
+    <table class="tableizer-table key_nav " style="table-layout: fixed;" width="100%">
+        <tbody>
+            <tr>
+                <td class="tableizer-title"><a id="ds_nav" href="#hyds">电视</a></td>
+                <td><a onclick="load_data('hyds');" href="javascript:;">华语</a><span class="hyds_num"></span></td>
+                <td><a onclick="load_data('rhds');" href="javascript:;">日韩</a><span class="rhds_num"></span></td>
+                <td><a onclick="load_data('omds');" href="javascript:;">欧美</a><span class="omds_num"></span></td>
+                <td><a onclick="load_data('qtds');" href="javascript:;">其他</a><span class="qtds_num"></span></td>
+            </tr>
+            <tr>
+                <td class="tableizer-title"><a id="dy_nav" href="#hydy">电影</a></td>
+                <td><a onclick="load_data('hydy');" href="javascript:;">华语</a><span class="hydy_num"></span></td>
+                <td><a onclick="load_data('rhdy');" href="javascript:;">日韩</a><span class="rhdy_num"></span></td>
+                <td><a onclick="load_data('omdy');" href="javascript:;">欧美</a><span class="omdy_num"></span></td>
+                <td><a onclick="load_data('qtdy');" href="javascript:;">其他</a><span class="qtdy_num"></span></td>
+            </tr>
+            <tr>
+                <td class="tableizer-title"><a id="dm_nav" href="#hydm">动漫</a></td>
+                <td><a onclick="load_data('hydm');" href="javascript:;">国漫</a><span class="hydm_num"></span></td>
+                <td><a onclick="load_data('rhdm');" href="javascript:;">日本</a><span class="rhdm_num"></span></td>
+                <td><a onclick="load_data('omdm');" href="javascript:;">欧美</a><span class="omdm_num"></span></td>
+            </tr>
+            <tr>
+                <td class="tableizer-title"><a id="sp_nav" href="#jlp">视频</a></td>
+                <td><a onclick="load_data('jlp');" href="javascript:;">纪录</a><span class="jlp_num"></span></td>
+                <td><a onclick="load_data('zyp');" href="javascript:;">综艺</a><span class="zyp_num"></span></td>
+                <td><a onclick="load_data('jypx');" href="javascript:;">教育</a><span class="jypx_num"></span></td>
+                <td><a onclick="load_data('qtsp');" href="javascript:;">其他</a><span class="qtsp_num"></span></td>
+            </tr>
+            <tr>
+                <td class="tableizer-title"><a href="#hyyy">音乐</a></td>
+                <td><a onclick="load_data('hyyy');" href="javascript:;">华语</a><span class="hyyy_num"></span></td>
+                <td><a onclick="load_data('rhyy');" href="javascript:;">日韩</a><span class="rhyy_num"></span></td>
+                <td><a onclick="load_data('omyy');" href="javascript:;">欧美</a><span class="omyy_num"></span></td>
+                <td><a onclick="load_data('qtyy');" href="javascript:;">其他</a><span class="qtyy_num"></span></td>
+            </tr>
+            <tr>
+                <td class="tableizer-title"><a href="#kfrj">软件</a></td>
+                <td><a onclick="load_data('kfrj');" href="javascript:;">娱乐</a><span class="kfrj_num"></span></td>
+                <td><a onclick="load_data('xtrj');" href="javascript:;">系统</a><span class="xtrj_num"></span></td>
+                <td><a onclick="load_data('wlrj');" href="javascript:;">网络</a><span class="wlrj_num"></span></td>
+                <td><a onclick="load_data('bgrj');" href="javascript:;">办公</a><span class="bgrj_num"></span></td>
+            </tr>
+            <tr>
+                <td class="tableizer-title"><a href="#mh">文档</a></td>
+                <td><a onclick="load_data('mh');" href="javascript:;">漫画</a><span class="mh_num"></span></td>
+                <td><a onclick="load_data('xs');" href="javascript:;">小说</a><span class="xs_num"></span></td>
+                <td><a onclick="load_data('cbs');" href="javascript:;">出版</a><span class="cbs_num"></span></td>
+                <td><a onclick="load_data('zspx');" href="javascript:;">知识</a><span class="zspx_num"></span></td>
+            </tr>
+            <tr>
+                <td class="tableizer-title"><a href="#bz">图片</a></td>
+                <td><a onclick="load_data('bz');" href="javascript:;">壁纸</a><span class="bz_num"></span></td>
+                <td><a onclick="load_data('rw');" href="javascript:;">人物</a><span class="rw_num"></span></td>
+                <td><a onclick="load_data('fj');" href="javascript:;">风景</a><span class="fj_num"></span></td>
+                <td><a onclick="load_data('qttp');" href="javascript:;">其他</a><span class="qttp_num"></span></td>
+            </tr>
+            <tr>
+                <td class="tableizer-title"><a href="#qt">其它</a></td>
+                <td><a onclick="load_data('qt');" href="javascript:;">其他</a><span class="qt_num"></span></td>
+                <td><a onclick="load_data('qtrj');" href="javascript:;">其他软件</a><span class="qtrj_num"></span></td>
+                <td><a onclick="load_data('qtwd');" href="javascript:;">其他文档</a><span class="qtwd_num"></span></td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 class="newh2 subtitle">最近更新</h2>
+    <table style="table-layout: fixed;" width="100%" class="GeneratedTable new">
+        <thead>
+            <tr class="tableizer-firstrow">
+                <th width="15%">时间</th>
+                <th width="55%">标题</th>
+                <th width="30%">链接</th>
+            </tr>
+        </thead>
+        <tbody id="newkey"></tbody>
+    </table>
+    <h2 class="toph2 subtitle">置顶推荐</h2>
+    <table style="table-layout: fixed;" width="100%" class="GeneratedTable top">
+        <thead>
+            <tr class="tableizer-firstrow">
+                <th width="40%">标题</th>
+                <th width="20%">链接</th>
+                <th width="40%">理由</th>
+            </tr>
+        </thead>
+        <tbody id="topkey" class="allkey"></tbody>
+    </table>
+    <h2 class="subtitle">资源列表</h2>
+    <table style="table-layout: fixed;" width="100%" class="GeneratedTable list">
+        <thead>
+            <tr class="tableizer-firstrow">
+                <th width="45%">标题</th>
+                <th width="33%">链接</th>
+                <th width="22%">操作</th>
+            </tr>
+        </thead>
+        <tbody id="keylist" class="allkey"></tbody>
+    </table>
+    <div class='page'></div>
+    <div id="foot" class="center"></div>
+
+    <a href="javascript:" id="backtop" class="backtop"></a>
+    <script type="module" src="assets/js/all.js"></script>
+    <script src='https://u.gitcafe.net/assets/js/paper.js'></script>
+    <script>
+        !function (p) { "use strict"; !function (t) { var s = window, e = document, i = p, c = "".concat("https:" === e.location.protocol ? "https://" : "http://", "sdk.51.la/js-sdk-pro.min.js"), n = e.createElement("script"), r = e.getElementsByTagName("script")[0]; n.type = "text/javascript", n.setAttribute("charset", "UTF-8"), n.async = !0, n.src = c, n.id = "LA_COLLECT", i.d = n; var o = function () { s.LA.ids.push(i) }; s.LA ? s.LA.ids && o() : (s.LA = p, s.LA.ids = [], o()), r.parentNode.insertBefore(n, r) }() }({ id: "K3RJodkElC200Vkn", ck: "K3RJodkElC200Vkn" });
+    </script>
+</body>
+
+</html>

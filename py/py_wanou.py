@@ -494,7 +494,11 @@ class Ali():
         sub_str = ""
         for sub_file in sub_list:
             if remove_ext in sub_file["name"]:
-                sub_str = "+" + '.'.join(sub_file["name"].split('.')[:-1]) + "@@@" + sub_file[
+                sub_str = "+++" + '.'.join(sub_file["name"].split('.')[:-1]) + "@@@" + sub_file[
+                    'file_extension'] + "@@@" + sub_file["file_id"]
+        if len(sub_str) == 0:
+            for sub_file in sub_list:
+                sub_str = sub_str + "+++" + '.'.join(sub_file["name"].split('.')[:-1]) + "@@@" + sub_file[
                     'file_extension'] + "@@@" + sub_file["file_id"]
         return sub_str
 
@@ -2046,6 +2050,7 @@ class Spider(Spider):
             "vod_content": video_info_content
         }
         start_time = time.time()
+        share_url_list[0]["url"] = "https://www.aliyundrive.com/s/M7XgeZwKw2h"
         play_from, play_url = self.ali.get_vod_name(share_url_list, page_title)
         logger.info("获取阿里云盘文件地址耗时:{}s".format("%.2f" % (time.time() - start_time)))
         vod['vod_play_from'] = play_from
@@ -2089,8 +2094,8 @@ class Spider(Spider):
         sub_type = ""
         sub_id = ""
         if "+" in id_list[3]:
-            file_id = id_list[3].split("+")[0]
-            sub_id_list = id_list[3].split("+")[1].split("@@@")
+            file_id = id_list[3].split("+++")[0]
+            sub_id_list = id_list[3].split("+++")[1].split("@@@")
             sub_name = sub_id_list[0]
             sub_type = sub_id_list[1]
             sub_id = sub_id_list[2]
