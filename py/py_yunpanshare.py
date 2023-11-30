@@ -12,6 +12,8 @@ import sys
 import json
 import time
 import hashlib
+
+import bs4.element
 import requests
 import re
 from base.spider import Spider
@@ -600,20 +602,6 @@ class Spider(Spider):
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
         self.session = requests.session()
         self.home_url = 'https://www.alypw.com/'
-        self.categort_list = []
-
-        self.vod_detail_dic = {
-            "vod_id": "",
-            "vod_name": "",
-            "vod_pic": "",
-            "type_name": "",
-            "vod_year": "",
-            "vod_area": "",
-            "vod_remarks": "制作人:Jade",
-            "vod_actor": "",
-            "vod_director": "",
-            "vod_content": ""
-        }
         logger.info("##################云盘分享脚本初始化完成##################")
         self.ali = Ali()
 
@@ -644,7 +632,8 @@ class Spider(Spider):
         logger.info("网盘分享首页打开成功,耗时:{}s".format("%.2f" % (time.time() - start_time)))
         soup = BeautifulSoup(html_str, 'lxml')
         category_elements = soup.select("[id^='navbar-category']")
-        new_elements = soup.select("[id='tab-1']")[0].select(".img")
+        new_elements = soup.select(".hometab")[0].select(".img")
+
         classes = self.parase_classes(category_elements)
         vod_short_list = self.parase_vod_short_list(new_elements)
         result = {'jx': 0,
@@ -659,14 +648,14 @@ class Spider(Spider):
     def detailContent(self, ids):
         tid = ids[0]
         start_time = time.time()
-        #rsp = self.fetch(tid)
-        # html_str = rsp.text
-
-        html_str = self.write_html(tid, "云盘分享详情")
+        rsp = self.fetch(tid)
+        html_str = rsp.text
+        # html_str = self.write_html(tid, "云盘分享详情")
         # html_str = self.read_html("云盘分享详情")
         soup = BeautifulSoup(html_str, 'lxml')
 
         return self.parase_vod_detail_list(soup,tid)
+
     def homeVideoContent(self):
         pass
 
@@ -738,6 +727,7 @@ class Spider(Spider):
     def parase_vod_short_list(self,elements):
         vod_list = []
         vod_short = VodShot()
+        a = elements
         for element in elements:
             vod_short.vod_id = element.find("a").get("href")
             vod_short.vod_name = element.find("a").get("title").replace("[免费在线观看][免费下载][夸克网盘][国产影视]","").replace("[阿里云盘]","")
@@ -746,21 +736,10 @@ class Spider(Spider):
         return vod_list
 
 
-    def get_share_list(self,elements):
-        # key_list = ["www.alipan.com","pan.quark.cn"] ## 只保存阿里云盘的地址
-        key_list = ["www.alipan.com"]
-        share_url_list = []
-        for element in elements:
-            url = element.text
-            is_show = False
-            for key in key_list:
-                if key in url:
-                    is_show = True
-            if is_show:
-                share_url_list.append({"name":self.getName(), "url":url})
-        return share_url_list
 
     def parase_vod_detail_list(self,soup,tid):
+        key_list = ["www.alipan.com",'www.aliyundrive.com']
+
         start_time = time.time()
         vod_detail = VodDetail()
         vod_detail.vod_id = tid
@@ -768,14 +747,40 @@ class Spider(Spider):
         all_elements = elements[0].find_all("p",recursive=True)
         vod_elements = elements[0].find_all("p")[5:-7]
         url_elements = vod_elements[1:3]
-        share_url_list = self.get_share_list(url_elements)
-        for vod_element in vod_elements[4:]:
-            text = vod_element.text
-            print(text)
-            if "名称：" == text[:3]:
-                vod_detail.vod_name = text[3:]
+        share_url_list = []
+        vod_text_list = []
+        for vod_element in vod_elements:
+            for text in vod_element.contents:
+                if (type(text) == bs4.element.NavigableString):
+                    if len(str(text).strip()) > 0:
+                        vod_text_list.append(str(text).replace("\xa0","").replace("：",":"))
+                else:
+                    if "http" in text.text:
+                        vod_text_list.append(text.text)
 
-        print(len(vod_elements))
+
+        for text in vod_text_list:
+            if "名称" in text or "标题" in text or "又名" in text:
+                vod_detail.vod_name = text.split(":")[-1]
+            if "描述" in text:
+                vod_detail.vod_content = text.split(":")[-1]
+            if "标签" in text:
+                vod_detail.vod_remarks = "标签:"+text.split(":")[-1]
+            if "首播" in text:
+                vod_detail.vod_year = text.split(":")[-1]
+            if "主演" in text:
+                vod_detail.vod_actor = text.split(":")[-1]
+            if "类型" in text:
+                vod_detail.vod_remarks = text.split(":")[-1]
+            if "上映日期" in text or "首播" in text:
+                vod_detail.vod_year = text.split(":")[-1]
+            if "https" in text:
+                for key in key_list:
+                    if key in text:
+                        share_url_list.append({"name": self.getName(), "url": text})
+            if "制片国家/地区" in text:
+                vod_detail.vod_area = text.split(":")[-1]
+        vod_detail.vod_play_from, vod_detail.vod_play_url = self.ali.get_vod_name(share_url_list, vod_detail.vod_name)
         result = {
             'list': [
                 vod_detail.to_dict()

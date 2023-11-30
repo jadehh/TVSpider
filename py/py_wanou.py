@@ -623,18 +623,17 @@ class Spider(Spider):
         start_time = time.time()
         rsp = self.fetch(self.home_url)
         logger.info("玩偶哥哥首页打开成功,耗时:{}s".format("%.2f" % (time.time() - start_time)))
+
         self.tree = html.fromstring(rsp.text)
         start_time = time.time()
         elements = self.tree.xpath('//a[contains(@class,"nav-link")]')
-        index = 0
         for element in elements:
-            type_name = element.xpath('text()')[0]
-            index = index + 1
-            if type_name != "test":
-                classes.append({
-                    'type_name': type_name,
-                    'type_id': index
-                })
+            type_name = element.xpath('text()')[1].strip()
+            url = element.xpath("@href")[0]
+            classes.append({
+                'type_name': type_name,
+                'type_id': int(url.split(".html")[0].split("/")[-1])
+            })
         result['class'] = classes
         vod_list = self.parseVodListFromDoc(self.tree)
         result["list"] = vod_list
@@ -1978,6 +1977,23 @@ class Spider(Spider):
     def homeVideoContent(self):
         pass
 
+    ## 多级选项
+    def getExtent(self,tree):
+        elements = tree.xpath("//div[@class='scroll-content']")[1:]
+        extend_list = []
+        for i in range(len(elements)):
+            extend_dic = {"name": "", "value": []}
+            if i < len(elements)-1:
+                extend_dic["name"] = elements[i].xpath("a/text()")[0]
+                for ele in elements[i].xpath("div/a"):
+                    extend_dic["value"].append(ele.xpath("text()")[0])
+                extend_list.append(extend_dic)
+            else:
+                extend_dic["name"] = elements[i].xpath("div/a")[0].xpath("text()")[0]
+                extend_dic["value"] = [[elements[i].xpath("div/a")[1].xpath("text()")[0],elements[i].xpath("div/a")[2].xpath("text()")[0]]]
+                extend_list.append(extend_dic)
+        return extend_list
+
     ## 分类详情
     def categoryContent(self, tid, pg, filter, extend):
         """
@@ -2006,6 +2022,7 @@ class Spider(Spider):
              "vod_remarks": "HD国语"}],
          "page": 1, "pagecount": 39, "parse": 0, "total": 2759}
         """
+        category_extend_dic = {}
         start_time = time.time()
         urlParams = [str(tid), "", "", "", "", "", "", "", str(pg), "", "", ""]
         try:
@@ -2014,8 +2031,16 @@ class Spider(Spider):
         except:
             pass
         url = "{}/index.php/vodshow/{}.html".format(self.home_url, "-".join(urlParams))
-        response = self.fetch(url)
-        tree = html.fromstring(response.text)
+        # response = self.fetch(url)
+        # ## 需要解析json数据
+        #
+        # with open("html/wanou_category.html","wb") as f:
+        #     f.write(response.text.encode("utf-8"))
+        with open("html/wanou_category.html","rb") as f:
+            html_str = f.read()
+        tree = html.fromstring(html_str)
+        extend_dic = self.getExtent(tree)
+        category_extend_dic[str(tid)] = extend_dic
         limit = 72  ## 一页有72条数据
         total = 0
         count = 0
