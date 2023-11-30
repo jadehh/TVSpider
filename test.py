@@ -34,7 +34,7 @@ def test_wanou():
     start_time = time.time()
     spider = Spider()
     spider.init()
-    # content_list = spider.homeContent(True)
+    content_list = spider.homeContent(True)
     # so
     #content_list = spider.searchContent("莲花楼")["list"]
     content_list = spider.categoryContent(1,1,True,None)["list"]
