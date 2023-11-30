@@ -55,26 +55,30 @@ logger = logging.getLogger("阿里玩偶")
 
 class VodShot(object):
     def __init__(self):
-        self.vod_id = ""                           ## id
-        self.vod_name = ""                         ## 名称
-        self.vod_pic = ""                          ## 图片
-        self.vod_remarks = "制作人:Jade"            ## 备注
+        self.vod_id = ""  ## id
+        self.vod_name = ""  ## 名称
+        self.vod_pic = ""  ## 图片
+        self.vod_remarks = "制作人:Jade"  ## 备注
+
     def to_dict(self):
         dic = {}
         for item in self.__dict__.items():
             dic[item[0]] = item[1]
         return dic
+
+
 class VodDetail(VodShot):
     def __init__(self):
         super().__init__()
-        self.type_name = ""              ## 类别
-        self.vod_year = ""               ## 年份
-        self.vod_area = ""               ## 地区
-        self.vod_actor = ""              ## 导演
-        self.vod_director = ""           ## 演员
-        self.vod_content = ""            ## 剧情
-        self.vod_play_from = ""          ## 播放格式
-        self.vod_play_url = ""           ## 播放连接
+        self.type_name = ""  ## 类别
+        self.vod_year = ""  ## 年份
+        self.vod_area = ""  ## 地区
+        self.vod_actor = ""  ## 导演
+        self.vod_director = ""  ## 演员
+        self.vod_content = ""  ## 剧情
+        self.vod_play_from = ""  ## 播放格式
+        self.vod_play_url = ""  ## 播放连接
+
 
 class Ali():
 
@@ -528,9 +532,9 @@ class Ali():
     def sort_by_size(self, item):
         return item['size']
 
+    def sort_by_name_str(self, item):
+        return item.split(" ")[0]
 
-    def sort_by_name_str(self,item):
-        return  item.split(" ")[0]
     def sort_by_name(self, item):
         return item['name']
 
@@ -612,7 +616,12 @@ class Spider(Spider):
         return "玩偶哥哥"
 
     def init(self, extend=""):
+        # try:
+        #     os.remove(os.path.join(os.environ["HOME"], "wanou.json"))
+        # except:
+        #     pass
         self.load_cache_config()
+        self.category_extend_dic = self.fetch("https://raw.githubusercontent.com/FongMi/CatVodSpider/main/json/wogg.json").json()
         logger.info("##################阿里玩偶爬虫脚本初始化完成##################")
         self.ali = Ali()
 
@@ -631,7 +640,8 @@ class Spider(Spider):
 
     def write_cache_config(self):
         with open(os.path.join(os.environ["HOME"], "wanou.json"), "wb") as f:
-            f.write(json.dumps(self.category_extend_dic,indent=4,ensure_ascii=False).encode("utf-8"))
+            f.write(json.dumps(self.category_extend_dic, indent=4, ensure_ascii=False).encode("utf-8"))
+
     ## 分类
     ## 分类
     def homeContent(self, filter=True):
@@ -655,7 +665,7 @@ class Spider(Spider):
         vod_list = self.parseVodListFromDoc(self.tree)
         result["list"] = vod_list
         result["filters"] = self.category_extend_dic
-        logger.info("输出类别二级菜单:{}".format(json.dumps(self.category_extend_dic,indent=4,ensure_ascii=False)))
+        logger.info("输出类别二级菜单:{}".format(json.dumps(result["filters"], indent=4, ensure_ascii=False)))
         logger.info("处理玩偶哥哥首页信息成功,耗时:{}s".format(("%.2f" % (time.time() - start_time))))
         return result
 
@@ -668,8 +678,8 @@ class Spider(Spider):
             vod_short.vod_id = module_item_pic.xpath('a/@href')[0]
             vod_short.vod_name = module_item_pic.xpath('a/@title')[0]
             vod_short.vod_pic = module_item_pic.find("img").get("data-src")
-            if "/img.php?url=" in vod_short.vod_pic :
-                vod_short.vod_pic  = vod_short.vod_pic.split("/img.php?url=")[-1]
+            if "/img.php?url=" in vod_short.vod_pic:
+                vod_short.vod_pic = vod_short.vod_pic.split("/img.php?url=")[-1]
             vod_short.vod_remarks = element.findtext('div[@class="module-item-text"]')
             vod_list.append(vod_short.to_dict())
         return vod_list
@@ -679,19 +689,21 @@ class Spider(Spider):
         pass
 
     ## 多级选项
-    def getExtent(self,tree):
+    def getExtent(self, tree):
         elements = tree.xpath("//div[@class='scroll-content']")[1:]
         extend_list = []
         for i in range(len(elements)):
-            extend_dic = {"name": "", "value": []}
-            if i < len(elements)-1:
+            extend_dic = {"key": str(i), "name": "", "value": []}
+            if i < len(elements) - 1:
                 extend_dic["name"] = elements[i].xpath("a/text()")[0]
                 for ele in elements[i].xpath("div/a"):
-                    extend_dic["value"].append(ele.xpath("text()")[0])
+                    extend_dic["value"].append({"n": ele.xpath("text()")[0], "v": ele.xpath("text()")[0]})
                 extend_list.append(extend_dic)
             else:
                 extend_dic["name"] = elements[i].xpath("div/a")[0].xpath("text()")[0]
-                extend_dic["value"] = [[elements[i].xpath("div/a")[1].xpath("text()")[0],elements[i].xpath("div/a")[2].xpath("text()")[0]]]
+                extend_dic["value"] = [{"n": elements[i].xpath("div/a")[1].xpath("text()")[0], "v": "time"},
+                                       {"n": elements[i].xpath("div/a")[2].xpath("text()")[0], "v":"hists"}]
+
                 extend_list.append(extend_dic)
         return extend_list
 
@@ -768,7 +780,8 @@ class Spider(Spider):
         for video_info_aux in video_info_aux_list[1:-2]:
             vod_detail.type_name = vod_detail.type_name + video_info_aux.text
         vod_detail.vod_area = video_info_aux_list[-1].text
-        vod_detail.vod_pic = soup.find(attrs={"class": "mobile-play"}).find(attrs={"class": "lazyload"}).attrs["data-src"]
+        vod_detail.vod_pic = soup.find(attrs={"class": "mobile-play"}).find(attrs={"class": "lazyload"}).attrs[
+            "data-src"]
         video_info_elements = soup.select(".video-info-item")
         vod_detail.vod_director = video_info_elements[0].text.replace("/", "")  ##导演
         vod_detail.vod_actor = video_info_elements[1].text[1:-1].replace("/", ",")
@@ -778,7 +791,7 @@ class Spider(Spider):
         share_url_elements = soup.select('.module-row-title')
         share_url_list = []
         for element in share_url_elements:
-            share_url_list.append({"name": element.find("h4").text, "url":  element.find("p").text})
+            share_url_list.append({"name": element.find("h4").text, "url": element.find("p").text})
         # fileId = col[2]
         logger.info("获取视频详情成功,耗时:{}s".format("%.2f" % (time.time() - start_time)))
         start_time = time.time()
