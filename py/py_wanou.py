@@ -53,6 +53,29 @@ logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger("阿里玩偶")
 
 
+class VodShot(object):
+    def __init__(self):
+        self.vod_id = ""                           ## id
+        self.vod_name = ""                         ## 名称
+        self.vod_pic = ""                          ## 图片
+        self.vod_remarks = "制作人:Jade"            ## 备注
+    def to_dict(self):
+        dic = {}
+        for item in self.__dict__.items():
+            dic[item[0]] = item[1]
+        return dic
+class VodDetail(VodShot):
+    def __init__(self):
+        super().__init__()
+        self.type_name = ""              ## 类别
+        self.vod_year = ""               ## 年份
+        self.vod_area = ""               ## 地区
+        self.vod_actor = ""              ## 导演
+        self.vod_director = ""           ## 演员
+        self.vod_content = ""            ## 剧情
+        self.vod_play_from = ""          ## 播放格式
+        self.vod_play_url = ""           ## 播放连接
+
 class Ali():
 
     def __init__(self):
@@ -505,6 +528,9 @@ class Ali():
     def sort_by_size(self, item):
         return item['size']
 
+
+    def sort_by_name_str(self,item):
+        return  item.split(" ")[0]
     def sort_by_name(self, item):
         return item['name']
 
@@ -560,11 +586,11 @@ class Ali():
             epi_str = display_name + "$" + video_file["name"] + "+++" + str(video_file["size"]) + "+++" + video_file[
                 "share_id"] + "+++" + video_file["file_id"] + sub_str
             episode.append(epi_str)
-
+        episode = sorted(episode, key=self.sort_by_name_str)
         ## 自定义清晰度
         play_foramt_list = ["原画", "超清", "高清", "标清"]
-        episode = ["#".join(episode)] * len(play_foramt_list)
-        return "$$$".join(play_foramt_list), "$$$".join(episode)
+        episode_str = ["#".join(episode)] * len(play_foramt_list)
+        return "$$$".join(play_foramt_list), "$$$".join(episode_str)
 
 
 class Spider(Spider):
@@ -588,7 +614,6 @@ class Spider(Spider):
     def init(self, extend=""):
         logger.info("##################阿里玩偶爬虫脚本初始化完成##################")
         self.ali = Ali()
-        pass
 
     ## 分类
     ## 分类
@@ -1938,19 +1963,15 @@ class Spider(Spider):
         vod_list = []
         elements = doc.xpath('//div[@class="module-item"]')
         for element in elements:
+            vod_short = VodShot()
             module_item_pic = element.xpath('div/div[@class="module-item-pic"]')[0]
-            vod_id = module_item_pic.xpath('a/@href')[0]
-            vod_name = module_item_pic.xpath('a/@title')[0]
-            vod_pic = module_item_pic.find("img").get("data-src")
-            if "/img.php?url=" in vod_pic:
-                vod_pic = vod_pic.split("/img.php?url=")[-1]
-            remarks = element.findtext('div[@class="module-item-text"]')
-            vod_list.append({
-                "vod_id": vod_id,
-                "vod_name": vod_name,
-                "vod_pic": vod_pic,
-                "vod_remarks": remarks
-            })
+            vod_short.vod_id = module_item_pic.xpath('a/@href')[0]
+            vod_short.vod_name = module_item_pic.xpath('a/@title')[0]
+            vod_short.vod_pic = module_item_pic.find("img").get("data-src")
+            if "/img.php?url=" in vod_short.vod_pic :
+                vod_short.vod_pic  = vod_short.vod_pic.split("/img.php?url=")[-1]
+            vod_short.vod_remarks = element.findtext('div[@class="module-item-text"]')
+            vod_list.append(vod_short.to_dict())
         return vod_list
 
     # 首页界面
@@ -2014,50 +2035,36 @@ class Spider(Spider):
     ## 详情界面
     def detailContent(self, array):
         ## 用lxml解析
+        vod_detail = VodDetail()
         tid = array[0]
+        vod_detail.vod_id = tid
         start_time = time.time()
         rsp = self.fetch(self.home_url + tid)
         soup = BeautifulSoup(rsp.text, 'lxml')
-        page_title = soup.find(attrs={"class": "page-title"}).text
+        vod_detail.vod_name = soup.find(attrs={"class": "page-title"}).text
         video_info_aux_list = soup.find(attrs={"class": "video-info-aux"}).contents
-        video_info_aux_str = ""
         for video_info_aux in video_info_aux_list[1:-2]:
-            video_info_aux_str = video_info_aux_str + video_info_aux.text
-        video_info_area = video_info_aux_list[-1].text
-        mobile_play = soup.find(attrs={"class": "mobile-play"}).find(attrs={"class": "lazyload"}).attrs["data-src"]
+            vod_detail.type_name = vod_detail.type_name + video_info_aux.text
+        vod_detail.vod_area = video_info_aux_list[-1].text
+        vod_detail.vod_pic = soup.find(attrs={"class": "mobile-play"}).find(attrs={"class": "lazyload"}).attrs["data-src"]
         video_info_elements = soup.select(".video-info-item")
-        video_info_director = video_info_elements[0].text.replace("/", "")  ##导演
-        video_info_actor = video_info_elements[1].text[1:-1].replace("/", ",")
-        video_info_year = video_info_elements[2].text
-        video_info_definition = video_info_elements[3].text
-        video_info_content = (video_info_elements[4].text.replace("[收起部分]", "").replace("[展开全部]", ""))
+        vod_detail.vod_director = video_info_elements[0].text.replace("/", "")  ##导演
+        vod_detail.vod_actor = video_info_elements[1].text[1:-1].replace("/", ",")
+        vod_detail.vod_year = video_info_elements[2].text
+        vod_detail.vod_remarks = "清晰度:{}, 制作人:Jade".format(video_info_elements[3].text)
+        vod_detail.vod_content = (video_info_elements[4].text.replace("[收起部分]", "").replace("[展开全部]", ""))
         share_url_elements = soup.select('.module-row-title')
         share_url_list = []
         for element in share_url_elements:
-            share_url_list.append({"name": element.contents[0].text, "url": element.contents[1].text})
+            share_url_list.append({"name": element.find("h4").text, "url":  element.find("p").text})
         # fileId = col[2]
         logger.info("获取视频详情成功,耗时:{}s".format("%.2f" % (time.time() - start_time)))
-        vod = {
-            "vod_id": tid,
-            "vod_name": page_title,
-            "vod_pic": mobile_play,
-            "type_name": video_info_aux_str,
-            "vod_year": video_info_year,
-            "vod_area": video_info_area,
-            "vod_remarks": "清晰度:{}, 制作人:Jade".format(video_info_definition),
-            "vod_actor": video_info_actor,
-            "vod_director": video_info_director,
-            "vod_content": video_info_content
-        }
         start_time = time.time()
-        share_url_list[0]["url"] = "https://www.aliyundrive.com/s/M7XgeZwKw2h"
-        play_from, play_url = self.ali.get_vod_name(share_url_list, page_title)
+        vod_detail.vod_play_from, vod_detail.vod_play_url = self.ali.get_vod_name(share_url_list, vod_detail.vod_name)
         logger.info("获取阿里云盘文件地址耗时:{}s".format("%.2f" % (time.time() - start_time)))
-        vod['vod_play_from'] = play_from
-        vod['vod_play_url'] = play_url
         result = {
             'list': [
-                vod
+                vod_detail.to_dict()
             ]
         }
         return result
