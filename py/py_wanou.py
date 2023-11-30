@@ -618,10 +618,10 @@ class Spider(Spider):
     def init(self, extend=""):
         # try:
         #     os.remove(os.path.join(os.environ["HOME"], "wanou.json"))
+        #     logger.info("删除玩偶JSON配置成功")
         # except:
         #     pass
         self.load_cache_config()
-        self.category_extend_dic = self.fetch("https://raw.githubusercontent.com/FongMi/CatVodSpider/main/json/wogg.json").json()
         logger.info("##################阿里玩偶爬虫脚本初始化完成##################")
         self.ali = Ali()
 
@@ -665,7 +665,6 @@ class Spider(Spider):
         vod_list = self.parseVodListFromDoc(self.tree)
         result["list"] = vod_list
         result["filters"] = self.category_extend_dic
-        logger.info("输出类别二级菜单:{}".format(json.dumps(result["filters"], indent=4, ensure_ascii=False)))
         logger.info("处理玩偶哥哥首页信息成功,耗时:{}s".format(("%.2f" % (time.time() - start_time))))
         return result
 
@@ -693,7 +692,7 @@ class Spider(Spider):
         elements = tree.xpath("//div[@class='scroll-content']")[1:]
         extend_list = []
         for i in range(len(elements)):
-            extend_dic = {"key": str(i), "name": "", "value": []}
+            extend_dic = {"key": str(i+1), "name": "", "value": []}
             if i < len(elements) - 1:
                 extend_dic["name"] = elements[i].xpath("a/text()")[0]
                 for ele in elements[i].xpath("div/a"):
@@ -701,54 +700,55 @@ class Spider(Spider):
                 extend_list.append(extend_dic)
             else:
                 extend_dic["name"] = elements[i].xpath("div/a")[0].xpath("text()")[0]
-                extend_dic["value"] = [{"n": elements[i].xpath("div/a")[1].xpath("text()")[0], "v": "time"},
-                                       {"n": elements[i].xpath("div/a")[2].xpath("text()")[0], "v":"hists"}]
+                extend_dic["value"] = [{"n": elements[i].xpath("div/a")[1].xpath("text()")[0], "v":"hits"},
+                                       {"n": elements[i].xpath("div/a")[2].xpath("text()")[0], "v":"score"}]
 
                 extend_list.append(extend_dic)
         return extend_list
 
     ## 分类详情
     def categoryContent(self, tid, pg, filter, extend):
-        """
-        String[] urlParams = new String[]{tid, "", "", "", "", "", "", "", pg, "", "", ""};
-        if (extend != null && extend.size() > 0) {
-            for (String key : extend.keySet()) {
-                urlParams[Integer.parseInt(key)] = extend.get(key);
-            }
-        }
-        String url = String.format("%s/index.php/vodshow/%s.html", siteUrl, String.join("-", urlParams));
-        Document doc = Jsoup.parse(OkHttp.string(String.format("%s/index.php/vodshow/%s.html", siteUrl, String.join("-", urlParams)), getHeader()));
-        int page = Integer.parseInt(pg), limit = 72, total = 0;
-        Matcher matcher = regexPageTotal.matcher(doc.html());
-        if (matcher.find()) total = Integer.parseInt(matcher.group(1));
-        int count = total <= limit ? 1 : ((int) Math.ceil(total / (double) limit));
-        return Result.get().vod(parseVodListFromDoc(doc)).page(page, count, limit, total).string();
 
-        :param tid:
-        :param pg:
-        :param filter:
-        :param extend:
-        :return:
-        {"jx": 0, "limit": 72, "list": [
-            {"vod_id": "/index.php/voddetail/82261.html", "vod_name": "那夜凌晨，我坐上了旺角开往大埔的红VAN",
-             "vod_pic": "https://svip.picffzy.com/upload/vod/20230313-1/f803ec81df8d20baebdb3a15a3880ea6.jpg",
-             "vod_remarks": "HD国语"}],
-         "page": 1, "pagecount": 39, "parse": 0, "total": 2759}
-        """
+        logger.info("tid:{},pg={},filter={},extend={},extend类型为:{}".format(tid,pg,filter,extend,type(extend)))
         start_time = time.time()
         urlParams = [str(tid), "", "", "", "", "", "", "", str(pg), "", "", ""]
+
+        """
+        tid为1的时候
+        urlParams#0表示类别,1表示全部地区,2表示人气评分,3表示全部剧情,4表示全部语言,5表示字母查找,6表示页数,11表示时间
+        #key为1,代表全部剧情
+        #key为2,代表全部地区
+        #key为3,代表全部语言
+        #key为4,代表全部时间
+        #key为5,字幕查找
+        #key为6,人气评分
+        https://www.wogg.xyz/index.php/vodshow/1-全部地区-人气评分-全部剧情-全部语言-字幕查找------全部时间.html
+        """
         try:
             for key in list(extend.keys()):
-                urlParams[key] = extend[key]
+                if key == "1":
+                    urlParams[3] = extend[key]
+                if key == "2":
+                    urlParams[1] = extend[key]
+                if key == "3":
+                    urlParams[4] = extend[key]
+                if key == "4":
+                    urlParams[11] = extend[key]
+                if key == "5":
+                    urlParams[5] = extend[key]
+                if key == "6":
+                    urlParams[2] = extend[key]
         except:
             pass
         url = "{}/index.php/vodshow/{}.html".format(self.home_url, "-".join(urlParams))
+        logger.info("分类URL为:{}".format(url))
         response = self.fetch(url)
         tree = html.fromstring(response.text)
         if str(tid) in self.category_extend_dic.keys():
             pass
         else:
             self.category_extend_dic[str(tid)] = self.getExtent(tree)
+            logger.info("写入玩偶JSON:{}".format(json.dumps(self.category_extend_dic,indent=4,ensure_ascii=False)))
             self.write_cache_config()
         limit = 72  ## 一页有72条数据
         total = 0

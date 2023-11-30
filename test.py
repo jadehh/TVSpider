@@ -34,10 +34,10 @@ def test_wanou():
     start_time = time.time()
     spider = Spider()
     spider.init()
-    content_list = spider.homeContent(True)
+    #content_list = spider.homeContent(True)
     # so
     #content_list = spider.searchContent("莲花楼")["list"]
-    content_list = spider.categoryContent(1,1,True,None)["list"]
+    content_list = spider.categoryContent(1,1,True,{"5":"A"})["list"]
 
     for content in [content_list[1]]:
         vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
