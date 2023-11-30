@@ -12,4 +12,5 @@ https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/py/py.json
 https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/py/test.json
 ```
 ## 待优化功能
-* 待优化功能为:优化玩偶哥哥其他二级菜单选项
+* 待优化功能为:优化玩偶哥哥其他二级菜单选项,综艺,短片,和音乐部分
+* 阿里字幕匹配
