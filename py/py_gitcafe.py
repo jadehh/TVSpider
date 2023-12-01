@@ -27,11 +27,20 @@ class Spider(BaseSpider):
         return "阿里纸条"
     def init(self, extend=""):
         self.init_logger()
+        self.load_cache_config()
+        self.ali = Ali()
         rsp = self.fetch(self.home_url)
         self.xiaozhitiao_json = rsp.json()
-        self.ali = Ali()
-        self.token = None
-        self.date = 0
+
+
+
+    def load_cache_config(self):
+        try:
+            self.token_dic = self.load_config(self.getName())
+        except Exception as e:
+            self.logger.error("读取缓存失败,失败原因为:{}".format(e))
+            self.token_dic = self.write_config({"token":"","date":""},self.getName())
+
 
     ## 分类
     ## 分类
@@ -92,11 +101,14 @@ class Spider(BaseSpider):
                 vod_dic = self.xiaozhitiao_json["list"][int(id.split("-----")[-1])]
             else:
                 vod_dic = self.xiaozhitiao_json["clasess"][int(id.split("-----")[0])]["list"][int(id.split("-----")[-1])]
+            vod_detail = VodDetail()
+            vod_detail.load_dic(vod_dic)
+            share_url_list = [{"name": self.getName(), "url": vod_detail.vod_id}]
         else:
-            self.logger.info("这是搜索的array")
-        vod_detail = VodDetail()
-        vod_detail.load_dic(vod_dic)
-        share_url_list = [{"name": self.getName(), "url":vod_detail.vod_id}]
+            vod_dic = self.search_dic[id]
+            vod_detail = VodDetail()
+            vod_detail.load_dic(vod_dic)
+            share_url_list = [{"name": self.getName(), "url": vod_detail.vod_content}]
         vod_detail.vod_play_from, vod_detail.vod_play_url = self.ali.get_vod_name(share_url_list, vod_detail.vod_name)
         self.logger.info("获取阿里云盘文件地址耗时:{}s".format("%.2f" % (time.time() - start_time)))
         result = {
@@ -113,8 +125,31 @@ class Spider(BaseSpider):
             "token":self.get_token(),
             "keyword":key
         }
-        response = self.post(self.api_url,json.dumps(params),self.header)
-        print(response)
+        results = {"jx": 0, "parse": 0,"list":[]}
+        try:
+            response = self.post(self.api_url,data=params,headers=self.header)
+            if response.status_code == 200:
+                data_list = response.json()["data"]
+                vod_list = []
+                self.search_dic = {}
+                for data in data_list:
+                    vodDetail = VodDetail()
+                    vodDetail.vod_content = "https://www.aliyundrive.com/s/" + data["alikey"]
+                    vodDetail.vod_id = str(data["id"])
+                    vodDetail.vod_name = data["title"]
+                    vodDetail.type_name = data["cat"]
+                    vod_list.append(vodDetail.to_dict())
+                    self.search_dic[vodDetail.vod_id] = vodDetail.to_dict()
+                results["list"] = vod_list
+                self.logger.info("搜索成功")
+            else:
+                self.logger.error("搜索失败,失败原因为:{}".format("服务不可用"))
+                time.sleep(2)
+                return self.searchContent(key, quick=True)
+        except Exception as e:
+            self.logger.error("搜索失败,失败原因为:{}".format(e))
+        return results
+
 
     def playerContent(self, flag, id, vipFlags):
         # flag指的是vod format
@@ -129,14 +164,27 @@ class Spider(BaseSpider):
         return header
 
     def get_token(self):
-        if self.token is None:
+        is_get_token = False
+        try:
+            if len(self.token_dic["token"]) == 0 or time.time() - float(self.token_dic["date"]) > 24 * 60 * 60 * 1000:
+                is_get_token = True
+        except:
+            is_get_token = True
+        if is_get_token is True:
             params = {
                 "action": "get_token",
                 "from": "web",
             }
-            response = requests.post(self.api_url,params=params,headers=self.get_header())
-            print(response.text)
-        print("Done")
+            try:
+                response = requests.post(self.api_url,data=params,headers=self.get_header())
+                self.token_dic["token"] = response.json()["data"]
+                self.token_dic["date"] = str(time.time())
+                self.write_config(self.token_dic,self.getName())
+                self.logger.info("请求小纸条Token成功")
+            except Exception as e:
+                self.logger.error("请求小纸条Token失败,失败原因为:{}".format(e))
+
+        return self.token_dic["token"]
 
 
 

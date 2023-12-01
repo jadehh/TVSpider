@@ -90,6 +90,10 @@ class Logger(object):
 
     def get_logger(self):
         return logging.getLogger(self.name)
+
+
+
+
 class Ali():
 
     def __init__(self):
@@ -97,19 +101,29 @@ class Ali():
         self.APIUrl = "https://api.aliyundrive.com"
         self.PlayFromat = ["超清(720P)", "高清(1080P)", "超清(4k)"]
         self.ali_json = {"auth_token": "test",
-                         "qauth_token": "test"}
-        self.drive_id = "303583582"
+                         "qauth_token": "test",
+                         "drive_id":"test"}
         self.headers = {'Content-Type': 'application/json',
                         "X-Canary": "client=Android,app=adrive,version=v4.3.1",
                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
                         "Referer": "https://www.aliyundrive.com/"}
 
         # self.remove_config()
-        self.root_file_json = {}
-        self.load_cache_config()
         self.load_root_file_config()
         self.clear_root_file_json()
         self.definition_dic = {"高清": 'FHD', "超清": 'HD', "标清": 'SD'}
+
+    def getDriveId(self):
+        headers = copy.copy(self.headers)
+        url = "https://user.aliyundrive.com/v2/user/get"
+        headers["authorization"] = self.ali_json["auth_token"]
+        response = self.post(url, json.dumps({}), headers=headers)
+        if response.status_code == 200:
+            self.ali_json["drive_id"] = response.json()["default_drive_id"]
+            self.write_cache_config()
+        else:
+            self.logger.error("获取drive ID失败:失败原因为:{}".format(response.text))
+
 
     def post(self, url, data, headers):
         try:
@@ -179,7 +193,7 @@ class Ali():
         if file_id:
             headers = copy.copy(self.headers)
             headers["authorization"] = self.ali_json["qauth_token"]
-            params = {"file_id": file_id, "drive_id": self.drive_id, "category": "live_transcoding",
+            params = {"file_id": file_id, "drive_id": self.ali_json["drive_id"], "category": "live_transcoding",
                       "url_expire_sec": "14400"}
             response = self.post(url, json.dumps(params), headers=headers)
             if response.status_code == 200:
@@ -212,7 +226,7 @@ class Ali():
         url = "https://open.aliyundrive.com/adrive/v1.0/openFile/getDownloadUrl"
         file_id = self.get_batch_file(file_name, size, file_id, share_id)
         if file_id:
-            params = {"file_id": file_id, "drive_id": self.drive_id}
+            params = {"file_id": file_id, "drive_id": self.ali_json["drive_id"]}
             headers = copy.copy(self.headers)
             headers["authorization"] = self.ali_json["qauth_token"]
             response = self.post(url, json.dumps(params), headers=headers)
@@ -235,7 +249,7 @@ class Ali():
 
     def delete_file(self, file_name):
         url = "https://api.aliyundrive.com/v2/recyclebin/trash"
-        params = {"drive_id": self.drive_id, "file_id": self.root_file_json[file_name]["file_id"]}
+        params = {"drive_id": self.ali_json["drive_id"], "file_id": self.root_file_json[file_name]["file_id"]}
         headers = copy.copy(self.headers)
         headers["authorization"] = self.ali_json["auth_token"]
         response = self.post(url, json.dumps(params), headers=headers)
@@ -244,20 +258,18 @@ class Ali():
             return True
         else:
             if "AccessTokenInvalid" in response.text:
-                self.logger.error(
-                    "删除失败,file id为:{},Token失效,重新登录".format(self.root_file_json[file_name]["file_id"],
-                                                                      response.text))
+                self.logger.error("删除失败,file id为:{},Token失效,重新登录".format(self.root_file_json[file_name]["file_id"],response.text))
                 self.get_ali_login()
                 self.delete_file(file_name)
             elif "NotFound.FileId" in response.text:
                 del self.root_file_json[file_name]
                 self.write_root_file_config()
             else:
-                self.logger.error("删除失败,file id为:{},失败原因为:{}".format(file_id, response.text))
+                self.logger.error("删除失败,file id为:{},失败原因为:{}".format(self.root_file_json[file_name]["file_id"], response.text))
 
     def get_root_files(self):
         url = "https://api.aliyundrive.com/adrive/v3/file/list?jsonmask=next_marker%2Citems(name%2Cfile_id%2Cdrive_id%2Ctype%2Csize%2Ccreated_at%2Cupdated_at%2Ccategory%2Cfile_extension%2Cparent_file_id%2Cmime_type%2Cstarred%2Cthumbnail%2Curl%2Cstreams_info%2Ccontent_hash%2Cuser_tags%2Cuser_meta%2Ctrashed%2Cvideo_media_metadata%2Cvideo_preview_metadata%2Csync_meta%2Csync_device_flag%2Csync_flag%2Cpunish_flag)"
-        params = {"all": True, "drive_id": self.drive_id, "fields": "*",
+        params = {"all": True, "drive_id": self.ali_json["drive_id"], "fields": "*",
                   "image_thumbnail_process": "image/resize,w_256/format,avif",
                   "image_url_process": "image/resize,w_1920/format,avif", "limit": 200,
                   "order_by": "updated_at", "order_direction": "DESC",
@@ -300,7 +312,7 @@ class Ali():
                             "share_id": share_id,
                             "auto_rename": True,
                             "to_parent_file_id": "root",
-                            "to_drive_id": self.drive_id
+                            "to_drive_id": self.ali_json["drive_id"]
                         },
                         "headers": {
                             "Content-Type": "application/json"
@@ -335,10 +347,12 @@ class Ali():
                     if "QuotaExhausted.Drive" in response.text:
                         self.logger.error("转存文件失败,检查网盘容量是否已满")
                     else:
-                        self.logger.error(
-                            "转存文件失败,file id为:{},share id为:{},失败原因为:{}".format(file_id, share_id,
-                                                                                           response.text))
-                    return None
+                        if "No Permission to access resource File" in response.text:
+                            self.getDriveId()
+                            return self.get_batch_file(file_name, size, file_id, share_id)
+                        else:
+                            self.logger.error("转存文件失败,file id为:{},share id为:{},失败原因为:{}".format(file_id, share_id,response.text))
+                            return None
             else:
                 self.logger.error("转存文件失败,失败原因为:{}".format(response.text))
                 try:
@@ -363,7 +377,6 @@ class Ali():
         else:
             self.ali_json["auth_token"] = response.json()['token_type'] + " " + response.json()['access_token']
             self.write_cache_config()
-
     def get_share_file_id(self, share_id):
         url = self.APIUrl + "/adrive/v3/share_link/get_share_by_anonymous"
         params = {
@@ -618,10 +631,6 @@ class Ali():
         episode_str = ["#".join(episode)] * len(play_foramt_list)
         return "$$$".join(play_foramt_list), "$$$".join(episode_str)
 
-
-
-
-
 class BaseSpider(metaclass=ABCMeta):
     _instance = None
     tree = None
@@ -681,6 +690,19 @@ class BaseSpider(metaclass=ABCMeta):
         self.logger = Logger(self.getName()).get_logger()
         self.logger.info("##################{}爬虫脚本初始化完成##################".format(self.getName()))
 
+
+    def write_config(self,dic,name):
+        if os.path.exists(os.path.join(os.environ.get("HOME"),"tmp")):
+            pass
+        else:
+            os.mkdir(os.path.join(os.environ.get("HOME"),"tmp"))
+        with open(os.path.join(os.environ.get("HOME"),"tmp","{}.json".format(name)),"wb") as f:
+            f.write(json.dumps(dic,indent=4,ensure_ascii=False).encode("utf-8"))
+        return dic
+
+    def load_config(self,name):
+        with open(os.path.join(os.environ.get("HOME"),"tmp","{}.json".format(name)),"rb") as f:
+            return json.load(f)
 
     def fetch(self, url,header=None):
         try:

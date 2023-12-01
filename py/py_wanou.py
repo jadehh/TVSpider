@@ -41,21 +41,13 @@ class Spider(BaseSpider):
         self.ali = Ali()
 
     def load_cache_config(self):
-        if os.path.exists(os.path.join(os.environ["HOME"], "wanou.json")):
-            try:
-                with open(os.path.join(os.environ["HOME"], "wanou.json"), "rb") as f:
-                    self.category_extend_dic = json.load(f)
-            except:
-                os.remove(os.path.join(os.environ["HOME"], "wanou.json"))
-                self.category_extend_dic = {}
-                self.write_cache_config()
-        else:
-            self.category_extend_dic = {}
-            self.write_cache_config()
+        try:
+            self.category_extend_dic = self.load_config("wanou.json")
+        except:
+            self.category_extend_dic = self.write_config({},"wanou.json")
 
     def write_cache_config(self):
-        with open(os.path.join(os.environ["HOME"], "wanou.json"), "wb") as f:
-            f.write(json.dumps(self.category_extend_dic, indent=4, ensure_ascii=False).encode("utf-8"))
+        self.write_config(self.category_extend_dic,"wanou.json")
 
     ## 分类
     ## 分类
