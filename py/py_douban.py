@@ -107,10 +107,11 @@ class Ali():
                         "X-Canary": "client=Android,app=adrive,version=v4.3.1",
                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
                         "Referer": "https://www.aliyundrive.com/"}
-
+        self.root_file_json = {}
         # self.remove_config()
         self.load_root_file_config()
         self.clear_root_file_json()
+        self.load_cache_config()
         self.definition_dic = {"高清": 'FHD', "超清": 'HD', "标清": 'SD'}
 
     def getDriveId(self):
@@ -347,7 +348,7 @@ class Ali():
                     if "QuotaExhausted.Drive" in response.text:
                         self.logger.error("转存文件失败,检查网盘容量是否已满")
                     else:
-                        if "No Permission to access resource File" in response.text:
+                        if "No Permission to access resource File" in response.text or "The resource drive cannot be found" in response.text:
                             self.getDriveId()
                             return self.get_batch_file(file_name, size, file_id, share_id)
                         else:
