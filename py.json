@@ -21,13 +21,23 @@
     },
     {
       "key": "py_yunpanshare",
-      "name": "💂‍┃网盘分享┃💂",
+      "name": "🥏‍┃网盘分享┃🥏",
       "type": 3,
       "api": "py_yunpanshare",
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
       "ext": "http://192.168.29.156:8099/py/py_yunpanshare.py"
+    },
+     {
+      "key": "py_gitcafe",
+      "name": "📜┃阿里纸条┃📜",
+      "type": 3,
+      "api": "py_gitcafe",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "http://192.168.29.156:8099/py/py_gitcafe.py"
     }
   ],
   "ijk": [
