@@ -42,12 +42,12 @@ class Spider(BaseSpider):
 
     def load_cache_config(self):
         try:
-            self.category_extend_dic = self.load_config("wanou.json")
+            self.category_extend_dic = self.load_config(self.getName())
         except:
-            self.category_extend_dic = self.write_config({},"wanou.json")
+            self.category_extend_dic = self.write_config({},self.getName())
 
     def write_cache_config(self):
-        self.write_config(self.category_extend_dic,"wanou.json")
+        self.write_config(self.category_extend_dic,self.getName())
 
     ## 分类
     ## 分类

@@ -100,4 +100,4 @@ def test_gitcafe():
 
 
 if __name__ == '__main__':
-    test_wanou()
+    test_douban()

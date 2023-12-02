@@ -108,10 +108,9 @@ class Ali():
                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
                         "Referer": "https://www.aliyundrive.com/"}
         self.root_file_json = {}
-        # self.remove_config()
+        self.load_cache_config()
         self.load_root_file_config()
         self.clear_root_file_json()
-        self.load_cache_config()
         self.definition_dic = {"高清": 'FHD', "超清": 'HD', "标清": 'SD'}
 
     def getDriveId(self):
@@ -122,6 +121,7 @@ class Ali():
         if response.status_code == 200:
             self.ali_json["drive_id"] = response.json()["default_drive_id"]
             self.write_cache_config()
+            self.logger.info("获取drive ID成功")
         else:
             self.logger.error("获取drive ID失败:失败原因为:{}".format(response.text))
 
@@ -350,6 +350,7 @@ class Ali():
                     else:
                         if "No Permission to access resource File" in response.text or "The resource drive cannot be found" in response.text:
                             self.getDriveId()
+                            self.clear_root_file_json()
                             return self.get_batch_file(file_name, size, file_id, share_id)
                         else:
                             self.logger.error("转存文件失败,file id为:{},share id为:{},失败原因为:{}".format(file_id, share_id,response.text))
@@ -693,16 +694,16 @@ class BaseSpider(metaclass=ABCMeta):
 
 
     def write_config(self,dic,name):
-        if os.path.exists(os.path.join(os.environ.get("HOME"),"tmp")):
+        if os.path.exists(os.path.join(os.environ.get("HOME"))):
             pass
         else:
-            os.mkdir(os.path.join(os.environ.get("HOME"),"tmp"))
-        with open(os.path.join(os.environ.get("HOME"),"tmp","{}.json".format(name)),"wb") as f:
+            os.mkdir(os.path.join(os.environ.get("HOME")))
+        with open(os.path.join(os.environ.get("HOME"),"{}.json".format(name)),"wb") as f:
             f.write(json.dumps(dic,indent=4,ensure_ascii=False).encode("utf-8"))
         return dic
 
     def load_config(self,name):
-        with open(os.path.join(os.environ.get("HOME"),"tmp","{}.json".format(name)),"rb") as f:
+        with open(os.path.join(os.environ.get("HOME"),"{}.json".format(name)),"rb") as f:
             return json.load(f)
 
     def fetch(self, url,header=None):
@@ -775,11 +776,11 @@ class BaseSpider(metaclass=ABCMeta):
         try:
             file_list = os.listdir(os.environ.get("HOME"))
             for file_name in file_list:
-                if ".json" in file_name:
+                if os.path.isfile(os.path.join(os.environ.get("HOME"),file_name)):
                     os.remove(os.path.join(os.environ.get("HOME"),file_name))
-                    self.logger.info("文件名称为:{},删除成功".format(file_name))
+                    print("文件名称为:{},删除成功".format(file_name))
         except Exception as e:
-            self.logger.info("删除失败,失败原因为:{}".format(e))
+            print("删除失败,失败原因为:{}".format(e))
             pass
 
     def write_html(self,url,html_name):
@@ -826,9 +827,11 @@ class Spider(BaseSpider):
     session = requests.session()
     home_url = 'https://movie.douban.com/'
 
+
     def getName(self):
         return "豆瓣"
     def init(self, extend=""):
+        self.clear()  ## 删除所有的文件
         self.init_logger()
 
     def parseVodListFromJSONArray(self,items):

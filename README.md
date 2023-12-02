@@ -3,7 +3,7 @@
 ## 1. 常用
 
 ```bash
-https://gh-proxy.com/https://raw.githubusercontent.com/jadehh/TV/py/py.json
+https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py.json
 ```
 
 ## 2. 测试接口
