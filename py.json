@@ -313,7 +313,7 @@
       ]
     }
   ],
-  "spider": "http://192.168.29.156:8099/jar/custom_spider.jar",
+  "spider": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/jar/custom_spider.jar",
   "lives": [
     {
       "group": "redirect",
