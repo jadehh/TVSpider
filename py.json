@@ -7,7 +7,7 @@
       "api": "py_douban",
       "searchable": 0,
       "changeable": 1,
-      "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_douban.py"
+      "ext": "http://192.168.29.156:8099/py/py_douban.py"
     },
     {
       "key": "py_wanou",
@@ -17,7 +17,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_wanou.py"
+      "ext": "http://192.168.29.156:8099/py/py_wanou.py"
     },
     {
       "key": "py_yunpanshare",
@@ -27,7 +27,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_yunpanshare.py"
+      "ext": "http://192.168.29.156:8099/py/py_yunpanshare.py"
     },
      {
       "key": "py_gitcafe",
@@ -37,7 +37,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_gitcafe.py"
+      "ext": "http://192.168.29.156:8099/py/py_gitcafe.py"
     },
      {
       "key": "py_pansou",
@@ -47,7 +47,7 @@
       "searchable": 1,
       "quickSearch": 1,
       "filterable": 1,
-      "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_pansou.py"
+      "ext": "http://192.168.29.156:8099/py/py_pansou.py"
     }
   ],
   "ijk": [
@@ -323,7 +323,7 @@
       ]
     }
   ],
-  "spider": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/jar/custom_spider.jar",
+  "spider": "http://192.168.29.156:8099/jar/custom_spider.jar",
   "lives": [
     {
       "group": "redirect",

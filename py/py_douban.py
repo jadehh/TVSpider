@@ -29,8 +29,8 @@ class VodShort(object):
     def __init__(self):
         self.vod_id = ""  ## id
         self.vod_name = ""  ## 名称
-        self.vod_pic = ""  ## 图片
-        self.vod_remarks = "制作人:简得辉"  ## 备注
+        self.vod_pic = "{}/jpg/ali.jpg".format(LocalAddress)  ## 图片
+        self.vod_remarks = ""  ## 备注
 
     def to_dict(self):
         dic = {}
@@ -115,6 +115,7 @@ class Ali():
         self.root_file_json = {}
         self.load_cache_config()
         self.load_root_file_config()
+        self.clear_root_file_json()
         self.definition_dic = {"高清": 'FHD', "超清": 'HD', "标清": 'SD'}
         # self.clear_file_by_size()
 
@@ -141,8 +142,8 @@ class Ali():
     def clear_root_file_json(self):
         for file_name in list(self.root_file_json.keys()):
             try:
-                del self.root_file_json[file_name]
                 delete_status = self.delete_by_file_id(self.root_file_json[file_name]["file_id"])
+                del self.root_file_json[file_name]
             except Exception as e:
                 self.logger.error("删除失败,失败原因为:名称为:{},无法找出file id".format(file_name))
         self.write_root_file_config()
@@ -266,6 +267,9 @@ class Ali():
                 elif "This operation is forbidden for file in the recycle bin" in response.text:
                     self.clear_root_file_json()
                     self.logger.error("获取原画下载链接失败,转存文件被删除,需要重新保存")
+                    return self.get_download_url(file_name, size, file_id, share_id)
+                elif "Failed to invoke the method isUserLimitDownloadOrVideo" in response.text:
+                    self.logger.error("获取原画下载链接失败,重新获取")
                     return self.get_download_url(file_name, size, file_id, share_id)
                 else:
                     self.logger.error("获取原画下载链接失败,失败原因为:{}".format(response.text))
@@ -684,10 +688,16 @@ class Ali():
                 "share_id"] + "+++" + video_file["file_id"] + sub_str
             episode.append(epi_str)
         episode = sorted(episode, key=self.sort_by_name_str)
-        ## 自定义清晰度
-        play_foramt_list = ["原画", "超清", "高清", "标清"]
-        episode_str = ["#".join(episode)] * len(play_foramt_list)
-        return "$$$".join(play_foramt_list), "$$$".join(episode_str)
+        if len(episode) > 0:
+            ## 自定义清晰度
+            play_foramt_list = ["原画", "超清", "高清", "标清"]
+            episode_str = ["#".join(episode)] * len(play_foramt_list)
+            return "$$$".join(play_foramt_list), "$$$".join(episode_str)
+        else:
+            self.logger.error("获取视频链接失败,请检查分享链接")
+            return "",""
+
+
 
 
 class BaseSpider(metaclass=ABCMeta):

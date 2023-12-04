@@ -129,25 +129,30 @@ class Spider(BaseSpider):
         try:
             response = self.post(self.api_url,data=params,headers=self.header)
             if response.status_code == 200:
-                data_list = response.json()["data"]
-                vod_list = []
-                self.search_dic = {}
-                for data in data_list:
-                    vodDetail = VodDetail()
-                    vodDetail.vod_content = "https://www.aliyundrive.com/s/" + data["alikey"]
-                    vodDetail.vod_id = str(data["id"])
-                    vodDetail.vod_name = data["title"]
-                    vodDetail.type_name = data["cat"]
-                    vod_list.append(vodDetail.to_dict())
-                    self.search_dic[vodDetail.vod_id] = vodDetail.to_dict()
-                results["list"] = vod_list
-                self.logger.info("搜索成功")
+                if "无此关键词资源，试试其他关键词吧" in response.text:
+                    self.logger.error("搜索失败,失败原因为:{}".format(response.text))
+                else:
+                    data_list = response.json()["data"]
+                    vod_list = []
+                    self.search_dic = {}
+                    for data in data_list:
+                        vodDetail = VodDetail()
+                        vodDetail.vod_content = "https://www.aliyundrive.com/s/" + data["alikey"]
+                        vodDetail.vod_id = str(data["id"])
+                        vodDetail.vod_name = data["title"]
+                        vodDetail.type_name = data["cat"]
+                        vod_list.append(vodDetail.to_dict())
+                        self.search_dic[vodDetail.vod_id] = vodDetail.to_dict()
+                    results["list"] = vod_list
+                    self.logger.info("搜索成功")
             else:
                 self.logger.error("搜索失败,失败原因为:{}".format("服务不可用"))
                 time.sleep(2)
                 return self.searchContent(key, quick=True)
         except Exception as e:
             self.logger.error("搜索失败,失败原因为:{}".format(e))
+            time.sleep(2)
+            return self.searchContent(key, quick=True)
         return results
 
 

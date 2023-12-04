@@ -63,7 +63,6 @@ class Spider(BaseSpider):
                 con_element = vod_element.contents[0]
                 vod_detail.vod_name = con_element.text.split(".")[-1].strip()
                 vod_detail.vod_id = con_element.attrs["href"]
-                vod_detail.vod_pic = "https://img.alicdn.com/imgextra/i1/O1CN01rGJZac1Zn37NL70IT_!!6000000003238-2-tps-230-180.png"
                 vod_list.append(vod_detail.to_dict())
             pan_sou_list[index]["vod_list"] = vod_list
 
@@ -96,12 +95,12 @@ class Spider(BaseSpider):
                 vod_detail.vod_id = self.home_url + "/cv/" + element.attrs['href'].split("/")[-1]
             else:
                 vod_detail.vod_id = element.attrs['href']
-                vod_detail.vod_year = element.find_all("div")[1].contents[0].replace(" ", "")[4:-5]
+            vod_detail.vod_year = element.find_all("div")[1].contents[0].replace(" ", "")[4:-5]
+            vod_detail.vod_remarks = vod_detail.vod_year
             span_elements = element.find_all("span")
             for span_element in span_elements:
-                vod_detail.vod_name = vod_detail.vod_name + span_element.contents[0]
-            vod_detail.vod_name = vod_detail.vod_name + " 更新时间:" + vod_detail.vod_year
-            vod_detail.vod_pic = self.home_url + element.find_all("van-card")[0].attrs['thumb']
+                 vod_detail.vod_name = vod_detail.vod_name + span_element.string
+            vod_detail.vod_name = vod_detail.vod_name
             return vod_detail
         except Exception  as e:
             return None
@@ -111,8 +110,8 @@ class Spider(BaseSpider):
         elements = soup.find_all("van-cell")[:4]
         vod_detail = VodDetail()
         vod_detail.vod_name = elements[0].attrs["value"]
-        vod_detail.vod_remarks = "类型:{}".format(elements[2].attrs["title"])
         vod_detail.vod_year = elements[3].text.strip()
+        vod_detail.vod_remarks = vod_detail.vod_year
         return vod_detail
 
     ## 详情界面
@@ -122,7 +121,7 @@ class Spider(BaseSpider):
         rsp = self.fetch(self.home_url + id)
         soup = BeautifulSoup(rsp.text, "lxml")
         if "search" in id:
-            vod_detail = self.paraseDetailVodFromElement(soup.find_all("a"))
+            vod_detail = self.paraseDetailVodFromElement(soup.find_all("a")[3])
         else:
             vod_detail = self.paraseDetailVodFromSoup(soup)
             vod_detail.vod_id = self.home_url + "/cv/" + id.split("/")[-1]

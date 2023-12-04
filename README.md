@@ -4,6 +4,7 @@
 
 ```bash
 https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py.json
+http://192.168.29.156:8099/py.json
 ```
 
 ## 2. 测试接口

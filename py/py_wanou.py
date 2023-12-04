@@ -256,6 +256,8 @@ class Spider(BaseSpider):
         return result
 
     def searchContent(self, key, quick=True):
+        key = key.replace(" ","")
+        self.logger.info("开始搜索:{}".format(key))
         start_time = time.time()
         url = self.home_url + "/index.php/vodsearch/{}----------1---.html".format(key)
         header = copy.copy(self.header)
