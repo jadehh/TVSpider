@@ -38,6 +38,16 @@
       "quickSearch": 1,
       "filterable": 1,
       "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_gitcafe.py"
+    },
+     {
+      "key": "py_pansou",
+      "name": "📜┃阿里盘搜┃📜",
+      "type": 3,
+      "api": "py_pansou",
+      "searchable": 1,
+      "quickSearch": 1,
+      "filterable": 1,
+      "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_pansou.py"
     }
   ],
   "ijk": [
