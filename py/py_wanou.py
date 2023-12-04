@@ -258,8 +258,14 @@ class Spider(BaseSpider):
     def searchContent(self, key, quick=True):
         start_time = time.time()
         url = self.home_url + "/index.php/vodsearch/{}----------1---.html".format(key)
-        rsp = self.fetch(url)
+        header = copy.copy(self.header)
+        header['Cache-Control'] = 'no-cache'
+        rsp = requests.get(url,headers=self.header)
         soup = BeautifulSoup(rsp.text, 'lxml')
+        if "请不要频繁操作" in soup.text:
+            rsp.close()
+            time.sleep(5)
+            return self.searchContent(key,quick)
         results = {"jx": 0, "parse": 0}
         elements = soup.select(".module-search-item")
         vod_list = []
@@ -272,7 +278,18 @@ class Spider(BaseSpider):
             vodRemarks = element.select(".video-tag-icon")[0].text
             vod_list.append({"vod_id": vodId, "vod_name": vodName, "vod_pic": vodPic, "vod_remarks": vodRemarks})
         results["list"] = vod_list
-        self.logger.info("搜索成功,耗时:{}s".format("%.2f" % (time.time() - start_time)))
+        if len(vod_list) == 0 and self.search_index == 0:
+            self.search_index = -1
+            status,new_key = self.num2cn(key)
+            if status:
+                rsp.close()
+                self.logger.info("搜索失败,搜索名称为:{},搜索新名称为:{}".format(key,new_key))
+                time.sleep(1)
+                return self.searchContent(new_key,quick)
+        else:
+            self.search_index = 0
+        if len(vod_list) > 0:
+            self.logger.info("搜索成功,搜索名称为:{},耗时:{}s".format(key, "%.2f" % (time.time() - start_time)))
         return results
 
     def playerContent(self, flag, id, vipFlags):

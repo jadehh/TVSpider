@@ -23,41 +23,47 @@ from abc import abstractmethod, ABCMeta
 from importlib.machinery import SourceFileLoader
 
 LocalAddress = "http://192.168.29.156:8099/"
+
+
 class VodShort(object):
     def __init__(self):
-        self.vod_id = ""                           ## id
-        self.vod_name = ""                         ## 名称
-        self.vod_pic = ""                          ## 图片
-        self.vod_remarks = "制作人:简得辉"            ## 备注
+        self.vod_id = ""  ## id
+        self.vod_name = ""  ## 名称
+        self.vod_pic = ""  ## 图片
+        self.vod_remarks = "制作人:简得辉"  ## 备注
+
     def to_dict(self):
         dic = {}
         for item in self.__dict__.items():
             dic[item[0]] = item[1]
         return dic
 
-    def load_dic(self,dic):
+    def load_dic(self, dic):
         for key in list(dic.keys()):
             if key in list(self.to_dict().keys()):
                 setattr(self, key, dic[key])
+
+
 class VodDetail(VodShort):
     def __init__(self):
         super().__init__()
-        self.type_name = ""              ## 类别
-        self.vod_year = ""               ## 年份
-        self.vod_area = ""               ## 地区
-        self.vod_actor = ""              ## 导演
-        self.vod_director = ""           ## 演员
-        self.vod_content = ""            ## 剧情
-        self.vod_play_from = ""          ## 播放格式
-        self.vod_play_url = ""           ## 播放连接
-
+        self.type_name = ""  ## 类别
+        self.vod_year = ""  ## 年份
+        self.vod_area = ""  ## 地区
+        self.vod_actor = ""  ## 导演
+        self.vod_director = ""  ## 演员
+        self.vod_content = ""  ## 剧情
+        self.vod_play_from = ""  ## 播放格式
+        self.vod_play_url = ""  ## 播放连接
 
     def to_short(self):
         vodShort = VodShort()
         vodShort.load_dic(self.to_dict())
         return vodShort.to_dict()
+
+
 class Logger(object):
-    def __init__(self,name):
+    def __init__(self, name):
         self.name = name
         logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
         LOGGING_CONFIG = {
@@ -92,8 +98,6 @@ class Logger(object):
         return logging.getLogger(self.name)
 
 
-
-
 class Ali():
 
     def __init__(self):
@@ -102,16 +106,17 @@ class Ali():
         self.PlayFromat = ["超清(720P)", "高清(1080P)", "超清(4k)"]
         self.ali_json = {"auth_token": "test",
                          "qauth_token": "test",
-                         "drive_id":"test"}
+                         "drive_id": "test"}
         self.headers = {'Content-Type': 'application/json',
                         "X-Canary": "client=Android,app=adrive,version=v4.3.1",
                         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
                         "Referer": "https://www.aliyundrive.com/"}
+        self.max_free_size = 500  ## 云盘剩余容量
         self.root_file_json = {}
         self.load_cache_config()
         self.load_root_file_config()
-        self.clear_root_file_json()
         self.definition_dic = {"高清": 'FHD', "超清": 'HD', "标清": 'SD'}
+        # self.clear_file_by_size()
 
     def getDriveId(self):
         headers = copy.copy(self.headers)
@@ -125,7 +130,6 @@ class Ali():
         else:
             self.logger.error("获取drive ID失败:失败原因为:{}".format(response.text))
 
-
     def post(self, url, data, headers):
         try:
             rsp = requests.post(url, data=data, headers=headers)
@@ -137,12 +141,10 @@ class Ali():
     def clear_root_file_json(self):
         for file_name in list(self.root_file_json.keys()):
             try:
-                delete_status = self.delete_file(file_name)
-                if delete_status:
-                    del self.root_file_json[file_name]
-            except:
-                self.logger.error("删除失败,失败原因为:名称为:{},无法找出file id".format(file_name))
                 del self.root_file_json[file_name]
+                delete_status = self.delete_by_file_id(self.root_file_json[file_name]["file_id"])
+            except Exception as e:
+                self.logger.error("删除失败,失败原因为:名称为:{},无法找出file id".format(file_name))
         self.write_root_file_config()
         self.logger.info("初始化阿里云盘,删除缓存的文件")
 
@@ -171,7 +173,7 @@ class Ali():
 
     def write_cache_config(self):
         with open(os.path.join(os.environ["HOME"], "ali.json"), "wb") as f:
-            f.write(json.dumps(self.ali_json).encode("utf-8"))
+            f.write(json.dumps(self.ali_json, indent=True, ensure_ascii=False).encode("utf-8"))
 
     def load_root_file_config(self):
         if os.path.exists(os.path.join(os.environ["HOME"], "root_file.json")):
@@ -186,7 +188,87 @@ class Ali():
 
     def write_root_file_config(self):
         with open(os.path.join(os.environ["HOME"], "root_file.json"), "wb") as f:
-            f.write(json.dumps(self.root_file_json).encode("utf-8"))
+            f.write(json.dumps(self.root_file_json, indent=4, ensure_ascii=False).encode("utf-8"))
+
+    ## 获取云盘容量
+    def get_drive_free_space(self):
+        url = "https://api.aliyundrive.com/adrive/v1/user/driveCapacityDetails"
+        headers = copy.copy(self.headers)
+        headers["authorization"] = self.ali_json["auth_token"]
+        response = self.post(url, json.dumps({}), headers=headers)
+        if response.status_code == 200:
+            rsp_json = response.json()
+            drive_total_size = rsp_json['drive_total_size']
+            drive_used_size = rsp_json['drive_used_size']
+            drive_free_size = int((drive_total_size - drive_used_size) / 1024 / 1024 / 1024)
+            self.logger.info("云盘剩余容量为:{}GB".format(drive_free_size))
+            if drive_free_size < self.max_free_size:
+                self.logger.warning("云盘剩余容量不足:{}GB,需要清理云盘容量".format(self.max_free_size))
+                return True
+            else:
+                self.logger.info("云盘剩余容量还充足,无需清理")
+                return False
+        else:
+            self.logger.error("访问云盘容量失败,失败原因为:{}".format(response.text))
+            return False
+
+    ## 通过文件大小去及时清空缓存
+    def clear_file_by_size(self):
+        status = self.get_drive_free_space()
+        if status:
+            url = "https://api.aliyundrive.com/adrive/v3/file/list?jsonmask=next_marker%2Citems(name%2Cfile_id%2Cdrive_id%2Ctype%2Csize%2Ccreated_at%2Cupdated_at%2Ccategory%2Cfile_extension%2Cparent_file_id%2Cmime_type%2Cstarred%2Cthumbnail%2Curl%2Cstreams_info%2Ccontent_hash%2Cuser_tags%2Cuser_meta%2Ctrashed%2Cvideo_media_metadata%2Cvideo_preview_metadata%2Csync_meta%2Csync_device_flag%2Csync_flag%2Cpunish_flag"
+            headers = copy.copy(self.headers)
+            params = {"all": False,
+                      "drive_id": self.ali_json["drive_id"],
+                      "fields": "*",
+                      "image_thumbnail_process": "image/resize,w_256/format,avif",
+                      "image_url_process": "image/resize,w_1920/format,avif",
+                      "limit": 100,
+                      "order_by": "updated_at",
+                      "order_direction": "DESC",
+                      "parent_file_id": "root",
+                      "url_expire_sec": 14400,
+                      "video_thumbnail_process": "video/snapshot,t_120000,f_jpg,m_lfit,w_256,ar_auto,m_fast"}
+            headers["authorization"] = self.ali_json["auth_token"]
+            response = self.post(url, json.dumps(params), headers=headers)
+            if response.status_code == 200:
+                rsp_json = response.json()
+                self.delete_video_file(rsp_json["items"])
+                self.root_file_json = {}
+                self.write_root_file_config()
+            else:
+                self.logger.error("清除文件失败,失败原因为:{}".format(response.text))
+
+    def delete_video_file(self,items):
+        for item in items:
+            if item["type"] == "file":
+                if item["category"] == "video" or item["category"] == "audio":
+                    self.delete_by_file_id(item["file_id"])
+
+    def get_download_url(self, file_name, size, file_id, share_id):
+        url = "https://open.aliyundrive.com/adrive/v1.0/openFile/getDownloadUrl"
+        file_id = self.get_batch_file(file_name, size, file_id, share_id)
+        if file_id:
+            params = {"file_id": file_id, "drive_id": self.ali_json["drive_id"]}
+            headers = copy.copy(self.headers)
+            headers["authorization"] = self.ali_json["qauth_token"]
+            response = self.post(url, json.dumps(params), headers=headers)
+            if response.status_code == 200:
+                return response.json()["url"]
+            else:
+                if "AccessTokenInvalid" in response.text or "AccessTokenExpired" in response.text:
+                    self.get_ali_token()
+                    return self.get_download_url(file_name, size, file_id, share_id)
+                elif "NotFound.File" in response.text:
+                    self.clear_root_file_json()
+                    self.logger.error("获取原画下载链接失败,转存文件未找到,需要重新保存")
+                    return self.get_download_url(file_name, size, file_id, share_id)
+                elif "This operation is forbidden for file in the recycle bin" in response.text:
+                    self.clear_root_file_json()
+                    self.logger.error("获取原画下载链接失败,转存文件被删除,需要重新保存")
+                    return self.get_download_url(file_name, size, file_id, share_id)
+                else:
+                    self.logger.error("获取原画下载链接失败,失败原因为:{}".format(response.text))
 
     def get_video_preview_play_info(self, play_info_type, file_name, size, file_id, share_id):
         url = "https://open.aliyundrive.com/adrive/v1.0/openFile/getVideoPreviewPlayInfo"
@@ -223,50 +305,22 @@ class Ali():
                 else:
                     self.logger.error("获取普画下载链接失败,失败原因为:{}".format(response.text))
 
-    def get_download_url(self, file_name, size, file_id, share_id):
-        url = "https://open.aliyundrive.com/adrive/v1.0/openFile/getDownloadUrl"
-        file_id = self.get_batch_file(file_name, size, file_id, share_id)
-        if file_id:
-            params = {"file_id": file_id, "drive_id": self.ali_json["drive_id"]}
-            headers = copy.copy(self.headers)
-            headers["authorization"] = self.ali_json["qauth_token"]
-            response = self.post(url, json.dumps(params), headers=headers)
-            if response.status_code == 200:
-                return response.json()["url"]
-            else:
-                if "AccessTokenInvalid" in response.text or "AccessTokenExpired" in response.text:
-                    self.get_ali_token()
-                    return self.get_download_url(file_name, size, file_id, share_id)
-                elif "NotFound.File" in response.text:
-                    self.clear_root_file_json()
-                    self.logger.error("获取原画下载链接失败,转存文件未找到,需要重新保存")
-                    return self.get_download_url(file_name, size, file_id, share_id)
-                elif "This operation is forbidden for file in the recycle bin" in response.text:
-                    self.clear_root_file_json()
-                    self.logger.error("获取原画下载链接失败,转存文件被删除,需要重新保存")
-                    return self.get_download_url(file_name, size, file_id, share_id)
-                else:
-                    self.logger.error("获取原画下载链接失败,失败原因为:{}".format(response.text))
-
-    def delete_file(self, file_name):
+    def delete_by_file_id(self,file_id):
         url = "https://api.aliyundrive.com/v2/recyclebin/trash"
-        params = {"drive_id": self.ali_json["drive_id"], "file_id": self.root_file_json[file_name]["file_id"]}
+        params = {"drive_id": self.ali_json["drive_id"], "file_id": file_id}
         headers = copy.copy(self.headers)
         headers["authorization"] = self.ali_json["auth_token"]
         response = self.post(url, json.dumps(params), headers=headers)
         if response.status_code == 204:
-            self.logger.info("删除成功,file id为:{}".format(self.root_file_json[file_name]["file_id"]))
-            return True
+            self.logger.info("删除成功,file id为:{}".format(file_id))
         else:
             if "AccessTokenInvalid" in response.text:
-                self.logger.error("删除失败,file id为:{},Token失效,重新登录".format(self.root_file_json[file_name]["file_id"],response.text))
+                self.logger.error(
+                    "删除失败,file id为:{},Token失效,重新登录".format(file_id))
                 self.get_ali_login()
-                self.delete_file(file_name)
-            elif "NotFound.FileId" in response.text:
-                del self.root_file_json[file_name]
-                self.write_root_file_config()
+                self.delete_by_file_id(file_id)
             else:
-                self.logger.error("删除失败,file id为:{},失败原因为:{}".format(self.root_file_json[file_name]["file_id"], response.text))
+                self.logger.error( "删除失败,file id为:{},失败原因为:{}".format(file_id,response.text))
 
     def get_root_files(self):
         url = "https://api.aliyundrive.com/adrive/v3/file/list?jsonmask=next_marker%2Citems(name%2Cfile_id%2Cdrive_id%2Ctype%2Csize%2Ccreated_at%2Cupdated_at%2Ccategory%2Cfile_extension%2Cparent_file_id%2Cmime_type%2Cstarred%2Cthumbnail%2Curl%2Cstreams_info%2Ccontent_hash%2Cuser_tags%2Cuser_meta%2Ctrashed%2Cvideo_media_metadata%2Cvideo_preview_metadata%2Csync_meta%2Csync_device_flag%2Csync_flag%2Cpunish_flag)"
@@ -353,7 +407,9 @@ class Ali():
                             self.clear_root_file_json()
                             return self.get_batch_file(file_name, size, file_id, share_id)
                         else:
-                            self.logger.error("转存文件失败,file id为:{},share id为:{},失败原因为:{}".format(file_id, share_id,response.text))
+                            self.logger.error(
+                                "转存文件失败,file id为:{},share id为:{},失败原因为:{}".format(file_id, share_id,
+                                                                                               response.text))
                             return None
             else:
                 self.logger.error("转存文件失败,失败原因为:{}".format(response.text))
@@ -369,7 +425,7 @@ class Ali():
     def get_ali_login(self):
         url = "https://auth.aliyundrive.com/v2/account/token"
         params = {
-            "refresh_token": "4636d4629ba44a68b207a2d2f4139298",
+            "refresh_token": "86c442348ffa42e882506502c557cd34",
             "grant_type": "refresh_token"
         }
         response = self.post(url, json.dumps(params), headers=self.headers)
@@ -379,6 +435,7 @@ class Ali():
         else:
             self.ali_json["auth_token"] = response.json()['token_type'] + " " + response.json()['access_token']
             self.write_cache_config()
+
     def get_share_file_id(self, share_id):
         url = self.APIUrl + "/adrive/v3/share_link/get_share_by_anonymous"
         params = {
@@ -395,10 +452,10 @@ class Ali():
                 return True, respose.json()["file_infos"][0]["file_id"]
         else:
             if "share_link is forbidden" in respose.text:
-                self.logger.error("获取分享文件ID失败,分享链接为:{},分享被禁掉啦!!!".format(share_url,respose.text))
+                self.logger.error("获取分享文件ID失败,分享链接为:{},分享被禁掉啦!!!".format(share_url, respose.text))
             else:
-                self.logger.error("获取分享文件ID失败,分享链接为:{},失败原因为:{}".format(share_url,respose.text))
-            return False,None
+                self.logger.error("获取分享文件ID失败,分享链接为:{},失败原因为:{}".format(share_url, respose.text))
+            return False, None
 
     def get_share_token(self, share_id):
         url = self.APIUrl + "/v2/share_link/get_share_token"
@@ -419,7 +476,6 @@ class Ali():
             if "TooManyRequests" in respose.text:
                 time.sleep(10)
             self.get_share_token(share_id)
-
 
     def get_all_files(self, share_id, file_id, video_file_list, sub_file_list, is_floder=False, parent=None):
         url = self.APIUrl + "/adrive/v3/file/list"
@@ -633,17 +689,22 @@ class Ali():
         episode_str = ["#".join(episode)] * len(play_foramt_list)
         return "$$$".join(play_foramt_list), "$$$".join(episode_str)
 
+
 class BaseSpider(metaclass=ABCMeta):
     _instance = None
     tree = None
-    header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
+    header = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
     session = requests.session()
+    search_index = 0
+
     def __new__(cls, *args, **kwargs):
         if cls._instance:
             return cls._instance
         else:
             cls._instance = super().__new__(cls)
             return cls._instance
+
     @abstractmethod
     def init(self, extend=""):
         pass
@@ -692,21 +753,48 @@ class BaseSpider(metaclass=ABCMeta):
         self.logger = Logger(self.getName()).get_logger()
         self.logger.info("##################{}爬虫脚本初始化完成##################".format(self.getName()))
 
+    def num2cn(self, num):
+        """
+        将阿拉伯数字转换为中文数字
+        :param num: 阿拉伯数字
+        :return: 中文数字
+        """
+        cn_num = {
+            "0": '零',
+            "1": '一',
+            "2": '二',
+            "3": '三',
+            "4": '四',
+            "5": '五',
+            "6": '六',
+            "7": '七',
+            "8": '八',
+            "9": '九'
+        }
+        new_str = ""
+        status = False
+        for i in num:
+            if i in cn_num.keys():
+                new_str = new_str + cn_num[i]
+                status = True
+            else:
+                new_str = new_str + i
+        return status, new_str
 
-    def write_config(self,dic,name):
+    def write_config(self, dic, name):
         if os.path.exists(os.path.join(os.environ.get("HOME"))):
             pass
         else:
             os.mkdir(os.path.join(os.environ.get("HOME")))
-        with open(os.path.join(os.environ.get("HOME"),"{}.json".format(name)),"wb") as f:
-            f.write(json.dumps(dic,indent=4,ensure_ascii=False).encode("utf-8"))
+        with open(os.path.join(os.environ.get("HOME"), "{}.json".format(name)), "wb") as f:
+            f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
         return dic
 
-    def load_config(self,name):
-        with open(os.path.join(os.environ.get("HOME"),"{}.json".format(name)),"rb") as f:
+    def load_config(self, name):
+        with open(os.path.join(os.environ.get("HOME"), "{}.json".format(name)), "rb") as f:
             return json.load(f)
 
-    def fetch(self, url,header=None):
+    def fetch(self, url, header=None):
         try:
             if header:
                 rsp = self.session.get(url, headers=self.header)
@@ -714,7 +802,7 @@ class BaseSpider(metaclass=ABCMeta):
                 rsp = self.session.get(url, headers=header)
             return rsp
         except Exception as e:
-            self.logger.error("url地址为:{},访问失败,失败原因为:{}".format(url,e))
+            self.logger.error("url地址为:{},访问失败,失败原因为:{}".format(url, e))
             sys.exit()
             return None
 
@@ -735,7 +823,8 @@ class BaseSpider(metaclass=ABCMeta):
         return json.loads(str)
 
     def cleanText(self, src):
-        clean = re.sub('[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF]', '', src)
+        clean = re.sub('[\U0001F600-\U0001F64F\U0001F300-\U0001F5FF\U0001F680-\U0001F6FF\U0001F1E0-\U0001F1FF]', '',
+                       src)
         return clean
 
     def playerAliContent(self, flag, id, vipFlags):
@@ -743,7 +832,7 @@ class BaseSpider(metaclass=ABCMeta):
                   "header": "{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36\",\"Referer\":\"https://www.aliyundrive.com/\"}",
                   "jx": 0,
                   "parse": 0,
-                  "url":""}
+                  "url": ""}
         try:
             # flag指的是vod format
             # id 指定的 url share_id+file_id
@@ -772,25 +861,26 @@ class BaseSpider(metaclass=ABCMeta):
             return result
         except:
             return result
+
     def clear(self):
         try:
             file_list = os.listdir(os.environ.get("HOME"))
             for file_name in file_list:
-                if os.path.isfile(os.path.join(os.environ.get("HOME"),file_name)):
-                    os.remove(os.path.join(os.environ.get("HOME"),file_name))
+                if os.path.isfile(os.path.join(os.environ.get("HOME"), file_name)):
+                    os.remove(os.path.join(os.environ.get("HOME"), file_name))
                     print("文件名称为:{},删除成功".format(file_name))
         except Exception as e:
             print("删除失败,失败原因为:{}".format(e))
             pass
 
-    def write_html(self,url,html_name):
+    def write_html(self, url, html_name):
         rsp = self.fetch(url)
-        with open("html/{}.html".format(html_name),"wb") as f:
+        with open("html/{}.html".format(html_name), "wb") as f:
             f.write(rsp.text.encode("utf-8"))
         return self.read_html(html_name)
 
-    def read_html(self,html_name):
-        with open("html/{}.html".format(html_name),"rb") as f:
+    def read_html(self, html_name):
+        with open("html/{}.html".format(html_name), "rb") as f:
             html_str = f.read()
         return html_str
 
@@ -817,33 +907,34 @@ class BaseSpider(metaclass=ABCMeta):
     def loadModule(self, name, fileName):
         return SourceFileLoader(name, fileName).load_module()
 
-class Spider(BaseSpider):
-    header = {"Host":"frodo.douban.com",
-               "Connection":"Keep-Alive",
-               "Referer":"https://servicewechat.com/wx2f9b06c1de1ccfca/84/page-frame.html",
-               "User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI MiniProgramEnv/Windows WindowsWechat"
 
-    }
+class Spider(BaseSpider):
+    header = {"Host": "frodo.douban.com",
+              "Connection": "Keep-Alive",
+              "Referer": "https://servicewechat.com/wx2f9b06c1de1ccfca/84/page-frame.html",
+              "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI MiniProgramEnv/Windows WindowsWechat"
+
+              }
     session = requests.session()
     home_url = 'https://movie.douban.com/'
 
-
     def getName(self):
         return "豆瓣"
+
     def init(self, extend=""):
-        self.clear()  ## 删除所有的文件
         self.init_logger()
 
-    def parseVodListFromJSONArray(self,items):
+    def parseVodListFromJSONArray(self, items):
         vod_list = []
         for item in items:
             vod_short = VodShort()
-            vod_short.vod_id =  "msearch:" + item["id"]
+            vod_short.vod_id = "msearch:" + item["id"]
             vod_short.vod_name = item["title"]
             try:
-                vod_short.vod_pic = item["pic"]["normal"]+ "@Referer=https://api.douban.com/@User-Agent=" + "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
+                vod_short.vod_pic = item["pic"][
+                                        "normal"] + "@Referer=https://api.douban.com/@User-Agent=" + "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
             except:
-                vod_short.vod_pic  = ""
+                vod_short.vod_pic = ""
             try:
                 vod_short.vod_remarks = "评分：" + str(item["rating"]["value"])
             except Exception as e:
@@ -851,26 +942,27 @@ class Spider(BaseSpider):
             vod_list.append(vod_short.to_dict());
         return vod_list
 
-    def Result(self,classes, vod_list,filters):
+    def Result(self, classes, vod_list, filters):
         result = {}
         result['class'] = classes
         result['list'] = vod_list
         if filters:
             result['filters'] = filters
         return result
+
     ## 分类
     def homeContent(self, filter):
         classes = []
         typeIds = ["hot_gaia", "tv_hot", "show_hot", "movie", "tv", "rank_list_movie", "rank_list_tv"]
         typeNames = ["热门电影", "热播剧集", "热播综艺", "电影筛选", "电视筛选", "电影榜单", "电视剧榜单"]
-        for (type_id,type_name) in zip(typeIds,typeNames):
+        for (type_id, type_name) in zip(typeIds, typeNames):
             classes.append({
                 'type_name': type_name,
                 'type_id': type_id
             })
         start_time = time.time()
         url = "http://api.douban.com/api/v2/subject_collection/subject_real_time_hotest/items?apikey=0ac44ae016490db2204ce0a042db2916"
-        rsp = self.fetch(url,header=self.header)
+        rsp = self.fetch(url, header=self.header)
         vod_list = []
         if rsp.status_code == 200:
             items = rsp.json()["subject_collection_items"]
@@ -881,13 +973,14 @@ class Spider(BaseSpider):
         filter = None
         try:
             filter = self.fetch(LocalAddress + "json/douban.json").json()
-        except:pass
-        return self.Result(classes,vod_list,filter)
-
+        except:
+            pass
+        return self.Result(classes, vod_list, filter)
 
     ## 首页界面
     def homeVideoContent(self):
         pass
+
     ## 分类详情
     def categoryContent(self, tid, pg, filter, extend):
         pass
@@ -907,7 +1000,6 @@ class Spider(BaseSpider):
 
     def manualVideoCheck(self):
         pass
-
 
     def localProxy(self, param):
         return [200, "video/MP2T", action, ""]
