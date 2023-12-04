@@ -22,8 +22,8 @@ from bs4 import BeautifulSoup
 from abc import abstractmethod, ABCMeta
 from importlib.machinery import SourceFileLoader
 
-LocalAddress = "http://192.168.29.156:8099/"
-
+# LocalAddress = "http://192.168.29.156:8099/"
+LocalAddress = "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py"
 
 class VodShort(object):
     def __init__(self):

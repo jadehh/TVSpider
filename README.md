@@ -5,6 +5,7 @@
 ```bash
 https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py.json
 http://192.168.29.156:8099/py.json
+https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/jpg/ali.jpg
 ```
 
 ## 2. 测试接口
