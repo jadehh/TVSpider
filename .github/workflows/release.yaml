@@ -1,7 +1,8 @@
 name: TV爬虫发布
 on:
   push:
-
+    tags:
+      - pyV[0-9]+.*
 jobs:
   build:
     name: TV爬虫发布
@@ -41,7 +42,7 @@ jobs:
           github_token: ${{ secrets.GH_PAT }}
           repository: jadehh/TV
           directory: .
-          branch: main
+          branch: py
           force: true
           tags: true
         env:
