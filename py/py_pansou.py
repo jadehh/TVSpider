@@ -23,7 +23,7 @@ else:
 class Spider(BaseSpider):
     home_url = "https://www.alipansou.com"
     def getName(self):
-        return "😺猫狸盘搜😺"
+        return "😺┃猫狸盘搜┃😺"
     def init(self, extend=""):
         self.init_logger()
         self.ali = Ali()
@@ -36,16 +36,15 @@ class Spider(BaseSpider):
         rsp = self.fetch(self.home_url)
         soup = BeautifulSoup(rsp.text,"lxml")
         self.pan_sou_list = self.parseVodListAndCateGortListFromSoup(soup)
+        self.pan_sou_list.remove(self.pan_sou_list[2])
+        self.pan_sou_list.remove(self.pan_sou_list[3])
         classes = []
         for i in range(len(self.pan_sou_list)):
             type_name = self.pan_sou_list[i]["key"]
-            if i == 2 or i == 4:
-                pass
-            else:
-                classes.append({
+            classes.append({
                 "type_name": type_name,
-                "type_id":i
-                })
+                "type_id": i
+            })
         result["class"] = classes
         result["list"] = self.pan_sou_list[0]["vod_list"]
         return result
@@ -84,8 +83,9 @@ class Spider(BaseSpider):
     ## 分类详情
     def categoryContent(self, tid, pg, filter, extend):
         self.logger.info("tid:{},pg:{},filter:{},extend:{}".format(tid,pg,filter,extend))
+        pan_dic = self.pan_sou_list[int(tid)]
         result = {}
-        result["list"] = []
+        result["list"] = pan_dic["vod_list"]
         return result
 
     def paraseDetailVodFromElement(self,element,is_cv=True):
@@ -127,7 +127,7 @@ class Spider(BaseSpider):
             vod_detail.vod_id = self.home_url + "/cv/" + id.split("/")[-1]
         headers = {"referer": vod_detail.vod_id}
         rsp = requests.get(vod_detail.vod_id,headers=headers)
-        share_url_list = [{"name": self.getName(), "url": rsp.url}]
+        share_url_list = [{"name": self.get_name(), "url": rsp.url}]
         vod_detail.vod_play_from, vod_detail.vod_play_url = self.ali.get_vod_name(share_url_list, vod_detail.vod_name)
         self.logger.info("获取阿里云盘文件地址耗时:{}s".format("%.2f" % (time.time() - start_time)))
         result = {

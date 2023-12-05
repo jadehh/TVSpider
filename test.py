@@ -30,12 +30,12 @@ def test_spider(Spider):
     spider = Spider()
     spider.init()
     content_list = spider.homeContent(True)["list"]
-    #content_list = spider.searchContent("王牌对王牌第8季")["list"]
+    content_list = spider.searchContent("王牌对王牌第8季")["list"]
+    content_list = spider.categoryContent(0,1,None,None)["list"]
     for content in [content_list[0]]:
         vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
         print(content["vod_name"], content["vod_id"])
         for vod_url in vod_url_list:
-
             id = vod_url.split("$")[-1]
             print(spider.playerContent("原画", id, [])["url"])
         print("######################################################")
@@ -72,4 +72,4 @@ def test_pansou():
     test_spider(Spider)
 
 if __name__ == '__main__':
-    test_wanou()
+    test_pansou()

@@ -160,7 +160,7 @@ class Spider(BaseSpider):
             if "https" in text:
                 for key in key_list:
                     if key in text:
-                        share_url_list.append({"name": self.getName(), "url": text})
+                        share_url_list.append({"name": self.get_name(), "url": text})
             if "制片国家/地区" in text or "产地" in text:
                 vod_detail.vod_area = text.split(":")[-1]
         vod_detail.vod_play_from, vod_detail.vod_play_url = self.ali.get_vod_name(share_url_list, vod_detail.vod_name)

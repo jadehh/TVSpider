@@ -36,10 +36,10 @@ class Spider(BaseSpider):
 
     def load_cache_config(self):
         try:
-            self.token_dic = self.load_config(self.getName())
+            self.token_dic = self.load_config(self.get_name())
         except Exception as e:
             self.logger.error("读取缓存失败,失败原因为:{}".format(e))
-            self.token_dic = self.write_config({"token":"","date":""},self.getName())
+            self.token_dic = self.write_config({"token":"","date":""},self.get_name())
 
 
     ## 分类
@@ -100,15 +100,15 @@ class Spider(BaseSpider):
             if "home" in id:
                 vod_dic = self.xiaozhitiao_json["list"][int(id.split("-----")[-1])]
             else:
-                vod_dic = self.xiaozhitiao_json["clasess"][int(id.split("-----")[0])]["list"][int(id.split("-----")[-1])]
+                vod_dic = self.xiaozhitiao_json["class"][int(id.split("-----")[0])]["list"][int(id.split("-----")[-1])]
             vod_detail = VodDetail()
             vod_detail.load_dic(vod_dic)
-            share_url_list = [{"name": self.getName(), "url": vod_detail.vod_id}]
+            share_url_list = [{"name": self.get_name(), "url": vod_detail.vod_id}]
         else:
             vod_dic = self.search_dic[id]
             vod_detail = VodDetail()
             vod_detail.load_dic(vod_dic)
-            share_url_list = [{"name": self.getName(), "url": vod_detail.vod_content}]
+            share_url_list = [{"name": self.get_name(), "url": vod_detail.vod_content}]
         vod_detail.vod_play_from, vod_detail.vod_play_url = self.ali.get_vod_name(share_url_list, vod_detail.vod_name)
         self.logger.info("获取阿里云盘文件地址耗时:{}s".format("%.2f" % (time.time() - start_time)))
         result = {
@@ -184,7 +184,7 @@ class Spider(BaseSpider):
                 response = requests.post(self.api_url,data=params,headers=self.get_header())
                 self.token_dic["token"] = response.json()["data"]
                 self.token_dic["date"] = str(time.time())
-                self.write_config(self.token_dic,self.getName())
+                self.write_config(self.token_dic,self.get_name())
                 self.logger.info("请求小纸条Token成功")
             except Exception as e:
                 self.logger.error("请求小纸条Token失败,失败原因为:{}".format(e))

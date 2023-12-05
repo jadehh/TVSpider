@@ -42,12 +42,12 @@ class Spider(BaseSpider):
 
     def load_cache_config(self):
         try:
-            self.category_extend_dic = self.load_config(self.getName())
+            self.category_extend_dic = self.load_config(self.get_name())
         except:
-            self.category_extend_dic = self.write_config({},self.getName())
+            self.category_extend_dic = self.write_config({},self.get_name())
 
     def write_cache_config(self):
-        self.write_config(self.category_extend_dic,self.getName())
+        self.write_config(self.category_extend_dic,self.get_name())
 
     ## 分类
     ## 分类

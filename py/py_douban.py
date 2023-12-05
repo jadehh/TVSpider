@@ -7,7 +7,6 @@
 # @Software : Samples
 # @Desc     :
 import shutil
-
 import requests
 import time
 import os
@@ -42,8 +41,6 @@ class VodShort(object):
         for key in list(dic.keys()):
             if key in list(self.to_dict().keys()):
                 setattr(self, key, dic[key])
-
-
 class VodDetail(VodShort):
     def __init__(self):
         super().__init__()
@@ -60,8 +57,6 @@ class VodDetail(VodShort):
         vodShort = VodShort()
         vodShort.load_dic(self.to_dict())
         return vodShort.to_dict()
-
-
 class Logger(object):
     def __init__(self, name):
         self.name = name
@@ -96,10 +91,7 @@ class Logger(object):
 
     def get_logger(self):
         return logging.getLogger(self.name)
-
-
 class Ali():
-
     def __init__(self):
         self.logger = Logger("阿里云盘").get_logger()
         self.APIUrl = "https://api.aliyundrive.com"
@@ -268,7 +260,7 @@ class Ali():
                     self.clear_root_file_json()
                     self.logger.error("获取原画下载链接失败,转存文件被删除,需要重新保存")
                     return self.get_download_url(file_name, size, file_id, share_id)
-                elif "Failed to invoke the method isUserLimitDownloadOrVideo" in response.text:
+                elif "Failed to invoke the method" in response.text:
                     self.logger.error("获取原画下载链接失败,重新获取")
                     return self.get_download_url(file_name, size, file_id, share_id)
                 else:
@@ -696,10 +688,6 @@ class Ali():
         else:
             self.logger.error("获取视频链接失败,请检查分享链接")
             return "",""
-
-
-
-
 class BaseSpider(metaclass=ABCMeta):
     _instance = None
     tree = None
@@ -759,9 +747,12 @@ class BaseSpider(metaclass=ABCMeta):
     def getName(self):
         pass
 
+    def get_name(self):
+        name = self.getName().split('┃')[1]
+        return name
     def init_logger(self):
-        self.logger = Logger(self.getName()).get_logger()
-        self.logger.info("##################{}爬虫脚本初始化完成##################".format(self.getName()))
+        self.logger = Logger(self.get_name()).get_logger()
+        self.logger.info("##################{}爬虫脚本初始化完成##################".format(self.get_name()))
 
     def num2cn(self, num):
         """
