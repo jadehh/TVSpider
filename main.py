@@ -25,7 +25,11 @@ def generate_json():
     file_list = os.listdir("py")
     site_list = []
     for file_name in file_list:
-        if "py_" in file_name:
+        if "192.168" in LocalAddress:
+            condition = "py_" in file_name
+        else:
+            condition = "py_" in file_name and "test" not in file_name
+        if condition :
             Spider = SourceFileLoader("Spider", os.path.join("py", file_name)).load_module().Spider
             spider = Spider()
             name = (spider.getName())

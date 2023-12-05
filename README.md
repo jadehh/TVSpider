@@ -57,7 +57,7 @@ http://192.168.29.156:8099/config.json
         "url": "https://www.ckmov.com/?url="
     },
     {
-        "name": "api-7",
+        "name": "api-7",        
         "url": "https://www.nxflv.com/?url="
     },
     {

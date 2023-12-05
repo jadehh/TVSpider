@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @File     : test.py
+# @File     : py_test.py
 # @Author   : jade
 # @Date     : 2023/11/13 16:42
 # @Email    : jadehh@1ive.com
@@ -29,8 +29,8 @@ def test_spider(Spider):
     start_time = time.time()
     spider = Spider()
     spider.init()
-    # content_list = spider.homeContent(True)["list"]
-    # content_list = spider.searchContent("王牌对王牌")["list"]
+    content_list = spider.homeContent(True)["list"]
+    content_list = spider.searchContent("王牌对王牌")["list"]
     content_list = spider.categoryContent("https://www.alypw.com/category-2.html",1,None,None)["list"]
     for content in [content_list[0]]:
         vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
@@ -74,6 +74,9 @@ def test_pansou():
     test_spider(Spider)
 
 
+def test_test():
+    from py.py_test import Spider
+    test_spider(Spider)
 
 if __name__ == '__main__':
-    test_douban()
+    test_test()
