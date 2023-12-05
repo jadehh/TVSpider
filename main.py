@@ -36,7 +36,7 @@ def generate_json():
                 "api": file_name.split(".py")[0],
                 "ext": "{}/py/{}".format(LocalAddress,file_name)
             }
-            if "douban" in name:
+            if "douban" in file_name:
                 site_dic["searchable"] = 0
                 site_dic["changeable"] = 1
             else:

@@ -1053,9 +1053,10 @@ class Spider(BaseSpider):
         pass
 
     def searchContent(self, key, quick=True):
-        url = self.home_url + "/movie/search" + "?s={}".format(key)
-        rsp = self.fetch(url,self.header)
-        print(rsp.text)
+        pass
+        # url = self.home_url + "/movie/search" + "?s={}".format(key)
+        # rsp = self.fetch(url,self.header)
+        # print(rsp.text)
 
     def playerContent(self, flag, id, vipFlags):
         pass
