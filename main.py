@@ -34,7 +34,7 @@ def generate_json():
                 "name": name,
                 "type": 3,
                 "api": file_name.split(".py")[0],
-                "ext": "{}/py/py_douban.py".format(LocalAddress)
+                "ext": "{}/py/{}".format(LocalAddress,file_name)
             }
             if "douban" in name:
                 site_dic["searchable"] = 0
