@@ -5,7 +5,17 @@
             "name": "🍥┃豆瓣┃🍥",
             "type": 3,
             "api": "py_douban",
-            "ext": "http://192.168.29.156:8099/py/py_douban.py",
+            "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_douban.py",
+            "searchable": 1,
+            "quickSearch": 1,
+            "filterable": 1
+        },
+        {
+            "key": "py_pansou",
+            "name": "😺┃猫狸盘搜┃😺",
+            "type": 3,
+            "api": "py_pansou",
+            "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_pansou.py",
             "searchable": 1,
             "quickSearch": 1,
             "filterable": 1
@@ -15,27 +25,7 @@
             "name": "📜┃阿里纸条┃📜",
             "type": 3,
             "api": "py_gitcafe",
-            "ext": "http://192.168.29.156:8099/py/py_gitcafe.py",
-            "searchable": 1,
-            "quickSearch": 1,
-            "filterable": 1
-        },
-        {
-            "key": "py_pansou",
-            "name": "😺猫狸盘搜😺",
-            "type": 3,
-            "api": "py_pansou",
-            "ext": "http://192.168.29.156:8099/py/py_pansou.py",
-            "searchable": 1,
-            "quickSearch": 1,
-            "filterable": 1
-        },
-        {
-            "key": "py_wanou",
-            "name": "💂‍┃阿里玩偶┃💂",
-            "type": 3,
-            "api": "py_wanou",
-            "ext": "http://192.168.29.156:8099/py/py_wanou.py",
+            "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_gitcafe.py",
             "searchable": 1,
             "quickSearch": 1,
             "filterable": 1
@@ -45,7 +35,17 @@
             "name": "🥏‍┃云盘分享┃🥏",
             "type": 3,
             "api": "py_yunpanshare",
-            "ext": "http://192.168.29.156:8099/py/py_yunpanshare.py",
+            "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_yunpanshare.py",
+            "searchable": 1,
+            "quickSearch": 1,
+            "filterable": 1
+        },
+        {
+            "key": "py_wanou",
+            "name": "💂‍┃阿里玩偶┃💂",
+            "type": 3,
+            "api": "py_wanou",
+            "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_wanou.py",
             "searchable": 1,
             "quickSearch": 1,
             "filterable": 1
