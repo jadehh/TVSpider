@@ -29,9 +29,9 @@ def test_spider(Spider):
     start_time = time.time()
     spider = Spider()
     spider.init()
-    content_list = spider.homeContent(True)["list"]
-    content_list = spider.searchContent("王牌对王牌第8季")["list"]
-    content_list = spider.categoryContent(0,1,None,None)["list"]
+    # content_list = spider.homeContent(True)["list"]
+    # content_list = spider.searchContent("王牌对王牌")["list"]
+    content_list = spider.categoryContent("https://www.alypw.com/category-2.html",1,None,None)["list"]
     for content in [content_list[0]]:
         vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
         print(content["vod_name"], content["vod_id"])
@@ -71,5 +71,7 @@ def test_pansou():
     from py.py_pansou import Spider
     test_spider(Spider)
 
+
+
 if __name__ == '__main__':
-    test_pansou()
+    test_yunpanshare()

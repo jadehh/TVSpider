@@ -135,9 +135,9 @@ class Ali():
         for file_name in list(self.root_file_json.keys()):
             try:
                 delete_status = self.delete_by_file_id(self.root_file_json[file_name]["file_id"])
-                del self.root_file_json[file_name]
             except Exception as e:
                 self.logger.error("删除失败,失败原因为:名称为:{},无法找出file id".format(file_name))
+            del self.root_file_json[file_name]
         self.write_root_file_config()
         self.logger.info("初始化阿里云盘,删除缓存的文件")
 
@@ -620,11 +620,16 @@ class Ali():
     def sort_by_size(self, item):
         return item['size']
 
-    def sort_by_name_str(self, item):
-        return item.split(" ")[0]
+
 
     def sort_by_name(self, item):
-        return item['name']
+        try:
+            pattern = r'\d+'
+            name = "".join(item["name"].split(".")[:-1])
+            number = int(re.findall(pattern, name)[0])
+        except:
+            number = item['size']
+        return number
 
     def get_vide_metadata(self, format):
         try:
@@ -643,6 +648,9 @@ class Ali():
         set_2 = string2.split(".")
         return list(set(set_1).intersection(set(set_2)))
 
+
+
+
     def get_vod_name(self, share_url_list, page_title):
         video_file_list = []
         sub_file_list = []
@@ -660,14 +668,14 @@ class Ali():
                 is_floder, file_id = self.get_share_file_id(share_id)
                 if file_id:
                     self.get_all_files(share_id, file_id, video_file_list, sub_file_list, is_floder)
-        video_file_list = sorted(video_file_list, key=self.sort_by_name)
         episode = []
+        episode_no_sub = []
         repeat_list = []
         if len(video_file_list) > 10:
             repeat_list = self.find_common_strings(video_file_list[0]["name"], video_file_list[1]["name"])
-
+        video_file_list = sorted(video_file_list, key=self.sort_by_name)
         for video_file in video_file_list:
-            video_name = video_file["name"]
+            video_name = video_file["name"].split(".")[0]
             if len(repeat_list) > 5:
                 for repeat_str in repeat_list:
                     video_name = video_name.replace(repeat_str, "").replace(".", "")
@@ -678,8 +686,13 @@ class Ali():
             sub_str = self.findSubs(video_file["name"], sub_file_list)
             epi_str = display_name + "$" + video_file["name"] + "+++" + str(video_file["size"]) + "+++" + video_file[
                 "share_id"] + "+++" + video_file["file_id"] + sub_str
-            episode.append(epi_str)
-        episode = sorted(episode, key=self.sort_by_name_str)
+            epi_str_no_sub = display_name + "$" + video_file["name"] + "+++" + str(video_file["size"])  + "+++" + video_file["file_id"]
+            if epi_str_no_sub not in episode_no_sub:
+                episode_no_sub.append(epi_str_no_sub)
+                episode.append(epi_str)
+            else:
+                self.logger.warn("分享链接中出现相同的文件,只保留一种")
+
         if len(episode) > 0:
             ## 自定义清晰度
             play_foramt_list = ["原画", "超清", "高清", "标清"]
@@ -751,6 +764,7 @@ class BaseSpider(metaclass=ABCMeta):
         name = self.getName().split('┃')[1]
         return name
     def init_logger(self):
+        # self.clear()
         self.logger = Logger(self.get_name()).get_logger()
         self.logger.info("##################{}爬虫脚本初始化完成##################".format(self.get_name()))
 

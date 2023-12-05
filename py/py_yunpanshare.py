@@ -29,9 +29,41 @@ class Spider(BaseSpider):
 
 
     def categoryContent(self, tid, pg, filter, extend):
-        pass
+        self.logger.info(
+            "tid:{},pg={},filter={},extend={},extend类型为:{}".format(tid, pg, filter, extend, type(extend)))
+        url = tid.split(".html")[0] + "_{}".format(pg) + ".html"
+        rsp = self.fetch(url)
+        self.logger.info("url为:{}".format(url))
+        soup = BeautifulSoup(rsp.text, "lxml")
+        pagebar = soup.select(".pagebar")[0].find_all("a")
+        limit = int(pagebar[-1].attrs["href"].split("_")[-1].split(".")[0])
+        vod_list,page_count = self.paraseVodShotFromSoup(soup)
+        result = {"jx": 0, "limit": limit, "page": int(pg), "pagecount": page_count, "parse": 0, "total": page_count*limit}
+        result["list"] = vod_list
+        return result
 
-
+    def paraseVodShotFromSoup(self,soup):
+        elements = soup.find_all("ul")[3].find_all("li")
+        vod_list = []
+        for element in elements:
+            vod_short = VodShort()
+            a_elements = element.find_all("a")
+            text = a_elements[1].text
+            if "置顶" not in text and "阿里云盘" in text:
+                try:
+                    update_time = element.select(".fl")[0].text
+                    watch_count = element.select(".fr")[0].text.replace(" ","")
+                except:
+                    fa_elements = element.find_all("span")
+                    update_time = fa_elements[3].text
+                    watch_count = fa_elements[4].text.replace(" ","")
+                text = text.replace("阿里云盘","").replace("夸克网盘","").replace("[免费在线观看]","").replace("[免费下载]","").replace("[夸克网盘]","").replace("[","").replace("]","").replace("+","")
+                vod_short.vod_name = text
+                vod_short.vod_pic = (a_elements[0].find("img").attrs["src"])
+                vod_short.vod_id = a_elements[0].attrs["href"]
+                vod_short.vod_remarks = "人气:{} {}".format(watch_count,update_time)
+                vod_list.append(vod_short.to_dict())
+        return vod_list,len(elements)
 
     def getName(self):
         return "🥏‍┃云盘分享┃🥏"
@@ -80,8 +112,14 @@ class Spider(BaseSpider):
     def playerContent(self, flag, id, vipFlags):
         return self.playerAliContent(flag,id,vipFlags)
 
-    def searchContent(self, key, quick):
-        pass
+    def searchContent(self, key, quick=True):
+        url = "https://www.alypw.com/search.php?q={}".format(key)
+        rsp = self.fetch(url)
+        soup = BeautifulSoup(rsp.text,"lxml")
+        vod_list,_ = self.paraseVodShotFromSoup(soup)
+        results = {}
+        results["list"] = vod_list
+        return results
 
 
     def parase_classes(self, category_elements):
@@ -158,9 +196,13 @@ class Spider(BaseSpider):
             if "主演" in text :
                 vod_detail.vod_actor = text.split(":")[-1]
             if "https" in text:
+                is_true = False
                 for key in key_list:
                     if key in text:
+                        is_true = True
                         share_url_list.append({"name": self.get_name(), "url": text})
+                if is_true is False:
+                    self.logger.warn("暂不支持此连接:{}".format(text))
             if "制片国家/地区" in text or "产地" in text:
                 vod_detail.vod_area = text.split(":")[-1]
         vod_detail.vod_play_from, vod_detail.vod_play_url = self.ali.get_vod_name(share_url_list, vod_detail.vod_name)
