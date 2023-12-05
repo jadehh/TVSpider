@@ -10,16 +10,6 @@
             "changeable": 1
         },
         {
-            "key": "py_gitcafe",
-            "name": "📜┃阿里纸条┃📜",
-            "type": 3,
-            "api": "py_gitcafe",
-            "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_gitcafe.py",
-            "searchable": 1,
-            "quickSearch": 1,
-            "filterable": 1
-        },
-        {
             "key": "py_pansou",
             "name": "😺┃猫狸盘搜┃😺",
             "type": 3,
@@ -30,11 +20,11 @@
             "filterable": 1
         },
         {
-            "key": "py_wanou",
-            "name": "💂‍┃阿里玩偶┃💂",
+            "key": "py_gitcafe",
+            "name": "📜┃阿里纸条┃📜",
             "type": 3,
-            "api": "py_wanou",
-            "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_wanou.py",
+            "api": "py_gitcafe",
+            "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_gitcafe.py",
             "searchable": 1,
             "quickSearch": 1,
             "filterable": 1
@@ -45,6 +35,16 @@
             "type": 3,
             "api": "py_yunpanshare",
             "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_yunpanshare.py",
+            "searchable": 1,
+            "quickSearch": 1,
+            "filterable": 1
+        },
+        {
+            "key": "py_wanou",
+            "name": "💂‍┃阿里玩偶┃💂",
+            "type": 3,
+            "api": "py_wanou",
+            "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_wanou.py",
             "searchable": 1,
             "quickSearch": 1,
             "filterable": 1
