@@ -24,7 +24,7 @@ class Spider(BaseSpider):
     home_url = 'https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/xiaozhitiao.json'
     api_url = 'https://gitcafe.net/tool/alipaper/'
     def getName(self):
-        return "阿里纸条"
+        return "📜┃阿里纸条┃📜"
     def init(self, extend=""):
         self.init_logger()
         self.load_cache_config()

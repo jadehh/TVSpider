@@ -6,6 +6,7 @@
 * 支持猫狸云盘爬虫
 * 更新ali.jpg
 * 更新发布地址
+* 支持每次提交自动发布config.json
 <details onclose>
 
 

@@ -23,7 +23,7 @@ else:
 class Spider(BaseSpider):
     home_url = "https://www.alipansou.com"
     def getName(self):
-        return "猫狸盘搜"
+        return "😺猫狸盘搜😺"
     def init(self, extend=""):
         self.init_logger()
         self.ali = Ali()

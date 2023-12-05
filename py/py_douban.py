@@ -22,8 +22,8 @@ from bs4 import BeautifulSoup
 from abc import abstractmethod, ABCMeta
 from importlib.machinery import SourceFileLoader
 
-# LocalAddress = "http://192.168.29.156:8099/"
-LocalAddress = "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py"
+LocalAddress = "http://192.168.29.156:8099"
+# LocalAddress = "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py"
 
 class VodShort(object):
     def __init__(self):
@@ -929,7 +929,7 @@ class Spider(BaseSpider):
     home_url = 'https://movie.douban.com/'
 
     def getName(self):
-        return "豆瓣"
+        return "🍥┃豆瓣┃🍥"
 
     def init(self, extend=""):
         self.init_logger()

@@ -34,7 +34,7 @@ class Spider(BaseSpider):
 
 
     def getName(self):
-        return "云盘分享"
+        return "🥏‍┃云盘分享┃🥏"
 
     def homeContent(self, filter):
         start_time = time.time()

@@ -64,18 +64,12 @@ def test_gitcafe():
     test_spider(Spider)
 
 
-def pan_sou():
-    #rsp = requests.get("https://www.alipansou.com/search?k=%E5%AD%A6%E7%88%B8")
-    #print(rsp.text)
-    headers = {"referer":"https://www.alipansou.com/cv/FerpYCq5VlSgFekkvt2UaNtcc5wKt"}
-    rsp = requests.get("https://www.alipansou.com/cv/FerpYCq5VlSgFekkvt2UaNtcc5wKt",headers=headers)
-    print(rsp.headers)
-    print(rsp.cookies.get("location"))
-    print(rsp.text)
+
+
 
 def test_pansou():
     from py.py_pansou import Spider
     test_spider(Spider)
 
 if __name__ == '__main__':
-    test_pansou()
+    test_wanou()

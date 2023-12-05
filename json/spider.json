@@ -1,55 +1,5 @@
 {
-  "sites": [
-    {
-      "key": "py_douban",
-      "name": "🍥┃豆瓣┃🍥",
-      "type": 3,
-      "api": "py_douban",
-      "searchable": 0,
-      "changeable": 1,
-      "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_douban.py"
-    },
-    {
-      "key": "py_wanou",
-      "name": "",
-      "type": 3,
-      "api": "py_wanou",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_wanou.py"
-    },
-    {
-      "key": "py_yunpanshare",
-      "name": "",
-      "type": 3,
-      "api": "py_yunpanshare",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_yunpanshare.py"
-    },
-     {
-      "key": "py_gitcafe",
-      "name": "",
-      "type": 3,
-      "api": "py_gitcafe",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_gitcafe.py"
-    },
-     {
-      "key": "py_pansou",
-      "name": "📜┃阿里盘搜┃📜",
-      "type": 3,
-      "api": "py_pansou",
-      "searchable": 1,
-      "quickSearch": 1,
-      "filterable": 1,
-      "ext": "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py/py/py_pansou.py"
-    }
-  ],
+  "sites": [],
   "ijk": [
     {
       "group": "软解码",

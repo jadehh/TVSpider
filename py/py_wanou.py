@@ -28,7 +28,7 @@ class Spider(BaseSpider):
     home_url = 'https://tvfan.xxooo.cf'
 
     def getName(self):
-        return "玩偶哥哥"
+        return "💂‍┃阿里玩偶┃💂"
 
     def init(self, extend=""):
         # try:
