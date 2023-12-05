@@ -931,7 +931,8 @@ class Spider(BaseSpider):
 
               }
     session = requests.session()
-    home_url = 'https://movie.douban.com/'
+    home_url = 'https://frodo.douban.com/api/v2'
+    api_key = "?apikey=0ac44ae016490db2204ce0a042db2916"
 
     def getName(self):
         return "🍥┃豆瓣┃🍥"
@@ -976,7 +977,7 @@ class Spider(BaseSpider):
                 'type_id': type_id
             })
         start_time = time.time()
-        url = "http://api.douban.com/api/v2/subject_collection/subject_real_time_hotest/items?apikey=0ac44ae016490db2204ce0a042db2916"
+        url = "{}/subject_collection/subject_real_time_hotest/items{}".format(self.home_url,self.api_key)
         rsp = self.fetch(url, header=self.header)
         vod_list = []
         if rsp.status_code == 200:
@@ -987,7 +988,7 @@ class Spider(BaseSpider):
             self.logger.error("获取豆瓣首页信息失败,失败原因为:{}".format(rsp.text))
         filter = None
         try:
-            filter = self.fetch(LocalAddress + "json/douban.json").json()
+            filter = self.fetch(LocalAddress + "/json/douban.json").json()
         except:
             pass
         return self.Result(classes, vod_list, filter)
@@ -996,16 +997,65 @@ class Spider(BaseSpider):
     def homeVideoContent(self):
         pass
 
-    ## 分类详情
-    def categoryContent(self, tid, pg, filter, extend):
-        pass
 
+    def get_tags(self,extend):
+        tag_list = []
+        for key in list(extend.keys()):
+            if key != "sort":
+                tag_list.append(extend[key])
+        return ",".join(tag_list)
+    ## 分类详情
+    def categoryContent(self, tid, pg, filter, extend:dict):
+        sort = extend["sort"] if "sort" in extend.keys() else "show_hot"
+        tags = self.get_tags(extend)
+        start_time = time.time()
+        self.logger.info("tid:{},pg={},filter={},extend={}".format(tid, pg, filter, extend))
+        start = (int(pg) - 1) * 20
+        itemKey = "items"
+        if tid == "hot_gaia":
+            sort = extend["sort"] if "sort" in extend.keys() else "recommend"
+            area = extend["area"] if "area" in extend.keys() else "全部"
+            sort = sort + "&area=" + area
+            cateUrl = self.home_url + "/movie/hot_gaia" + self.api_key + "&sort=" + sort
+        elif tid == "tv_hot":
+            type =  extend["type"] if "type" in extend.keys() else "tv_hot"
+            cateUrl = self.home_url + "/subject_collection/" + type + "/items" + self.api_key
+            itemKey = "subject_collection_items"
+        elif tid ==  "show_hot":
+            showType = extend["type"] if "type" in extend.keys() else "show_hot"
+            cateUrl = self.home_url + "/subject_collection/" + showType + "/items" + self.api_key
+            itemKey = "subject_collection_items";
+        elif tid == "movie":
+            cateUrl = self.home_url + "/movie/recommend" + self.api_key + "&sort=" + sort + "&tags=" + tags
+        elif tid == "tv":
+            cateUrl = self.home_url + "/tv/recommend" + self.api_key + "&sort=" + sort + "&tags=" + tags
+        elif tid == "rank_list_movie":
+            rankMovieType = extend["榜单"] if "榜单" in extend.keys() else "movie_real_time_hotest"
+            cateUrl = self.home_url + "/subject_collection/" + rankMovieType + "/items" + self.api_key
+            itemKey = "subject_collection_items"
+        elif tid == "rank_list_tv":
+            rankTVType = extend["榜单"] if "榜单" in extend.keys() else "tv_real_time_hotest"
+            cateUrl = self.home_url + "/subject_collection/" + rankTVType + "/items" + self.api_key
+            itemKey = "subject_collection_items"
+        rsp = self.fetch(cateUrl+ "&start=" + str(start) + "&count=20",self.header)
+        if rsp.status_code == 200:
+            items = rsp.json()[itemKey]
+            vod_list = self.parseVodListFromJSONArray(items)
+            result = {"jx": 0, "limit": 20, "page": int(pg), "pagecount": 2147483647, "parse": 0, "total": 2147483647}
+            result["list"] = vod_list
+            self.logger.info("获取豆瓣首页信息成功,耗时:{}s".format(("%.2f" % (time.time() - start_time))))
+            return result
+        else:
+            self.logger.error("获取豆瓣首页信息失败,失败原因为:{}".format(rsp.text))
+            return None
     ## 详情界面
     def detailContent(self, array):
         pass
 
     def searchContent(self, key, quick=True):
-        pass
+        url = self.home_url + "/movie/search" + "?s={}".format(key)
+        rsp = self.fetch(url,self.header)
+        print(rsp.text)
 
     def playerContent(self, flag, id, vipFlags):
         pass

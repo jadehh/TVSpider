@@ -56,7 +56,9 @@ def test_douban():
     from py.py_douban import Spider
     spider = Spider()
     spider.init(False)
-    spider.homeContent(True)
+    # spider.homeContent(True)
+    # spider.categoryContent("movie",1,True,{})
+    spider.searchContent("王牌对王牌")
 
 
 def test_gitcafe():
@@ -74,4 +76,4 @@ def test_pansou():
 
 
 if __name__ == '__main__':
-    test_yunpanshare()
+    test_douban()
