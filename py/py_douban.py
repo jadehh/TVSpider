@@ -397,6 +397,7 @@ class Ali():
                 except:
                     if "QuotaExhausted.Drive" in response.text:
                         self.logger.error("转存文件失败,检查网盘容量是否已满")
+                        self.clear_file_by_size()
                     else:
                         if "No Permission to access resource File" in response.text or "The resource drive cannot be found" in response.text:
                             self.getDriveId()
@@ -708,7 +709,7 @@ class BaseSpider(metaclass=ABCMeta):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
     session = requests.session()
     search_index = 0
-
+    douban_home_url = 'https://m.douban.com'
     def __new__(cls, *args, **kwargs):
         if cls._instance:
             return cls._instance
@@ -842,6 +843,101 @@ class BaseSpider(metaclass=ABCMeta):
                        src)
         return clean
 
+    def parseVodListFromSoup(self, soup):
+        elements = soup.find_all("li", {"class": "search-module"})
+        vod_list = []
+        other_type_list = ["小组","游戏"]
+        for element in elements:
+            type = element.find("span", {"class": "search-results-modules-name"}).text
+            if type not in other_type_list:
+                vod_short = VodShort()
+                vod_short.vod_id = element.find("a").attrs["href"]
+                vod_short.vod_pic = element.find("img").attrs["src"]
+                vod_short.vod_name = element.find("span", {"class": "subject-title"}).text
+                rating = element.find("p", {"class": "rating"}).text.replace("\n", "")
+                if "暂无" in rating:
+                    pass
+                else:
+                    vod_short.vod_remarks = "评分:{}".format(rating)
+                vod_list.append(vod_short)
+        return vod_list
+
+    def douban_search(self, key):
+        url = "{}/search/?query={}".format(self.douban_home_url, key)
+        headers = copy.copy(self.header)
+        headers["Host"] = "m.douban.com"
+        rsp = requests.get(url, headers=headers, allow_redirects=False)
+        if rsp.status_code == 200:
+            soup = BeautifulSoup(rsp.text, "lxml")
+            vod_list = self.parseVodListFromSoup(soup)
+            return vod_list
+        else:
+            self.logger.error("豆瓣爬虫搜索失败,准备重新爬虫")
+            time.sleep(2)
+            return self.douban_search(key)
+
+    def paraseVodDetailFromSoup(self, soup):
+        vod_detail = VodDetail()
+        info_list = soup.find('div', attrs={'id': "info"}).text.split("\n")
+        for item in info_list:
+            if "地区" in item:
+                vod_detail.vod_area = item.split(":")[-1]
+        dic = json.loads(soup.find("script", {'type': 'application/ld+json'}).text.replace("\n", ""))
+        vod_detail.vod_id = dic["url"]
+        vod_detail.vod_name = dic["name"]
+        vod_detail.vod_pic = dic["image"]
+        vod_detail.vod_year = dic["datePublished"]
+        actor_list = []
+        for actor_dic in dic["actor"]:
+            actor_list.append(actor_dic["name"].split(" ")[0])
+        director_list = []
+        for director_dic in dic["director"]:
+            director_list.append(director_dic["name"].split(" ")[0])
+        vod_detail.type_name = " / ".join(dic["genre"])
+        vod_detail.vod_actor = " / ".join(actor_list)
+        vod_detail.vod_director = " / ".join(director_list)
+        vod_detail.vod_content = dic["description"]
+        vod_detail.vod_remarks = "评分:{}".format(dic["aggregateRating"]["ratingValue"])
+        return vod_detail
+
+    def douban_detail(self, v_id):
+        split_list = v_id.split("/")
+        type_id = split_list[1]
+        tid = "/" + "/".join(split_list[2:])
+        home_url_list = self.douban_home_url.split(".")
+        home_url_list[0] = "https://{}".format(type_id)
+        home_url = ".".join(home_url_list)
+        url = home_url + tid
+        headers = {}
+        headers["Host"] = "{}.douban.com".format(type_id)
+        headers[
+            "Cookie"] = '_vwo_uuid_v2=DC67E58994652304E348D0E1EB30417A8|79da2360b16aba794ae2f050599037c0; ap_v=0,6.0; __yadk_uid=5OCVRPW39vyo5ubib5dVA4mvIjFLOBzR; __utma=30149280.1972142145.1701828581.1701828603.1701828603.1; __utmb=30149280.0.10.1701828603; __utmc=30149280; __utmz=30149280.1701828603.1.1.utmcsr=m.douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/; _ga_Y4GN1R87RG=GS1.1.1701828581.1.1.1701828602.0.0.0; __utma=223695111.1972142145.1701828581.1701828603.1701828603.1; __utmb=223695111.0.10.1701828603; __utmc=223695111; __utmz=223695111.1701828603.1.1.utmcsr=m.douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/; _pk_id.100001.4cf6=eb516fe88d50a169.1701828603.; _pk_ref.100001.4cf6=%5B%22%22%2C%22%22%2C1701828603%2C%22https%3A%2F%2Fm.douban.com%2F%22%5D; _pk_ses.100001.4cf6=1; _ck_desktop_mode=1; vmode=pc; _ga=GA1.2.1972142145.1701828581; _gid=GA1.2.1067754563.1701828581; ll="118159"; bid=mAFuUX1zgPI'
+        headers[
+            "User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhone OS 16_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/100.0.4896.77 Mobile/15E148 Safari/604.1"
+        rsp = requests.get(url, headers=headers, allow_redirects=False)
+        if rsp.status_code == 200:
+            soup = BeautifulSoup(rsp.text, "lxml")
+            vod_detail = self.paraseVodDetailFromSoup(soup)
+        else:
+            self.logger.error("豆瓣爬虫详情失败,准备重新爬虫")
+            time.sleep(2)
+            return self.douban_detail(v_id)
+        return vod_detail
+
+    def get_douban_vod_detail_by_name(self, name):
+        self.logger.info("名称为:{},正在进行豆瓣爬虫,".format(name))
+        try:
+            vod_short_list = self.douban_search(name)
+            if len(vod_short_list) > 0:
+                vod_detail = self.douban_detail(vod_short_list[0].vod_id)
+                self.logger.info("名称为:{},豆瓣爬虫成功".format(name))
+                return vod_detail
+            else:
+                self.logger.error("名称为:{},豆瓣爬虫失败".format(name))
+                return None
+        except Exception as e:
+            self.logger.error("豆瓣爬虫失败,失败原因为:{}".format(e))
+            return self.get_douban_vod_detail_by_name(name)
     def playerAliContent(self, flag, id, vipFlags):
         result = {"format": "application/octet-stream",
                   "header": "{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36\",\"Referer\":\"https://www.aliyundrive.com/\"}",
@@ -928,10 +1024,10 @@ class Spider(BaseSpider):
               "Connection": "Keep-Alive",
               "Referer": "https://servicewechat.com/wx2f9b06c1de1ccfca/84/page-frame.html",
               "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36 MicroMessenger/7.0.9.501 NetType/WIFI MiniProgramEnv/Windows WindowsWechat"
-
               }
     session = requests.session()
-    home_url = 'https://frodo.douban.com/api/v2'
+    api_url = 'https://frodo.douban.com/api/v2'
+    home_url = 'https://m.douban.com'
     api_key = "?apikey=0ac44ae016490db2204ce0a042db2916"
 
     def getName(self):
@@ -977,7 +1073,7 @@ class Spider(BaseSpider):
                 'type_id': type_id
             })
         start_time = time.time()
-        url = "{}/subject_collection/subject_real_time_hotest/items{}".format(self.home_url,self.api_key)
+        url = "{}/subject_collection/subject_real_time_hotest/items{}".format(self.api_url,self.api_key)
         rsp = self.fetch(url, header=self.header)
         vod_list = []
         if rsp.status_code == 200:
@@ -1016,26 +1112,26 @@ class Spider(BaseSpider):
             sort = extend["sort"] if "sort" in extend.keys() else "recommend"
             area = extend["area"] if "area" in extend.keys() else "全部"
             sort = sort + "&area=" + area
-            cateUrl = self.home_url + "/movie/hot_gaia" + self.api_key + "&sort=" + sort
+            cateUrl = self.api_url + "/movie/hot_gaia" + self.api_key + "&sort=" + sort
         elif tid == "tv_hot":
             type =  extend["type"] if "type" in extend.keys() else "tv_hot"
-            cateUrl = self.home_url + "/subject_collection/" + type + "/items" + self.api_key
+            cateUrl = self.api_url + "/subject_collection/" + type + "/items" + self.api_key
             itemKey = "subject_collection_items"
         elif tid ==  "show_hot":
             showType = extend["type"] if "type" in extend.keys() else "show_hot"
-            cateUrl = self.home_url + "/subject_collection/" + showType + "/items" + self.api_key
+            cateUrl = self.api_url + "/subject_collection/" + showType + "/items" + self.api_key
             itemKey = "subject_collection_items";
         elif tid == "movie":
-            cateUrl = self.home_url + "/movie/recommend" + self.api_key + "&sort=" + sort + "&tags=" + tags
+            cateUrl = self.api_url + "/movie/recommend" + self.api_key + "&sort=" + sort + "&tags=" + tags
         elif tid == "tv":
-            cateUrl = self.home_url + "/tv/recommend" + self.api_key + "&sort=" + sort + "&tags=" + tags
+            cateUrl = self.api_url + "/tv/recommend" + self.api_key + "&sort=" + sort + "&tags=" + tags
         elif tid == "rank_list_movie":
             rankMovieType = extend["榜单"] if "榜单" in extend.keys() else "movie_real_time_hotest"
-            cateUrl = self.home_url + "/subject_collection/" + rankMovieType + "/items" + self.api_key
+            cateUrl = self.api_url + "/subject_collection/" + rankMovieType + "/items" + self.api_key
             itemKey = "subject_collection_items"
         elif tid == "rank_list_tv":
             rankTVType = extend["榜单"] if "榜单" in extend.keys() else "tv_real_time_hotest"
-            cateUrl = self.home_url + "/subject_collection/" + rankTVType + "/items" + self.api_key
+            cateUrl = self.api_url + "/subject_collection/" + rankTVType + "/items" + self.api_key
             itemKey = "subject_collection_items"
         rsp = self.fetch(cateUrl+ "&start=" + str(start) + "&count=20",self.header)
         if rsp.status_code == 200:
@@ -1048,15 +1144,27 @@ class Spider(BaseSpider):
         else:
             self.logger.error("获取豆瓣首页信息失败,失败原因为:{}".format(rsp.text))
             return None
+
+
+
     ## 详情界面
     def detailContent(self, array):
-        pass
+        vod_detail_dic = self.douban_detail(array[0])
+        result = {
+            'list': [
+                vod_detail_dic
+            ]
+        }
+        return result
+
+
+
+
 
     def searchContent(self, key, quick=True):
-        pass
-        # url = self.home_url + "/movie/search" + "?s={}".format(key)
-        # rsp = self.fetch(url,self.header)
-        # print(rsp.text)
+        vod_list = self.douban_search(key)
+        return {"jx": 0, "parse": 0,"list":vod_list}
+
 
     def playerContent(self, flag, id, vipFlags):
         pass

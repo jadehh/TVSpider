@@ -108,7 +108,7 @@ class Spider(BaseSpider):
             vod_dic = self.search_dic[id]
             vod_detail = VodDetail()
             vod_detail.load_dic(vod_dic)
-            share_url_list = [{"name": self.get_name(), "url": vod_detail.vod_content}]
+            share_url_list = [{"name": self.get_name(), "url": vod_detail.vod_play_url}]
         vod_detail.vod_play_from, vod_detail.vod_play_url = self.ali.get_vod_name(share_url_list, vod_detail.vod_name)
         self.logger.info("获取阿里云盘文件地址耗时:{}s".format("%.2f" % (time.time() - start_time)))
         result = {
@@ -119,6 +119,8 @@ class Spider(BaseSpider):
         return result
 
     def searchContent(self, key, quick=True):
+        if quick :
+            vod_douban_detail = self.get_douban_vod_detail_by_name(key)
         params = {
             "action":"search",
             "from":"web",
@@ -137,10 +139,13 @@ class Spider(BaseSpider):
                     self.search_dic = {}
                     for data in data_list:
                         vodDetail = VodDetail()
-                        vodDetail.vod_content = "https://www.aliyundrive.com/s/" + data["alikey"]
-                        vodDetail.vod_id = str(data["id"])
+                        if vod_douban_detail:
+                            vodDetail = vod_douban_detail
+                        else:
+                            vodDetail.type_name = data["cat"]
                         vodDetail.vod_name = data["title"]
-                        vodDetail.type_name = data["cat"]
+                        vodDetail.vod_play_url = "https://www.aliyundrive.com/s/" + data["alikey"]
+                        vodDetail.vod_id = str(data["id"])
                         vod_list.append(vodDetail.to_dict())
                         self.search_dic[vodDetail.vod_id] = vodDetail.to_dict()
                     results["list"] = vod_list
