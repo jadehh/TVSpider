@@ -59,8 +59,8 @@ def test_douban():
     # spider.homeContent(True)
     # spider.categoryContent("movie",1,True,{})
     content_list = spider.searchContent("王牌对王牌")["list"]
-    for content in [content_list[0]]:
-        vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
+    # for content in [content_list[0]]:
+    #     vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
 
 
 def test_gitcafe():
@@ -83,3 +83,4 @@ def test_test():
 
 if __name__ == '__main__':
     test_douban()
+    test_test()

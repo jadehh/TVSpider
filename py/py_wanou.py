@@ -262,7 +262,7 @@ class Spider(BaseSpider):
         url = self.home_url + "/index.php/vodsearch/{}----------1---.html".format(key)
         header = copy.copy(self.header)
         header['Cache-Control'] = 'no-cache'
-        rsp = requests.get(url,headers=self.header)
+        rsp = self.session.get(url,headers=self.header)
         soup = BeautifulSoup(rsp.text, 'lxml')
         if "请不要频繁操作" in soup.text:
             rsp.close()

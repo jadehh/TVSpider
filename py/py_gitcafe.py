@@ -118,9 +118,11 @@ class Spider(BaseSpider):
         }
         return result
 
-    def searchContent(self, key, quick=True):
-        if quick :
-            vod_douban_detail = self.get_douban_vod_detail_by_name(key)
+
+    def searchContent(self, key, quick=False):
+        if quick is False:
+            self.getDoubanSearchStatus()
+        self.vod_douban_detail = self.json_to_vod(key)
         params = {
             "action":"search",
             "from":"web",
@@ -139,8 +141,8 @@ class Spider(BaseSpider):
                     self.search_dic = {}
                     for data in data_list:
                         vodDetail = VodDetail()
-                        if vod_douban_detail:
-                            vodDetail = vod_douban_detail
+                        if self.vod_douban_detail:
+                            vodDetail = self.vod_douban_detail
                         else:
                             vodDetail.type_name = data["cat"]
                         vodDetail.vod_name = data["title"]

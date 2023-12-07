@@ -18,6 +18,8 @@ import json
 import os
 import copy
 import sys
+import time
+
 if os.environ.get("HOME") == "tmp":
     sys.path.append("py")
     from py_douban import Ali, VodDetail, VodShort, Logger,BaseSpider
@@ -65,8 +67,19 @@ class Spider(BaseSpider):
         }
         return result
 
-    def searchContent(self, key, quick=True):
-        pass
+
+
+
+    def searchContent(self, key, quick=False):
+        if quick is False:
+            self.getDoubanSearchStatus()
+            ## 需要等待豆瓣搜索成功
+        self.vod_douban_detail = self.json_to_vod(key)
+        if self.vod_douban_detail:
+            return {"jx": 0, "parse": 0,"list":[self.vod_douban_detail.to_dict()]}
+        else:
+            return {"jx": 0, "parse": 0,"list":[]}
+
 
 
     def playerContent(self, flag, id, vipFlags):

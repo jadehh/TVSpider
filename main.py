@@ -41,7 +41,7 @@ def generate_json():
                 "ext": "{}/py/{}".format(LocalAddress,file_name)
             }
             if "douban" in file_name:
-                site_dic["searchable"] = 0
+                site_dic["searchable"] = 1
                 site_dic["changeable"] = 1
             else:
                 site_dic["searchable"] = 1

@@ -137,7 +137,10 @@ class Spider(BaseSpider):
         }
         return result
 
-    def searchContent(self, key, quick=True):
+    def searchContent(self, key, quick=False):
+        if quick is False:
+            self.getDoubanSearchStatus()
+        self.vod_douban_detail = self.json_to_vod(key)
         url = "https://alipansou.com/search?k={}".format(key)
         rsp = self.fetch(url)
         soup = BeautifulSoup(rsp.text, "lxml")
@@ -145,8 +148,15 @@ class Spider(BaseSpider):
         vod_detail_list = []
         for element in elements:
             vod_detail = self.paraseDetailVodFromElement(element,False)
+            new_vod_detail = VodDetail()
             if vod_detail:
-                vod_detail_list.append(vod_detail.to_dict())
+                if self.vod_douban_detail:
+                    new_vod_detail = self.vod_douban_detail
+                    new_vod_detail.vod_id = vod_detail.vod_id
+                    new_vod_detail.vod_name = vod_detail.vod_name
+                else:
+                    new_vod_detail = vod_detail
+                vod_detail_list.append(new_vod_detail.to_dict())
         results = {"jx": 0, "parse": 0,"list":vod_detail_list}
         return results
 
