@@ -29,8 +29,8 @@ import urllib3
 from urllib3.exceptions import InsecureRequestWarning
 urllib3.disable_warnings(InsecureRequestWarning)
 from random import choice
-LocalAddress = "http://192.168.29.156:8099"
-#LocalAddress = "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py"
+# LocalAddress = "http://192.168.29.156:8099"
+LocalAddress = "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py"
 
 class VodShort(object):
     def __init__(self):
