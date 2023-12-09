@@ -45,6 +45,12 @@ class VodShort(object):
             dic[item[0]] = item[1]
         return dic
 
+    def set_id_to_dic(self):
+        dic = self.to_dict()
+        new_dic = copy.copy(dic)
+        new_dic["vod_id"] = json.dumps(dic)
+        return new_dic
+
     def load_dic(self, dic):
         for key in list(dic.keys()):
             if key in list(self.to_dict().keys()):
@@ -1096,7 +1102,7 @@ class Spider(BaseSpider):
     def init(self, extend=""):
         self.init_logger()
         self.write_config({"douban_search":False},"douban_search")
-
+        self.logger.info("输出extend={}".format(extend))
 
     def parseVodListFromJSONArray(self, items):
         vod_list = []

@@ -5,59 +5,65 @@
             "name": "🍥┃豆瓣┃🍥",
             "type": 3,
             "api": "py_douban",
-            "ext": "http://192.168.29.156:8099/py/py_douban.py",
-            "searchable": 1,
-            "changeable": 1
+            "ext": {
+                "py_url": "http://192.168.29.156:8099/py/py_douban.py",
+                "token": "test"
+            }
         },
         {
             "key": "py_gitcafe",
             "name": "📜┃阿里纸条┃📜",
             "type": 3,
             "api": "py_gitcafe",
-            "ext": "http://192.168.29.156:8099/py/py_gitcafe.py",
-            "searchable": 1,
-            "quickSearch": 1,
-            "filterable": 1
+            "ext": {
+                "py_url": "http://192.168.29.156:8099/py/py_gitcafe.py",
+                "token": "test"
+            },
+            "playerType": 1
         },
         {
             "key": "py_pansou",
             "name": "😺┃猫狸盘搜┃😺",
             "type": 3,
             "api": "py_pansou",
-            "ext": "http://192.168.29.156:8099/py/py_pansou.py",
-            "searchable": 1,
-            "quickSearch": 1,
-            "filterable": 1
+            "ext": {
+                "py_url": "http://192.168.29.156:8099/py/py_pansou.py",
+                "token": "test"
+            },
+            "playerType": 1
         },
         {
             "key": "py_test",
             "name": "┃测试┃",
             "type": 3,
             "api": "py_test",
-            "ext": "http://192.168.29.156:8099/py/py_test.py",
-            "searchable": 1,
-            "quickSearch": 1,
-            "filterable": 1
+            "ext": {
+                "py_url": "http://192.168.29.156:8099/py/py_test.py",
+                "token": "test"
+            },
+            "playerType": 1
         },
         {
             "key": "py_wanou",
             "name": "💂‍┃阿里玩偶┃💂",
             "type": 3,
             "api": "py_wanou",
-            "ext": "http://192.168.29.156:8099/py/py_wanou.py",
-            "searchable": 1,
-            "quickSearch": 1,
-            "filterable": 1
+            "ext": {
+                "py_url": "http://192.168.29.156:8099/py/py_wanou.py",
+                "token": "test"
+            },
+            "playerType": 1
         },
         {
             "key": "py_yunpanshare",
             "name": "🥏‍┃云盘分享┃🥏",
             "type": 3,
             "api": "py_yunpanshare",
-            "ext": "http://192.168.29.156:8099/py/py_yunpanshare.py",
-            "searchable": 1,
-            "quickSearch": 1,
-            "filterable": 1
+            "ext": {
+                "py_url": "http://192.168.29.156:8099/py/py_yunpanshare.py",
+                "token": "test"
+            },
+            "playerType": 1
         }
     ],
     "ijk": [

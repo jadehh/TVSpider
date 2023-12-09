@@ -29,17 +29,18 @@ def test_spider(Spider):
     start_time = time.time()
     spider = Spider()
     spider.init()
-    # content_list = spider.homeContent(True)["list"]
-    content_list = spider.searchContent("王牌对王牌")["list"]
-    #content_list = spider.categoryContent("https://www.alypw.com/category-2.html",1,None,None)["list"]
-    # for content in [content_list[0]]:
-    #     vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
-    #     print(content["vod_name"], content["vod_id"])
-    #     for vod_url in vod_url_list:
-    #         id = vod_url.split("$")[-1]
-    #         print(spider.playerContent("原画", id, [])["url"])
-    #     print("######################################################")
-    # print(time.time() - start_time)
+    content_list = spider.homeContent(True)["list"]
+    content_list = spider.searchContent("奥本海默")["list"]
+    # content_list = spider.categoryContent("https://www.alypw.com/category-2.html",1,None,None)["list"]
+    for content in [content_list[0]]:
+        vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
+        print(content["vod_name"], content["vod_id"])
+        for vod_url in vod_url_list:
+            id = vod_url.split("$")[-1]
+            print(spider.playerContent("原画", id, [])["url"])
+            break
+        print("######################################################")
+    print(time.time() - start_time)
 
 
 def test_wanou():
@@ -82,5 +83,4 @@ def test_test():
 
 
 if __name__ == '__main__':
-    test_douban()
-    test_test()
+    test_gitcafe()

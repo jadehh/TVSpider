@@ -38,15 +38,16 @@ def generate_json():
                 "name": name,
                 "type": 3,
                 "api": file_name.split(".py")[0],
-                "ext": "{}/py/{}".format(LocalAddress,file_name)
+                "ext":"{}/py/{}".format(LocalAddress,file_name),
+                # "ext": {
+                #     "py_url":"{}/py/{}".format(LocalAddress,file_name),
+                #      "token":"test"}
             }
             if "douban" in file_name:
-                site_dic["searchable"] = 1
-                site_dic["changeable"] = 1
+                pass
             else:
-                site_dic["searchable"] = 1
-                site_dic["quickSearch"] = 1
-                site_dic["filterable"] = 1
+                site_dic["playerType"] = 1 ## 阿里使用LJK
+
             site_list.append(site_dic)
     spider_json["sites"] = site_list
     with open("config.json","wb") as f:
