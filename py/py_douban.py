@@ -834,7 +834,7 @@ class BaseSpider(metaclass=ABCMeta):
             with open(os.path.join(os.environ.get("HOME"), "{}.json".format(name)), "rb") as f:
                 return json.load(f)
         except:
-            return None
+            return {}
 
     def fetch(self, url, header=None):
         try:
