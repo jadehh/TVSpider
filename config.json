@@ -5,20 +5,14 @@
             "name": "🍥┃豆瓣┃🍥",
             "type": 3,
             "api": "py_douban",
-            "ext": {
-                "py_url": "http://192.168.29.156:8099/py/py_douban.py",
-                "token": "test"
-            }
+            "ext": "http://192.168.29.156:8099/py/py_douban.py"
         },
         {
             "key": "py_gitcafe",
             "name": "📜┃阿里纸条┃📜",
             "type": 3,
             "api": "py_gitcafe",
-            "ext": {
-                "py_url": "http://192.168.29.156:8099/py/py_gitcafe.py",
-                "token": "test"
-            },
+            "ext": "http://192.168.29.156:8099/py/py_gitcafe.py",
             "playerType": 1
         },
         {
@@ -26,10 +20,7 @@
             "name": "😺┃猫狸盘搜┃😺",
             "type": 3,
             "api": "py_pansou",
-            "ext": {
-                "py_url": "http://192.168.29.156:8099/py/py_pansou.py",
-                "token": "test"
-            },
+            "ext": "http://192.168.29.156:8099/py/py_pansou.py",
             "playerType": 1
         },
         {
@@ -37,10 +28,7 @@
             "name": "┃测试┃",
             "type": 3,
             "api": "py_test",
-            "ext": {
-                "py_url": "http://192.168.29.156:8099/py/py_test.py",
-                "token": "test"
-            },
+            "ext": "http://192.168.29.156:8099/py/py_test.py",
             "playerType": 1
         },
         {
@@ -48,10 +36,7 @@
             "name": "💂‍┃阿里玩偶┃💂",
             "type": 3,
             "api": "py_wanou",
-            "ext": {
-                "py_url": "http://192.168.29.156:8099/py/py_wanou.py",
-                "token": "test"
-            },
+            "ext": "http://192.168.29.156:8099/py/py_wanou.py",
             "playerType": 1
         },
         {
@@ -59,10 +44,7 @@
             "name": "🥏‍┃云盘分享┃🥏",
             "type": 3,
             "api": "py_yunpanshare",
-            "ext": {
-                "py_url": "http://192.168.29.156:8099/py/py_yunpanshare.py",
-                "token": "test"
-            },
+            "ext": "http://192.168.29.156:8099/py/py_yunpanshare.py",
             "playerType": 1
         }
     ],

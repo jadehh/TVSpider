@@ -13,6 +13,7 @@ http://192.168.29.156:8099/config.json
 ```
 
 ## 待优化功能
+
 * 豆瓣分类功能
 * 优酷爱奇艺爬虫
 * 修改TV源码,支持python传入url
@@ -58,7 +59,7 @@ http://192.168.29.156:8099/config.json
         "url": "https://www.ckmov.com/?url="
     },
     {
-        "name": "api-7",        
+        "name": "api-7",
         "url": "https://www.nxflv.com/?url="
     },
     {
@@ -112,3 +113,32 @@ http://192.168.29.156:8099/config.json
 ]
 ```
 
+## python Spider
+
+```json
+{
+      "key": "py_test",
+      "name": "┃test┃",
+      "type": 3,
+      "api": "py_test",
+      "ext": 
+      {
+        "py_url": "https://raw.githubusercontent.com/jadehh/TV/py/py/py_test.py",
+        "token": "test"
+      },
+      "playerType": 1
+}
+```
+
+or
+
+```json
+{
+      "key": "py_test",
+      "name": "┃test┃",
+      "type": 3,
+      "api": "py_test",
+      "ext": "https://raw.githubusercontent.com/jadehh/TV/py/py/py_test.py",
+      "playerType": 1
+}
+```
