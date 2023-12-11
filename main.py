@@ -17,7 +17,8 @@ if os.path.exists("tmp"):
     pass
 else:
     os.mkdir("tmp")
-
+def sort_by_name(item):
+    return item["key"]
 
 def generate_json():
     with open("json/spider.json", "rb") as f:
@@ -49,6 +50,8 @@ def generate_json():
                 site_dic["playerType"] = 1 ## 阿里使用LJK
 
             site_list.append(site_dic)
+    site_list = sorted(site_list,key=sort_by_name)
+    print(site_list)
     spider_json["sites"] = site_list
     with open("config.json","wb") as f:
         f.write(json.dumps(spider_json,indent=4,ensure_ascii=False).encode("utf-8"))

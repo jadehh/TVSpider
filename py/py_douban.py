@@ -29,8 +29,8 @@ import urllib3
 from urllib3.exceptions import InsecureRequestWarning
 urllib3.disable_warnings(InsecureRequestWarning)
 from random import choice
-LocalAddress = "http://192.168.29.156:8099"
-#LocalAddress = "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py"
+# LocalAddress = "http://192.168.29.156:8099"
+LocalAddress = "https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/py"
 
 class VodShort(object):
     def __init__(self):
@@ -834,7 +834,7 @@ class BaseSpider(metaclass=ABCMeta):
             with open(os.path.join(os.environ.get("HOME"), "{}.json".format(name)), "rb") as f:
                 return json.load(f)
         except:
-            return None
+            return {}
 
     def fetch(self, url, header=None):
         try:
