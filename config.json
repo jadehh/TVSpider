@@ -1,0 +1,21 @@
+{
+  "video": {
+    "sites": [
+      {
+        "key": "wogg",
+        "name": "玩偶【📺】",
+        "type": 3,
+        "api": "./wogg.js",
+        "ext": "4636d4629ba44a68b207a2d2f4139298"
+      }
+    ]
+  },
+  "read": {
+    "sites": [
+    ]
+  },
+  "pan": {
+    "sites": [
+    ]
+  }
+}
