@@ -1,3 +1,11 @@
+/*
+ * @Author: samples jadehh@live.com
+ * @Date: 2023-12-14 11:03:04
+ * @LastEditors: samples jadehh@live.com
+ * @LastEditTime: 2023-12-14 11:03:04
+ * @FilePath: js/wogg.js
+ * @Description: 玩偶哥哥爬虫类
+ */
 import {_, load, Uri} from '../lib/cat.js';
 import {VodDetail} from "../lib/vod.js"
 import {JadeLogging} from "../lib/log.js";
