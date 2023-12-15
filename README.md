@@ -4,7 +4,7 @@
 ## TVBox互联网发布地址
 
 ```bash
-https://raw.githubusercontent.com/jadehh/TV/js/tv_config.json
+https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/js/tv_config.json
 ```
 
 
@@ -13,4 +13,4 @@ https://raw.githubusercontent.com/jadehh/TV/js/tv_config.json
 ```bash
 gitee://Token@gitee.com/jadehh_743/TV/js/config.json
 ```
-> 使用Gitee导入,并设置为私有仓库
+> 使用Gitee导入,并设置为私有仓库,仅支持私有仓库
