@@ -38,7 +38,8 @@ async function request(reqUrl, agentSp) {
         headers: header,
         timeout: 100000
     });
-    await JadeLog.debug("request请求为:" + JSON.stringify(res))
+    let keys = Object.keys(res).join(",")
+    await JadeLog.debug("request请求为:" + keys)
     return res.content;
 }
 
