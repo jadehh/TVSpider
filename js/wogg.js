@@ -2,7 +2,7 @@ import {_, load, Uri} from '../lib/cat.js';
 import {VodDetail} from "../lib/vod.js"
 import {JadeLogging} from "../lib/log.js";
 import {detailContent, initAli, playContent} from "../lib/ali.js";
-import {req} from "../lib/http.js"
+
 
 let siteKey = '';
 let siteType = 0;
