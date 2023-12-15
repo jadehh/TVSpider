@@ -4,7 +4,7 @@
 ## TVBox互联网发布地址
 
 ```bash
-https://raw.githubusercontent.com/jadehh/TV/js/config.json
+https://raw.githubusercontent.com/jadehh/TV/js/tv_config.json
 ```
 
 
