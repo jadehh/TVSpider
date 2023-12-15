@@ -13,6 +13,7 @@
     <link href="/template/DYXS7/static/css/swiper-bundle.min.css" rel="stylesheet" type="text/css"/>
     <script type="dabed9d91f45c2a5071e32ea-text/javascript">
         var maccms={"path":"","mid":"1","url":"wogg.xyz","wapurl":"wogg.xyz","mob_status":"2"};
+
     </script>
     <script src="/template/DYXS7/static/js/jquery.js" type="dabed9d91f45c2a5071e32ea-text/javascript"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/layer/3.4.0/layer.min.js"
@@ -140,11 +141,18 @@
                                                    title="玩偶电影"><span class="video-tag-icon"><i
                             class="icon-cate-dy"></i>玩偶电影</span></a>
                         <div class="tag-link"><span class="slash">/</span><a
-                                href="/index.php/vodshow/1---%E5%89%A7%E6%83%85--------.html">剧情</a><span
-                                class="slash">/</span><a href="/index.php/vodshow/1---%E5%8A%A8%E4%BD%9C--------.html">动作</a><span
-                                class="slash">/</span><a href="/index.php/vodshow/1---%E7%A7%91%E5%B9%BB--------.html">科幻</a><span
-                                class="slash">/</span><a href="/index.php/vodshow/1---%E6%83%8A%E6%82%9A--------.html">惊悚</a><span
-                                class="slash">/</span></div>
+                                href="/index.php/vodshow/1---%E5%89%A7%E6%83%85--------.html">剧情
+                        </a>
+                            <span
+                                    class="slash">/</span><a
+                                    href="/index.php/vodshow/1---%E5%8A%A8%E4%BD%9C--------.html">动作</a><span
+                                    class="slash">/</span><a
+                                    href="/index.php/vodshow/1---%E7%A7%91%E5%B9%BB--------.html">科幻</a><span
+                                    class="slash">/</span><a
+                                    href="/index.php/vodshow/1---%E6%83%8A%E6%82%9A--------.html">惊悚</a><span
+                                    class="slash">/
+                            </span>
+                        </div>
                         <a class="tag-link" href="/index.php/vodshow/1-----------2023.html">2023</a><a class="tag-link"
                                                                                                        href="/index.php/vodshow/1-%E7%BE%8E%E5%9B%BD----------.html">美国</a>
                     </div>
@@ -159,8 +167,7 @@
                         <div class="video-info-item video-info-actor"><span class="slash">/</span><a
                                 href="/index.php/vodsearch/-%E7%BA%A6%E7%BF%B0%C2%B7%E5%A4%A7%E5%8D%AB%C2%B7%E5%8D%8E%E7%9B%9B%E9%A1%BF------------.html"
                                 target="_blank">约翰·大卫·华盛顿</a><span class="slash">/</span><a
-                                href="/index.php/vodsearch/-Madeleine+Yuna+Voyles------------.html" target="_blank">Madeleine
-                            Yuna Voyles</a><span class="slash">/</span><a
+                                href="/index.php/vodsearch/-Madeleine+Yuna+Voyles------------.html" target="_blank">Madeleine Yuna Voyles</a><span class="slash">/</span><a
                                 href="/index.php/vodsearch/-%E5%98%89%E7%8E%9B%C2%B7%E9%99%88------------.html"
                                 target="_blank">嘉玛·陈</a><span class="slash">/</span><a
                                 href="/index.php/vodsearch/-%E8%89%BE%E8%8E%89%E6%A3%AE%C2%B7%E7%8F%8D%E5%A6%AE------------.html"
@@ -225,6 +232,7 @@
         </div>
         <script type="dabed9d91f45c2a5071e32ea-text/javascript">
              $(".sq_jj").click(function(){ $(".sqjj_a").toggle(); $(".zkjj_a").toggle(); }); $(".zk_jj").click(function(){ $(".sqjj_a").toggle(); $(".zkjj_a").toggle(); }); $('.gotodownloadlist').click(function(){$('html,body').animate({scrollTop:$('#download-list').offset().top}, 800);});
+
         </script>
         <div class="module">
             <div class="module-heading"><h2 class="module-title" style="color: #ff2a14" title="AI创世者在线观看列表">
@@ -234,6 +242,7 @@
         </div>
         <script type="dabed9d91f45c2a5071e32ea-text/javascript">
             $(".tab-item:first,.module-list:first").addClass("selected");
+
         </script>
         <style>.reg-w form .reg-group {
             padding: 10px 20px;
@@ -499,6 +508,7 @@
         </div>
         <script type="dabed9d91f45c2a5071e32ea-text/javascript">
             function ljwx(name,url){ if(MAC.User.IsLogin == 0){ MAC.User.Login(); return }var con="影片名:"+name+" | 链接:"+url +" | 链接无效!"; layer.confirm('确定该链接无效嘛？', { btn: ['确定','取消'] ,btn2: function(index, layero){ layer.close(index); } }, function(index, layero){$.ajax({url:"/index.php/gbook/savedata.html",type:"post",dataType:"json",data: {gbook_content:con,type:1},success: function (res) {if(res.code=="1"){layer.msg("感谢您的反馈!");}else{layer.msg(res.msg);}}}); });}
+
         </script>
         <div class="module" id="download-list" name="download-list" style="padding-top: 0px;padding-bottom: 0px;">
             <div class="module-heading"><h2 class="module-title" title="分享链接">我有资源 我要分享</h2></div>
@@ -522,6 +532,7 @@
         </div>
         <script type="dabed9d91f45c2a5071e32ea-text/javascript">
              $("#sharelink").focus(function(){ if(MAC.User.IsLogin == 0){ MAC.User.Login(); } }); $('#sharebtn').click(function () { if(MAC.User.IsLogin == 0){ MAC.User.Login(); return } let share_link = $('#sharelink').val(); let code = $('#code').val(); var con="影片名:AI创世者 | 链接分享 :" + share_link; $.ajax({ url: '/index.php/gbook/savedata.html', type: 'get', dataType: 'json', data: { gbook_content:con, verify: code,type: 2 }, success: function (res) { if(res.code=="1"){layer.msg("感谢您的分享!");}else{layer.msg(res.msg);} MAC.Verify.Refresh(); $('#code').val(""); } }) });
+
         </script>
         <div class="module">
             <div class="module-heading"><h2 class="module-title" title="与AI创世者相关的影片列表">相关影片</h2></div>
@@ -1609,6 +1620,7 @@
 </div>
 <script type="dabed9d91f45c2a5071e32ea-text/javascript">
     $(function(){$(window).scroll(function() {if($(window).scrollTop() >= 100){$('.goTop').fadeIn(300); }else{ $('.goTop').fadeOut(300); } });$('.goTop').click(function(){$('html,body').animate({scrollTop: '0px'}, 800);});});
+
 </script>
 <div class="popup" id="note" style="display:none;">
     <div class="popup-icon"><img src="/template/DYXS7/static/picture/backhome.svg"/></div>
