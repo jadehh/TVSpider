@@ -1,9 +1,13 @@
-import {__jsEvalReturn} from './wogg.js';
-import {log} from "./lib/utils.js";
+import {} from './wrapper/index.js';
 
-function test_spider(spider) {
-    log(spider.home(false))
+// import { test } from './testVideo.js';
+// import { test } from './testVideo_customer.js';
+import {test} from "./js/testWogg.js";
+import {JadeLogging} from "./lib/log.js";
 
-}
 
-test_spider(__jsEvalReturn())
+(async function () {
+    await test();
+    debugger;
+})();
+

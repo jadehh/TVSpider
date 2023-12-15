@@ -1,8 +1,18 @@
-# CatVodOpen
-[发布地址](https://github.com/catvod/CatVodOpen/releases)
+# CatVodOpen和TvBox
 
-## 互联网发布地址
+[CatVodOpen发布地址](https://github.com/catvod/CatVodOpen/releases)
+
+## TVBox互联网发布地址
+
 ```bash
-github://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@github.com/jadehh/TV/js/config.json
+gitee://Token@gitee.com/jadehh_743/TV/js/tv_config.json
 ```
-> 仅支持私有仓库
+
+
+## CatVodOpen
+
+```bash
+gitee://Token@gitee.com/jadehh_743/TV/js/config.json
+
+```
+> Gitee导入,并使用私有仓库
