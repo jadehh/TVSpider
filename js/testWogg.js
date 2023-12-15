@@ -7,7 +7,7 @@ async function test() {
     let siteKey = 'wogg';
     let siteType = 0;
     var spVid = null;
-    const refresh_token = "1"
+    const refresh_token = "86c442348ffa42e882506502c557cd34"
     // const refresh_token = "1"
     // 测试分类
     await spider.init({skey: siteKey, stype: siteType, ext: refresh_token});
