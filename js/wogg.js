@@ -9,7 +9,7 @@ let siteType = 0;
 let siteUrl = 'https://tvfan.xxooo.cf';
 let UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36";
 let patternAli = /(https:\/\/www\.aliyundrive\.com\/s\/[^"]+|https:\/\/www\.alipan\.com\/s\/[^"]+)/
-let JadeLog = new JadeLogging(getAppName())
+let JadeLog = new JadeLogging(getAppName(),"DEBUG")
 
 // cfg = {skey: siteKey, ext: extend}
 async function init(cfg) {
