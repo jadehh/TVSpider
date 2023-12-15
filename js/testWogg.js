@@ -25,10 +25,9 @@ async function test() {
     // console.debug(JSON.stringify(page));
     //
     // 测试搜索
-    // var search_page = JSON.parse(await spider.search("奥本海默"))
-    // console.debug(JSON.stringify(search_page));
+    var search_page = JSON.parse(await spider.search("奥本海默"))
+    console.debug(JSON.stringify(search_page));
 
-    var detail = JSON.parse(await spider.detail("/index.php/voddetail/82405.html"))
 
     // 测试详情
     if (search_page.list && search_page.list.length > 0) {
@@ -38,8 +37,8 @@ async function test() {
             let obj = search_page.list[k]
             const spVid = search_page.list[k].vod_id
             console.debug("===", spVid)
-            // var detail = JSON.parse(await spider.detail(spVid || search_page.list[k].vod_id));
-            var detail = JSON.parse(await spider.detail("/index.php/voddetail/82405.html"))
+            var detail = JSON.parse(await spider.detail(spVid || search_page.list[k].vod_id));
+            // var detail = JSON.parse(await spider.detail("/index.php/voddetail/82405.html"))
             // // var detail = JSON.parse(await spider.detail("/index.php/voddetail/81254.html"));
             console.debug(JSON.stringify(detail));
 

@@ -4,6 +4,7 @@
 * 支持玩偶二级菜单,支持分类页面下一页
 * 支持TVBox接口
 * 先初始化阿里云盘,在清空缓存文件
+* TV客户端使用requests请求,code为undefined的bug
 ---
 
 
