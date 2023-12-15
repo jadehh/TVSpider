@@ -39,7 +39,6 @@ async function request(reqUrl, agentSp) {
         timeout: 100000
     });
     let keys = Object.keys(res).join(",")
-    await JadeLog.debug("request请求为:" + keys)
     return res.content;
 }
 
@@ -253,7 +252,7 @@ async function detail(id) {
                 share_url_list.push(matches[1])
         }
         if (share_url_list.length > 0) {
-            let aliVodDetail = await detailContent(share_url_list[0])
+            let aliVodDetail = await detailContent(share_url_list)
             vodDetail.vod_play_url = aliVodDetail.vod_play_url
             vodDetail.vod_play_from = aliVodDetail.vod_play_from
             let result = JSON.stringify({"list": [vodDetail]});

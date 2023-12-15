@@ -6,6 +6,7 @@
 * 先初始化阿里云盘,在清空缓存文件
 * TV客户端使用requests请求,code为undefined的bug
 * 根据Content内容自定义Code码
+* 分享文件字幕和视频文件去重复
 ---
 
 
