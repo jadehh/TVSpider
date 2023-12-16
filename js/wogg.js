@@ -100,12 +100,14 @@ async function home(filter) {
         classes.push(type_dic)
     }
     let vod_list = parseVodListFromDoc($)
-    return JSON.stringify({
+    let result = JSON.stringify({
         class: classes,
         vod_list: vod_list,
         filters: JSON.parse(content),
 
     });
+    await JadeLog.info("首页解析完成,首页信息为:" + result)
+    return result
 }
 
 
