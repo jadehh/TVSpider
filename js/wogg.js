@@ -93,12 +93,13 @@ async function home(filter) {
         let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
         let con =  await request(siteUrl,UA);
         const $ = load(con);
-        let elements = $('nav-link')
+        let elements = $('.nav-link')
         let classes = []
         for (const element of elements) {
             let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
             let type_name = element.children[2].data.replace("\n", "").replace(" ", "").replace("玩偶", "")
             let type_dic = {type_id: type_id, type_name: type_name}
+            await JadeLog.info(`type_id = ${type_id},type_name = ${type_name}`)
             classes.push(type_dic)
         }
         let vod_list = parseVodListFromDoc($)
