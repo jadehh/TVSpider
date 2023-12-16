@@ -88,7 +88,9 @@ function parseVodListFromDoc($) {
 }
 
 async function home(filter) {
-    let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
+    JadeLog.info("正在解析首页")
+    try{
+   let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
     let home_content = await request(siteUrl, UA)
     let $ = load(home_content)
     let elements = $(".nav-link")
@@ -108,6 +110,10 @@ async function home(filter) {
     });
     await JadeLog.info("首页解析完成,首页信息为:" + result)
     return result
+    }catch (e) {
+        await JadeLog.error("首页解析失败,失败原因为:" + e)
+    }
+
 }
 
 
