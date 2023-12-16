@@ -63,15 +63,46 @@ async function getString(url) {
     return res.content;
 }
 
-let classes = [{'type_id': 1, 'type_name': '电影'}, {'type_id': 2, 'type_name': '电视剧'}, {
-    'type_id': 3, 'type_name': '动漫'
-}, {'type_id': 4, 'type_name': '综艺'}, {'type_id': 6, 'type_name': '短剧'}, {'type_id': 5, 'type_name': '音乐'}];
-let filterObj = {};
+function parseVodListFromDoc($) {
+    let items = $('.module:eq(0) > .module-list > .module-items > .module-item');
+    let videos = [];
+    for (const item of items) {
+        let oneA = $(item).find('.module-item-cover .module-item-pic a').first();
+        let href = oneA.attr('href');
+        let name = oneA.attr('title');
+        let oneImg = $(item).find('.module-item-cover .module-item-pic img').first();
+        let pic = oneImg.attr('data-src');
+        if (pic.indexOf("img.php?url=") > 0) {
+            pic = pic.split("img.php?url=")[1]
+        }
+        let remark = $(item).find('.module-item-text').first().text();
+        videos.push({
+            vod_id: href,
+            vod_name: name,
+            vod_pic: pic,
+            vod_remarks: remark,
+        });
+    }
+    return videos
+
+}
 
 async function home(filter) {
     let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
+    let home_content = await request(siteUrl, UA)
+    let $ = load(home_content)
+    let elements = $(".nav-link")
+    let classes = []
+    for (const element of elements) {
+        let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
+        let type_name = element.children[2].data.replace("\n", "").replace(" ", "").replace("玩偶", "")
+        let type_dic = {type_id: type_id, type_name: type_name}
+        classes.push(type_dic)
+    }
+    let vod_list = parseVodListFromDoc($)
     return JSON.stringify({
         class: classes,
+        vod_list: vod_list,
         filters: JSON.parse(content),
 
     });
@@ -160,25 +191,7 @@ async function category(tid, pg, filter, extend) {
     try {
         let con = await request(reqUrl, UA);
         const $ = load(con);
-        let items = $('.module:eq(0) > .module-list > .module-items > .module-item');
-        let videos = [];
-        for (const item of items) {
-            let oneA = $(item).find('.module-item-cover .module-item-pic a').first();
-            let href = oneA.attr('href');
-            let name = oneA.attr('title');
-            let oneImg = $(item).find('.module-item-cover .module-item-pic img').first();
-            let pic = oneImg.attr('data-src');
-            if (pic.indexOf("img.php?url=") > 0) {
-                pic = pic.split("img.php?url=")[1]
-            }
-            let remark = $(item).find('.module-item-text').first().text();
-            videos.push({
-                vod_id: href,
-                vod_name: name,
-                vod_pic: pic,
-                vod_remarks: remark,
-            });
-        }
+        let videos = parseVodListFromDoc($)
         let patternPageCount = /\$\("\.mac_total"\)\.text\('(\d+)'\)/
         let matches = patternPageCount.exec(con)
         let total = 0;
