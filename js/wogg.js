@@ -95,7 +95,7 @@ async function home(filter) {
         let con =  await request(siteUrl,UA);
         const $ = load(con);
         let elements = $('.nav-link')
-        await JadeLog.info("解析html内容成功")
+        await JadeLog.info("解析html内容成功,长度为:"+elements.length.toString())
         let classes = []
         for (const element of elements) {
             let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
