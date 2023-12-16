@@ -91,9 +91,11 @@ async function home(filter) {
     await JadeLog.info("正在解析首页")
     try {
         let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
+        await JadeLog.info("类别信息解析成功");
         let con =  await request(siteUrl,UA);
         const $ = load(con);
         let elements = $('.nav-link')
+        await JadeLog.info("解析html内容成功")
         let classes = []
         for (const element of elements) {
             let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
