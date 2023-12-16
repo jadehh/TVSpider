@@ -92,6 +92,8 @@ async function home(filter) {
     try {
         let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
         let home_content =  await request(siteUrl,UA);
+        await JadeLog.info("首页读取完成")
+
         let $ = load(home_content)
         let elements = $(".nav-link")
         let classes = []
