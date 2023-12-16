@@ -94,15 +94,16 @@ function parseVodListFromDoc($) {
 async function home(filter) {
     await JadeLog.info("正在解析首页")
     let vod_list = []
-    let result = JSON.stringify({
+    let result_json = {
         class: classes,
         list: vod_list,
         filters: filterObj,
 
-    })
+    }
     try {
         let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
         filterObj = JSON.parse(content)
+        result_json.filters = filterObj
         await JadeLog.info("类别信息解析成功");
         let con = await request(siteUrl, UA);
         if (!_.isEmpty(con)) {
@@ -116,22 +117,18 @@ async function home(filter) {
                 await JadeLog.info(`type_id = ${type_id},type_name = ${type_name}`)
                 classes.push(type_dic)
             }
-
+            result_json.class = classes
             vod_list = parseVodListFromDoc($)
-
-            let result = JSON.stringify({
-                class: classes,
-                list: vod_list,
-                filters: filterObj,
-
-            });
-            await JadeLog.info("首页解析完成,首页信息为:" + result)
+            result_json.list = vod_list
+            await JadeLog.info("首页解析完成,首页信息为:" + JSON.stringify(result_json))
+            return JSON.stringify(result_json)
         } else {
-            await JadeLog.info("首页解析完成,首页信息为:" + result)
-            return result
+            await JadeLog.info("首页解析完成,首页信息为:" + JSON.stringify(result_json))
+            return JSON.stringify(result_json)
         }
     } catch (e) {
-        return result
+        await JadeLog.info("首页解析失败,首页信息为:" + JSON.stringify(result_json))
+        return JSON.stringify(result_json)
     }
 
 }
