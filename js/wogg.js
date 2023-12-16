@@ -126,9 +126,10 @@ async function home(filter) {
 
             });
             await JadeLog.info("首页解析完成,首页信息为:" + result)
+        } else {
+            await JadeLog.info("首页解析完成,首页信息为:" + result)
+            return result
         }
-        await JadeLog.info("首页解析完成,首页信息为:" + result)
-        return result
     } catch (e) {
         return result
     }
