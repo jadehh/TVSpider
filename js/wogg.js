@@ -17,7 +17,7 @@ let siteType = 0;
 let siteUrl = 'https://tvfan.xxooo.cf';
 let UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36";
 let patternAli = /(https:\/\/www\.aliyundrive\.com\/s\/[^"]+|https:\/\/www\.alipan\.com\/s\/[^"]+)/
-let JadeLog = new JadeLogging(getAppName(),"DEBUG")
+let JadeLog = new JadeLogging(getAppName(), "DEBUG")
 
 // cfg = {skey: siteKey, ext: extend}
 async function init(cfg) {
@@ -88,29 +88,29 @@ function parseVodListFromDoc($) {
 }
 
 async function home(filter) {
-    JadeLog.info("正在解析首页")
-    try{
-   let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
-    let home_content = await request(siteUrl, UA)
-    let $ = load(home_content)
-    let elements = $(".nav-link")
-    let classes = []
-    for (const element of elements) {
-        let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
-        let type_name = element.children[2].data.replace("\n", "").replace(" ", "").replace("玩偶", "")
-        let type_dic = {type_id: type_id, type_name: type_name}
-        classes.push(type_dic)
-    }
-    let vod_list = parseVodListFromDoc($)
-    let result = JSON.stringify({
-        class: classes,
-        // list: vod_list,
-        filters: JSON.parse(content),
+    await JadeLog.info("正在解析首页")
+    try {
+        let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
+        let home_content =  await request(siteUrl,UA);
+        let $ = load(home_content)
+        let elements = $(".nav-link")
+        let classes = []
+        for (const element of elements) {
+            let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
+            let type_name = element.children[2].data.replace("\n", "").replace(" ", "").replace("玩偶", "")
+            let type_dic = {type_id: type_id, type_name: type_name}
+            classes.push(type_dic)
+        }
+        let vod_list = parseVodListFromDoc($)
+        let result = JSON.stringify({
+            class: classes,
+            list: vod_list,
+            filters: JSON.parse(content),
 
-    });
-    await JadeLog.info("首页解析完成,首页信息为:" + result)
-    return result
-    }catch (e) {
+        });
+        await JadeLog.info("首页解析完成,首页信息为:" + result)
+        return result
+    } catch (e) {
         await JadeLog.error("首页解析失败,失败原因为:" + e)
     }
 
