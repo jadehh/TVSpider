@@ -91,9 +91,9 @@ async function home(filter) {
     await JadeLog.info("正在解析首页")
     try {
         let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
-        let home_content =  await request(siteUrl,UA);
-        await JadeLog.info("首页读取完成");
-        let $ = load(home_content);
+        let con =  await request(siteUrl,UA);
+        await JadeLog.info("首页读取完成,html为:"+con);
+        const $ = load(con);
         await JadeLog.info("读取首页html内容完成")
         let elements = $(".nav-link")
         let classes = []
