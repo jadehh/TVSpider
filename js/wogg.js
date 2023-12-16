@@ -92,9 +92,9 @@ async function home(filter) {
     try {
         let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
         let home_content =  await request(siteUrl,UA);
-        await JadeLog.info("首页读取完成")
-
-        let $ = load(home_content)
+        await JadeLog.info("首页读取完成");
+        let $ = load(home_content);
+        await JadeLog.info("读取首页html内容完成")
         let elements = $(".nav-link")
         let classes = []
         for (const element of elements) {
@@ -103,7 +103,7 @@ async function home(filter) {
             let type_dic = {type_id: type_id, type_name: type_name}
             classes.push(type_dic)
         }
-        await JadeLog.info("准备解析首页")
+
         let vod_list = parseVodListFromDoc($)
         await JadeLog.info("首页解析完成")
         let result = JSON.stringify({
