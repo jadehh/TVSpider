@@ -103,7 +103,9 @@ async function home(filter) {
             let type_dic = {type_id: type_id, type_name: type_name}
             classes.push(type_dic)
         }
+        await JadeLog.info("准备解析首页")
         let vod_list = parseVodListFromDoc($)
+        await JadeLog.info("首页解析完成")
         let result = JSON.stringify({
             class: classes,
             list: vod_list,
