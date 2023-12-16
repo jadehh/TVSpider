@@ -102,7 +102,7 @@ async function home(filter) {
     let vod_list = parseVodListFromDoc($)
     let result = JSON.stringify({
         class: classes,
-        list: vod_list,
+        // list: vod_list,
         filters: JSON.parse(content),
 
     });
