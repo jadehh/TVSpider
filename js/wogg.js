@@ -92,10 +92,11 @@ async function home(filter) {
     try {
         let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
         await JadeLog.info("类别信息解析成功");
-        let con =  await request(siteUrl,UA);
+        let con = await request(siteUrl, UA);
         const $ = load(con);
         let elements = $('.nav-link')
         let classes = []
+        await JadeLog.info("解析html内容成功,长度为:" + classes.length.toString())
         for (const element of elements) {
             let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
             let type_name = element.children[2].data.replace("\n", "").replace(" ", "").replace("玩偶", "")
@@ -103,11 +104,11 @@ async function home(filter) {
             await JadeLog.info(`type_id = ${type_id},type_name = ${type_name}`)
             classes.push(type_dic)
         }
-        await JadeLog.info("解析html内容成功,长度为:"+classes.length.toString())
+        await JadeLog.info("解析html内容成功,长度为:" + classes.length.toString())
         let vod_list = []
         try {
             vod_list = parseVodListFromDoc($)
-        }catch (e) {
+        } catch (e) {
 
         }
         let result = JSON.stringify({
