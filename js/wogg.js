@@ -95,7 +95,6 @@ async function home(filter) {
         let con =  await request(siteUrl,UA);
         const $ = load(con);
         let elements = $('.nav-link')
-        await JadeLog.info("解析html内容成功,长度为:"+elements.length.toString())
         let classes = []
         for (const element of elements) {
             let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
@@ -104,7 +103,13 @@ async function home(filter) {
             await JadeLog.info(`type_id = ${type_id},type_name = ${type_name}`)
             classes.push(type_dic)
         }
-        let vod_list = parseVodListFromDoc($)
+        await JadeLog.info("解析html内容成功,长度为:"+classes.length.toString())
+        let vod_list = []
+        try {
+            vod_list = parseVodListFromDoc($)
+        }catch (e) {
+
+        }
         let result = JSON.stringify({
             class: classes,
             list: vod_list,
