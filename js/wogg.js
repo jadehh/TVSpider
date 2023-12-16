@@ -19,6 +19,11 @@ let UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, l
 let patternAli = /(https:\/\/www\.aliyundrive\.com\/s\/[^"]+|https:\/\/www\.alipan\.com\/s\/[^"]+)/
 let JadeLog = new JadeLogging(getAppName(), "DEBUG")
 
+let classes = [{'type_id': 1, 'type_name': '电影'}, {'type_id': 2, 'type_name': '电视剧'}, {
+    'type_id': 3, 'type_name': '动漫'
+}, {'type_id': 4, 'type_name': '综艺'}, {'type_id': 6, 'type_name': '短剧'}, {'type_id': 5, 'type_name': '音乐'}];
+let filterObj = {};
+
 // cfg = {skey: siteKey, ext: extend}
 async function init(cfg) {
     try {
@@ -89,14 +94,15 @@ function parseVodListFromDoc($) {
 
 async function home(filter) {
     await JadeLog.info("正在解析首页")
+    let vod_list = []
     try {
         let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
+        filterObj = JSON.parse(content)
         await JadeLog.info("类别信息解析成功");
         let con = await request(siteUrl, UA);
         const $ = load(con);
         let elements = $('.nav-link')
         let classes = []
-        await JadeLog.info("解析html内容成功,长度为:" + classes.length.toString())
         for (const element of elements) {
             let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
             let type_name = element.children[2].data.replace("\n", "").replace(" ", "").replace("玩偶", "")
@@ -104,23 +110,24 @@ async function home(filter) {
             await JadeLog.info(`type_id = ${type_id},type_name = ${type_name}`)
             classes.push(type_dic)
         }
-        await JadeLog.info("解析html内容成功,长度为:" + classes.length.toString())
-        let vod_list = []
-        try {
-            vod_list = parseVodListFromDoc($)
-        } catch (e) {
 
-        }
+        vod_list = parseVodListFromDoc($)
+
         let result = JSON.stringify({
             class: classes,
             list: vod_list,
-            filters: JSON.parse(content),
+            filters: filterObj,
 
         });
         await JadeLog.info("首页解析完成,首页信息为:" + result)
-        return result
     } catch (e) {
-        await JadeLog.error("首页解析失败,失败原因为:" + e)
+        return JSON.stringify({
+            class: classes,
+            list: vod_list,
+            filters: filterObj,
+
+        })
+
     }
 
 }
