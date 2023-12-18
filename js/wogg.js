@@ -110,6 +110,7 @@ async function home(filter) {
             const $ = load(con);
             await JadeLog.info("html信息解析成功")
             let elements = $('.nav-link')
+            await JadeLog.info("let elements = $('.nav-link')")
             let classes = []
             for (const element of elements) {
                 let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
@@ -117,7 +118,7 @@ async function home(filter) {
                 let type_dic = {"type_id": type_id, "type_name": type_name}
                 classes.push(type_dic)
             }
-            await JadeLog.info("类别信息获取成功")
+            await JadeLog.info("classes")
             result_json.class = classes
             vod_list = parseVodListFromDoc($)
             result_json.list = vod_list
