@@ -9,10 +9,6 @@ async function test() {
     var spVid = null;
     const refresh_token = "86c442348ffa42e882506502c557cd34"
     // const refresh_token = "1"
-    // 测试分类
-    spVid = "/index.php/voddetail/82428.html"
-    var detail = JSON.parse(await spider.detail(spVid || search_page.list[k].vod_id));
-
     await spider.init({skey: siteKey, stype: siteType, ext: refresh_token});
     var classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
@@ -40,7 +36,6 @@ async function test() {
             let obj = search_page.list[k]
             let spVid = search_page.list[k].vod_id
             console.debug("===", spVid)
-            spVid = "/index.php/voddetail/82428.html"
             var detail = JSON.parse(await spider.detail(spVid || search_page.list[k].vod_id));
             // var detail = JSON.parse(await spider.detail("/index.php/voddetail/82405.html"))
             // // var detail = JSON.parse(await spider.detail("/index.php/voddetail/81254.html"));

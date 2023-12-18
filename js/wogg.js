@@ -11,7 +11,6 @@ import {VodDetail} from "../lib/vod.js"
 import {JadeLogging} from "../lib/log.js";
 import {detailContent, initAli, playContent} from "../lib/ali.js";
 
-
 let siteKey = '';
 let siteType = 0;
 let siteUrl = 'https://tvfan.xxooo.cf';
@@ -382,28 +381,25 @@ function getAppName() {
     return "阿里玩偶"
 }
 
-async function request(reqUrl, agentSp) {
-    let header = {"User-Agent": agentSp}
-    let uri = new Uri(reqUrl);
-    let res = await req(uri.toString(), {
-        headers: header,
-        timeout: 100000
-    });
-    return res.content;
-}
-
 function getHeader() {
     let header = {};
     header['User-Agent'] = UA;
     return header;
 }
 
-async function getString(url) {
-    let res = await req(url, {
-        headers: getHeader()
+async function request(reqUrl) {
+    let header = getHeader()
+    let uri = new Uri(reqUrl);
+    let res = await req(uri.toString(), {
+        headers: header,
+        timeout: 100000,
     });
+    if (_.isEmpty(res.content)){
+        await JadeLog.error("html内容读取失败,请检查url:" + reqUrl)
+    }
     return res.content;
 }
+
 
 function parseVodListFromDoc($) {
     let items = $('.module:eq(0) > .module-list > .module-items > .module-item');
@@ -443,7 +439,7 @@ async function home(filter) {
         // filterObj = JSON.parse(content)
         // result_json.filters = filterObj
         // await JadeLog.info("类别信息解析成功");
-        let con = await request(siteUrl, UA);
+        let con = await request(siteUrl);
         if (!_.isEmpty(con)) {
             const $ = load(con);
             let elements = $('.nav-link')
@@ -550,8 +546,9 @@ async function category(tid, pg, filter, extend) {
     }
     let reqUrl = siteUrl + '/index.php/vodshow/' + urlParams.join("-") + '.html';
     await JadeLog.info(`正在获取分类界面,请求url为:${reqUrl},tid为:${tid},pg为:${pg},filter为:${filter},extend为:${extend}`)
+    let result = "";
     try {
-        let con = await request(reqUrl, UA);
+        let con = await request(reqUrl);
         const $ = load(con);
         let videos = parseVodListFromDoc($)
         let patternPageCount = /\$\("\.mac_total"\)\.text\('(\d+)'\)/
@@ -567,14 +564,14 @@ async function category(tid, pg, filter, extend) {
         } else {
             pgCount = Math.ceil(total / limit)
         }
-        let result = JSON.stringify({
+        result = JSON.stringify({
             page: parseInt(pg),
             pagecount: pgCount,
             limit: limit,
             total: total,
             list: videos,
         });
-        await JadeLog.info(`正在获取分类界面成功,详情界面结果为:${result}`)
+        await JadeLog.info(`获取分类界面成功,详情界面结果为:${result}`)
         return result
     } catch (e) {
         await JadeLog.error("获取分类界面失败,失败原因为:" + e)
@@ -585,8 +582,8 @@ async function detail(id) {
     let detailUrl = siteUrl + id;
     await JadeLog.info(`正在获取详情界面,url为:${detailUrl},id为:${id}`)
     try {
-        let aliUrl = await request(detailUrl, UA);
-        let $ = load(aliUrl);
+        let con = await request(detailUrl);
+        let $ = load(con);
         let vodDetail = new VodDetail()
         vodDetail.vod_name = $('.page-title')[0].children[0].data
         vodDetail.vod_pic = $($(".mobile-play")).find(".lazyload")[0].attribs["data-src"]
@@ -658,7 +655,7 @@ async function play(flag, id, flags) {
 
 async function search(wd, quick) {
     let searchUrl = siteUrl + '/index.php/vodsearch/-------------.html?wd=' + wd;
-    await JadeLog.info(`正在获取分类界面,url为:${searchUrl},名称为:${wd},quick为:${quick}`)
+    await JadeLog.info(`正在获取搜索界面,url为:${searchUrl},名称为:${wd},quick为:${quick}`)
     try {
         let html = await request(searchUrl, UA);
         let $ = load(html);
