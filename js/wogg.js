@@ -446,19 +446,14 @@ async function home(filter) {
         let con = await request(siteUrl, UA);
         if (!_.isEmpty(con)) {
             const $ = load(con);
-            await JadeLog.info("html信息解析成功")
             let elements = $('.nav-link')
-            await JadeLog.info("let elements = $('.nav-link')")
             let classes = []
             for (const element of elements) {
-                await JadeLog.info("const element of elements")
                 let type_id = parseInt(element.attribs.href.split("/").slice(-1)[0].split(".html")[0])
-                await JadeLog.info("let type_id = parseInt(element.attribs.href.split(\"/\").at(-1).split(\".html\")[0])")
                 let type_name = element.children.slice(-1)[0].data.replace("\n", "").replace(" ", "").replace("玩偶", "")
                 let type_dic = {"type_id": type_id, "type_name": type_name}
                 classes.push(type_dic)
             }
-            await JadeLog.info("classes")
             result_json.class = classes
             vod_list = parseVodListFromDoc($)
             result_json.list = vod_list
@@ -604,7 +599,7 @@ async function detail(id) {
             }
         }
         let video_items = $('.video-info-items')
-        let vidoe_info_director_list = video_items[0].children.at(-1).children
+        let vidoe_info_director_list = video_items[0].children.slice(-1)[0].children
         for (const vidoe_info_director of vidoe_info_director_list) {
             try {
                 vodDetail.vod_director = vodDetail.vod_director + vidoe_info_director.children[0].data
@@ -621,8 +616,8 @@ async function detail(id) {
             }
         }
         vodDetail.vod_year = $(video_items[2]).find("a")[0].children[0].data
-        vodDetail.vod_remarks = `清晰度:${video_items[3].children.at(-1).children[0].data}, 制作人:Jade`
-        let video_content_list = video_items[4].children.at(-1).children
+        vodDetail.vod_remarks = `清晰度:${video_items[3].children.slice(-1)[0].children[0].data}, 制作人:Jade`
+        let video_content_list = video_items[4].children.slice(-1)[0].children
         for (const video_content of video_content_list) {
             try {
                 vodDetail.vod_content = vodDetail.vod_content + video_content.children[0].data
