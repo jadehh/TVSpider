@@ -49,7 +49,7 @@ async function request(reqUrl, agentSp) {
     let uri = new Uri(reqUrl);
     let res = await req(uri.toString(), {
         headers: header,
-        timeout: 10000
+        timeout: 100000
     });
     return res.content;
 }
@@ -112,7 +112,7 @@ async function home(filter) {
             let classes = []
             for (const element of elements) {
                 let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
-                let type_name = element.children[2].data.replace("\n", "").replace(" ", "").replace("玩偶", "")
+                let type_name = element.children.at(-1).data.replace("\n", "").replace(" ", "").replace("玩偶", "")
                 let type_dic = {type_id: type_id, type_name: type_name}
                 await JadeLog.info(`type_id = ${type_id},type_name = ${type_name}`)
                 classes.push(type_dic)
