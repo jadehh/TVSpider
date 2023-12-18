@@ -124,11 +124,11 @@ async function home(filter) {
             await JadeLog.info("首页解析完成,首页信息为:" + JSON.stringify(result_json))
             return JSON.stringify(result_json)
         } else {
-            await JadeLog.info("首页解析完成,首页信息为:" + JSON.stringify(result_json))
+            await JadeLog.warning("首页解析完成,首页信息为:" + JSON.stringify(result_json))
             return JSON.stringify(result_json)
         }
     } catch (e) {
-        await JadeLog.info("首页解析失败,首页信息为:"+ JSON.stringify(result_json)+",失败原因为:"+e)
+        await JadeLog.error("首页解析失败,首页信息为:"+ JSON.stringify(result_json)+",失败原因为:"+e)
         return JSON.stringify(result_json)
     }
 
@@ -252,8 +252,8 @@ async function detail(id) {
         let aliUrl = await request(detailUrl, UA);
         let $ = load(aliUrl);
         let vodDetail = new VodDetail()
-        let items = $('.module-row-info')
         vodDetail.vod_name = $('.page-title')[0].children[0].data
+        vodDetail.vod_pic = $($(".mobile-play")).find(".lazyload")[0].attribs["data-src"]
         let video_info_aux_list = $($(".video-info-aux")).find(".tag-link")[1].children
         for (const video_info_aux of video_info_aux_list) {
             try {
@@ -262,9 +262,8 @@ async function detail(id) {
 
             }
         }
-        vodDetail.vod_pic = $($(".mobile-play")).find(".lazyload")[0].attribs["data-src"]
         let video_items = $('.video-info-items')
-        let vidoe_info_director_list = video_items[0].children[2].children
+        let vidoe_info_director_list = video_items[0].children.at(-1).children
         for (const vidoe_info_director of vidoe_info_director_list) {
             try {
                 vodDetail.vod_director = vodDetail.vod_director + vidoe_info_director.children[0].data
@@ -281,8 +280,8 @@ async function detail(id) {
             }
         }
         vodDetail.vod_year = $(video_items[2]).find("a")[0].children[0].data
-        vodDetail.vod_remarks = `清晰度:${video_items[3].children[2].children[0].data}, 制作人:Jade`
-        let video_content_list = video_items[4].children[2].children
+        vodDetail.vod_remarks = `清晰度:${video_items[3].children.at(-1).children[0].data}, 制作人:Jade`
+        let video_content_list = video_items[4].children.at(-1).children
         for (const video_content of video_content_list) {
             try {
                 vodDetail.vod_content = vodDetail.vod_content + video_content.children[0].data
@@ -292,6 +291,7 @@ async function detail(id) {
         }
         vodDetail.vod_content = vodDetail.vod_content.replace("[收起部分]", "").replace("[展开全部]", "")
         const share_url_list = [];
+        let items = $('.module-row-info')
         for (const item of items) {
             let aliUrl = $(item).find("p")[0].children[0].data
             let matches = aliUrl.match(patternAli);
@@ -306,12 +306,12 @@ async function detail(id) {
             await JadeLog.info(`获取详情界面成功,详情界面结果为:${result}`)
             return result
         } else {
-            await JadeLog.info(`获取详情界面失败,失败原因为:没有分享链接`)
+            await JadeLog.warning(`获取详情界面失败,失败原因为:没有分享链接`)
             return JSON.stringify({"list": [vodDetail]});
         }
 
     } catch (e) {
-        await JadeLog.info(`获取详情界面失败,失败原因为:${e.message}`)
+        await JadeLog.error(`获取详情界面失败,失败原因为:${e.message}`)
     }
 }
 
