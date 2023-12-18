@@ -113,7 +113,7 @@ async function home(filter) {
             for (const element of elements) {
                 let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
                 let type_name = element.children.at(-1).data.replace("\n", "").replace(" ", "").replace("玩偶", "")
-                let type_dic = {type_id: type_id, type_name: type_name}
+                let type_dic = {"type_id": type_id, "type_name": type_name}
                 classes.push(type_dic)
             }
             result_json.class = classes
@@ -126,7 +126,7 @@ async function home(filter) {
             return JSON.stringify(result_json)
         }
     } catch (e) {
-        await JadeLog.info("首页解析失败,首页信息为:" + JSON.stringify(result_json))
+        await JadeLog.info("首页解析失败,首页信息为:"+ JSON.stringify(result_json)+"失败原因为:"+e)
         return JSON.stringify(result_json)
     }
 
