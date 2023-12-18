@@ -35,8 +35,9 @@ async function test() {
             // console.debug(k)
             if (k >= 1) break;
             let obj = search_page.list[k]
-            const spVid = search_page.list[k].vod_id
+            let spVid = search_page.list[k].vod_id
             console.debug("===", spVid)
+            spVid = "/index.php/voddetail/80978.html"
             var detail = JSON.parse(await spider.detail(spVid || search_page.list[k].vod_id));
             // var detail = JSON.parse(await spider.detail("/index.php/voddetail/82405.html"))
             // // var detail = JSON.parse(await spider.detail("/index.php/voddetail/81254.html"));

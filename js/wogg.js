@@ -253,7 +253,7 @@ async function detail(id) {
         let items = $('.module-row-info')
         vodDetail.vod_name = $('.page-title')[0].children[0].data
         let video_info_aux_list = $($(".video-info-aux")).find(".tag-link")[1].children
-        for (var video_info_aux of video_info_aux_list) {
+        for (const video_info_aux of video_info_aux_list) {
             try {
                 vodDetail.type_name = vodDetail.type_name + video_info_aux.children[0].data
             } catch {
@@ -263,7 +263,7 @@ async function detail(id) {
         vodDetail.vod_pic = $($(".mobile-play")).find(".lazyload")[0].attribs["data-src"]
         let video_items = $('.video-info-items')
         let vidoe_info_director_list = video_items[0].children[2].children
-        for (var vidoe_info_director of vidoe_info_director_list) {
+        for (const vidoe_info_director of vidoe_info_director_list) {
             try {
                 vodDetail.vod_director = vodDetail.vod_director + vidoe_info_director.children[0].data
             } catch {
@@ -271,7 +271,7 @@ async function detail(id) {
             }
         }
         let vidoe_info_actor_list = $(".video-info-actor")[1].children
-        for (var vidoe_info_actor of vidoe_info_actor_list) {
+        for (const vidoe_info_actor of vidoe_info_actor_list) {
             try {
                 vodDetail.vod_actor = vodDetail.vod_actor + vidoe_info_actor.children[0].data
             } catch {
@@ -281,7 +281,7 @@ async function detail(id) {
         vodDetail.vod_year = $(video_items[2]).find("a")[0].children[0].data
         vodDetail.vod_remarks = `清晰度:${video_items[3].children[2].children[0].data}, 制作人:Jade`
         let video_content_list = video_items[4].children[2].children
-        for (var video_content of video_content_list) {
+        for (const video_content of video_content_list) {
             try {
                 vodDetail.vod_content = vodDetail.vod_content + video_content.children[0].data
             } catch {
@@ -289,8 +289,8 @@ async function detail(id) {
             }
         }
         vodDetail.vod_content = vodDetail.vod_content.replace("[收起部分]", "").replace("[展开全部]", "")
-        var share_url_list = []
-        for (var item of items) {
+        const share_url_list = [];
+        for (const item of items) {
             let aliUrl = $(item).find("p")[0].children[0].data
             let matches = aliUrl.match(patternAli);
             if (!_.isEmpty(matches))
@@ -326,7 +326,7 @@ async function search(wd, quick) {
         let $ = load(html);
         let items = $('.module-search-item');
         let videos = [];
-        for (var item of items) {
+        for (const item of items) {
             let vodId = $(item).find(".video-serial")[0].attribs.href;
             let name = $(item).find(".video-serial")[0].attribs.title;
             let pic = $(item).find(".module-item-pic > img")[0].attribs['data-src'];
