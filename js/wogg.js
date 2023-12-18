@@ -452,9 +452,9 @@ async function home(filter) {
             let classes = []
             for (const element of elements) {
                 await JadeLog.info("const element of elements")
-                let type_id = parseInt(element.attribs.href.split("/").at(-1).split(".html")[0])
+                let type_id = parseInt(element.attribs.href.split("/").slice(-1)[0].split(".html")[0])
                 await JadeLog.info("let type_id = parseInt(element.attribs.href.split(\"/\").at(-1).split(\".html\")[0])")
-                let type_name = element.children.at(-1).data.replace("\n", "").replace(" ", "").replace("玩偶", "")
+                let type_name = element.children.slice(-1)[0].data.replace("\n", "").replace(" ", "").replace("玩偶", "")
                 let type_dic = {"type_id": type_id, "type_name": type_name}
                 classes.push(type_dic)
             }
