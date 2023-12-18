@@ -108,6 +108,7 @@ async function home(filter) {
         let con = await request(siteUrl, UA);
         if (!_.isEmpty(con)) {
             const $ = load(con);
+            await JadeLog.info("html信息解析成功")
             let elements = $('.nav-link')
             let classes = []
             for (const element of elements) {
@@ -116,6 +117,7 @@ async function home(filter) {
                 let type_dic = {"type_id": type_id, "type_name": type_name}
                 classes.push(type_dic)
             }
+            await JadeLog.info("类别信息获取成功")
             result_json.class = classes
             vod_list = parseVodListFromDoc($)
             result_json.list = vod_list
@@ -126,7 +128,7 @@ async function home(filter) {
             return JSON.stringify(result_json)
         }
     } catch (e) {
-        await JadeLog.info("首页解析失败,首页信息为:"+ JSON.stringify(result_json)+"失败原因为:"+e)
+        await JadeLog.info("首页解析失败,首页信息为:"+ JSON.stringify(result_json)+",失败原因为:"+e)
         return JSON.stringify(result_json)
     }
 
