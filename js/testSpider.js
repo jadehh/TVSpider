@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './niba.js';
+import {__jsEvalReturn} from './nivod_op.js';
 
 
 var spider = __jsEvalReturn();
