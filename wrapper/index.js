@@ -46,7 +46,7 @@ async function request(url, opt) {
         var timeout = opt ? opt.timeout || 5000 : 5000;
 
         var headers = opt ? opt.headers || {} : {};
-        if (postType == 'form') {
+        if (postType === 'form') {
             headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
             if (data != null) {

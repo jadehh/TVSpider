@@ -1,15 +1,24 @@
-import {__jsEvalReturn} from './nivod_op.js';
+import {__jsEvalReturn} from './nivod.js';
 
 
 var spider = __jsEvalReturn();
 
 async function test() {
-    // let siteKey = 'niba';
-    // let siteType = 0;
-    // var spVid = null;
-    // const refresh_token = "86c442348ffa42e882506502c557cd34"
-    // const refresh_token = "1"
-    // await spider.init({skey: siteKey, stype: siteType, ext: refresh_token});
+    let siteKey = 'niba';
+    let siteType = 0;
+    await spider.init({skey: siteKey, stype: siteType, ext: "做爱"});
+
+
+
+
+
+
+
+
+
+
+
+
     var classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
     console.debug(classes);
