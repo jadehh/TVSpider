@@ -12,7 +12,7 @@
         "key": "nivod",
         "name": "💂‍┃泥巴┃💂",
         "type": 3,
-        "api": "./js/nivod_open.js",
+        "api": "./js/nivod.js",
         "ext": "888解忧愁"
       }
     ]
