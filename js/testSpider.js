@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './wogg.js';
+import {__jsEvalReturn} from './nivod.js';
 
 
 var spider = __jsEvalReturn();
@@ -32,19 +32,19 @@ async function test() {
     // console.debug(classes);
 
     // 测试首页列表
-    // var homeVod = JSON.parse(await spider.homeVod())
-    // // console.debug(homeVod);
-    // console.debug(JSON.stringify(homeVod));
+    var homeVod = JSON.parse(await spider.homeVod())
+    // console.debug(homeVod);
+    console.debug(JSON.stringify(homeVod));
 
     // 测试分类列表
-    //var page = JSON.parse(await spider.category(1, 1, undefined, {}));
-    // console.debug(JSON.stringify(page));
+    var page = JSON.parse(await spider.category(1, 1, undefined, {}));
+    console.debug(JSON.stringify(page));
     //
     // 测试搜索
-    var detail = JSON.parse(await spider.detail("/index.php/voddetail/82468.html"));
+    // var detail = JSON.parse(await spider.detail("/index.php/voddetail/82468.html"));
 
-    var search_page = JSON.parse(await spider.search("奥本海默"))
-    console.debug(JSON.stringify(search_page));
+    // var search_page = JSON.parse(await spider.search("奥本海默"))
+    // console.debug(JSON.stringify(search_page));
 
     // 测试详情
     if (search_page.list && search_page.list.length > 0) {

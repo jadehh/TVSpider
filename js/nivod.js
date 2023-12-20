@@ -91,25 +91,25 @@ async function home(filter) {
 
 async function homeVod() {
     let params = {
+        "more": "1",
         "start": "0",
-        "more": "1"
     }
     let homeUrl = ApiUrl + "/index/desktop/WEB/3.4" + await createSign(params)
-    let content = await request(homeUrl)
+    let content = await request(homeUrl, params)
     let content_json = JSON.parse(content)
     await JadeLog.info("首页列表解析完成")
 }
 
 async function category(tid, pg, filter, extend) {
     let params = {
-        "more":"1"
+        "sort_by":"0",
+        "channel_id":tid.toString(),
+        "show_type_id":"0",
+        "region_id":"0",
+        "lang_id":"0",
+        "start":pg.toString()
     }
-    /**
-     * url = https://api.nivodz.com/show/filter/WAP/3.0?_ts=1703069118031&app_version=1.0&platform=4&market_id=wap_nivod&device_code=wap&versioncode=1&oid=f8e6a9f427d4b57e909cec158022b3e27939797c57524fa7&sign=9ab87d32169f502c320e3e58447406e4,
-     * opt = {"method":"post","headers":{"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36","Referer":"https://m.nivod.tv/"},
-     * "data":{"channel_id":"1","lang_id":"0","region_id":"0","show_type_id":"0","sort_by":"1","start":"0","year_range":""},"postType":"form"}
-     * */
-    let homeUrl = ApiUrl + "/index/desktop/WEB/3.4" + await createSign(params)
+    let homeUrl = ApiUrl + "/show/filter/WEB/3.2" + await createSign(params)
     let content = await request(homeUrl, params)
     let content_json = JSON.parse(content)
     await JadeLog.info("分类页解析完成")
