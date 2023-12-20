@@ -6,83 +6,104 @@
 * @Software : Samples
 * @Desc     :
 */
-import {Crypto, Uri} from "../lib/cat.js";
 import {JadeLogging} from "../lib/log.js";
+import {getChannelCache, getHeader, createSign, desDecrypt, ChannelResponse} from "../lib/nivid_object.js"
+import {_, Uri} from "../lib/cat.js";
+import {User} from "../lib/ali_object.js";
+import {HomeSpiderResult} from "../lib/spider_object.js";
 
 let ApiUrl = "https://api.nivodz.com"
-let DesKey = "diao.com"
+let Remove18ChannelCode = 0
 const JadeLog = new JadeLogging(getAppName())
-
-function getAppName() {
-    return "泥视频"
-}
-
-function getHeader() {
-    return {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36",
-        "Referer": "https://m.nivod.tv/",
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
-}
+let channelResponse = new ChannelResponse()
+let homeSpiderResult = new HomeSpiderResult()
 
 async function request(reqUrl) {
     let header = getHeader()
     let uri = new Uri(reqUrl);
-    return await req(uri.toString(), {
+    let response = await req(uri.toString(), {
         headers: header,
         method: "post",
         data: {},
         postType: "form"
     });
-}
-
-async function createSign() {
-    let params = {
-        "_ts": "1702973305512", "app_version": "1.0",
-        "platform": "3", "market_id": "web_nivod",
-        "device_code": "web", "versioncode": 1,
-        "oid": "8ca275aa5e12ba504b266d4c70d95d77a0c2eac5726198ea"
+    if (response.code !== 200) {
+        await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${response.content}`)
+        return null
+    } else {
+        return desDecrypt(response.content)
     }
-    /**
-     * __QUERY::_ts=1702973558399&app_version=1.0&device_code=web&market_id=web_nivod&oid=8ca275aa5e12ba504b266d4c70d95d77a0c2eac5726198ea&platform=3&versioncode=1&__BODY::__KEY::2x_Give_it_a_shot
-     */
-    let params_list = []
-    for (const key of Object.keys(params).sort()) {
-        params_list.push(`${key}=${params[key]}`)
-    }
-    let params_str = "__QUERY::" + params_list.join("&") + "&__BODY::__KEY::2x_Give_it_a_shot"
-    await JadeLog.info(params_str)
-    let sign_code = md5X(params_str)
-    params_list.push(`sign=${sign_code}`)
-    return "?" + params_list.join("&")
 
 }
 
-
-function aesDecrypt(content) {
-    const bytes = Crypto.AES.decrypt(content.toString(), DesKey, {
-        mode: Crypto.mode.CBC,
-        padding: Crypto.pad.Pkcs7
-    });
-    const decryptResult = bytes.toString();
-    return decryptResult.toString().toUpperCase();
+function getAppName() {
+    return "泥视频"
 }
-
 
 async function init(cfg) {
-    let siteKey = "", siteType = 0, des_key = "diao.com"
-    let url = `${ApiUrl}` + "/show/filter/condition/WAP/3.0" + await createSign()
-    let response = await request(url)
-    await JadeLog.info("请求结束")
+    Remove18ChannelCode = 1
+    // 读取缓存
+    let channelCacheStr = await getChannelCache()
+    if (!_.isEmpty(channelCacheStr)) {
+        try {
+            channelResponse.fromJsonString(channelCacheStr,Remove18ChannelCode)
+            await JadeLog.info("读取用户缓存成功", true);
+        } catch (e) {
+            await channelResponse.clearCache()
+            await JadeLog.error("读取通道缓存失败,失败原因为:" + e);
+        }
+    } else {
+        await JadeLog.error("读取通道缓存失败", true);
+    }
+}
 
-    var decryptedData = aesDecrypt(response.content)
+async function home(filter) {
+    await JadeLog.info("正在解析首页")
+    if (channelResponse.channelList.length > 0) {
+        await JadeLog.info("有缓存无需解析,首页解析内容为:" + channelResponse.toSpilder())
+        return channelResponse.toSpilder()
+    } else {
+        let url = ApiUrl + "/show/channel/list/WEB/3.2" + await createSign()
+        let content = await request(url)
+        if (content !== null) {
+            channelResponse.fromJsonString(content,Remove18ChannelCode)
+            await channelResponse.save()
+            let filterUrl = ApiUrl + "/show/filter/condition/WEB/3.2" + await createSign()
+            let filterContent = await request(filterUrl)
+            channelResponse.setChannelFilters(filterContent)
+            await channelResponse.save()
+            channelResponse.toSpilder()
+            await JadeLog.info("首页解析完成,首页解析内容为:" + channelResponse.toSpilder())
+            return channelResponse.toSpilder()
+        } else {
+            await JadeLog.error("首页解析失败")
+            await channelResponse.clearCache()
+            return homeSpiderResult.setHomeSpiderResult([]).toString()
 
-    console.log("解密字符串: ", decryptedData)
+        }
+    }
+
+}
+async function homeVod(){
 
 }
 
+async function category(){
+
+}
+
+async function detail(){}
+
+async function play(){}
+async function search(){}
 export function __jsEvalReturn() {
     return {
         init: init,
+        home: home,
+        homeVod: homeVod,
+        category: category,
+        detail: detail,
+        play: play,
+        search: search,
     };
 }

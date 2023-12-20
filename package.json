@@ -12,6 +12,7 @@
     "license": "ISC",
     "dependencies": {
         "axios": "^1.4.0",
+        "crypto-js": "^4.2.0",
         "log4js": "^6.9.1",
         "qs": "^6.11.2"
     },

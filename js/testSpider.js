@@ -14,13 +14,7 @@ async function test() {
 
 
 
-
-
-
-
-
     var classes = JSON.parse(await spider.home(true));
-    console.debug(JSON.stringify(classes));
     console.debug(classes);
 
     // 测试首页列表
