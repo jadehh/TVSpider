@@ -6,6 +6,20 @@ var spider = __jsEvalReturn();
 async function test() {
     let siteKey = 'niba';
     let siteType = 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     await spider.init({skey: siteKey, stype: siteType, ext: "做爱"});
 
 
@@ -18,9 +32,9 @@ async function test() {
     console.debug(classes);
 
     // 测试首页列表
-    var homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(homeVod);
-    console.debug(JSON.stringify(homeVod));
+    // var homeVod = JSON.parse(await spider.homeVod())
+    // // console.debug(homeVod);
+    // console.debug(JSON.stringify(homeVod));
 
     // 测试分类列表
     var page = JSON.parse(await spider.category(1, 1, undefined, {}));
