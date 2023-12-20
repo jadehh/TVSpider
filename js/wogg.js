@@ -596,32 +596,17 @@ async function detail(id) {
             }
         }
         let video_items = $('.video-info-items')
-        let vidoe_info_director_list = video_items[0].children.slice(-1)[0].children
-        for (const vidoe_info_director of vidoe_info_director_list) {
-            try {
-                vodDetail.vod_director = vodDetail.vod_director + vidoe_info_director.children[0].data
-            } catch {
-
-            }
-        }
-        let vidoe_info_actor_list = $(".video-info-actor")[1].children
+        vodDetail.vod_director = $(video_items[0]).find("a")[0].children[0].data
+        let vidoe_info_actor_list = $(video_items[1]).find("a")
+        let actor_list = []
         for (const vidoe_info_actor of vidoe_info_actor_list) {
-            try {
-                vodDetail.vod_actor = vodDetail.vod_actor + vidoe_info_actor.children[0].data
-            } catch {
-
-            }
+            actor_list.push(vidoe_info_actor.children[0].data)
         }
+        vodDetail.vod_actor = actor_list.join(" * ")
         vodDetail.vod_year = $(video_items[2]).find("a")[0].children[0].data
-        vodDetail.vod_remarks = `清晰度:${video_items[3].children.slice(-1)[0].children[0].data}, 制作人:Jade`
-        let video_content_list = video_items[4].children.slice(-1)[0].children
-        for (const video_content of video_content_list) {
-            try {
-                vodDetail.vod_content = vodDetail.vod_content + video_content.children[0].data
-            } catch {
+        vodDetail.vod_remarks = `清晰度:${$(video_items[3]).find("div")[0].children[0].data}, 制作人:Jade`
+        vodDetail.vod_content  = $(video_items[4]).find("p")[0].children[0].data
 
-            }
-        }
         vodDetail.vod_content = vodDetail.vod_content.replace("[收起部分]", "").replace("[展开全部]", "")
         const share_url_list = [];
         let items = $('.module-row-info')
