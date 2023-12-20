@@ -60,6 +60,7 @@ async function init(cfg) {
 async function home(filter) {
     await JadeLog.info("正在解析首页")
     if (channelResponse.channelList.length > 0) {
+        let filets = channelResponse.getFilters()
         await JadeLog.info("有缓存无需解析,首页解析内容为:" + channelResponse.toSpilder())
         return channelResponse.toSpilder()
     } else {
