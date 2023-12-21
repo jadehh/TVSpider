@@ -91,7 +91,7 @@ async function home(filter) {
 }
 
 async function homeVod() {
-    JadeLog.info("正在解析首页列表")
+    await JadeLog.info("正在解析首页列表")
     let params = {
         "start": "0",
         "more": "1"
@@ -114,10 +114,12 @@ async function homeVod() {
                 }
             }
         }
+    }else{
+        await JadeLog.error("首页解析失败")
         return JSON.stringify({"list":vod_list})
     }
-
     await JadeLog.info("解析首页列表完成")
+    return JSON.stringify({"list": vod_list})
 }
 
 async function category(tid, pg, filter, extend) {
