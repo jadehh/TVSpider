@@ -365,11 +365,18 @@ let CatOpenStatus = false
 // cfg = {skey: siteKey, ext: extend}
 async function init(cfg) {
     try {
-
-        await JadeLog.info(`读取配置文件,key为:${cfg.skey},type为:${cfg.stype},ext为:${cfg.ext}`)
         siteKey = _.isEmpty(cfg.skey) ? '' : cfg.skey;
         siteType = _.isEmpty(cfg.stype) ? '' : cfg.stype;
-        let extObj = JSON.parse(cfg.ext)
+        let extObj = null;
+        if (typeof cfg.ext === "string") {
+            await JadeLog.info(`读取配置文件,ext为:${cfg.ext}`)
+            extObj = JSON.parse(cfg.ext)
+        } else if (typeof cfg.ext === "object") {
+            await JadeLog.info(`读取配置文件,ext为:${JSON.parse(cfg.ext)}`)
+            extObj = cfg.ext
+        } else {
+            await JadeLog.error(`不支持的数据类型,数据类型为${typeof cfg.ext}`)
+        }
         let boxType = extObj["box"]
         if (boxType === "CatOpen") {
             CatOpenStatus = true

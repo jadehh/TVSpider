@@ -48,13 +48,21 @@ function getAppName() {
 
 async function init(cfg) {
     try {
-        let extObj = JSON.parse(cfg.ext)
+        let extObj = null;
+        if (typeof cfg.ext === "string") {
+            await JadeLog.info(`读取配置文件,ext为:${cfg.ext}`)
+            extObj = JSON.parse(cfg.ext)
+        } else if (typeof cfg.ext === "object") {
+            await JadeLog.info(`读取配置文件,ext为:${JSON.parse(cfg.ext)}`)
+            extObj = cfg.ext
+        }else{
+            await JadeLog.error(`不支持的数据类型,数据类型为${typeof cfg.ext}`)
+        }
         Remove18ChannelCode = parseInt(extObj["code"])
         let boxType = extObj["box"]
         if (boxType === "CatOpen") {
             CatOpenStatus = true
         }
-        await JadeLog.info(`读取配置文件,ext为:${cfg.ext}`)
     } catch (e) {
         await JadeLog.error("初始化失败,失败原因为:" + e.message)
     }

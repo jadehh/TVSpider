@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './wogg.js';
+import {__jsEvalReturn} from './nivod.js';
 
 
 var spider = __jsEvalReturn();
