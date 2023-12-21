@@ -11,6 +11,7 @@ import {getChannelCache, getHeader, createSign, desDecrypt, ChannelResponse} fro
 import {_, Uri} from "../lib/cat.js";
 import {User} from "../lib/ali_object.js";
 import {HomeSpiderResult} from "../lib/spider_object.js";
+import {VodDetail, VodShort} from "../lib/vod.js";
 
 let ApiUrl = "https://api.nivodz.com"
 let Remove18ChannelCode = 0
@@ -47,13 +48,13 @@ async function init(cfg) {
     if (!_.isEmpty(channelCacheStr)) {
         try {
             channelResponse.fromJsonString(channelCacheStr, Remove18ChannelCode)
-            await JadeLog.info("读取用户缓存成功", true);
+            await JadeLog.info("读取缓存成功", true);
         } catch (e) {
             await channelResponse.clearCache()
-            await JadeLog.error("读取通道缓存失败,失败原因为:" + e);
+            await JadeLog.error("读取缓存失败,失败原因为:" + e);
         }
     } else {
-        await JadeLog.error("读取通道缓存失败", true);
+        await JadeLog.error("读取缓存失败", true);
     }
 }
 
@@ -90,28 +91,37 @@ async function home(filter) {
 }
 
 async function homeVod() {
+    JadeLog.info("正在解析首页列表")
     let params = {
         "start": "0",
         "more": "1"
     }
     let homeUrl = ApiUrl + "/index/desktop/WEB/3.4" + await createSign(params)
-    let content = await request(homeUrl)
-    let content_json = JSON.parse(content)
-    await JadeLog.info("首页列表解析完成")
+    let content = await request(homeUrl, params)
+    let vod_list = []
+    if (content !== null) {
+        let content_json = JSON.parse(content)
+        let cate_list = content_json.list
+        for (const cate_dic of cate_list) {
+            for (const row of cate_dic.rows) {
+                for (const cells of row.cells) {
+                    let vodShort = new VodShort()
+                    vodShort.vod_id = cells.show["showIdCode"]
+                    vodShort.vod_pic = cells.img
+                    vodShort.vod_name = cells.title
+                    vodShort.vod_remarks = `热度:${cells.show["hot"]}  ${cells.show["showTypeName"]}`
+                    vod_list.push(vodShort.to_dict())
+                }
+            }
+        }
+        return JSON.stringify({"list":vod_list})
+    }
+
+    await JadeLog.info("解析首页列表完成")
 }
 
 async function category(tid, pg, filter, extend) {
-    let params = {
-        "more":"1"
-    }
-    /**
-     * url = https://api.nivodz.com/show/filter/WAP/3.0?_ts=1703069118031&app_version=1.0&platform=4&market_id=wap_nivod&device_code=wap&versioncode=1&oid=f8e6a9f427d4b57e909cec158022b3e27939797c57524fa7&sign=9ab87d32169f502c320e3e58447406e4,
-     * opt = {"method":"post","headers":{"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36","Referer":"https://m.nivod.tv/"},
-     * "data":{"channel_id":"1","lang_id":"0","region_id":"0","show_type_id":"0","sort_by":"1","start":"0","year_range":""},"postType":"form"}
-     * */
-    let homeUrl = ApiUrl + "/index/desktop/WEB/3.4" + await createSign(params)
-    let content = await request(homeUrl, params)
-    let content_json = JSON.parse(content)
+
     await JadeLog.info("分类页解析完成")
 }
 
