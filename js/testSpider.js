@@ -6,7 +6,7 @@ var spider = __jsEvalReturn();
 async function test() {
     let siteKey = 'niba';
     let siteType = 0;
-    await spider.init({skey: siteKey, stype: siteType, ext: "{\"token\":\"86c442348ffa42e882506502c557cd34\", \"box\":\"CatOpen\"}"});
+    await spider.init({skey: siteKey, stype: siteType, ext: {"code":1, "box":"CatOpen"}});
 
 
 

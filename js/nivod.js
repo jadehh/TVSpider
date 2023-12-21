@@ -53,7 +53,7 @@ async function init(cfg) {
             await JadeLog.info(`读取配置文件,ext为:${cfg.ext}`)
             extObj = JSON.parse(cfg.ext)
         } else if (typeof cfg.ext === "object") {
-            await JadeLog.info(`读取配置文件,ext为:${JSON.parse(cfg.ext)}`)
+            await JadeLog.info(`读取配置文件,ext为:${JSON.stringify(cfg.ext)}`)
             extObj = cfg.ext
         }else{
             await JadeLog.error(`不支持的数据类型,数据类型为${typeof cfg.ext}`)
