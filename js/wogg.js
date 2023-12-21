@@ -402,7 +402,7 @@ async function request(reqUrl) {
 
 
 function parseVodListFromDoc($) {
-    let items = $('.module:eq(0) > .module-list > .module-items > .module-item');
+    let items = $('.module-item');
     let videos = [];
     for (const item of items) {
         let oneA = $(item).find('.module-item-cover .module-item-pic a').first();
@@ -435,10 +435,6 @@ async function home(filter) {
 
     }
     try {
-        // let content = await request("https://gh.con.sh/https://raw.githubusercontent.com/jadehh/Spider/main/json/wanou.json", UA);
-        // filterObj = JSON.parse(content)
-        // result_json.filters = filterObj
-        // await JadeLog.info("类别信息解析成功");
         let con = await request(siteUrl);
         if (!_.isEmpty(con)) {
             const $ = load(con);
