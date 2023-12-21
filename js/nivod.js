@@ -9,10 +9,8 @@
 import {JadeLogging} from "../lib/log.js";
 import {getChannelCache, getHeader, createSign, desDecrypt, ChannelResponse} from "../lib/nivid_object.js"
 import {_, Uri} from "../lib/cat.js";
-import {User} from "../lib/ali_object.js";
 import {HomeSpiderResult} from "../lib/spider_object.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
-import {initAli} from "../lib/ali.js";
 
 let ApiUrl = "https://api.nivodz.com"
 let Remove18ChannelCode = 0
