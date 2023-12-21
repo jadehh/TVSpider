@@ -134,7 +134,7 @@ async function homeVod() {
 }
 
 async function category(tid, pg, filter, extend) {
-    await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${extend}`)
+    await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)}`)
     let params = {
         "sort_by": "0",
         "channel_id": tid.toString(),
