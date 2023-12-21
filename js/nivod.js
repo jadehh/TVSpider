@@ -83,7 +83,7 @@ async function home(filter) {
             }
             channelResponse.toSpilder()
             let vod_list = await homeContent()
-            await JadeLog.info("首页解析完成,首页解析内容为:" + channelResponse.toSpilder())
+            await JadeLog.info("首页解析完成,首页解析内容为:" + channelResponse.toSpilder(vod_list))
             return channelResponse.toSpilder(vod_list)
         } else {
             await JadeLog.error("首页解析失败")
