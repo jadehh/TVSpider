@@ -41,21 +41,12 @@ async function request(reqUrl, params) {
     }
 
 }
-function showConfirm() {
-    const result = confirm("是否继续操作？");
-    if (result) {
-        alert("您点击了确定按钮！");
-    } else {
-        alert("您点击了取消按钮！");
-    }
-}
 function getAppName() {
     return "泥视频"
 }
 
 async function init(cfg) {
     try {
-        showConfirm()
         let extObj = null;
         if (typeof cfg.ext === "string") {
             await JadeLog.info(`读取配置文件,ext为:${cfg.ext}`)
