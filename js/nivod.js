@@ -27,7 +27,7 @@ async function request(reqUrl, params) {
         data: params,
         postType: "form"
     });
-    if (response.code !== 200) {
+    if (response.code !== 200 || response.code !== undefined) {
         await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
         return null
     } else {
