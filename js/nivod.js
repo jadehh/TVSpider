@@ -28,7 +28,7 @@ async function request(reqUrl, params) {
         postType: "form"
     });
     if (response.code !== 200) {
-        await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${response.content}`)
+        await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
         return null
     } else {
         return desDecrypt(response.content)
