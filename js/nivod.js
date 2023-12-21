@@ -195,8 +195,12 @@ async function category(tid, pg, filter, extend) {
         await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": vod_list})}`)
 
     }
+    let page =  parseInt(pg)
+    if (vod_list.length === 0){
+        page = page - 1
+    }
     return JSON.stringify({
-        page: parseInt(pg),
+        page: page,
         list: vod_list,
     })
 }
