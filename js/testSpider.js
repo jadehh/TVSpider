@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './nivod.js';
+import {__jsEvalReturn} from './wogg.js';
 
 
 var spider = __jsEvalReturn();
@@ -6,21 +6,7 @@ var spider = __jsEvalReturn();
 async function test() {
     let siteKey = 'niba';
     let siteType = 0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    await spider.init({skey: siteKey, stype: siteType, ext: "1"});
+    await spider.init({skey: siteKey, stype: siteType, ext: "{\"token\":\"86c442348ffa42e882506502c557cd34\", \"box\":\"CatOpen\"}"});
 
 
 

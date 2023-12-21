@@ -360,14 +360,21 @@ let filterObj = {
         }, {"n": "Z", "v": "Z"}, {"n": "0-9", "v": "0-9"}]
     }, {"key": "5", "name": "时间排序", "value": [{"n": "人气排序", "v": "hits"}, {"n": "评分排序", "v": "score"}]}]
 };
+let CatOpenStatus = false
 
 // cfg = {skey: siteKey, ext: extend}
 async function init(cfg) {
     try {
+
         await JadeLog.info(`读取配置文件,key为:${cfg.skey},type为:${cfg.stype},ext为:${cfg.ext}`)
         siteKey = _.isEmpty(cfg.skey) ? '' : cfg.skey;
         siteType = _.isEmpty(cfg.stype) ? '' : cfg.stype;
-        await initAli(cfg);
+        let extObj = JSON.parse(cfg.ext)
+        let boxType = extObj["box"]
+        if (boxType === "CatOpen") {
+            CatOpenStatus = true
+        }
+        await initAli(extObj["token"]);
     } catch (e) {
         await JadeLog.error("初始化失败,失败原因为:" + e.message)
     }
@@ -394,7 +401,7 @@ async function request(reqUrl) {
         headers: header,
         timeout: 100000,
     });
-    if (_.isEmpty(res.content)){
+    if (_.isEmpty(res.content)) {
         await JadeLog.error("html内容读取失败,请检查url:" + reqUrl)
     }
     return res.content;
@@ -447,7 +454,11 @@ async function home(filter) {
                 classes.push(type_dic)
             }
             result_json.class = classes
-            vod_list = parseVodListFromDoc($)
+            if (!CatOpenStatus) {
+                vod_list = parseVodListFromDoc($)
+            } else {
+                await JadeLog.debug("CatOpen无需解析首页内容")
+            }
             result_json.list = vod_list
             await JadeLog.info("首页解析完成,首页信息为:" + JSON.stringify(result_json))
             return JSON.stringify(result_json)
@@ -601,7 +612,7 @@ async function detail(id) {
         vodDetail.vod_actor = actor_list.join(" * ")
         vodDetail.vod_year = $(video_items[2]).find("a")[0].children[0].data
         vodDetail.vod_remarks = `清晰度:${$(video_items[3]).find("div")[0].children[0].data}, 制作人:Jade`
-        vodDetail.vod_content  = $(video_items[4]).find("p")[0].children[0].data
+        vodDetail.vod_content = $(video_items[4]).find("p")[0].children[0].data
 
         vodDetail.vod_content = vodDetail.vod_content.replace("[收起部分]", "").replace("[展开全部]", "")
         const share_url_list = [];

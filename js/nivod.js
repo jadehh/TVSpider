@@ -17,6 +17,7 @@ let Remove18ChannelCode = 0
 const JadeLog = new JadeLogging(getAppName())
 let channelResponse = new ChannelResponse()
 let homeSpiderResult = new HomeSpiderResult()
+let CatOpenStatus = false
 
 async function request(reqUrl, params) {
     let header = getHeader()
@@ -31,7 +32,7 @@ async function request(reqUrl, params) {
         if (!_.isEmpty(response.content)) {
             return desDecrypt(response.content)
         } else {
-            await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${response.content}`)
+            await JadeLog.error(`请求失败,请求url为:${uri},回复内容为空`)
             return null
         }
     } else {
@@ -47,11 +48,16 @@ function getAppName() {
 
 async function init(cfg) {
     try {
+        let extObj = JSON.parse(cfg.ext)
+        Remove18ChannelCode = parseInt(extObj["code"])
+        let boxType = extObj["box"]
+        if (boxType === "CatOpen") {
+            CatOpenStatus = true
+        }
         await JadeLog.info(`读取配置文件,ext为:${cfg.ext}`)
     } catch (e) {
         await JadeLog.error("初始化失败,失败原因为:" + e.message)
     }
-    Remove18ChannelCode = parseInt(cfg.ext)
     // 读取缓存
     let channelCacheStr = await getChannelCache()
     if (!_.isEmpty(channelCacheStr)) {
@@ -70,9 +76,14 @@ async function init(cfg) {
 
 async function home(filter) {
     await JadeLog.info("正在解析首页", true)
-    if (channelResponse.channelList.length < 0) {
+    let vod_list = []
+    if (channelResponse.channelList.length > 0) {
         await JadeLog.info("有缓存无需解析", true)
-        let vod_list = await homeContent()
+        if (!CatOpenStatus) {
+            vod_list = await homeContent()
+        } else {
+            await JadeLog.debug("CatOpen无需解析首页内容")
+        }
         await JadeLog.debug(`首页解析内容为:${channelResponse.toSpilder(vod_list)}`)
         return channelResponse.toSpilder(vod_list)
     } else {
@@ -88,7 +99,11 @@ async function home(filter) {
                 await channelResponse.save()
             }
             channelResponse.toSpilder()
-            let vod_list = await homeContent()
+            if (!CatOpenStatus) {
+                vod_list = await homeContent()
+            } else {
+                await JadeLog.debug("CatOpen无需解析首页内容")
+            }
             await JadeLog.info("首页解析成功", true)
             await JadeLog.debug(`首页解析内容为:${channelResponse.toSpilder(vod_list)}`)
             return channelResponse.toSpilder(vod_list)
