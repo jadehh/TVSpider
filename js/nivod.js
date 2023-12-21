@@ -64,9 +64,9 @@ async function init(cfg) {
 
 
 async function home(filter) {
-    await JadeLog.info("正在解析首页")
+    await JadeLog.info("正在解析首页",true)
     if (channelResponse.channelList.length < 0) {
-        await JadeLog.info("有缓存无需解析,首页解析内容为:" + channelResponse.toSpilder())
+        await JadeLog.info("有缓存无需解析",true)
         let vod_list = await homeContent()
         return channelResponse.toSpilder(vod_list)
     } else {
@@ -83,10 +83,10 @@ async function home(filter) {
             }
             channelResponse.toSpilder()
             let vod_list = await homeContent()
-            await JadeLog.info("首页解析完成,首页解析内容为:" + channelResponse.toSpilder(vod_list))
+            await JadeLog.info("首页解析成功",true)
             return channelResponse.toSpilder(vod_list)
         } else {
-            await JadeLog.error("首页解析失败")
+            await JadeLog.error("首页解析失败",true)
             await channelResponse.clearCache()
             return homeSpiderResult.setHomeSpiderResult([]).toString()
 
@@ -96,7 +96,7 @@ async function home(filter) {
 }
 
 async function homeContent() {
-    await JadeLog.info("正在解析首页列表")
+    await JadeLog.info("正在解析首页列表",true)
     // let params = {
     //     "start": "0",
     //     "more": "1"
@@ -121,12 +121,12 @@ async function homeContent() {
                 }
             }
         }
+        await JadeLog.info("解析首页列表成功",true)
+        return vod_list
     } else {
-        await JadeLog.error("首页解析失败")
+        await JadeLog.error("首页解析失败",true)
         return vod_list
     }
-    await JadeLog.info("解析首页列表完成")
-    return vod_list
 }
 
 async function homeVod() {
@@ -134,11 +134,41 @@ async function homeVod() {
 }
 
 async function category(tid, pg, filter, extend) {
-
-    await JadeLog.info("分类页解析完成")
+    await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${extend}`)
+    let params = {
+        "sort_by": "0",
+        "channel_id": tid.toString(),
+        "show_type_id": "0",
+        "region_id": "0",
+        "lang_id": "0",
+        "year_range": "2023",
+        "start": ((parseInt(pg) - 1) * 20).toString()
+    }
+    let url = ApiUrl + "/show/filter/WEB/3.2" + await createSign(params)
+    let content = await request(url, params)
+    let vod_list = []
+    if (content != null) {
+        let content_json = JSON.parse(content)
+        for (const vod_dic of content_json["list"]) {
+            let vodShort = new VodShort()
+            vodShort.vod_id = vod_dic["showIdCode"]
+            vodShort.vod_name = vod_dic["showTitle"]
+            vodShort.vod_pic = vod_dic["showImg"]
+            vodShort.vod_remarks = `热度:${vod_dic["hot"]}  ${vod_dic["showTypeName"]}`
+            vod_list.push(vodShort)
+        }
+        await JadeLog.info("分类页解析成功",true)
+    } else {
+        await JadeLog.info("分类页解析失败",true)
+    }
+    return JSON.stringify({"list": vod_list})
 }
 
 async function detail() {
+    let url = ApiUrl + "/index/mobile/WAP/3.0" + await createSign()
+    let content = await request(url)
+    let content_json = JSON.parse(content)
+    await JadeLog.info("Done")
 }
 
 async function play() {
