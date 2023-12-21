@@ -55,7 +55,7 @@ async function init(cfg) {
         } else if (typeof cfg.ext === "object") {
             await JadeLog.info(`读取配置文件,ext为:${JSON.stringify(cfg.ext)}`)
             extObj = cfg.ext
-        }else{
+        } else {
             await JadeLog.error(`不支持的数据类型,数据类型为${typeof cfg.ext}`)
         }
         Remove18ChannelCode = parseInt(extObj["code"])
@@ -166,6 +166,8 @@ async function homeVod() {
 
 async function category(tid, pg, filter, extend) {
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)}`)
+    let page = parseInt(pg)
+
     let params = {
         "sort_by": "0",
         "channel_id": tid.toString(),
@@ -191,13 +193,9 @@ async function category(tid, pg, filter, extend) {
         await JadeLog.info("分类页解析成功", true)
         await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": vod_list})}`)
     } else {
+        page = page - 1
         await JadeLog.info("分类页解析失败", true)
         await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": vod_list})}`)
-
-    }
-    let page =  parseInt(pg)
-    if (vod_list.length === 0){
-        page = page - 1
     }
     return JSON.stringify({
         page: page,
