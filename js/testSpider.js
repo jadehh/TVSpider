@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './nivod.js';
+import {__jsEvalReturn} from './wogg.js';
 
 
 var spider = __jsEvalReturn();
@@ -6,7 +6,7 @@ var spider = __jsEvalReturn();
 async function test() {
     let siteKey = 'niba';
     let siteType = 0;
-    await spider.init({skey: siteKey, stype: siteType, ext: {"code":1, "box":"CatOpen"}});
+    // await spider.init({skey: siteKey, stype: siteType, ext: {"code":1, "box":"CatOpen"}});
 
 
 
@@ -14,8 +14,8 @@ async function test() {
 
 
 
-    var classes = JSON.parse(await spider.home(true));
-    console.debug(classes);
+    // var classes = JSON.parse(await spider.home(true));
+    // console.debug(classes);
 
     //测试首页列表
     // var homeVod = JSON.parse(await spider.homeVod())
@@ -23,7 +23,7 @@ async function test() {
     // console.debug(JSON.stringify(homeVod));
 
     //测试分类列表
-    var page = JSON.parse(await spider.category(1, 1, undefined, {}));
+    var page = JSON.parse(await spider.category(1, 1, undefined, {"1":"0"}));
     console.debug(JSON.stringify(page));
     //
     // 测试搜索

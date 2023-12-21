@@ -2117,7 +2117,11 @@ async function category(tid, pg, filter, extend) {
     let urlParams = [tid.toString(), "", "", "", "", "", "", "", pg.toString(), "", "", ""]
     let extend_dic = get_extend_sort_dic(parseInt(tid))
     for (const key of Object.keys(extend_dic)) {
-        urlParams[extend_dic[key]] = extend[key]
+        if (extend[key] === "0") {
+            urlParams[extend_dic[key]] = ""
+        } else {
+            urlParams[extend_dic[key]] = extend[key]
+        }
     }
     let reqUrl = siteUrl + '/index.php/vodshow/' + urlParams.join("-") + '.html';
     await JadeLog.info(`正在获取分类界面,请求url为:${reqUrl},tid为:${tid},pg为:${pg},filter为:${filter},extend为:${JSON.stringify(extend)}`)
