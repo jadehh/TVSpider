@@ -64,10 +64,11 @@ async function init(cfg) {
 
 
 async function home(filter) {
-    await JadeLog.info("正在解析首页",true)
+    await JadeLog.info("正在解析首页", true)
     if (channelResponse.channelList.length < 0) {
-        await JadeLog.info("有缓存无需解析",true)
+        await JadeLog.info("有缓存无需解析", true)
         let vod_list = await homeContent()
+        await JadeLog.debug(`首页解析内容为:${channelResponse.toSpilder(vod_list)}`)
         return channelResponse.toSpilder(vod_list)
     } else {
         let url = ApiUrl + "/show/channel/list/WEB/3.2" + await createSign()
@@ -83,11 +84,13 @@ async function home(filter) {
             }
             channelResponse.toSpilder()
             let vod_list = await homeContent()
-            await JadeLog.info("首页解析成功",true)
+            await JadeLog.info("首页解析成功", true)
+            await JadeLog.debug(`首页解析内容为:${channelResponse.toSpilder(vod_list)}`)
             return channelResponse.toSpilder(vod_list)
         } else {
-            await JadeLog.error("首页解析失败",true)
+            await JadeLog.error("首页解析失败", true)
             await channelResponse.clearCache()
+            await JadeLog.debug(`首页解析内容为:${homeSpiderResult.setHomeSpiderResult([]).toString()}`)
             return homeSpiderResult.setHomeSpiderResult([]).toString()
 
         }
@@ -96,7 +99,7 @@ async function home(filter) {
 }
 
 async function homeContent() {
-    await JadeLog.info("正在解析首页列表",true)
+    await JadeLog.info("正在解析首页列表", true)
     // let params = {
     //     "start": "0",
     //     "more": "1"
@@ -121,10 +124,10 @@ async function homeContent() {
                 }
             }
         }
-        await JadeLog.info("解析首页列表成功",true)
+        await JadeLog.info("解析首页列表成功", true)
         return vod_list
     } else {
-        await JadeLog.error("首页解析失败",true)
+        await JadeLog.error("首页解析失败", true)
         return vod_list
     }
 }
@@ -157,9 +160,12 @@ async function category(tid, pg, filter, extend) {
             vodShort.vod_remarks = `热度:${vod_dic["hot"]}  ${vod_dic["showTypeName"]}`
             vod_list.push(vodShort)
         }
-        await JadeLog.info("分类页解析成功",true)
+        await JadeLog.info("分类页解析成功", true)
+        await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": vod_list})}`)
     } else {
-        await JadeLog.info("分类页解析失败",true)
+        await JadeLog.info("分类页解析失败", true)
+        await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": vod_list})}`)
+
     }
     return JSON.stringify({"list": vod_list})
 }
