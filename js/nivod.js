@@ -115,7 +115,7 @@ async function homeContent() {
                     vodShort.vod_pic = cells.img
                     vodShort.vod_name = cells.title
                     vodShort.vod_remarks = `热度:${cells.show["hot"]}  ${cells.show["showTypeName"]}`
-                    vod_list.push(vodShort.to_dict())
+                    vod_list.push(vodShort)
                 }
             }
         }
