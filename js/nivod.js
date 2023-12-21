@@ -97,12 +97,14 @@ async function home(filter) {
 
 async function homeContent() {
     await JadeLog.info("正在解析首页列表")
-    let params = {
-        "start": "0",
-        "more": "1"
-    }
-    let homeUrl = ApiUrl + "/index/desktop/WEB/3.4" + await createSign(params)
-    let content = await request(homeUrl, params)
+    // let params = {
+    //     "start": "0",
+    //     "more": "1"
+    // }
+    // let homeUrl = ApiUrl + "/index/desktop/WEB/3.4" + await createSign(params)
+    // let content = await request(homeUrl, params)
+    let url = ApiUrl + "/index/mobile/WAP/3.0" + await createSign()
+    let content = await request(url)
     let vod_list = []
     if (content !== null) {
         let content_json = JSON.parse(content)
