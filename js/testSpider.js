@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './wogg.js';
+import {__jsEvalReturn} from './nivod.js';
 
 
 var spider = __jsEvalReturn();
@@ -20,7 +20,7 @@ async function test() {
 
 
 
-    await spider.init({skey: siteKey, stype: siteType, ext: "86c442348ffa42e882506502c557cd34"});
+    await spider.init({skey: siteKey, stype: siteType, ext: "1"});
 
 
 

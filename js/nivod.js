@@ -12,6 +12,7 @@ import {_, Uri} from "../lib/cat.js";
 import {User} from "../lib/ali_object.js";
 import {HomeSpiderResult} from "../lib/spider_object.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
+import {initAli} from "../lib/ali.js";
 
 let ApiUrl = "https://api.nivodz.com"
 let Remove18ChannelCode = 0
@@ -42,7 +43,12 @@ function getAppName() {
 }
 
 async function init(cfg) {
-    Remove18ChannelCode = 1
+    try {
+        await JadeLog.info(`读取配置文件,ext为:${cfg.ext}`)
+    } catch (e) {
+        await JadeLog.error("初始化失败,失败原因为:" + e.message)
+    }
+    Remove18ChannelCode = parseInt(cfg.ext)
     // 读取缓存
     let channelCacheStr = await getChannelCache()
     if (!_.isEmpty(channelCacheStr)) {
@@ -114,9 +120,9 @@ async function homeVod() {
                 }
             }
         }
-    }else{
+    } else {
         await JadeLog.error("首页解析失败")
-        return JSON.stringify({"list":vod_list})
+        return JSON.stringify({"list": vod_list})
     }
     await JadeLog.info("解析首页列表完成")
     return JSON.stringify({"list": vod_list})
