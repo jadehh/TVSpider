@@ -28,7 +28,12 @@ async function request(reqUrl, params) {
         postType: "form"
     });
     if (response.code === 200 || response.code === undefined) {
-        return desDecrypt(response.content)
+        if (!_.isEmpty(response.content)) {
+            return desDecrypt(response.content)
+        } else {
+            await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${response.content}`)
+            return null
+        }
     } else {
         await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
         return null
@@ -167,7 +172,10 @@ async function category(tid, pg, filter, extend) {
         await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": vod_list})}`)
 
     }
-    return JSON.stringify({"list": vod_list})
+    return JSON.stringify({
+        page: parseInt(pg),
+        list: vod_list,
+    })
 }
 
 async function detail() {
