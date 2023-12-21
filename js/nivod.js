@@ -66,9 +66,9 @@ async function init(cfg) {
 async function home(filter) {
     await JadeLog.info("正在解析首页")
     if (channelResponse.channelList.length < 0) {
-        let filets = channelResponse.getFilters()
         await JadeLog.info("有缓存无需解析,首页解析内容为:" + channelResponse.toSpilder())
-        return channelResponse.toSpilder()
+        let vod_list = await homeVod()
+        return channelResponse.toSpilder(vod_list)
     } else {
         let url = ApiUrl + "/show/channel/list/WEB/3.2" + await createSign()
         let content = await request(url)
@@ -82,8 +82,9 @@ async function home(filter) {
                 await channelResponse.save()
             }
             channelResponse.toSpilder()
+            let vod_list = await homeVod()
             await JadeLog.info("首页解析完成,首页解析内容为:" + channelResponse.toSpilder())
-            return channelResponse.toSpilder()
+            return channelResponse.toSpilder(vod_list)
         } else {
             await JadeLog.error("首页解析失败")
             await channelResponse.clearCache()
@@ -120,10 +121,10 @@ async function homeVod() {
         }
     } else {
         await JadeLog.error("首页解析失败")
-        return JSON.stringify({"list": vod_list})
+        return vod_list
     }
     await JadeLog.info("解析首页列表完成")
-    return JSON.stringify({"list": vod_list})
+    return vod_list
 }
 
 async function category(tid, pg, filter, extend) {
