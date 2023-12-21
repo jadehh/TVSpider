@@ -2120,7 +2120,7 @@ async function category(tid, pg, filter, extend) {
         urlParams[extend_dic[key]] = extend[key]
     }
     let reqUrl = siteUrl + '/index.php/vodshow/' + urlParams.join("-") + '.html';
-    await JadeLog.info(`正在获取分类界面,请求url为:${reqUrl},tid为:${tid},pg为:${pg},filter为:${filter},extend为:${extend}`)
+    await JadeLog.info(`正在获取分类界面,请求url为:${reqUrl},tid为:${tid},pg为:${pg},filter为:${filter},extend为:${JSON.stringify(extend)}`)
     let result = "";
     try {
         let con = await request(reqUrl);
