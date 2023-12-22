@@ -164,23 +164,28 @@ async function homeVod() {
 
 }
 
-function getExtendDic(extend,params) {
+function getExtendDic(extend, params) {
     if (extend["5"] === undefined) {
         delete params.year_range
-    }else{
-        if (extend["5"] === "0"){
+    } else {
+        if (extend["5"] === "0") {
             delete params.year_range
-        }else{
+        } else {
             params.year_range = extend["5"]
         }
     }
-    if (extend["1"] !== undefined){
+    if (extend["1"] !== undefined) {
         params.sort_by = extend["1"]
     }
-    if (extend["2"] !== undefined){
+    if (extend["2"] !== undefined) {
         params.show_type_id = extend["2"]
     }
-
+    if (extend["3"] !== undefined) {
+        params.region_id = extend["3"]
+    }
+    if (extend["4"] !== undefined) {
+        params.lang_id = extend["4"]
+    }
     return params
 }
 
@@ -196,7 +201,7 @@ async function category(tid, pg, filter, extend) {
         "year_range": "2023",
         "start": ((parseInt(pg) - 1) * 20).toString()
     }
-    params = getExtendDic(extend,params)
+    params = getExtendDic(extend, params)
     let url = ApiUrl + "/show/filter/WEB/3.2" + await createSign(params)
     let content = await request(url, params)
     let vod_list = []
