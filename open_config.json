@@ -6,14 +6,27 @@
         "name": "💂‍┃阿里玩偶┃💂",
         "type": 3,
         "api": "./js/wogg.js",
-        "ext": {"token":"86c442348ffa42e882506502c557cd34", "box":"CatOpen"}
+        "ext": {
+          "token": "86c442348ffa42e882506502c557cd34",
+          "box": "CatOpen"
+        }
       },
       {
         "key": "nivod",
         "name": "💂‍┃泥巴┃💂",
         "type": 3,
         "api": "./js/nivod.js",
-        "ext": {"code":1, "box":"CatOpen"}
+        "ext": {
+          "code": 1,
+          "box": "CatOpen"
+        }
+      },
+      {
+        "key": "nivod",
+        "name": "💂‍┃泥巴2┃💂",
+        "type": 3,
+        "api": "./js/nivod_op.js",
+        "ext": "做爱"
       }
     ]
   },
