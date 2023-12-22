@@ -228,11 +228,14 @@ async function category(tid, pg, filter, extend) {
     })
 }
 
-async function detail() {
-    let url = ApiUrl + "/index/mobile/WAP/3.0" + await createSign()
-    let content = await request(url)
-    let content_json = JSON.parse(content)
-    await JadeLog.info("Done")
+async function detail(id) {
+    let params = {
+         show_id_code:id
+    }
+    let url = ApiUrl + "/show/detail/WEB/3.2" + await createSign(params)
+    await JadeLog.info(`正在解析详情页面,id = ${id}`)
+
+
 }
 
 async function play() {
