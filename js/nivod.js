@@ -250,6 +250,21 @@ function getListFromObj(dic_list, key) {
     return objList
 }
 
+function parseDetailByObj(vod_dic) {
+    let vodDetail = new VodDetail()
+    vodDetail.vod_id = vod_dic["showIdCode"]
+    vodDetail.vod_name = vod_dic["showTitle"]
+    vodDetail.vod_remarks = getVodRemarks(vod_dic["hot"], vod_dic["playResolutions"])
+    vodDetail.vod_pic = vod_dic["showImg"]
+    vodDetail.vod_director = vod_dic["director"]
+    vodDetail.vod_actor = vod_dic["actors"]
+    vodDetail.vod_year = vod_dic["postYear"]
+    vodDetail.vod_content = vod_dic["showDesc"]
+    vodDetail.type_name = vod_dic["showTypeName"]
+    vodDetail.vod_area = vod_dic["regionName"]
+    return vodDetail
+}
+
 async function detail(id) {
     let params = {
         "show_id_code": id.toString()
@@ -261,14 +276,7 @@ async function detail(id) {
     if (content != null) {
         let content_json = JSON.parse(content)
         let vod_dic = content_json["entity"]
-        vodDetail.vod_id = vod_dic["showIdCode"]
-        vodDetail.vod_name = vod_dic["showTitle"]
-        vodDetail.vod_remarks = getVodRemarks(vod_dic["hot"], vod_dic["playResolutions"])
-        vodDetail.vod_pic = vod_dic["showImg"]
-        vodDetail.vod_director = vod_dic["director"]
-        vodDetail.vod_actor = vod_dic["actors"]
-        vodDetail.vod_year = vod_dic["postYear"]
-        vodDetail.vod_content = vod_dic["showDesc"]
+        vodDetail = parseDetailByObj(vod_dic)
         let niBaVodDetail = getVod(vod_dic["plays"], ["原画"], id.toString())
         vodDetail.vod_play_from = niBaVodDetail.vod_play_from
         vodDetail.vod_play_url = niBaVodDetail.vod_play_url
@@ -309,7 +317,25 @@ async function play(flag, id, flags) {
     });
 }
 
-async function search() {
+async function search(wd, quick) {
+    let params = {"cat_id": "1", "keyword": wd, "keyword_type": "0", "start": "0"}
+    let url = ApiUrl + "/show/search/WEB/3.2" + await createSign(params)
+    await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${url}`)
+    let content = await request(url, params)
+    let vod_list = []
+    if (content != null) {
+        let content_json = JSON.parse(content)
+        for (const vod_dic of content_json["list"]) {
+            let vod_detail = parseDetailByObj(vod_dic)
+            vod_list.push(vod_detail)
+        }
+        await JadeLog.info("搜索页面解析成功", true)
+    } else {
+        await JadeLog.info("搜索页面解析失败", true)
+    }
+    return JSON.stringify({
+        list: vod_list,
+    });
 }
 
 export function __jsEvalReturn() {

@@ -40,7 +40,7 @@ function localSet(storage, key, value) {
 
 async function request(url, opt) {
     try {
-        // console.debug(`url = ${url}, opt = ${JSON.stringify(opt)}`)
+        console.debug(`url = ${url}, opt = ${JSON.stringify(opt)}`)
         var data = opt ? opt.data || null : null;
         var postType = opt ? opt.postType || null : null;
         var returnBuffer = opt ? opt.buffer || 0 : 0;

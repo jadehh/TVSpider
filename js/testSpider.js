@@ -13,9 +13,9 @@ async function test() {
 
 
 
-
-    var classes = JSON.parse(await spider.home(true));
-    console.debug(classes);
+    //
+    // var classes = JSON.parse(await spider.home(true));
+    // console.debug(classes);
 
     //测试首页列表
     // var homeVod = JSON.parse(await spider.homeVod())
@@ -26,13 +26,13 @@ async function test() {
     // var page = JSON.parse(await spider.category(1, 1, undefined, {}));
     // console.debug(JSON.stringify(page));
     //
-    var detail = JSON.parse(await spider.detail("7pZBvuJOJPJQbJf2h0ngPMp6d1fojcBE"));
+    // var detail = JSON.parse(await spider.detail("7pZBvuJOJPJQbJf2h0ngPMp6d1fojcBE"));
     // 测试搜索
 
-    // var search_page = JSON.parse(await spider.search("奥本海默"))
-    // console.debug(JSON.stringify(search_page));
+    var search_page = JSON.parse(await spider.search("奥本海默"))
+    console.debug(JSON.stringify(search_page));
 
-    var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
+    // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
 
     // 测试详情
     if (search_page.list && search_page.list.length > 0) {
