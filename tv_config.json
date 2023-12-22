@@ -1,7 +1,7 @@
 {
     "sites": [
         {
-            "key": "nivod",
+            "key": "niba",
             "name": "泥巴",
             "type": 3,
             "api": "./js/nivod.js",

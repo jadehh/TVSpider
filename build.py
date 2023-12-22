@@ -80,6 +80,7 @@ class Build(object):
                         site_obj_copy["ext"] = json.dumps({"token": self.ali_token, "box": json_file_name})
                     elif jsMoudle.getAppName() == "泥视频":
                         site_obj_copy_2 = copy.copy(site_obj_copy)
+                        site_obj_copy_2["key"] = "niba"
                         site_obj_copy_2["name"] = "泥巴"
                         site_obj_copy_2["ext"] = json.dumps({"code": 1, "box": json_file_name})
                         site_obj_list.append(site_obj_copy_2)
