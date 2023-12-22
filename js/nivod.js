@@ -130,11 +130,10 @@ async function home(filter) {
 
 }
 
-async function getVodRemarks(hot, playResolutions) {
+function getVodRemarks(hot, playResolutions) {
     let vod_remarks
     if (CatOpenStatus) {
         vod_remarks = `清晰度:${playResolutions[0]}`
-
     } else {
         vod_remarks = `清晰度:${playResolutions[0]},热度:${(Math.floor(parseInt(hot) / 1000)).toString()}k`
     }
