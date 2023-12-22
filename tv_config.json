@@ -1,6 +1,13 @@
 {
     "sites": [
         {
+            "key": "kunyu77_open",
+            "name": "👒‍┃酷云┃👒",
+            "type": 3,
+            "api": "./js/kunyu77_open.js",
+            "ext": ""
+        },
+        {
             "key": "nivod",
             "name": "👑‍┃泥视频┃👑",
             "type": 3,
