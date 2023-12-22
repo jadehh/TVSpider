@@ -45,6 +45,7 @@ async function request(reqUrl, params) {
 function getName() {
     return "👑‍┃泥视频┃👑"
 }
+
 function getAppName() {
     return "泥视频"
 }
@@ -129,6 +130,17 @@ async function home(filter) {
 
 }
 
+async function getVodRemarks(hot, playResolutions) {
+    let vod_remarks
+    if (CatOpenStatus) {
+        vod_remarks = `清晰度:${playResolutions[0]}`
+
+    } else {
+        vod_remarks = `清晰度:${playResolutions[0]},热度:${(Math.floor(parseInt(hot) / 1000)).toString()}k`
+    }
+    return vod_remarks
+}
+
 async function homeContent() {
     await JadeLog.info("正在解析首页列表", true)
     // let params = {
@@ -150,7 +162,7 @@ async function homeContent() {
                     vodShort.vod_id = cells.show["showIdCode"]
                     vodShort.vod_pic = cells.img
                     vodShort.vod_name = cells.title
-                    vodShort.vod_remarks = `热度:${(Math.floor(parseInt(cells.show["hot"]) / 1000)).toString()}k,清晰度:${cells.show["playResolutions"][0]}`
+                    vodShort.vod_remarks = getVodRemarks(cells.show["hot"], cells.show["playResolutions"])
                     vod_list.push(vodShort)
                 }
             }
@@ -215,7 +227,7 @@ async function category(tid, pg, filter, extend) {
             vodShort.vod_id = vod_dic["showIdCode"]
             vodShort.vod_name = vod_dic["showTitle"]
             vodShort.vod_pic = vod_dic["showImg"]
-            vodShort.vod_remarks = `热度:${(Math.floor(parseInt(vod_dic["hot"]) / 1000)).toString()}k,清晰度:${vod_dic["playResolutions"][0]}`
+            vodShort.vod_remarks = getVodRemarks(vod_dic["hot"], vod_dic["playResolutions"])
             vod_list.push(vodShort)
         }
         await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": vod_list})}`)
@@ -252,13 +264,13 @@ async function detail(id) {
         let vod_dic = content_json["entity"]
         vodDetail.vod_id = vod_dic["showIdCode"]
         vodDetail.vod_name = vod_dic["showTitle"]
-        vodDetail.vod_remarks = `热度:${(Math.floor(parseInt(vod_dic["hot"]) / 1000)).toString()}k,清晰度:${vod_dic["playResolutions"][0]}`
+        vodDetail.vod_remarks = getVodRemarks(vod_dic["hot"], vod_dic["playResolutions"])
         vodDetail.vod_pic = vod_dic["showImg"]
         vodDetail.vod_director = vod_dic["director"]
         vodDetail.vod_actor = vod_dic["actors"]
         vodDetail.vod_year = vod_dic["postYear"]
         vodDetail.vod_content = vod_dic["showDesc"]
-        let niBaVodDetail = getVod(vod_dic["plays"],["原画"], id.toString())
+        let niBaVodDetail = getVod(vod_dic["plays"], ["原画"], id.toString())
         vodDetail.vod_play_from = niBaVodDetail.vod_play_from
         vodDetail.vod_play_url = niBaVodDetail.vod_play_url
         await JadeLog.debug(`详情页面解析内容为:${JSON.stringify({"list": [vodDetail]})}`)
