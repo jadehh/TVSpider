@@ -249,10 +249,10 @@ async function detail(id) {
         vodDetail.vod_content = vod_dic["showDesc"]
         vodDetail.vod_play_from = [vod_dic["plays"][0]["displayName"]].join("$$$")
         vodDetail.vod_play_url = [vod_dic["plays"][0]["playIdCode"]].join("$$$")
-        await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": [vodDetail]})}`)
+        await JadeLog.debug(`详情页面解析内容为:${JSON.stringify({"list": [vodDetail]})}`)
         await JadeLog.info("详情页面解析成功", true)
     } else {
-        await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": [vodDetail]})}`)
+        await JadeLog.debug(`详情页面解析内容为:${JSON.stringify({"list": [vodDetail]})}`)
         await JadeLog.info("详情页面解析失败", true)
     }
 }
