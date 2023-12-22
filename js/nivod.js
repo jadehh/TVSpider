@@ -257,7 +257,9 @@ async function detail(id) {
     }
 }
 
-async function play() {
+async function play(flag, id, flags) {
+    await JadeLog.info(`正在解析播放页面,flag = ${flag},id:${id},flags = ${flags}`)
+
 }
 
 async function search() {
