@@ -42,6 +42,9 @@ async function request(reqUrl, params) {
 
 }
 
+function getName() {
+    return "👑‍┃泥视频┃👑"
+}
 function getAppName() {
     return "泥视频"
 }

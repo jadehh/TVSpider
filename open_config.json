@@ -1,41 +1,26 @@
 {
-  "video": {
-    "sites": [
-      {
-        "key": "wg",
-        "name": "💂‍┃阿里玩偶┃💂",
-        "type": 3,
-        "api": "./js/wogg.js",
-        "ext": {
-          "token": "86c442348ffa42e882506502c557cd34",
-          "box": "CatOpen"
-        }
-      },
-      {
-        "key": "nivod",
-        "name": "💂‍┃泥巴┃💂",
-        "type": 3,
-        "api": "./js/nivod.js",
-        "ext": {
-          "code": 1,
-          "box": "CatOpen"
-        }
-      },
-      {
-        "key": "nivod_op",
-        "name": "泥巴2",
-        "type": 3,
-        "api": "./js/nivod_op.js",
-        "ext": "做爱"
-      }
-    ]
-  },
-  "read": {
-    "sites": [
-    ]
-  },
-  "pan": {
-    "sites": [
-    ]
-  }
+    "video": {
+        "sites": [
+            {
+                "key": "nivod",
+                "name": "👑‍┃泥视频┃👑",
+                "type": 3,
+                "api": "./js/nivod.js",
+                "ext": "{\"code\": 1, \"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "wogg",
+                "name": "💂‍┃阿里玩偶┃💂",
+                "type": 3,
+                "api": "./js/wogg.js",
+                "ext": "{\"token\": \"86c442348ffa42e882506502c557cd34\", \"box\": \"CatOpen\"}"
+            }
+        ]
+    },
+    "read": {
+        "sites": []
+    },
+    "pan": {
+        "sites": []
+    }
 }
