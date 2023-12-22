@@ -228,9 +228,9 @@ async function category(tid, pg, filter, extend) {
     })
 }
 
-function getListFromObj(dic_list,key){
+function getListFromObj(dic_list, key) {
     let objList = []
-    for (const dic of dic_list){
+    for (const dic of dic_list) {
         objList.push(dic[key])
     }
     return objList
@@ -255,7 +255,7 @@ async function detail(id) {
         vodDetail.vod_actor = vod_dic["actors"]
         vodDetail.vod_year = vod_dic["postYear"]
         vodDetail.vod_content = vod_dic["showDesc"]
-        let niBaVodDetail = getVod(vod_dic["plays"], vod_dic["playResolutions"])
+        let niBaVodDetail = getVod(vod_dic["plays"], vod_dic["playResolutions"],id.toString())
         vodDetail.vod_play_from = niBaVodDetail.vod_play_from
         vodDetail.vod_play_url = niBaVodDetail.vod_play_url
         await JadeLog.debug(`详情页面解析内容为:${JSON.stringify({"list": [vodDetail]})}`)
@@ -270,8 +270,7 @@ async function detail(id) {
 }
 
 async function play(flag, id, flags) {
-    let play_url = "https://cn-beijing-data.aliyundrive.net/xkltJ3jk%2F3046489330%2F65805f42787d0cafb3474d8b8f5895c309e6f866%2F65805f42b8a596ba93ec4a958b33caba2db7a26e?callback=eyJjYWxsYmFja1VybCI6Imh0dHA6Ly9iajI5LmFwaS1ocC5hbGl5dW5wZHMuY29tL3YyL2ZpbGUvZG93bmxvYWRfY2FsbGJhY2siLCJjYWxsYmFja0JvZHkiOiJodHRwSGVhZGVyLnJhbmdlPSR7aHR0cEhlYWRlci5yYW5nZX1cdTAwMjZidWNrZXQ9JHtidWNrZXR9XHUwMDI2b2JqZWN0PSR7b2JqZWN0fVx1MDAyNmRvbWFpbl9pZD0ke3g6ZG9tYWluX2lkfVx1MDAyNnVzZXJfaWQ9JHt4OnVzZXJfaWR9XHUwMDI2ZHJpdmVfaWQ9JHt4OmRyaXZlX2lkfVx1MDAyNmZpbGVfaWQ9JHt4OmZpbGVfaWR9IiwiY2FsbGJhY2tCb2R5VHlwZSI6ImFwcGxpY2F0aW9uL3gtd3d3LWZvcm0tdXJsZW5jb2RlZCIsImNhbGxiYWNrU3RhZ2UiOiJiZWZvcmUtZXhlY3V0ZSIsImNhbGxiYWNrRmFpbHVyZUFjdGlvbiI6Imlnbm9yZSJ9&callback-var=eyJ4OmRvbWFpbl9pZCI6ImJqMjkiLCJ4OnVzZXJfaWQiOiI4YjcxOWM3MjZlZDg0MzU4YmNhOGRiMTZjZjJlMWRkOCIsIng6ZHJpdmVfaWQiOiIxMTY4NDA0IiwieDpmaWxlX2lkIjoiNjU4NTFkZGVhNWVlMjUzNTUwZTk0NDljYjBmZjdhNThkNWRmZjcwMCJ9&di=bj29&dr=1168404&f=65851ddea5ee253550e9449cb0ff7a58d5dff700&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%274k-120FPS.mp4&security-token=CAIS%2BgF1q6Ft5B2yfSjIr5fDfsDsoIdZ8oWnR3bwsUYSaNVCgaGcqDz2IHFPeHJrBeAYt%2FoxmW1X5vwSlq5rR4QAXlDfNTLCCEf2qFHPWZHInuDox55m4cTXNAr%2BIhr%2F29CoEIedZdjBe%2FCrRknZnytou9XTfimjWFrXWv%2Fgy%2BQQDLItUxK%2FcCBNCfpPOwJms7V6D3bKMuu3OROY6Qi5TmgQ41Uh1jgjtPzkkpfFtkGF1GeXkLFF%2B97DRbG%2FdNRpMZtFVNO44fd7bKKp0lQLukMWr%2Fwq3PIdp2ma447NWQlLnzyCMvvJ9OVDFyN0aKEnH7J%2Bq%2FzxhTPrMnpkSlacGoABUmUCHPYTQY%2FCdMNI6IiO3BY2wN%2BOb02x9UGr%2F7wptVQlJMuLoH6d56j2P1HAX9A4ne90NhCHQhILDCmEV%2FYFM%2FKJ8h2jTPtYw8QNW8WT%2FeNYGrV9XGpuS4xqT6SRbn3Qn3ib3SY6VJ%2BMLccDkIRH5SD3uWS4VhvgNYg%2Fv1kY508gAA%3D%3D&u=8b719c726ed84358bca8db16cf2e1dd8&x-oss-access-key-id=STS.NTv5zXMXxEGLEPAUFGdZnnd7J&x-oss-expires=1703223651&x-oss-signature=7z%2Bbh3BKsZS2ShHG4K5HUHPmXvdJqVPCq5j%2BV3Nwp3Y%3D&x-oss-signature-version=OSS2"
-    await JadeLog.info(`正在解析播放页面,flag = ${flag},id:${id},flags = ${flags}`)
+    await JadeLog.info(`准备播放,播放类型为:${flag},播放文件Id为:${id},播放所有类型为:${flags.join("")}`)
     return JSON.stringify({
         parse: 0,
         url: play_url,
