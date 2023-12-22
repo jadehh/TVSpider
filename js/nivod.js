@@ -230,7 +230,7 @@ async function category(tid, pg, filter, extend) {
 
 async function detail(id) {
     let params = {
-        show_id_code: id
+        "show_id_code": id.toString()
     }
     let vodDetail = new VodDetail()
     let url = ApiUrl + "/show/detail/WEB/3.2" + await createSign(params)
