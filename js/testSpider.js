@@ -23,11 +23,11 @@ async function test() {
     // console.debug(JSON.stringify(homeVod));
 
     //测试分类列表
-    var page = JSON.parse(await spider.category(1, 1, undefined, {"1":"3","2":"1","3":"1","4":"7","5":"2023"}));
-    console.debug(JSON.stringify(page));
+    // var page = JSON.parse(await spider.category(1, 1, undefined, {}));
+    // console.debug(JSON.stringify(page));
     //
     // 测试搜索
-    var detail = JSON.parse(await spider.detail("/index.php/voddetail/82468.html"));
+    var detail = JSON.parse(await spider.detail("9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI"));
 
     var search_page = JSON.parse(await spider.search("奥本海默"))
     console.debug(JSON.stringify(search_page));

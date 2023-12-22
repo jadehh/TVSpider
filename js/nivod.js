@@ -147,7 +147,7 @@ async function homeContent() {
                     vodShort.vod_id = cells.show["showIdCode"]
                     vodShort.vod_pic = cells.img
                     vodShort.vod_name = cells.title
-                    vodShort.vod_remarks = `热度:${cells.show["hot"]}  ${cells.show["showTypeName"]}`
+                    vodShort.vod_remarks = `热度:${(Math.floor(parseInt(cells.show["hot"]) / 1000)).toString()}k,清晰度:${cells.show["playResolutions"][0]}`
                     vod_list.push(vodShort)
                 }
             }
@@ -212,15 +212,15 @@ async function category(tid, pg, filter, extend) {
             vodShort.vod_id = vod_dic["showIdCode"]
             vodShort.vod_name = vod_dic["showTitle"]
             vodShort.vod_pic = vod_dic["showImg"]
-            vodShort.vod_remarks = `热度:${vod_dic["hot"]}  ${vod_dic["showTypeName"]}`
+            vodShort.vod_remarks = `热度:${(Math.floor(parseInt(vod_dic["hot"]) / 1000)).toString()}k,清晰度:${vod_dic["playResolutions"][0]}`
             vod_list.push(vodShort)
         }
-        await JadeLog.info("分类页解析成功", true)
         await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": vod_list})}`)
+        await JadeLog.info("分类页解析成功", true)
     } else {
         page = page - 1
-        await JadeLog.info("分类页解析失败", true)
         await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": vod_list})}`)
+        await JadeLog.info("分类页解析失败", true)
     }
     return JSON.stringify({
         page: page,
@@ -230,12 +230,31 @@ async function category(tid, pg, filter, extend) {
 
 async function detail(id) {
     let params = {
-         show_id_code:id
+        show_id_code: id
     }
+    let vodDetail = new VodDetail()
     let url = ApiUrl + "/show/detail/WEB/3.2" + await createSign(params)
     await JadeLog.info(`正在解析详情页面,id = ${id},url:${url}`)
-
-
+    let content = await request(url, params)
+    if (content != null) {
+        let content_json = JSON.parse(content)
+        let vod_dic = content_json["entity"]
+        vodDetail.vod_id = vod_dic["showIdCode"]
+        vodDetail.vod_name = vod_dic["showTitle"]
+        vodDetail.vod_remarks = `热度:${(Math.floor(parseInt(vod_dic["hot"]) / 1000)).toString()}k,清晰度:${vod_dic["playResolutions"][0]}`
+        vodDetail.vod_pic = vod_dic["showImg"]
+        vodDetail.vod_director = vod_dic["director"]
+        vodDetail.vod_actor = vod_dic["actors"]
+        vodDetail.vod_year = vod_dic["postYear"]
+        vodDetail.vod_content = vod_dic["showDesc"]
+        vodDetail.vod_play_from = [vod_dic["plays"][0]["displayName"]].join("$$$")
+        vodDetail.vod_play_url = [vod_dic["plays"][0]["playIdCode"]].join("$$$")
+        await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": [vodDetail]})}`)
+        await JadeLog.info("详情页面解析成功", true)
+    } else {
+        await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": [vodDetail]})}`)
+        await JadeLog.info("详情页面解析失败", true)
+    }
 }
 
 async function play() {
