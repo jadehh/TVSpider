@@ -22,8 +22,8 @@
         }
       },
       {
-        "key": "nivod",
-        "name": "💂‍┃泥巴2┃💂",
+        "key": "nivod_op",
+        "name": "泥巴2",
         "type": 3,
         "api": "./js/nivod_op.js",
         "ext": "做爱"
