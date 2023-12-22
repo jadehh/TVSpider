@@ -233,7 +233,7 @@ async function detail(id) {
          show_id_code:id
     }
     let url = ApiUrl + "/show/detail/WEB/3.2" + await createSign(params)
-    await JadeLog.info(`正在解析详情页面,id = ${id}`)
+    await JadeLog.info(`正在解析详情页面,id = ${id},url:${url}`)
 
 
 }
