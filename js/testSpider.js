@@ -27,7 +27,7 @@ async function test() {
     // console.debug(JSON.stringify(page));
     //
     // 测试搜索
-    var detail = JSON.parse(await spider.detail("9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI"));
+    var detail = JSON.parse(await spider.detail("djK1rLSKOTpskOp0dOelbM2AacNdFWAY"));
 
     var search_page = JSON.parse(await spider.search("奥本海默"))
     console.debug(JSON.stringify(search_page));

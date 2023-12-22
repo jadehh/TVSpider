@@ -7,7 +7,7 @@
 * @Desc     :
 */
 import {JadeLogging} from "../lib/log.js";
-import {getChannelCache, getHeader, createSign, desDecrypt, ChannelResponse} from "../lib/nivid_object.js"
+import {getChannelCache, getHeader, createSign, desDecrypt, ChannelResponse, getVod} from "../lib/nivid_object.js"
 import {_, Uri} from "../lib/cat.js";
 import {HomeSpiderResult} from "../lib/spider_object.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
@@ -228,6 +228,14 @@ async function category(tid, pg, filter, extend) {
     })
 }
 
+function getListFromObj(dic_list,key){
+    let objList = []
+    for (const dic of dic_list){
+        objList.push(dic[key])
+    }
+    return objList
+}
+
 async function detail(id) {
     let params = {
         "show_id_code": id.toString()
@@ -247,8 +255,9 @@ async function detail(id) {
         vodDetail.vod_actor = vod_dic["actors"]
         vodDetail.vod_year = vod_dic["postYear"]
         vodDetail.vod_content = vod_dic["showDesc"]
-        vodDetail.vod_play_from = [vod_dic["plays"][0]["displayName"]].join("$$$")
-        vodDetail.vod_play_url = [vod_dic["plays"][0]["playIdCode"]].join("$$$")
+        let niBaVodDetail = getVod(vod_dic["plays"], vod_dic["playResolutions"])
+        vodDetail.vod_play_from = niBaVodDetail.vod_play_from
+        vodDetail.vod_play_url = niBaVodDetail.vod_play_url
         await JadeLog.debug(`详情页面解析内容为:${JSON.stringify({"list": [vodDetail]})}`)
         await JadeLog.info("详情页面解析成功", true)
     } else {
