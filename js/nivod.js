@@ -91,11 +91,6 @@ async function home(filter) {
     let vod_list = []
     if (channelResponse.channelList.length > 0) {
         await JadeLog.info("有缓存无需解析", true)
-        if (!CatOpenStatus) {
-            vod_list = await homeContent()
-        } else {
-            await JadeLog.debug("CatOpen无需解析首页内容")
-        }
         await JadeLog.debug(`首页解析内容为:${channelResponse.toSpilder(vod_list)}`)
         return channelResponse.toSpilder(vod_list)
     } else {
@@ -111,11 +106,6 @@ async function home(filter) {
                 await channelResponse.save()
             }
             channelResponse.toSpilder()
-            if (!CatOpenStatus) {
-                vod_list = await homeContent()
-            } else {
-                await JadeLog.debug("CatOpen无需解析首页内容")
-            }
             await JadeLog.info("首页解析成功", true)
             await JadeLog.debug(`首页解析内容为:${channelResponse.toSpilder(vod_list)}`)
             return channelResponse.toSpilder(vod_list)
@@ -175,6 +165,8 @@ async function homeContent() {
 }
 
 async function homeVod() {
+    let vod_list = await homeContent()
+    return JSON.stringify({list: vod_list})
 
 }
 
