@@ -255,7 +255,7 @@ async function detail(id) {
         vodDetail.vod_actor = vod_dic["actors"]
         vodDetail.vod_year = vod_dic["postYear"]
         vodDetail.vod_content = vod_dic["showDesc"]
-        let niBaVodDetail = getVod(vod_dic["plays"], vod_dic["playResolutions"],id.toString())
+        let niBaVodDetail = getVod(vod_dic["plays"], vod_dic["playResolutions"], id.toString())
         vodDetail.vod_play_from = niBaVodDetail.vod_play_from
         vodDetail.vod_play_url = niBaVodDetail.vod_play_url
         await JadeLog.debug(`详情页面解析内容为:${JSON.stringify({"list": [vodDetail]})}`)
@@ -270,7 +270,23 @@ async function detail(id) {
 }
 
 async function play(flag, id, flags) {
-    await JadeLog.info(`准备播放,播放类型为:${flag},播放文件Id为:${id},播放所有类型为:${flags.join("")}`)
+    let playId = id.split("@")[0]
+    let showId = id.split("@")[1]
+    let params = {
+        "show_id_code": showId,
+        "play_id_code": playId
+    }
+    let url = ApiUrl + "/show/play/info/WEB/3.2" + await createSign(params)
+    await JadeLog.info(`正在解析播放页面,播放类型为 = ${flag},播放文件Id为:${id},播放所有类型为:${flags},url=${url}`)
+    let content = await request(url, params)
+    let play_url = ""
+    if (content != null) {
+        let content_json = JSON.parse(content)
+        play_url = content_json["entity"]["playUrl"]
+        await JadeLog.info("播放页面解析成功", true)
+    } else {
+        await JadeLog.info("播放页面解析失败", true)
+    }
     return JSON.stringify({
         parse: 0,
         url: play_url,

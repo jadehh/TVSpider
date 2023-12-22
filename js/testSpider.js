@@ -26,11 +26,13 @@ async function test() {
     // var page = JSON.parse(await spider.category(1, 1, undefined, {}));
     // console.debug(JSON.stringify(page));
     //
+    // var detail = JSON.parse(await spider.detail("djK1rLSKOTpskOp0dOelbM2AacNdFWAY"));
     // 测试搜索
-    var detail = JSON.parse(await spider.detail("djK1rLSKOTpskOp0dOelbM2AacNdFWAY"));
 
-    var search_page = JSON.parse(await spider.search("奥本海默"))
-    console.debug(JSON.stringify(search_page));
+    // var search_page = JSON.parse(await spider.search("奥本海默"))
+    // console.debug(JSON.stringify(search_page));
+
+    var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
 
     // 测试详情
     if (search_page.list && search_page.list.length > 0) {
