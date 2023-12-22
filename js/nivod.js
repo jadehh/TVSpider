@@ -255,7 +255,7 @@ async function detail(id) {
         vodDetail.vod_actor = vod_dic["actors"]
         vodDetail.vod_year = vod_dic["postYear"]
         vodDetail.vod_content = vod_dic["showDesc"]
-        let niBaVodDetail = getVod(vod_dic["plays"], vod_dic["playResolutions"], id.toString())
+        let niBaVodDetail = getVod(vod_dic["plays"],["原画"], id.toString())
         vodDetail.vod_play_from = niBaVodDetail.vod_play_from
         vodDetail.vod_play_url = niBaVodDetail.vod_play_url
         await JadeLog.debug(`详情页面解析内容为:${JSON.stringify({"list": [vodDetail]})}`)
