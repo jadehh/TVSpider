@@ -167,7 +167,6 @@ async function homeContent() {
 async function homeVod() {
     let vod_list = await homeContent()
     return JSON.stringify({list: vod_list})
-
 }
 
 function getExtendDic(extend, params) {

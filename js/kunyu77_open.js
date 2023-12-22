@@ -7,7 +7,6 @@
 * @Desc     :
 */
 import {Crypto, dayjs, jinja2, Uri, _} from "../lib/cat.js";
-import {getHeader} from "../lib/nivid_object.js";
 
 let key = "kunyu77", url = "http://api.tyun77.cn", device = {}, timeOffset = 0, siteKey = "", siteType = 0;
 
