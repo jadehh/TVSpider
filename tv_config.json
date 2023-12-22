@@ -1,18 +1,11 @@
 {
     "sites": [
         {
-            "key": "niba",
-            "name": "泥巴",
-            "type": 3,
-            "api": "./js/nivod.js",
-            "ext": "{\"code\": 1, \"box\": \"TVBox\"}"
-        },
-        {
             "key": "nivod",
             "name": "👑‍┃泥视频┃👑",
             "type": 3,
             "api": "./js/nivod.js",
-            "ext": "{\"code\": 2, \"box\": \"TVBox\"}"
+            "ext": "{\"code\": 1, \"box\": \"TVBox\"}"
         },
         {
             "key": "wogg",
@@ -20,6 +13,13 @@
             "type": 3,
             "api": "./js/wogg.js",
             "ext": "{\"token\": \"86c442348ffa42e882506502c557cd34\", \"box\": \"TVBox\"}"
+        },
+        {
+            "key": "niba",
+            "name": "泥巴",
+            "type": 3,
+            "api": "./js/nivod.js",
+            "ext": "{\"code\": 2, \"box\": \"TVBox\"}"
         }
     ],
     "ijk": [

@@ -67,6 +67,7 @@ class Build(object):
         for json_file in json_file_list:
             json_file_name = json_file.split(".")[0]
             dic = self.readJsonFile(json_file)
+            site_obj_copy_2 = None
             site_obj_list = []
             for js_file in js_file_list:
                 js_file_name = js_file.split(".")[0]
@@ -82,13 +83,13 @@ class Build(object):
                         site_obj_copy_2 = copy.copy(site_obj_copy)
                         site_obj_copy_2["key"] = "niba"
                         site_obj_copy_2["name"] = "泥巴"
-                        site_obj_copy_2["ext"] = json.dumps({"code": 1, "box": json_file_name})
-                        site_obj_list.append(site_obj_copy_2)
+                        site_obj_copy_2["ext"] = json.dumps({"code": 2, "box": json_file_name})
                         site_obj_copy["name"] = jsMoudle.getName()
-                        site_obj_copy["ext"] = json.dumps({"code": 2, "box": json_file_name})
+                        site_obj_copy["ext"] = json.dumps({"code": 1, "box": json_file_name})
                     site_obj_list.append(site_obj_copy)
                     print(site_obj_list)
-
+            if site_obj_copy_2 is not None:
+                site_obj_list.append(site_obj_copy_2)
             if json_file_name == "TVBox":
                 dic["sites"] = site_obj_list
                 with open("tv_config.json", "wb") as f:
