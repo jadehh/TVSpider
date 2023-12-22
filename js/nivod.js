@@ -41,6 +41,7 @@ async function request(reqUrl, params) {
     }
 
 }
+
 function getAppName() {
     return "泥视频"
 }
@@ -163,10 +164,29 @@ async function homeVod() {
 
 }
 
+function getExtendDic(extend,params) {
+    if (extend["5"] === undefined) {
+        delete params.year_range
+    }else{
+        if (extend["5"] === "0"){
+            delete params.year_range
+        }else{
+            params.year_range = extend["5"]
+        }
+    }
+    if (extend["1"] !== undefined){
+        params.sort_by = extend["1"]
+    }
+    if (extend["2"] !== undefined){
+        params.show_type_id = extend["2"]
+    }
+
+    return params
+}
+
 async function category(tid, pg, filter, extend) {
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)}`)
     let page = parseInt(pg)
-
     let params = {
         "sort_by": "0",
         "channel_id": tid.toString(),
@@ -176,6 +196,7 @@ async function category(tid, pg, filter, extend) {
         "year_range": "2023",
         "start": ((parseInt(pg) - 1) * 20).toString()
     }
+    params = getExtendDic(extend,params)
     let url = ApiUrl + "/show/filter/WEB/3.2" + await createSign(params)
     let content = await request(url, params)
     let vod_list = []
