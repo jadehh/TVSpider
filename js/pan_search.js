@@ -111,7 +111,7 @@ async function detail(id) {
 
         }
     } catch (e) {
-        let aliVodDetail = await detailContent(id)
+        let aliVodDetail = await detailContent([id])
         vodDetail.vod_play_url = aliVodDetail.vod_play_url
         vodDetail.vod_play_from = aliVodDetail.vod_play_from
     }
