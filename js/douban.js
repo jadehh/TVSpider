@@ -957,19 +957,22 @@ function parseVodListFromJSONArray(items) {
 
 
 async function homeVod() {
-    await JadeLog.info("正在解析首页内容")
-    let url = ApiUrl + "/subject_collection/subject_real_time_hotest/items"
-    let response = await fetch(url)
-    let vod_list = []
-    if (response !== null) {
-        let items = response["subject_collection_items"]
-        vod_list = parseVodListFromJSONArray(items)
-        await JadeLog.info("首页内容解析成功", true)
-    } else {
-        await JadeLog.error("首页内容解析失败", true)
+    if (!CatOpenStatus) {
+        await JadeLog.info("正在解析首页内容")
+        let url = ApiUrl + "/subject_collection/subject_real_time_hotest/items"
+        let response = await fetch(url)
+        let vod_list = []
+        if (response !== null) {
+            let items = response["subject_collection_items"]
+            vod_list = parseVodListFromJSONArray(items)
+            await JadeLog.info("首页内容解析成功", true)
+        } else {
+            await JadeLog.error("首页内容解析失败", true)
+        }
+        await JadeLog.debug(`首页内容为:${JSON.stringify({"list": vod_list})}`)
+        return JSON.stringify({"list": vod_list})
     }
-    await JadeLog.debug(`首页内容为:${JSON.stringify({"list": vod_list})}`)
-    return JSON.stringify({"list": vod_list})
+
 }
 
 function get_tags(extend) {

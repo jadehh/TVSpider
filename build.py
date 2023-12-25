@@ -62,7 +62,7 @@ class Build(object):
             "name": "",
             "type": 3,
             "api": "",
-            "ext": "",
+            "ext": {},
         }
         for json_file in json_file_list:
             json_file_name = json_file.split(".")[0]
@@ -72,16 +72,19 @@ class Build(object):
             for js_file in js_file_list:
                 js_file_name = js_file.split(".")[0]
                 jsMoudle = JSMoudle(os.path.join(self.js_path, js_file))
+
                 if jsMoudle.getName():
                     site_obj_copy = copy.copy(site_obj)
                     site_obj_copy["key"] = js_file_name
                     site_obj_copy["name"] = jsMoudle.getName()
+                    site_obj_copy["ext"] = {"box": json_file_name}
                     site_obj_copy["api"] = "./{}/{}".format(self.js_path, js_file)
                     if "阿里" in jsMoudle.getAppName():
-                        site_obj_copy["ext"] = json.dumps({"token": self.ali_token, "box": json_file_name})
+                        site_obj_copy["ext"]["token"] = self.ali_token
                     elif jsMoudle.getAppName() == "泥视频":
                         site_obj_copy["name"] = jsMoudle.getName()
-                        site_obj_copy["ext"] = json.dumps({"code": 1, "box": json_file_name})
+                        site_obj_copy["ext"]["code"] = 1
+                    site_obj_copy["ext"] = json.dumps(site_obj_copy["ext"])
                     site_obj_list.append(site_obj_copy)
                     print(site_obj_list)
             if site_obj_copy_2 is not None:

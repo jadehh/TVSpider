@@ -6,28 +6,28 @@
                 "name": "🍥┃豆瓣┃🍥",
                 "type": 3,
                 "api": "./js/douban.js",
-                "ext": ""
+                "ext": "{\"box\": \"CatOpen\"}"
             },
             {
                 "key": "kunyu77_open",
                 "name": "👒‍┃酷云┃👒",
                 "type": 3,
                 "api": "./js/kunyu77_open.js",
-                "ext": ""
+                "ext": "{\"box\": \"CatOpen\"}"
             },
             {
                 "key": "nivod",
                 "name": "👑‍┃泥视频┃👑",
                 "type": 3,
                 "api": "./js/nivod.js",
-                "ext": "{\"code\": 1, \"box\": \"CatOpen\"}"
+                "ext": "{\"box\": \"CatOpen\", \"code\": 1}"
             },
             {
                 "key": "wogg",
                 "name": "💂‍┃阿里玩偶┃💂",
                 "type": 3,
                 "api": "./js/wogg.js",
-                "ext": "{\"token\": \"a5bf471ef70d4069b55758839d8ef4d1\", \"box\": \"CatOpen\"}"
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
             }
         ]
     },
