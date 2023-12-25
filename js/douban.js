@@ -932,8 +932,8 @@ async function home(filter) {
     return homeSpiderResult.setHomeSpiderResult(Classes, [], Filters).toString()
 }
 
-function parseVodListFromJSONArray(items) {
-    let vod_list = []
+function paraseVodShortListFromJSONArray(items) {
+    let vod_list
     for (const item of items) {
         let vod_short = new VodShort()
         vod_short.vod_id = "msearch:" + item["id"]
@@ -955,13 +955,28 @@ function parseVodListFromJSONArray(items) {
     return vod_list
 }
 
+function parseVodListFromJSONArray(items) {
+    let vod_list = []
+    for (const item of items) {
+        let vod_short = new VodShort()
+        vod_short.vod_id = item["target_id"]
+        let target = item["target"]
+        vod_short.vod_name = target["title"]
+        vod_short.vod_pic = target["cover_url"]
+        vod_short.vod_remarks = "评分:" + target["rating"]["value"].toString()
+        vod_list.push(vod_short);
+    }
+
+    return vod_list
+}
+
 
 async function homeVod() {
+    let vod_list = []
     if (!CatOpenStatus) {
         await JadeLog.info("正在解析首页内容")
         let url = ApiUrl + "/subject_collection/subject_real_time_hotest/items"
         let response = await fetch(url)
-        let vod_list = []
         if (response !== null) {
             let items = response["subject_collection_items"]
             vod_list = parseVodListFromJSONArray(items)
@@ -970,9 +985,8 @@ async function homeVod() {
             await JadeLog.error("首页内容解析失败", true)
         }
         await JadeLog.debug(`首页内容为:${JSON.stringify({"list": vod_list})}`)
-        return JSON.stringify({"list": vod_list})
     }
-
+    return JSON.stringify({"list": vod_list})
 }
 
 function get_tags(extend) {
@@ -1036,7 +1050,7 @@ async function category(tid, pg, filter, extend) {
     let response = await fetch(ApiUrl + cateUrl, params)
     if (response !== null) {
         let items = response[itemKey]
-        vod_list = parseVodListFromJSONArray(items)
+        vod_list = paraseVodShortListFromJSONArray(items)
         await JadeLog.info("分类页解析成功", true)
     } else {
         await JadeLog.error("分类页解析失败", true)

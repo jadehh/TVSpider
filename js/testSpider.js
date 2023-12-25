@@ -6,7 +6,7 @@ var spider = __jsEvalReturn();
 async function test() {
     let siteKey = 'niba';
     let siteType = 0;
-    // await spider.init({skey: siteKey, stype: siteType, ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "CatOpen"}});
+    await spider.init({skey: siteKey, stype: siteType, ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "CatOpen"}});
     //
     //
     //
@@ -14,12 +14,12 @@ async function test() {
     //
     //
     //
-    // var classes = JSON.parse(await spider.home(true));
-    // console.debug(classes);
+    var classes = JSON.parse(await spider.home(true));
+    console.debug(classes);
     //
     // //测试首页列表
-    // var homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(homeVod);
+    var homeVod = JSON.parse(await spider.homeVod())
+    console.debug(homeVod);
     // console.debug(JSON.stringify(homeVod));
 
     //测试分类列表
