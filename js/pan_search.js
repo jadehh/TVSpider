@@ -11,7 +11,7 @@ import {HomeSpiderResult, SpiderInit} from "../lib/spider_object.js";
 import {} from "../lib/crypto-js.js"
 import {_, load, Uri} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
-import {detailContent, playContent} from "../lib/ali.js";
+import {detailContent, initAli, playContent} from "../lib/ali.js";
 
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let homeSpiderResult = new HomeSpiderResult()
@@ -59,8 +59,9 @@ function getAppName() {
 }
 
 async function init(cfg) {
-    CatOpenStatus = await SpiderInit(cfg)
-    await JadeLog.info("初始化完成")
+    let extObj = await SpiderInit(cfg)
+    CatOpenStatus = extObj.CatOpenStatus
+    await initAli(extObj["token"]);
     // 读取缓存
 }
 
