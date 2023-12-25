@@ -96,7 +96,7 @@ async function detail(id) {
     let share_url = ""
     for (const content of splitList) {
         if (content.indexOf("描述") > -1) {
-            vodDetail.vod_content = content.replace("描述：", "")
+            vodDetail.vod_content = content.replace("描述：", "").replaceAll(/<\\?[^>]+>/g, "")
         }
         if (content.indexOf("标签：") > -1) {
             vodDetail.type_name = content.replace("🏷 标签：", "")
