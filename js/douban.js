@@ -1062,7 +1062,7 @@ async function category(tid, pg, filter, extend) {
         vod_list = paraseVodDetailListFromJSONArray(items)
         await JadeLog.info("分类页解析成功", true)
     } else {
-        page = 0
+        page = page - 1
         await JadeLog.error("分类页解析失败", true)
     }
     await JadeLog.debug(`首页内容为:${JSON.stringify({"list": vod_list})}`)
