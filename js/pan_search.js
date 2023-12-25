@@ -84,6 +84,7 @@ async function category(tid, pg, filter, extend) {
 
 
 async function detail(id) {
+    await JadeLog.info(`正在获取详情界面,id为:${id}`)
     let vodDetail = new VodDetail()
     let item = JSON.parse(id)
     let splitList = item["content"].split("\n");
