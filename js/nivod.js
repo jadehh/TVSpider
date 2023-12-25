@@ -225,7 +225,7 @@ async function category(tid, pg, filter, extend) {
     } else {
         page = page - 1
         await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": vod_list})}`)
-        await JadeLog.info("分类页解析失败", true)
+        await JadeLog.error("分类页解析失败", true)
     }
     return JSON.stringify({
         page: page,

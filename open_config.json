@@ -2,6 +2,13 @@
     "video": {
         "sites": [
             {
+                "key": "douban",
+                "name": "🍥┃豆瓣┃🍥",
+                "type": 3,
+                "api": "./js/douban.js",
+                "ext": ""
+            },
+            {
                 "key": "kunyu77_open",
                 "name": "👒‍┃酷云┃👒",
                 "type": 3,
