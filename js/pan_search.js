@@ -102,9 +102,14 @@ async function detail(id) {
             vodDetail.vod_id = content.replaceAll(/<\\?[^>]+>/g, "").replace("链接：", "");
         }
     }
-    let aliVodDetail = await detailContent([vodDetail.vod_id])
-    vodDetail.vod_play_url = aliVodDetail.vod_play_url
-    vodDetail.vod_play_from = aliVodDetail.vod_play_from
+    try {
+        let aliVodDetail = await detailContent([vodDetail.vod_id])
+        vodDetail.vod_play_url = aliVodDetail.vod_play_url
+        vodDetail.vod_play_from = aliVodDetail.vod_play_from
+    }catch (e) {
+        
+    }
+        
     return JSON.stringify({"list": [vodDetail]})
 }
 

@@ -2031,7 +2031,6 @@ async function home(filter) {
         class: classes,
         list: vod_list,
         filters: filterObj,
-
     }
     try {
         let con = await request(siteUrl);
