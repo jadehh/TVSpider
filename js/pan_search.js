@@ -91,7 +91,7 @@ async function detail(id) {
 
 
     let date = new Date(item["time"])
-    vodDetail.vod_remarks = "更新时间:" + date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
+    vodDetail.vod_remarks = date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
     for (const content of splitList) {
         if (content.indexOf("描述") > -1) {
             vodDetail.vod_content = content.replace("描述：", "")
@@ -137,7 +137,7 @@ async function search(wd, quick) {
                 let splitList = item["content"].split("\n");
                 vodShort.vod_name = splitList[0].replaceAll(/<\\?[^>]+>/g, "").replace("名称：", "");
                 let date = new Date(item["time"])
-                vodShort.vod_remarks = "更新时间:" + date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
+                vodShort.vod_remarks = date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
                 vodShort.vod_pic = item["image"]
                 vod_list.push(vodShort)
             }
