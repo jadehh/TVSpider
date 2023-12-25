@@ -23,7 +23,7 @@ async function test() {
     // console.debug(JSON.stringify(homeVod));
 
     //测试分类列表
-    var page = JSON.parse(await spider.category("hot_gaia", 1, undefined, {}));
+    var page = JSON.parse(await spider.category("hot_gaia", 2, undefined, {}));
     console.debug(JSON.stringify(page));
 
     // var detail = JSON.parse(await spider.detail("7pZBvuJOJPJQbJf2h0ngPMp6d1fojcBE"));

@@ -1012,9 +1012,10 @@ async function category(tid, pg, filter, extend) {
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)}`)
     let sort = extend["sort"] ?? "show_hot";
     let tag_str = get_tags(extend)
-    let start = (parseInt(pg) - 1) * 20
+    let count = 20
+    let start = (parseInt(pg) - 1) * count
     let cateUrl = ""
-    let params = {"start": start.toString(), "count": "20"}
+    let params = {"start": start.toString(), "count": count.toString()}
     let itemKey = "items"
     let vod_list = []
     let page = parseInt(pg)
@@ -1022,7 +1023,8 @@ async function category(tid, pg, filter, extend) {
         case "hot_gaia":
             sort = extend["sort"] ?? "recommend"
             let area = extend["area"] ?? "全部"
-            params = {"sort": sort, "area": area}
+            params["sort"] = sort
+            params["area"] = area
             cateUrl = "/movie/hot_gaia"
             break
         case "tv_hot":
@@ -1036,11 +1038,13 @@ async function category(tid, pg, filter, extend) {
             itemKey = "subject_collection_items";
             break
         case "movie":
-            params = {"sort": sort, "tags": tag_str}
+            params["sort"] = sort
+            params["tags"] = tag_str
             cateUrl = "/movie/recommend"
             break
         case "tv":
-            params = {"sort": sort, "tags": tag_str}
+            params["sort"] = sort
+            params["tags"] = tag_str
             cateUrl = "/tv/recommend"
             break
         case "rank_list_movie":
