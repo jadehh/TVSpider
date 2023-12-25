@@ -86,34 +86,30 @@ async function category(tid, pg, filter, extend) {
 async function detail(id) {
     await JadeLog.info(`正在获取详情界面,id为:${id}`)
     let vodDetail = new VodDetail()
+    let item = JSON.parse(id)
+    let splitList = item["content"].split("\n");
+    vodDetail.vod_id = id
+    vodDetail.vod_name = splitList[0].replaceAll(/<\\?[^>]+>/g, "").replace("名称：", "");
+    let date = new Date(item["time"])
+    vodDetail.vod_remarks = date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
+    let share_url = ""
+    for (const content of splitList) {
+        if (content.indexOf("描述") > -1) {
+            vodDetail.vod_content = content.replace("描述：", "")
+        }
+        if (content.indexOf("标签：") > -1) {
+            vodDetail.type_name = content.replace("🏷 标签：", "")
+        }
+        if (content.indexOf("链接：") > -1) {
+            share_url = content.replaceAll(/<\\?[^>]+>/g, "").replace("链接：", "");
+        }
+    }
     try {
-        let item = JSON.parse(id)
-        let splitList = item["content"].split("\n");
-        vodDetail.vod_name = splitList[0].replaceAll(/<\\?[^>]+>/g, "").replace("名称：", "");
-        let date = new Date(item["time"])
-        vodDetail.vod_remarks = date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
-        for (const content of splitList) {
-            if (content.indexOf("描述") > -1) {
-                vodDetail.vod_content = content.replace("描述：", "")
-            }
-            if (content.indexOf("标签：") > -1) {
-                vodDetail.type_name = content.replace("🏷 标签：", "")
-            }
-            if (content.indexOf("链接：") > -1) {
-                vodDetail.vod_id = content.replaceAll(/<\\?[^>]+>/g, "").replace("链接：", "");
-            }
-        }
-        try {
-            let aliVodDetail = await detailContent([vodDetail.vod_id])
-            vodDetail.vod_play_url = aliVodDetail.vod_play_url
-            vodDetail.vod_play_from = aliVodDetail.vod_play_from
-        } catch (e) {
-
-        }
-    } catch (e) {
-        let aliVodDetail = await detailContent([id])
+        let aliVodDetail = await detailContent([share_url])
         vodDetail.vod_play_url = aliVodDetail.vod_play_url
         vodDetail.vod_play_from = aliVodDetail.vod_play_from
+    } catch (e) {
+
     }
     return JSON.stringify({"list": [vodDetail]})
 }
