@@ -948,30 +948,22 @@ async function home(filter) {
     return homeSpiderResult.setHomeSpiderResult(Classes, [], Filters).toString()
 }
 
-function paraseVodShortListFromJSONArray(items) {
+function paraseVodDetailListFromJSONArray(items) {
     let vod_list = []
     for (const item of items) {
         let vod_short = new VodShort()
         vod_short.vod_id = "msearch:" + item["id"]
         vod_short.vod_name = item["title"]
-        try {
-            vod_short.vod_pic = item["pic"][
-                "normal"] + "@Referer=https://api.douban.com/@User-Agent=" + "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"
-        } catch (e) {
-        }
-
-        try {
-            vod_short.vod_remarks = "评分:" + item["rating"]["value"].toString()
-        } catch (e) {
-
-        }
+        vod_short.vod_pic = item["pic"][
+            "normal"]
+        vod_short.vod_remarks = "评分:" + item["rating"]["value"].toString()
         vod_list.push(vod_short);
     }
 
     return vod_list
 }
 
-function parseVodListFromJSONArray(items) {
+function paraseVodShortListFromJSONArray(items) {
     let vod_list = []
     for (const item of items) {
         let vod_short = new VodShort()
@@ -995,7 +987,7 @@ async function homeVod() {
         let response = await fetch(url)
         if (response !== null) {
             let items = response["subject_collection_items"]
-            vod_list = paraseVodShortListFromJSONArray(items)
+            vod_list = paraseVodDetailListFromJSONArray(items)
             await JadeLog.info("首页内容解析成功", true)
         } else {
             await JadeLog.error("首页内容解析失败", true)
@@ -1066,7 +1058,7 @@ async function category(tid, pg, filter, extend) {
     let response = await fetch(ApiUrl + cateUrl, params)
     if (response !== null) {
         let items = response[itemKey]
-        vod_list = paraseVodShortListFromJSONArray(items)
+        vod_list = paraseVodDetailListFromJSONArray(items)
         await JadeLog.info("分类页解析成功", true)
     } else {
         await JadeLog.error("分类页解析失败", true)
@@ -1107,7 +1099,7 @@ async function search(wd, quick) {
     let vod_list = []
     let response = await get(url, params)
     if (response !== null) {
-        vod_list = parseVodListFromJSONArray(response["items"])
+        vod_list = paraseVodShortListFromJSONArray(response["items"])
         await JadeLog.info("搜索页面解析成功", true)
     } else {
         await JadeLog.error("搜索页面解析失败", true)
