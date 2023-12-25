@@ -86,30 +86,25 @@ async function detail(id) {
     let vodDetail = new VodDetail()
     let item = JSON.parse(id)
     let splitList = item["content"].split("\n");
-    let $ = load(item["content"])
-    let vod_name_elements = $(splitList[0]).slice(1, -1)
-    for (const vod_name_element of vod_name_elements) {
-        vodDetail.vod_name = vodDetail.vod_name + vod_name_element.children[0].data
-    }
-    vodDetail.vod_name = vodDetail.vod_name + $(splitList[0]).slice(-1)[0].data
-    vodDetail.vod_id = $(item["content"])[5].attribs["href"]
-    let aliVodDetail = await detailContent([vodDetail.vod_id])
-    vodDetail.vod_play_url = aliVodDetail.vod_play_url
-    vodDetail.vod_play_from = aliVodDetail.vod_play_from
+    vodDetail.vod_name = splitList[0].replaceAll(/<\\?[^>]+>/g, "").replace("名称：", "");
+
+
     let date = new Date(item["time"])
     vodDetail.vod_remarks = "更新时间:" + date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
-    let content_list = $(item["content"])[4].data.split("\n")
-    for (const content of content_list) {
+    for (const content of splitList) {
         if (content.indexOf("描述") > -1) {
             vodDetail.vod_content = content.replace("描述：", "")
         }
-    }
-    let type_list = $(item["content"]).slice(-1)[0].data.split("\n")
-    for (const type of type_list) {
-        if (type.indexOf("标签：") > -1) {
-            vodDetail.type_name = type.replace("🏷 标签：", "")
+        if (content.indexOf("标签：") > -1) {
+            vodDetail.type_name = content.replace("🏷 标签：", "")
+        }
+        if (content.indexOf("链接：") > -1) {
+            vodDetail.vod_id = content.replaceAll(/<\\?[^>]+>/g, "").replace("链接：", "");
         }
     }
+    let aliVodDetail = await detailContent([vodDetail.vod_id])
+    vodDetail.vod_play_url = aliVodDetail.vod_play_url
+    vodDetail.vod_play_from = aliVodDetail.vod_play_from
     return JSON.stringify({"list": [vodDetail]})
 }
 
@@ -134,11 +129,7 @@ async function search(wd, quick) {
                 let vodShort = new VodShort()
                 vodShort.vod_id = JSON.stringify(item)
                 let splitList = item["content"].split("\n");
-                let vod_name_elements = $(splitList[0]).slice(1, -1)
-                for (const vod_name_element of vod_name_elements) {
-                    vodShort.vod_name = vodShort.vod_name + vod_name_element.children[0].data
-                }
-                vodShort.vod_name = vodShort.vod_name + $(splitList[0]).slice(-1)[0].data
+                vodShort.vod_name = splitList[0].replaceAll(/<\\?[^>]+>/g, "").replace("名称：", "");
                 let date = new Date(item["time"])
                 vodShort.vod_remarks = "更新时间:" + date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
                 vodShort.vod_pic = item["image"]
