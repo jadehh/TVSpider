@@ -61,6 +61,7 @@ function getAppName() {
 
 async function init(cfg) {
     CatOpenStatus = await SpiderInit(cfg)
+    await JadeLog.info("初始化完成")
     // 读取缓存
 }
 
@@ -107,7 +108,7 @@ async function detail(id) {
         vodDetail.vod_play_url = aliVodDetail.vod_play_url
         vodDetail.vod_play_from = aliVodDetail.vod_play_from
     }catch (e) {
-        
+
     }
         
     return JSON.stringify({"list": [vodDetail]})
