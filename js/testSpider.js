@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './douban.js';
+import {__jsEvalReturn} from './pan_search.js';
 
 
 var spider = __jsEvalReturn();
@@ -14,17 +14,17 @@ async function test() {
     //
     //
     //
-    var classes = JSON.parse(await spider.home(true));
-    console.debug(classes);
+    // var classes = JSON.parse(await spider.home(true));
+    // console.debug(classes);
+    // //
+    // // //测试首页列表
+    // var homeVod = JSON.parse(await spider.homeVod())
+    // console.debug(homeVod);
+    // // console.debug(JSON.stringify(homeVod));
     //
-    // //测试首页列表
-    var homeVod = JSON.parse(await spider.homeVod())
-    console.debug(homeVod);
-    // console.debug(JSON.stringify(homeVod));
-
-    //测试分类列表
-    var page = JSON.parse(await spider.category("hot_gaia", 2, undefined, {}));
-    console.debug(JSON.stringify(page));
+    // //测试分类列表
+    // var page = JSON.parse(await spider.category("hot_gaia", 2, undefined, {}));
+    // console.debug(JSON.stringify(page));
 
     // var detail = JSON.parse(await spider.detail("7pZBvuJOJPJQbJf2h0ngPMp6d1fojcBE"));
     // 测试搜索
