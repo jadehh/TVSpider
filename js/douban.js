@@ -10,7 +10,6 @@ import {JadeLogging} from "../lib/log.js";
 import {_, Crypto, Uri} from "../lib/cat.js";
 import {HomeSpiderResult, SpiderInit} from "../lib/spider_object.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
-import qs from "qs";
 import {} from "../lib/crypto-js.js"
 
 let ApiUrl = 'https://frodo.douban.com/api/v2'
@@ -857,10 +856,26 @@ function getHeader() {
     }
 }
 
+function objectToStr(params = null, isBase64Encode = false) {
+    let params_str_list = []
+    if (params !== null) {
+        for (const key of Object.keys(params)) {
+            if (isBase64Encode) {
+                params_str_list.push(`${key}=${encodeURIComponent(params[key])}`)
+            } else {
+                params_str_list.push(`${key}=${params[key]}`)
+            }
+
+        }
+    }
+
+    return params_str_list.join("&")
+}
+
 async function fetch(reqUrl, params = null) {
     let header = getHeader()
     reqUrl = reqUrl + `?apikey=${APIKey}`
-    let data = qs.stringify(params, {encode: false});
+    let data = objectToStr(params);
     if (!_.isEmpty(data)) {
         reqUrl = reqUrl + "&" + data
     }
@@ -889,7 +904,8 @@ async function get(url, params) {
     let headers = {
         'User-Agent': "api-client/1 com.douban.frodo/7.3.0(207) Android/22 product/MI 9 vendor/Xiaomi model/MI 9 brand/Android  rom/miui6  network/wifi platform/mobile nd/1"
     }
-    url = url + "?" + qs.stringify(params, {encode: CryptoJS.enc.Base64});
+
+    url = url + "?" + objectToStr(params, true)
     let uri = new Uri(url);
     await JadeLog.info(url)
     let response = await req(uri.toString(), {
@@ -933,7 +949,7 @@ async function home(filter) {
 }
 
 function paraseVodShortListFromJSONArray(items) {
-    let vod_list
+    let vod_list = []
     for (const item of items) {
         let vod_short = new VodShort()
         vod_short.vod_id = "msearch:" + item["id"]
@@ -979,7 +995,7 @@ async function homeVod() {
         let response = await fetch(url)
         if (response !== null) {
             let items = response["subject_collection_items"]
-            vod_list = parseVodListFromJSONArray(items)
+            vod_list = paraseVodShortListFromJSONArray(items)
             await JadeLog.info("首页内容解析成功", true)
         } else {
             await JadeLog.error("首页内容解析失败", true)
