@@ -1017,6 +1017,7 @@ async function category(tid, pg, filter, extend) {
     let params = {"start": start.toString(), "count": "20"}
     let itemKey = "items"
     let vod_list = []
+    let page = parseInt(pg)
     switch (tid) {
         case "hot_gaia":
             sort = extend["sort"] ?? "recommend"
@@ -1061,10 +1062,14 @@ async function category(tid, pg, filter, extend) {
         vod_list = paraseVodDetailListFromJSONArray(items)
         await JadeLog.info("分类页解析成功", true)
     } else {
+        page = 0
         await JadeLog.error("分类页解析失败", true)
     }
     await JadeLog.debug(`首页内容为:${JSON.stringify({"list": vod_list})}`)
-    return JSON.stringify({"list": vod_list})
+    return JSON.stringify({
+        page: page,
+        list: vod_list,
+    })
 }
 
 
