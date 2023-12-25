@@ -12,7 +12,6 @@ import {} from "../lib/crypto-js.js"
 import {_, load, Uri} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import {detailContent, playContent} from "../lib/ali.js";
-import {it} from "node:test";
 
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let homeSpiderResult = new HomeSpiderResult()
