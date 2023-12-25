@@ -1,0 +1,47 @@
+name: JS爬虫发布
+on:
+  push:
+    tags:
+      - jsV[0-9]+.*
+jobs:
+  build:
+    name: JS爬虫发布
+    runs-on: ubuntu-latest  # 如果是镜像中启动无法获取git信息
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ "ubuntu-latest" ] #, "macos-latest", "windows-latest"
+    steps:
+      - name: 下载代码
+        uses: actions/checkout@v3
+        with:
+          repository: jadehh/TV
+          ref: js
+          fetch-depth: 0  # 显示所有提交的日志
+          token: ${{ secrets.GH_PAT }}
+      - name: 执行爬虫脚本
+        run: |
+          python build.py
+      - name: 上传配置json文件
+        run: |
+          git config --global user.email "jadehh@live.com"
+          git config --global user.name "jade"
+          ls -l
+          git add open_config.json
+          git add tv_config.json
+          commit_msg="* 更新配置文件"
+          git commit -a -m "$commit_msg"
+      - name: 查看当前分支信息
+        run: |
+          ls -l
+      - name: 上传分支
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          repository: jadehh/TV
+          directory: .
+          branch: js
+          force: true
+          tags: true
+        env:
+          GITHUB_ACTOR: jadehh

@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './nivod.js';
+import {__jsEvalReturn} from './pan_search.js';
 
 
 var spider = __jsEvalReturn();
@@ -6,45 +6,33 @@ var spider = __jsEvalReturn();
 async function test() {
     let siteKey = 'niba';
     let siteType = 0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    await spider.init({skey: siteKey, stype: siteType, ext: "86c442348ffa42e882506502c557cd34"});
-
-
-
-
-
-
-
+    await spider.init({skey: siteKey, stype: siteType, ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "TVBox"}});
+    //
+    //
+    //
+    //
+    //
+    //
+    //
     // var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);
-
-    // 测试首页列表
-    var homeVod = JSON.parse(await spider.homeVod())
+    // //
+    // // //测试首页列表
+    // var homeVod = JSON.parse(await spider.homeVod())
     // console.debug(homeVod);
-    console.debug(JSON.stringify(homeVod));
-
-    // 测试分类列表
-    var page = JSON.parse(await spider.category(1, 1, undefined, {}));
-    console.debug(JSON.stringify(page));
+    // // console.debug(JSON.stringify(homeVod));
     //
-    // 测试搜索
-    // var detail = JSON.parse(await spider.detail("/index.php/voddetail/82468.html"));
+    // //测试分类列表
+    // var page = JSON.parse(await spider.category("hot_gaia", 2, undefined, {}));
+    // console.debug(JSON.stringify(page));
 
-    // var search_page = JSON.parse(await spider.search("奥本海默"))
-    // console.debug(JSON.stringify(search_page));
+    // var detail = JSON.parse(await spider.detail("7pZBvuJOJPJQbJf2h0ngPMp6d1fojcBE"));
+    // 测试搜索
+
+    var search_page = JSON.parse(await spider.search("王牌对王牌"))
+    console.debug(JSON.stringify(search_page));
+
+    // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
 
     // 测试详情
     if (search_page.list && search_page.list.length > 0) {
