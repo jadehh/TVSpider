@@ -16,7 +16,7 @@ let siteType = 0;
 let siteUrl = 'https://tvfan.xxooo.cf';
 let UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36";
 let patternAli = /(https:\/\/www\.aliyundrive\.com\/s\/[^"]+|https:\/\/www\.alipan\.com\/s\/[^"]+)/
-let JadeLog = new JadeLogging(getAppName(), "DEBUG")
+let JadeLog = new JadeLogging(getAppName(), "INFO")
 
 let classes = [{'type_id': 1, 'type_name': '电影'}, {'type_id': 2, 'type_name': '电视剧'}, {
     'type_id': 3, 'type_name': '动漫'
@@ -2052,10 +2052,12 @@ async function home(filter) {
                 await JadeLog.debug("CatOpen无需解析首页内容")
             }
             result_json.list = vod_list
-            await JadeLog.info("首页解析完成,首页信息为:" + JSON.stringify(result_json))
+            await JadeLog.debug("首页信息为:" + JSON.stringify(result_json))
+            await JadeLog.info("首页解析完成")
             return JSON.stringify(result_json)
         } else {
-            await JadeLog.warning("首页解析完成,首页信息为:" + JSON.stringify(result_json))
+            await JadeLog.debug("首页信息为:" + JSON.stringify(result_json))
+            await JadeLog.info("首页解析完成")
             return JSON.stringify(result_json)
         }
     } catch (e) {

@@ -40,7 +40,7 @@ class Build(object):
     def __init__(self, js_path, json_path):
         self.js_path = js_path
         self.json_path = json_path
-        self.ali_token = "86c442348ffa42e882506502c557cd34"
+        self.ali_token = "a5bf471ef70d4069b55758839d8ef4d1"
 
     def getJsonFileList(self):
         json_file_list = os.listdir(self.json_path)
