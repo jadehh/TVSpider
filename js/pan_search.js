@@ -92,6 +92,7 @@ async function detail(id) {
     vodDetail.vod_name = splitList[0].replaceAll(/<\\?[^>]+>/g, "").replace("名称：", "");
     let date = new Date(item["time"])
     vodDetail.vod_remarks = date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
+    vodDetail.vod_pic = item["image"]
     let share_url = ""
     for (const content of splitList) {
         if (content.indexOf("描述") > -1) {
