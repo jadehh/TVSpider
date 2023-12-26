@@ -133,25 +133,30 @@ async function homeVod() {
 
 async function category(tid, pg, filter, extend) {
     let cateId = extend["cateId"] ?? "";
-    let cateUrl = siteUrl + tid + cateId;
+    // let cateUrl = siteUrl + tid + cateId;
     let page = parseInt(pg)
     let count = 0
     let limit = 18;
     let total = 0;
     let vod_list = [];
-    if (page !== 1) {
-        cateUrl += "index_" + pg + ".html";
-    }
+    // if (page !== 1) {
+    //     cateUrl += "index_" + pg + ".html";
+    // }
+    let cateUrl = "http://www.xb6v.com/dianshiju/duanju/"
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${cateUrl}`)
     let html = await fetch(cateUrl, getHeader());
     if (!_.isEmpty(html)) {
         let $ = load(html)
-        let href = $(".pagination > a").slice(-1)[0].attribs["href"];
-        let patternPageCount = /index_(.*?).html/
-        let matches = patternPageCount.exec(href)
-        count = parseInt(matches[1])
-        let items = $("#post_container .post_hover");
-        total = page === count ? (page - 1) * limit + items.length : count * limit;
+        let href_elements = $(".pagination > a")
+        if (href_elements.length > 0) {
+            let href = href_elements.slice(-1)[0].attribs["href"];
+            let patternPageCount = /index_(.*?).html/
+            let matches = patternPageCount.exec(href)
+            count = parseInt(matches[1])
+            let items = $("#post_container .post_hover");
+            total = page === count ? (page - 1) * limit + items.length : count * limit;
+        }
+
         vod_list = parseVodListFromDoc($)
     }
     return result.category(vod_list, page, count, limit, total)

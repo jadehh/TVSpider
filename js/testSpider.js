@@ -14,8 +14,8 @@ async function test() {
     //
     //
     //
-    var classes = JSON.parse(await spider.home(true));
-    console.debug(classes);
+    // var classes = JSON.parse(await spider.home(true));
+    // console.debug(classes);
     // //
     // // //测试首页列表
     // var homeVod = JSON.parse(await spider.homeVod())
@@ -23,7 +23,7 @@ async function test() {
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("/xijupian/", 2, undefined, {}));
+    var page = JSON.parse(await spider.category("/xijupian/", 1, undefined, {}));
     console.debug(JSON.stringify(page));
 
     // var detail = JSON.parse(await spider.detail("7pZBvuJOJPJQbJf2h0ngPMp6d1fojcBE"));
