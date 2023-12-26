@@ -133,16 +133,15 @@ async function homeVod() {
 
 async function category(tid, pg, filter, extend) {
     let cateId = extend["cateId"] ?? "";
-    // let cateUrl = siteUrl + tid + cateId;
+    let cateUrl = siteUrl + tid + cateId;
     let page = parseInt(pg)
     let count = 0
     let limit = 18;
     let total = 0;
     let vod_list = [];
-    // if (page !== 1) {
-    //     cateUrl += "index_" + pg + ".html";
-    // }
-    let cateUrl = "http://www.xb6v.com/dianshiju/duanju/"
+    if (page !== 1) {
+        cateUrl += "index_" + pg + ".html";
+    }
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${cateUrl}`)
     let html = await fetch(cateUrl, getHeader());
     if (!_.isEmpty(html)) {
