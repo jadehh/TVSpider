@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './douban.js';
+import {__jsEvalReturn} from './xb6v.js';
 
 
 var spider = __jsEvalReturn();
@@ -18,12 +18,12 @@ async function test() {
     console.debug(classes);
     // //
     // // //测试首页列表
-    var homeVod = JSON.parse(await spider.homeVod())
-    console.debug(homeVod);
-    // console.debug(JSON.stringify(homeVod));
+    // var homeVod = JSON.parse(await spider.homeVod())
+    // console.debug(homeVod);
+    // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("/hot_gaia/", 1, undefined, {}));
+    var page = JSON.parse(await spider.category("/xijupian/", 2, undefined, {}));
     console.debug(JSON.stringify(page));
 
     // var detail = JSON.parse(await spider.detail("7pZBvuJOJPJQbJf2h0ngPMp6d1fojcBE"));

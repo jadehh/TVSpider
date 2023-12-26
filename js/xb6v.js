@@ -94,11 +94,13 @@ async function home(filter) {
                 for (const a of $(element.next).find("a")) {
                     values.push({"n": a.children[0].data, "v": a.attribs["href"].replaceAll(typeId, "")})
                 }
-                Filters[typeId] = {
-                    "key": "cateId",
-                    "name": "类型",
-                    "value": values
-                }
+                Filters[typeId] = [
+                    {
+                        "key": "cateId",
+                        "name": "类型",
+                        "value": values
+                    }
+                ]
             }
 
         }
@@ -169,19 +171,19 @@ async function play(flag, id, flags) {
 async function search(wd, quick) {
     let searchUrl = siteUrl + "/e/search/index.php";
     let params = {
-        "show":"title",
-        "tempid":"1",
-        "tbname":"article",
-        "mid":"1",
-        "dopost":"search",
-        "submit":"",
-        "keyboard":encodeURIComponent(wd),
+        "show": "title",
+        "tempid": "1",
+        "tbname": "article",
+        "mid": "1",
+        "dopost": "search",
+        "submit": "",
+        "keyboard": encodeURIComponent(wd),
 
     }
     let headers = {
-        "User-Agent":Utils.CHROME,
-        "Origin":siteUrl,
-        "Referer":siteUrl + "/"
+        "User-Agent": Utils.CHROME,
+        "Origin": siteUrl,
+        "Referer": siteUrl + "/"
     }
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${searchUrl}`)
 }
