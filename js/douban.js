@@ -8,7 +8,7 @@
 */
 import {JadeLogging} from "../lib/log.js";
 import {_, Crypto, Uri} from "../lib/cat.js";
-import {HomeSpiderResult, SpiderInit} from "../lib/spider_object.js";
+import {Result, SpiderInit} from "../lib/spider_object.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import {} from "../lib/crypto-js.js"
 
@@ -16,7 +16,7 @@ let ApiUrl = 'https://frodo.douban.com/api/v2'
 let APIKey = "0ac44ae016490db2204ce0a042db2916"
 
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
-let homeSpiderResult = new HomeSpiderResult()
+let result = new Result()
 let CatOpenStatus = false
 
 
@@ -936,16 +936,17 @@ function getAppName() {
 }
 
 async function init(cfg) {
-    CatOpenStatus = await SpiderInit(cfg)
+    let obj = await SpiderInit(cfg)
+    CatOpenStatus = obj.CatOpenStatus
     // 读取缓存
 }
 
 
 async function home(filter) {
     await JadeLog.info("正在解析首页类别", true)
-    await JadeLog.debug(`首页类别内容为:${homeSpiderResult.setHomeSpiderResult(Classes, [], Filters).toString()}`)
+    await JadeLog.debug(`首页类别内容为:${result.home(Classes, [], Filters)}`)
     await JadeLog.info("首页类别解析完成", true)
-    return homeSpiderResult.setHomeSpiderResult(Classes, [], Filters).toString()
+    return result.home(Classes, [], Filters)
 }
 
 function paraseVodDetailListFromJSONArray(items) {
@@ -992,9 +993,9 @@ async function homeVod() {
         } else {
             await JadeLog.error("首页内容解析失败", true)
         }
-        await JadeLog.debug(`首页内容为:${JSON.stringify({"list": vod_list})}`)
+        await JadeLog.debug(`首页内容为:${result.homeVod(vod_list)}`)
     }
-    return JSON.stringify({"list": vod_list})
+    return result.homeVod(vod_list)
 }
 
 function get_tags(extend) {
@@ -1012,13 +1013,15 @@ async function category(tid, pg, filter, extend) {
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)}`)
     let sort = extend["sort"] ?? "show_hot";
     let tag_str = get_tags(extend)
-    let count = 20
+    let page = parseInt(pg)
+    let count = 0
+    let limit = 20;
+    let total = 0;
     let start = (parseInt(pg) - 1) * count
     let cateUrl = ""
     let params = {"start": start.toString(), "count": count.toString()}
     let itemKey = "items"
     let vod_list = []
-    let page = parseInt(pg)
     switch (tid) {
         case "hot_gaia":
             sort = extend["sort"] ?? "recommend"
@@ -1069,11 +1072,8 @@ async function category(tid, pg, filter, extend) {
         page = page - 1
         await JadeLog.error("分类页解析失败", true)
     }
-    await JadeLog.debug(`首页内容为:${JSON.stringify({"list": vod_list})}`)
-    return JSON.stringify({
-        page: page,
-        list: vod_list,
-    })
+    await JadeLog.debug(`首页内容为:${result.category(vod_list,page,count,limit,total)}`)
+    return result.category(vod_list,page,count,limit,total)
 }
 
 

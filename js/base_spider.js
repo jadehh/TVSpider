@@ -15,10 +15,10 @@
 * @Desc     :
 */
 import {JadeLogging} from "../lib/log.js";
-import {HomeSpiderResult, SpiderInit} from "../lib/spider_object.js";
+import {Result, SpiderInit} from "../lib/spider_object.js";
 import {} from "../lib/crypto-js.js"
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
-let homeSpiderResult = new HomeSpiderResult()
+let result = new Result()
 let CatOpenStatus = false
 
 
@@ -31,16 +31,17 @@ function getAppName() {
 }
 
 async function init(cfg) {
-    CatOpenStatus = await SpiderInit(cfg)
+    let obj = await SpiderInit(cfg)
+    CatOpenStatus = obj.CatOpenStatus
     // 读取缓存
 }
 
 
 async function home(filter) {
     await JadeLog.info("正在解析首页类别", true)
-    await JadeLog.debug(`首页类别内容为:${homeSpiderResult.setHomeSpiderResult(Classes, [], Filters).toString()}`)
+    await JadeLog.debug(`首页类别内容为:${result.homeVod()}`)
     await JadeLog.info("首页类别解析完成", true)
-    return homeSpiderResult.setHomeSpiderResult(Classes, [], Filters).toString()
+    return result.homeVod()
 }
 
 

@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './kunyu77_open.js';
+import {__jsEvalReturn} from './xb6v.js';
 
 
 var spider = __jsEvalReturn();
@@ -23,8 +23,8 @@ async function test() {
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    // var page = JSON.parse(await spider.category("hot_gaia", 2, undefined, {}));
-    // console.debug(JSON.stringify(page));
+    var page = JSON.parse(await spider.category("/xijupian/", 1, undefined, {}));
+    console.debug(JSON.stringify(page));
 
     // var detail = JSON.parse(await spider.detail("7pZBvuJOJPJQbJf2h0ngPMp6d1fojcBE"));
     // 测试搜索

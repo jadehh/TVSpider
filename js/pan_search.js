@@ -7,17 +7,17 @@
 * @Desc     :
 */
 import {JadeLogging} from "../lib/log.js";
-import {HomeSpiderResult, SpiderInit} from "../lib/spider_object.js";
+import {Result, SpiderInit} from "../lib/spider_object.js";
 import {} from "../lib/crypto-js.js"
 import {_, load, Uri} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
+import * as Utils from "../lib/utils.js";
 import {detailContent, initAli, playContent} from "../lib/ali.js";
 
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
-let homeSpiderResult = new HomeSpiderResult()
 let CatOpenStatus = false
 let URL = "https://www.pansearch.me/"
-
+let result = new Result()
 
 async function fetch(reqUrl, headers) {
     let uri = new Uri(reqUrl);
@@ -40,7 +40,7 @@ async function fetch(reqUrl, headers) {
 }
 
 function getHeader() {
-    return {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
+    return {"User-Agent": Utils.CHROME}
 }
 
 function getSearchHeader() {
@@ -67,7 +67,7 @@ async function init(cfg) {
 
 
 async function home(filter) {
-    return homeSpiderResult.setHomeSpiderResult([], [], []).toString()
+    return result.home()
 }
 
 

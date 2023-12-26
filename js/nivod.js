@@ -9,14 +9,14 @@
 import {JadeLogging} from "../lib/log.js";
 import {getChannelCache, getHeader, createSign, desDecrypt, ChannelResponse, getVod} from "../lib/nivid_object.js"
 import {_, Uri} from "../lib/cat.js";
-import {HomeSpiderResult} from "../lib/spider_object.js";
+import {Result} from "../lib/spider_object.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 
 let ApiUrl = "https://api.nivodz.com"
 let Remove18ChannelCode = 0
 const JadeLog = new JadeLogging(getAppName())
 let channelResponse = new ChannelResponse()
-let homeSpiderResult = new HomeSpiderResult()
+let result = new Result()
 let CatOpenStatus = false
 
 async function request(reqUrl, params) {
@@ -112,8 +112,8 @@ async function home(filter) {
         } else {
             await JadeLog.error("首页解析失败", true)
             await channelResponse.clearCache()
-            await JadeLog.debug(`首页解析内容为:${homeSpiderResult.setHomeSpiderResult([]).toString()}`)
-            return homeSpiderResult.setHomeSpiderResult([]).toString()
+            await JadeLog.debug(`首页解析内容为:${result.home()}`)
+            return result.home()
 
         }
     }
@@ -166,7 +166,7 @@ async function homeContent() {
 
 async function homeVod() {
     let vod_list = await homeContent()
-    return JSON.stringify({list: vod_list})
+    return  result.homeVod(vod_list)
 }
 
 function getExtendDic(extend, params) {
@@ -206,6 +206,9 @@ async function category(tid, pg, filter, extend) {
         "year_range": "2023",
         "start": ((parseInt(pg) - 1) * 20).toString()
     }
+    let count = 0
+    let limit = 20;
+    let total = 0;
     params = getExtendDic(extend, params)
     let url = ApiUrl + "/show/filter/WEB/3.2" + await createSign(params)
     let content = await request(url, params)
@@ -227,10 +230,7 @@ async function category(tid, pg, filter, extend) {
         await JadeLog.debug(`分类页解析内容为:${JSON.stringify({"list": vod_list})}`)
         await JadeLog.error("分类页解析失败", true)
     }
-    return JSON.stringify({
-        page: page,
-        list: vod_list,
-    })
+    return result.category(vod_list,page,count,limit,total)
 }
 
 function getListFromObj(dic_list, key) {
