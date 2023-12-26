@@ -34,6 +34,13 @@
             "type": 3,
             "api": "./js/wogg.js",
             "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+        },
+        {
+            "key": "xb6v",
+            "name": "🧲|磁力新6V|🧲",
+            "type": 3,
+            "api": "./js/xb6v.js",
+            "ext": "{\"box\": \"TVBox\"}"
         }
     ],
     "ijk": [

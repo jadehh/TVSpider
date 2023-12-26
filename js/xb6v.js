@@ -23,7 +23,7 @@ function getName() {
 }
 
 function getAppName() {
-    return `磁力新6V`
+    return "磁力新6V"
 }
 
 async function fetch(reqUrl, headers) {
