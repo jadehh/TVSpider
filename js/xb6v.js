@@ -250,8 +250,7 @@ async function detail(id) {
 }
 
 async function play(flag, id, flags) {
-
-    return JSON.stringify({});
+    return result.play(id)
 }
 
 
