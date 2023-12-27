@@ -276,6 +276,8 @@ async function search(wd, quick) {
     let html = await fetch(searchUrl, headers, params, "post")
     let $ = load(html)
     let vod_list = parseVodListFromDoc($)
+    await JadeLog.info(`搜索页面完成`)
+    await JadeLog.debug(result.search(vod_list))
     return result.search(vod_list)
 }
 
