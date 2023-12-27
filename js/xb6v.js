@@ -250,6 +250,7 @@ async function detail(id) {
 }
 
 async function play(flag, id, flags) {
+    await JadeLog.debug(result.play(id))
     return result.play(id)
 }
 
