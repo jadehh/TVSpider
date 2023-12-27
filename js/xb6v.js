@@ -11,7 +11,7 @@ import {JadeLogging} from "../lib/log.js";
 import {Result, SpiderInit} from "../lib/spider_object.js";
 import * as Utils from "../lib/utils.js";
 import {_, load, Uri} from "../lib/cat.js";
-import {VodShort} from "../lib/vod.js";
+import {VodDetail, VodShort} from "../lib/vod.js";
 
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let CatOpenStatus = false
@@ -26,12 +26,13 @@ function getAppName() {
     return "磁力新6V"
 }
 
-async function fetch(reqUrl, headers) {
+async function fetch(reqUrl, headers, params = null, method = "get") {
     let uri = new Uri(reqUrl);
+    let data = Utils.objectToStr(params)
     let response = await req(uri.toString(), {
-        method: "get",
+        method: method,
         headers: headers,
-        data: null,
+        data: data,
     });
     if (response.code === 200 || response.code === undefined) {
         if (!_.isEmpty(response.content)) {
@@ -161,9 +162,91 @@ async function category(tid, pg, filter, extend) {
     return result.category(vod_list, page, count, limit, total)
 }
 
+function getStrByRegex(pattern, str) {
+    let matcher = pattern.exec(str);
+    if (matcher !== null) {
+        if (matcher.length >= 1) {
+            if (matcher.length >= 1) return matcher[1]
+        }
+    }
+    return "";
+}
+
+function getActorOrDirector(pattern, str) {
+    return getStrByRegex(pattern, str)
+        .replace(/<br>/g, "")
+        .replace(/&nbsp;./g, "")
+        .replace(/&amp;/g, "")
+        .replace(/middot;/g, "・")
+        .replace(/　　　　　/g, ",")
+        .replace(/　　　　 　/g, ",")
+        .replace(/　/g, "");
+}
+
+function getDescription(pattern, str) {
+    return getStrByRegex(pattern, str)
+        .replace(/<\/?[^>]+>/g, "")
+        .replace(/\n/g, "")
+        .replace(/&amp;/g, "")
+        .replace(/middot;/g, "・")
+        .replace(/ldquo;/g, "【")
+        .replace(/rdquo;/g, "】")
+        .replace(/　/g, "");
+}
+
 
 async function detail(id) {
-    return JSON.stringify({})
+    await JadeLog.info(`正在获取详情界面,id为:${id}`)
+    let detailUrl = siteUrl + id;
+    let html = await fetch(detailUrl, getDetailHeader())
+    let vodDetail = new VodDetail()
+    vodDetail.vod_id = id
+    if (!_.isEmpty(html)) {
+        let $ = load(html);
+        let sourceList = $("#post_content");
+        let play_form_list = []
+        let play_url_list = []
+        let i = 0
+        let circuitName = "磁力线路";
+        for (const source of sourceList) {
+            let aList = $(source).find("table a")
+            let vodItems = []
+            for (const a of aList) {
+                let episodeUrl = a.attribs["href"]
+                let episodeName = a.children[0].data
+                if (!episodeUrl.toLowerCase().startsWith("magnet")) continue;
+                vodItems.push(episodeName + "$" + episodeUrl);
+            }
+            if (vodItems.length > 0) {
+                i++;
+                play_form_list.push(circuitName + i)
+                play_url_list.push(vodItems.join("#"))
+            }
+        }
+        let partHTML = $(".context").html();
+        vodDetail.vod_name = $(".article_container > h1").text();
+        vodDetail.vod_pic = $("#post_content img").attr("src");
+        vodDetail.type_name = getStrByRegex(/◎类　　别　(.*?)<br>/, partHTML);
+        vodDetail.vod_year = getStrByRegex(/◎年　　代　(.*?)<br>/, partHTML);
+        if (_.isEmpty(vodDetail.vod_year)) vodDetail.vod_year = getStrByRegex(/首播:(.*?)<br>"/, partHTML);
+        vodDetail.vod_area = getStrByRegex(/◎产　　地　(.*?)<br>/, partHTML);
+        if (_.isEmpty(vodDetail.vod_year)) vodDetail.vod_area = getStrByRegex(/地区:(.*?)<br>"/, partHTML);
+        vodDetail.vod_remarks = getStrByRegex(/◎上映日期　(.*?)<br>/, partHTML);
+        vodDetail.vod_actor = getActorOrDirector(/◎演　　员　(.*?)<\/p>/, partHTML);
+        if (_.isEmpty(vodDetail.vod_actor)) vodDetail.vod_actor = getActorOrDirector(/◎主　　演　(.*?)<\/p>/, partHTML);
+        if (_.isEmpty(vodDetail.vod_actor)) vodDetail.vod_actor = getActorOrDirector(/主演:(.*?)<br>/, partHTML);
+        vodDetail.vod_director = getActorOrDirector(/◎导　　演　(.*?)<br>/, partHTML);
+        if (_.isEmpty(vodDetail.vod_director)) vodDetail.vod_director = getActorOrDirector(/导演:(.*?)<br>/, partHTML);
+        vodDetail.vod_content = getDescription(/◎简　　介(.*?)<hr>/gi, partHTML);
+        if (_.isEmpty(vodDetail.vod_content)) vodDetail.vod_content = getDescription(/简介(.*?)<\/p>/gi, partHTML);
+        vodDetail.vod_play_from = play_form_list.join("$$$")
+        vodDetail.vod_play_url = play_url_list.join("$$$")
+    } else {
+
+    }
+    await JadeLog.info("Done")
+
+    return result.detail(vodDetail)
 }
 
 async function play(flag, id, flags) {
@@ -190,6 +273,10 @@ async function search(wd, quick) {
         "Referer": siteUrl + "/"
     }
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${searchUrl}`)
+    let html = await fetch(searchUrl, headers, params, "post")
+    let $ = load(html)
+    let vod_list = parseVodListFromDoc($)
+    return result.search(vod_list)
 }
 
 export function __jsEvalReturn() {
