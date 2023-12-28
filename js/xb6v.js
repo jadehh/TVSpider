@@ -40,7 +40,7 @@ async function fetch(reqUrl, headers, method = "get") {
     let response = await req(uri.toString(), {
         method: method,
         headers: headers,
-        data: data,
+        data: null,
     });
     if (response.code === 200 || response.code === undefined) {
         if (!_.isEmpty(response.content)) {
