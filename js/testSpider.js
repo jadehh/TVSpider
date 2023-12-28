@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './xb6v.js';
+import {__jsEvalReturn} from './kunyu77_open.js';
 
 
 var spider = __jsEvalReturn();
@@ -6,7 +6,7 @@ var spider = __jsEvalReturn();
 async function test() {
     let siteKey = 'niba';
     let siteType = 0;
-    // await spider.init({skey: siteKey, stype: siteType, ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "TVBox"}});
+    await spider.init({skey: siteKey, stype: siteType, ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "TVBox"}});
     //
     //
     //
