@@ -25,13 +25,25 @@ function getName() {
 function getAppName() {
     return "磁力新6V"
 }
+
 async function postJson(url, params, headers) {
-    return await req(url, {
+    let response = await req(url, {
         headers: headers,
         method: "post",
         data: params,
-        postType:"form",
+        postType: "form",
     });
+    if (response.code === 200 || response.code === undefined) {
+        if (!_.isEmpty(response.content)) {
+            return response.content
+        } else {
+            await JadeLog.error(`请求失败,请求url为:${uri},回复内容为空`)
+            return null
+        }
+    } else {
+        await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
+        return null
+    }
 }
 
 
@@ -279,7 +291,7 @@ async function search(wd, quick) {
         "Referer": siteUrl + "/"
     }
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${searchUrl}`)
-    let html = await postJson(searchUrl, params,headers)
+    let html = await postJson(searchUrl, params, headers)
     let $ = load(html)
     let vod_list = parseVodListFromDoc($)
     await JadeLog.info(`搜索页面完成:${html},参数为:${JSON.stringify(params)}`)
