@@ -242,10 +242,8 @@ async function detail(id) {
         vodDetail.vod_play_from = play_form_list.join("$$$")
         vodDetail.vod_play_url = play_url_list.join("$$$")
     } else {
-
     }
-    await JadeLog.info("Done")
-
+    await JadeLog.info(`详情界面内容为:${result.detail(vodDetail)}`)
     return result.detail(vodDetail)
 }
 
