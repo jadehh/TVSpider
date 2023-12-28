@@ -31,7 +31,7 @@ async function test() {
     // var detail = JSON.parse(await spider.detail("/dongzuopian/21134.html"));
     // 测试搜索
     //
-    var search_page = JSON.parse(await spider.search("繁花"))
+    var search_page = JSON.parse(await spider.search("神隐"))
     console.debug(JSON.stringify(search_page));
 
     // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
