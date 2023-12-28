@@ -29,11 +29,11 @@ function getAppName() {
 
 async function postJson(url, params, headers) {
     let uri = new Uri(url);
+    let data = objectToStr(params)
     let response = await req(uri.toString(), {
         method: "post",
         headers: headers,
-        data: params,
-        postType: "form"
+        data: data,
     });
     if (response.code === 200 || response.code === undefined) {
         if (!_.isEmpty(response.content)) {
