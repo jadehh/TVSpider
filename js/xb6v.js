@@ -287,6 +287,7 @@ async function search(wd, quick) {
     let headers = {
         "User-Agent": Utils.CHROME,
         "Origin": siteUrl,
+        "Content-Type":"application/x-www-form-urlencoded"
     }
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${searchUrl}`)
     let html = await postJson(searchUrl, params, headers)
