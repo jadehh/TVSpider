@@ -16,6 +16,7 @@ import {VodDetail, VodShort} from "../lib/vod.js";
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let CatOpenStatus = false
 const siteUrl = "http://www.xb6v.com";
+const HostUrl = "www.xb6v.com"
 let result = new Result()
 
 function getName() {
@@ -287,7 +288,7 @@ async function search(wd, quick) {
     let headers = {
         "User-Agent": Utils.CHROME,
         "Origin": siteUrl,
-        "Referer": siteUrl + "/"
+        "Host":HostUrl,
     }
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${searchUrl}`)
     let html = await postJson(searchUrl, params, headers)
