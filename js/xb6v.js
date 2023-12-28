@@ -29,12 +29,13 @@ function getAppName() {
 
 async function postJson(url, params, headers) {
     let uri = new Uri(url);
-
     let response = await req(uri.toString(), {
         method: "post",
         headers: headers,
-        data:params,
+        data: params,
+        postType: "form"
     });
+
     if (response.code === 200 || response.code === undefined) {
         if (!_.isEmpty(response.content)) {
             return response.content
@@ -289,6 +290,7 @@ async function search(wd, quick) {
     let headers = {
         "User-Agent": Utils.CHROME,
         "Origin": siteUrl,
+         "Content-Type": "application/x-www-form-urlencoded"
     }
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${searchUrl}`)
     let html = await postJson(searchUrl, params, headers)
