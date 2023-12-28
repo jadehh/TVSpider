@@ -278,25 +278,28 @@ async function play(flag, id, flags) {
 
 async function search(wd, quick) {
     let searchUrl = siteUrl + "/e/search/index.php";
+    let vod_list = []
     let params = {
         "show": "title",
         "tempid": "1",
         "tbname": "article",
         "mid": "1",
         "dopost": "search",
-        "keyboard":wd,
+        "keyboard": wd,
 
     }
     let headers = {
         "User-Agent": Utils.CHROME,
         "Origin": siteUrl,
-         "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/x-www-form-urlencoded"
     }
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${searchUrl}`)
     let html = await postJson(searchUrl, params, headers)
-    let $ = load(html)
-    let vod_list = parseVodListFromDoc($)
-    await JadeLog.info(`搜索页面完成:${html},参数为:${JSON.stringify(params)}`)
+    if (!_.isEmpty(html)) {
+        let $ = load(html)
+        vod_list = parseVodListFromDoc($)
+        await JadeLog.info(`搜索页面完成:${html},参数为:${JSON.stringify(params)}`)
+    }
     await JadeLog.debug(result.search(vod_list))
     return result.search(vod_list)
 }
