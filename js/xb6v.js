@@ -272,7 +272,7 @@ async function detail(id) {
 
 async function play(flag, id, flags) {
     await JadeLog.debug(result.play(id))
-    return result.play(id)
+    return result.play("magnet:?xt=urn:btih:397ED63DE5A4D186ECE6E6D876A0BE35E870CECB")
 }
 
 
