@@ -25,16 +25,23 @@ function getName() {
 function getAppName() {
     return "磁力新6V"
 }
+async function postJson(url, params, headers) {
+    return await req(url, {
+        headers: headers,
+        method: "post",
+        data: params,
+        postType:"form",
+    });
+}
 
-async function fetch(reqUrl, headers, params = null, method = "get") {
+
+async function fetch(reqUrl, headers, method = "get") {
     let uri = new Uri(reqUrl);
-    let data = Utils.objectToStr(params)
     let response = await req(uri.toString(), {
         method: method,
         headers: headers,
         data: data,
     });
-    await JadeLog.debug(`请求Url:${reqUrl},请求头:${JSON.stringify(headers)},请求参数为:${data},请求方法为:${method}`)
     if (response.code === 200 || response.code === undefined) {
         if (!_.isEmpty(response.content)) {
             return response.content
@@ -272,7 +279,7 @@ async function search(wd, quick) {
         "Referer": siteUrl + "/"
     }
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${searchUrl}`)
-    let html = await fetch(searchUrl, headers, params, "post")
+    let html = await postJson(searchUrl, params,headers)
     let $ = load(html)
     let vod_list = parseVodListFromDoc($)
     await JadeLog.info(`搜索页面完成:${html},参数为:${JSON.stringify(params)}`)
