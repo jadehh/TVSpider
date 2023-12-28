@@ -19,6 +19,9 @@ gitee://Token@gitee.com/jadehh_743/TV/js/open_config.json
 
 
 ```text
-磁力新6V - DEBUG: 请求Url:http://www.xb6v.com/e/search/index.php,请求头:{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36","Origin":"http://www.xb6v.com","Referer":"http://www.xb6v.com/"},请求参数为:show=title&tempid=1&tbname=article&mid=1&dopost=search&submit=&keyboard=%E7%B9%81%E8%8A%B1,请求方法为:post'
-磁力新6V - DEBUG: 请求Url:http://www.xb6v.com/e/search/index.php,请求头:{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36","Origin":"http://www.xb6v.com","Referer":"http://www.xb6v.com/"},请求参数为:show=title&tempid=1&tbname=article&mid=1&dopost=search&submit=&keyboard=%E7%B9%81%E8%8A%B1,请求方法为:post
+{"url":"magnet:///data/user/0/com.fongmi.android.tv/cache/thunder/b54c700f397e466453655d8eb3518273/神隐01-04.torrent?name=01.1080p.HD国语中字无水印[最新电影www.dygangs.me].mkv&index=1","parse":0,"jx":0}
+ {"class":[],"list":[],"filters":[],"header":"","format":"","danmaku":"","url":"magnet:///data/user/0/com.fongmi.android.tv/cache/thunder/b54c700f397e466453655d8eb3518273/神隐01-04.torrent?name=01.1080p.HD国语中字无水印[最新电影www.dygangs.me].mkv&index=1","subs":[],"parse":0,"jx":0,"page":0,"pagecount":0,"limit":0,"total":0}
+
 ```
+
+

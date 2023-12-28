@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './kunyu77_open.js';
+import {__jsEvalReturn} from './xb6v.js';
 
 
 var spider = __jsEvalReturn();
