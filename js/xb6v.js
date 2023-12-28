@@ -281,7 +281,6 @@ async function search(wd, quick) {
         "tbname": "article",
         "mid": "1",
         "dopost": "search",
-        "submit": "",
         "keyboard": encodeURIComponent(wd),
 
     }
