@@ -29,11 +29,11 @@ function getAppName() {
 
 async function postJson(url, params, headers) {
     let uri = new Uri(url);
-    let data = objectToStr(params)
+
     let response = await req(uri.toString(), {
         method: "post",
         headers: headers,
-        data: data,
+        data:params,
     });
     if (response.code === 200 || response.code === undefined) {
         if (!_.isEmpty(response.content)) {
@@ -283,7 +283,7 @@ async function search(wd, quick) {
         "tbname": "article",
         "mid": "1",
         "dopost": "search",
-        "keyboard": encodeURIComponent(wd),
+        "keyboard":wd,
 
     }
     let headers = {
