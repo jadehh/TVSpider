@@ -12,11 +12,11 @@ import {Result, SpiderInit} from "../lib/spider_object.js";
 import * as Utils from "../lib/utils.js";
 import {_, load, Uri} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
+import {objectToStr} from "../lib/utils.js";
 
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let CatOpenStatus = false
 const siteUrl = "http://www.xb6v.com";
-const HostUrl = "www.xb6v.com"
 let result = new Result()
 
 function getName() {
@@ -31,18 +31,17 @@ async function postJson(url, params, headers) {
     let response = await req(url, {
         headers: headers,
         method: "post",
-        data: params,
-        postType: "form",
+        data:objectToStr(params),
     });
     if (response.code === 200 || response.code === undefined) {
         if (!_.isEmpty(response.content)) {
             return response.content
         } else {
-            await JadeLog.error(`请求失败,请求url为:${uri},回复内容为空`)
+            await JadeLog.error(`请求失败,请求url为:${url},回复内容为空`)
             return null
         }
     } else {
-        await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
+        await JadeLog.error(`请求失败,请求url为:${url},回复内容为${JSON.stringify(response)}`)
         return null
     }
 }
@@ -288,7 +287,6 @@ async function search(wd, quick) {
     let headers = {
         "User-Agent": Utils.CHROME,
         "Origin": siteUrl,
-        "Host":HostUrl,
     }
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${searchUrl}`)
     let html = await postJson(searchUrl, params, headers)
