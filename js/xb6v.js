@@ -34,6 +34,7 @@ async function fetch(reqUrl, headers, params = null, method = "get") {
         headers: headers,
         data: data,
     });
+    await JadeLog.debug(`请求Url:${reqUrl},请求头:${JSON.stringify(headers)},请求参数为:${data},请求方法为:${method}`)
     if (response.code === 200 || response.code === undefined) {
         if (!_.isEmpty(response.content)) {
             return response.content
