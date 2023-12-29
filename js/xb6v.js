@@ -230,45 +230,41 @@ async function detail(id) {
         let play_form_list = []
         let play_url_list = []
 
-
+        if (!CatOpenStatus) {
+            let i = 0
+            let circuitName = "磁力线路";
+            for (const source of sourceList) {
+                let aList = $(source).find("table a")
+                let vodItems = []
+                for (const a of aList) {
+                    let episodeUrl = a.attribs["href"]
+                    let episodeName = a.children[0].data
+                    if (!episodeUrl.toLowerCase().startsWith("magnet")) continue;
+                    vodItems.push(episodeName + "$" + episodeUrl);
+                }
+                if (vodItems.length > 0) {
+                    i++;
+                    play_form_list.push(circuitName + i)
+                    play_url_list.push(vodItems.join("#"))
+                }
+            }
+        }
         let playSourceList = $($(".mainleft")).find("[class=\"widget box row\"]")
         for (const source of playSourceList) {
             let play_format = $(source).find("h3").text()
             let vodItems = []
             if (!_.isEmpty(play_format)) {
                 let urlSourceList = $(source).find("a")
-                for (const url_source of urlSourceList){
+                for (const url_source of urlSourceList) {
                     vodItems.push(url_source.attribs["title"] + "$" + url_source.attribs["href"])
                 }
                 play_form_list.push(play_format)
                 play_url_list.push(vodItems.join("#"))
             }
-            let x = 0
         }
-
-        let i = 0
-        let circuitName = "磁力线路";
-        for (const source of sourceList) {
-            let aList = $(source).find("table a")
-            let vodItems = []
-            for (const a of aList) {
-                let episodeUrl = a.attribs["href"]
-                let episodeName = a.children[0].data
-                if (!episodeUrl.toLowerCase().startsWith("magnet")) continue;
-                vodItems.push(episodeName + "$" + episodeUrl);
-            }
-            if (vodItems.length > 0) {
-                i++;
-                play_form_list.push(circuitName + i)
-                play_url_list.push(vodItems.join("#"))
-            }
-        }
-
-
 
 
         let partHTML = $(".context").html();
-
         vodDetail.vod_name = $(".article_container > h1").text();
         vodDetail.vod_pic = $("#post_content img").attr("src");
         vodDetail.type_name = getStrByRegex(/◎类　　别　(.*?)<br>/, partHTML);
