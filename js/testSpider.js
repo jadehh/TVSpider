@@ -17,7 +17,6 @@ async function test() {
     // var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
-    // console.debug(classes);
     // //
     // // //测试首页列表
     // var homeVod = JSON.parse(await spider.homeVod())
@@ -28,10 +27,10 @@ async function test() {
     // var page = JSON.parse(await spider.category("/xijupian/", 1, undefined, {}));
     // console.debug(JSON.stringify(page));
 
-    // var detail = JSON.parse(await spider.detail("/dongzuopian/21134.html"));
+    var detail = JSON.parse(await spider.detail("/dianshiju/guoju/22618.html"));
     // 测试搜索
     //
-    var search_page = JSON.parse(await spider.search("神隐"))
+    var search_page = JSON.parse(await spider.search("繁花"))
     console.debug(JSON.stringify(search_page));
 
     // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")

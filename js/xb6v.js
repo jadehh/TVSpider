@@ -92,7 +92,7 @@ function parseVodListFromDoc(doc) {
         vodShort.vod_id = element.attribs["href"];
         vodShort.vod_name = element.attribs["title"].replaceAll(/<\\?[^>]+>/g, "");
         vodShort.vod_pic = doc(element).find("img")[0].attribs["src"];
-        vodShort.vod_remarks = doc(item).find("p")[0].children[0].data.replaceAll("\n", "").replaceAll(" ", "");
+        vodShort.vod_remarks = doc(item).find("[rel=\"category tag\"]").text().replaceAll("\n", "").replaceAll(" ", "");
         vod_list.push(vodShort)
     }
     return vod_list;
@@ -229,6 +229,23 @@ async function detail(id) {
         let sourceList = $("#post_content");
         let play_form_list = []
         let play_url_list = []
+
+
+        let playSourceList = $($(".mainleft")).find("[class=\"widget box row\"]")
+        for (const source of playSourceList) {
+            let play_format = $(source).find("h3").text()
+            let vodItems = []
+            if (!_.isEmpty(play_format)) {
+                let urlSourceList = $(source).find("a")
+                for (const url_source of urlSourceList){
+                    vodItems.push(url_source.attribs["title"] + "$" + url_source.attribs["href"])
+                }
+                play_form_list.push(play_format)
+                play_url_list.push(vodItems.join("#"))
+            }
+            let x = 0
+        }
+
         let i = 0
         let circuitName = "磁力线路";
         for (const source of sourceList) {
@@ -246,10 +263,16 @@ async function detail(id) {
                 play_url_list.push(vodItems.join("#"))
             }
         }
+
+
+
+
         let partHTML = $(".context").html();
+
         vodDetail.vod_name = $(".article_container > h1").text();
         vodDetail.vod_pic = $("#post_content img").attr("src");
         vodDetail.type_name = getStrByRegex(/◎类　　别　(.*?)<br>/, partHTML);
+        if (_.isEmpty(vodDetail.type_name)) vodDetail.type_name = $("[rel=\"category tag\"]").text();
         vodDetail.vod_year = getStrByRegex(/◎年　　代　(.*?)<br>/, partHTML);
         if (_.isEmpty(vodDetail.vod_year)) vodDetail.vod_year = getStrByRegex(/首播:(.*?)<br>"/, partHTML);
         vodDetail.vod_area = getStrByRegex(/◎产　　地　(.*?)<br>/, partHTML);
@@ -262,6 +285,8 @@ async function detail(id) {
         if (_.isEmpty(vodDetail.vod_director)) vodDetail.vod_director = getActorOrDirector(/导演:(.*?)<br>/, partHTML);
         vodDetail.vod_content = getDescription(/◎简　　介(.*?)<hr>/gi, partHTML);
         if (_.isEmpty(vodDetail.vod_content)) vodDetail.vod_content = getDescription(/简介(.*?)<\/p>/gi, partHTML);
+        if (_.isEmpty(vodDetail.vod_content)) vodDetail.vod_content = getDescription(/◎简　　介(.*?)<br>/gi, partHTML);
+
         vodDetail.vod_play_from = play_form_list.join("$$$")
         vodDetail.vod_play_url = play_url_list.join("$$$")
     } else {
