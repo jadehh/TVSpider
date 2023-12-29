@@ -2,6 +2,41 @@
     "video": {
         "sites": [
             {
+                "key": "douban",
+                "name": "🍥┃豆瓣┃🍥",
+                "type": 3,
+                "api": "./js/douban.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "kunyu77_open",
+                "name": "👒‍┃酷云┃👒",
+                "type": 3,
+                "api": "./js/kunyu77_open.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "nivod",
+                "name": "👑‍┃泥视频┃👑",
+                "type": 3,
+                "api": "./js/nivod.js",
+                "ext": "{\"box\": \"CatOpen\", \"code\": 1}"
+            },
+            {
+                "key": "pan_search",
+                "name": "🗂️┃阿里盘搜┃🗂️",
+                "type": 3,
+                "api": "./js/pan_search.js",
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+            },
+            {
+                "key": "wogg",
+                "name": "💂‍┃阿里玩偶┃💂",
+                "type": 3,
+                "api": "./js/wogg.js",
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+            },
+            {
                 "key": "xb6v",
                 "name": "🧲|磁力新6V|🧲",
                 "type": 3,
