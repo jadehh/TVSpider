@@ -43,6 +43,13 @@ async function postJson(url, params, headers) {
             await JadeLog.error(`请求失败,请求url为:${url},回复内容为空`)
             return null
         }
+    } else if (response.code === 302) {
+        await JadeLog.debug("重定向")
+        let matcher = /<a HREF=\\"(.*?)\\">/.exec(response.content)
+        if (matcher.length > 1) {
+            return await fetch(siteUrl + "/e/search/" + matcher[1], getHeader())
+        }
+
     } else {
         await JadeLog.error(`请求失败,请求url为:${url},回复内容为${JSON.stringify(response)}`)
         return null
@@ -351,9 +358,9 @@ async function search(wd, quick) {
         let $ = load(html)
         vod_list = parseVodListFromDoc($)
         if (vod_list.length > 0) {
-            await JadeLog.info(`搜索页面完成`,true)
-        }else{
-              await JadeLog.warning(`搜索页面完成,没有搜索到`,true)
+            await JadeLog.info(`搜索页面完成`, true)
+        } else {
+            await JadeLog.warning(`搜索页面完成,没有搜索到`, true)
         }
     }
     await JadeLog.debug(result.search(vod_list))
