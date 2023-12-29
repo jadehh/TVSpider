@@ -45,7 +45,7 @@ async function fetch(reqUrl, headers) {
 }
 
 function getName() {
-    return "🍥┃70看看┃🍥"
+    return "📺┃70看看┃📺"
 }
 
 function getAppName() {
