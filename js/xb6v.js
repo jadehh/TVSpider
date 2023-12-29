@@ -350,7 +350,11 @@ async function search(wd, quick) {
     if (!_.isEmpty(html)) {
         let $ = load(html)
         vod_list = parseVodListFromDoc($)
-        await JadeLog.info(`搜索页面完成:${html},参数为:${JSON.stringify(params)}`)
+        if (vod_list.length > 0) {
+            await JadeLog.info(`搜索页面完成`,true)
+        }else{
+              await JadeLog.warning(`搜索页面完成,没有搜索到`,true)
+        }
     }
     await JadeLog.debug(result.search(vod_list))
     return result.search(vod_list)

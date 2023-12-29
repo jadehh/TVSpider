@@ -5,7 +5,7 @@
             "name": "🧲|磁力新6V|🧲",
             "type": 3,
             "api": "./js/xb6v.js",
-            "ext": "{\"box\": \"TVBox\"}"
+            "ext": "{\"box\": \"CatOpen\"}"
         }
     ],
     "ijk": [

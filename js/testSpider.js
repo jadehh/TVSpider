@@ -30,7 +30,7 @@ async function test() {
     // var detail = JSON.parse(await spider.detail("/xijupian/22616.html"));
     // 测试搜索
     //
-    var search_page = JSON.parse(await spider.search("二手杰作"))
+    var search_page = JSON.parse(await spider.search("坚如磐石"))
     console.debug(JSON.stringify(search_page));
 
     // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
