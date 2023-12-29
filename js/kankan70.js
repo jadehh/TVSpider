@@ -67,7 +67,10 @@ function parseVodShortListFromDoc($) {
         vodShort.vod_id = vod_element.attribs["href"]
         vodShort.vod_name = vod_element.attribs["title"]
         vodShort.vod_pic = $(vod_element).find("img")[0].attribs["data-original"]
-        vodShort.vod_remarks = $(vod_element).find("p.bz")[0].children[0].data
+        let remarkEle = $(vod_element).find("p.bz")[0]
+        if (remarkEle.length > 0){
+            vodShort.vod_remarks = remarkEle.children[0].data
+        }
         vod_list.push(vodShort)
     }
     return vod_list
