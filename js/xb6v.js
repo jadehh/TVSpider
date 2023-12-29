@@ -44,10 +44,10 @@ async function postJson(url, params, headers) {
             return null
         }
     } else if (response.code === 302) {
-        await JadeLog.debug(`重定向回复值为${response.content}`)
-        let matcher = /<a HREF=\\"(.*?)\\">/.exec(response.content)
+        await JadeLog.debug(`重定向回复值为:${response.content}`)
+        let matcher = /<a HREF=(.*?)>/.exec(response.content)
         if (matcher.length > 1) {
-            let new_url = siteUrl + "/e/search/" + matcher[1]
+            let new_url = siteUrl + "/e/search/" + matcher[1].replaceAll("\\","").replaceAll("\"","")
             await JadeLog.info(`重定向url为:${new_url}`)
             return await fetch(new_url, getHeader())
         }

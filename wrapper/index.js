@@ -64,6 +64,7 @@ async function request(url, opt) {
             httpsAgent: https.Agent({
                 rejectUnauthorized: false,
             }),
+            maxRedirects:0
         });
         var data = resp.data;
 
