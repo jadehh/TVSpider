@@ -295,13 +295,26 @@ async function play(flag, id, flags) {
     if (id.toLowerCase().startsWith("magnet")) {
         await JadeLog.debug(`磁力连接,直接播放,${result.play(id)}`)
         return result.play(id)
-    }else{
+    } else {
         let playUrl = siteUrl + id
-        let html = await fetch(playUrl,getHeader())
+        let html = await fetch(playUrl, getHeader())
         let $ = load(html)
-        let video_url = $($(".video")).find("iframe")[0].attribs["src"] + "/index.m3u8"
-        return result.play(video_url)
+        let video_url = ""
+        switch (flag) {
+            case "播放地址（无插件 极速播放）":
+                video_url = $($(".video")).find("iframe")[0].attribs["src"] + "/index.m3u8"
+                break
+            case "播放地址（无需安装插件）":
+                let matchers = /url: '(.*?)',/gs.exec(html)
+                if (matchers.length > 1){
+                  video_url = matchers[1]
+                }
+                break
+            default:
+                break
+        }
 
+        return result.play(video_url)
     }
 
 }
