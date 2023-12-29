@@ -292,8 +292,18 @@ async function detail(id) {
 }
 
 async function play(flag, id, flags) {
-    await JadeLog.debug(result.play(id))
-    return result.play(id)
+    if (id.toLowerCase().startsWith("magnet")) {
+        await JadeLog.debug(`磁力连接,直接播放,${result.play(id)}`)
+        return result.play(id)
+    }else{
+        let playUrl = siteUrl + id
+        let html = await fetch(playUrl,getHeader())
+        let $ = load(html)
+        let video_url = $($(".video")).find("iframe")[0].attribs["src"] + "/index.m3u8"
+        return result.play(video_url)
+
+    }
+
 }
 
 

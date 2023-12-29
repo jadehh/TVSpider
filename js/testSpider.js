@@ -27,7 +27,7 @@ async function test() {
     // var page = JSON.parse(await spider.category("/xijupian/", 1, undefined, {}));
     // console.debug(JSON.stringify(page));
 
-    var detail = JSON.parse(await spider.detail("/xijupian/22616.html"));
+    // var detail = JSON.parse(await spider.detail("/xijupian/22616.html"));
     // 测试搜索
     //
     var search_page = JSON.parse(await spider.search("二手杰作"))
