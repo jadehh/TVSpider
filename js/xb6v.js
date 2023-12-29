@@ -12,7 +12,6 @@ import {Result, SpiderInit} from "../lib/spider_object.js";
 import * as Utils from "../lib/utils.js";
 import {_, load, Uri} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
-import {objectToStr} from "../lib/utils.js";
 
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let CatOpenStatus = false

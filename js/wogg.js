@@ -10,6 +10,7 @@ import {_, load, Uri} from '../lib/cat.js';
 import {VodDetail} from "../lib/vod.js"
 import {JadeLogging} from "../lib/log.js";
 import {detailContent, initAli, playContent} from "../lib/ali.js";
+import * as Utils from "../lib/utils.js";
 
 let siteKey = '';
 let siteType = 0;
@@ -17,7 +18,8 @@ let siteUrl = 'https://tvfan.xxooo.cf';
 let UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36";
 let patternAli = /(https:\/\/www\.aliyundrive\.com\/s\/[^"]+|https:\/\/www\.alipan\.com\/s\/[^"]+)/
 let JadeLog = new JadeLogging(getAppName(), "INFO")
-
+let ReconnectTimes = 0
+let MaxReconnect = 5
 let classes = [{'type_id': 1, 'type_name': '电影'}, {'type_id': 2, 'type_name': '电视剧'}, {
     'type_id': 3, 'type_name': '动漫'
 }, {'type_id': 4, 'type_name': '综艺'}, {'type_id': 6, 'type_name': '短剧'}, {'type_id': 5, 'type_name': '音乐'}];
@@ -1994,7 +1996,14 @@ async function request(reqUrl) {
         timeout: 100000,
     });
     if (_.isEmpty(res.content)) {
-        await JadeLog.error("html内容读取失败,请检查url:" + reqUrl)
+        await JadeLog.error("html内容读取失败,请检查url:" + reqUrl + ",两秒后重试")
+        Utils.sleep(2)
+        if (ReconnectTimes < MaxReconnect) {
+            ReconnectTimes = ReconnectTimes + 1
+            return await request(reqUrl)
+        }else{
+            await JadeLog.error("html内容读取失败,重连失败")
+        }
     }
     return res.content;
 }
