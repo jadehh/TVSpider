@@ -6,21 +6,17 @@
 * @Software : Samples
 * @Desc     :
 */
-/*
-* @File     : nivod.js
-* @Author   : jade
-* @Date     : 2023/12/19 14:23
-* @Email    : jadehh@1ive.com
-* @Software : Samples
-* @Desc     :
-*/
+
 import {JadeLogging} from "../lib/log.js";
 import {Result, SpiderInit} from "../lib/spider_object.js";
 import {} from "../lib/crypto-js.js"
+import * as Utils from "../lib/utils.js";
+const siteUrl = "http://www.xb6v.com";
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let result = new Result()
 let CatOpenStatus = false
-
+let ReconnectTimes = 0
+let MaxReconnect = 5
 
 function getName() {
     return `🍥┃基础┃🍥`
