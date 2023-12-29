@@ -302,15 +302,23 @@ async function play(flag, id, flags) {
         let video_url = ""
         switch (flag) {
             case "播放地址（无插件 极速播放）":
+            case "播放地址三":
                 video_url = $($(".video")).find("iframe")[0].attribs["src"] + "/index.m3u8"
                 break
             case "播放地址（无需安装插件）":
-                let matchers = /url: '(.*?)',/gs.exec(html)
-                if (matchers.length > 1){
-                  video_url = matchers[1]
+                let matchers2 = /url: '(.*?)',/gs.exec(html)
+                if (matchers2.length > 1) {
+                    video_url = matchers2[1]
+                }
+                break
+            case "播放地址四":
+                let matchers4 = /source: "(.*?)",/gs.exec(html)
+                if (matchers4.length > 1) {
+                    video_url = matchers4[1]
                 }
                 break
             default:
+                await JadeLog.warning(`暂不支持当前格式,当前格式为:${flag}`)
                 break
         }
 

