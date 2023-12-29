@@ -11,14 +11,14 @@ import {Result, SpiderInit} from "../lib/spider_object.js";
 import {} from "../lib/crypto-js.js"
 import * as Utils from "../lib/utils.js";
 import {_, load, Uri} from "../lib/cat.js";
-import {VodShort} from "../lib/vod.js";
+import {VodDetail, VodShort} from "../lib/vod.js";
 
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let result = new Result()
 let CatOpenStatus = false
 let ReconnectTimes = 0
 let MaxReconnect = 5
-const siteUrl = "http://cqdb6.com/";
+const siteUrl = "http://cqdb6.com";
 
 function getHeader() {
     return {"User-Agent": Utils.CHROME, "Referer": siteUrl + "/"};
@@ -63,8 +63,7 @@ function parseVodShortListFromDoc($) {
     let vod_elements = $("a.li-hv")
     for (const vod_element of vod_elements){
         let vodShort = new VodShort()
-        let html = $(vod_element).html()
-        vodShort.vod_id = vod_element.attribs["href"]
+        vodShort.vod_id = "/" + vod_element.attribs["href"]
         vodShort.vod_name = vod_element.attribs["title"]
         vodShort.vod_pic = $(vod_element).find("img")[0].attribs["data-original"]
         let remarkEle = $(vod_element).find("p.bz")[0]
@@ -74,6 +73,30 @@ function parseVodShortListFromDoc($) {
         vod_list.push(vodShort)
     }
     return vod_list
+}
+
+function getStrByRegex(pattern, str) {
+    let matcher = pattern.exec(str);
+    if (matcher !== null) {
+        if (matcher.length >= 1) {
+            if (matcher.length >= 1) return matcher[1]
+        }
+    }
+    return "";
+}
+
+function parseVodDetailFromDoc($) {
+    let vodDetail = new VodDetail()
+    let infoElement = $("[class=info]")
+    let dtElement = $(infoElement).find("dt.name")[0]
+    vodDetail.vod_name = dtElement.children[0].data
+    vodDetail.vod_remarks = dtElement.children[1].children[0].data
+    let ddString = $(infoElement).find("dd").text()
+    vodDetail.vod_area = getStrByRegex(/地区：(.*?) /,ddString)
+    vodDetail.vod_year = getStrByRegex(/年代：(.*?)\n/,ddString)
+    vodDetail.type_name = getStrByRegex(/类型：(.*?)\n/,ddString)
+    vodDetail.vod_content = $(infoElement).find("[class=des2]").text().replaceAll("\n","").replaceAll("剧情：","")
+    return vodDetail
 }
 
 async function home(filter) {
@@ -102,10 +125,6 @@ async function home(filter) {
 
 async function homeVod() {
     let vod_list = []
-    if (!CatOpenStatus) {
-        await JadeLog.info("正在解析首页内容")
-    }
-    await JadeLog.debug(`首页内容为:${JSON.stringify({"list": vod_list})}`)
     return JSON.stringify({"list": vod_list})
 }
 
@@ -117,7 +136,12 @@ async function category(tid, pg, filter, extend) {
 
 
 async function detail(id) {
-    return JSON.stringify({})
+    let detailUrl = siteUrl + id
+    let html = await fetch(detailUrl,getHeader())
+    let $ = load(html)
+    let vod_detail = parseVodDetailFromDoc($)
+    vod_detail.vod_id = id
+    return result.detail(vod_detail)
 }
 
 async function play(flag, id, flags) {

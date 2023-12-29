@@ -14,7 +14,7 @@ async function test() {
     //
     //
     //
-    var classes = JSON.parse(await spider.home(true));
+    // var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // //
@@ -27,7 +27,7 @@ async function test() {
     // var page = JSON.parse(await spider.category("/xijupian/", 1, undefined, {}));
     // console.debug(JSON.stringify(page));
 
-    // var detail = JSON.parse(await spider.detail("/xijupian/22616.html"));
+    var detail = JSON.parse(await spider.detail("/acg/70472/"));
     // 测试搜索
     //
     var search_page = JSON.parse(await spider.search("坚如磐石"))
