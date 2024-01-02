@@ -50,12 +50,12 @@ function get_qp_name44(qp_type) {
 }
 
 
-async function reconnnect(fetch,reqUrl,headers) {
+async function reconnnect(fetch, reqUrl, headers) {
     await JadeLog.error("请求失败,请检查url:" + reqUrl + ",两秒后重试")
     Utils.sleep(2)
     if (ReconnectTimes < MaxReconnect) {
         ReconnectTimes = ReconnectTimes + 1
-        return await fetch(reqUrl,headers)
+        return await fetch(reqUrl, headers)
     } else {
         await JadeLog.error("请求失败,重连失败")
         return null
@@ -73,11 +73,11 @@ async function fetch(reqUrl, headers) {
         if (!_.isEmpty(response.content)) {
             return response.content
         } else {
-            return await reconnnect(fetch,reqUrl,headers)
+            return await reconnnect(fetch, reqUrl, headers)
         }
     } else {
         await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
-        return await reconnnect(fetch,reqUrl,headers)
+        return await reconnnect(fetch, reqUrl, headers)
 
     }
 }
@@ -163,6 +163,11 @@ async function homeVod() {
 async function category(tid, pg, filter, extend) {
     let url = ""
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${url}`)
+    let vod_list = []
+    let page = parseInt(pg)
+    let count = 0,limit = 0,total = 0
+
+    return result.category(vod_list,page,count,limit,total)
 }
 
 
@@ -255,6 +260,7 @@ function paraseVodShortFromList(objectList) {
 
 async function search(wd, quick) {
     let url = siteUrl + "/search.php"
+    await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${url}`)
     let html = await fetch(url, getHeader())
     let vod_list = []
     if (html !== null) {
@@ -267,7 +273,6 @@ async function search(wd, quick) {
         let res_json = JSON.parse(res)
         vod_list = paraseVodShortFromList(res_json)
     }
-    await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${url}`)
     return result.search(vod_list)
 }
 
