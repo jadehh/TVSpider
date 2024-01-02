@@ -271,6 +271,7 @@ async function search(wd, quick) {
         let api_url = Utils.getStrByRegex(/var my_search='(.*?)';/, html) + "?" + data
         await JadeLog.debug(`搜索API为:${api_url}`)
         let res = await fetch(api_url)
+        await JadeLog.debug(`搜索API完成,为:${res}`)
         let res_json = JSON.parse(res)
         vod_list = paraseVodShortFromList(res_json)
     }else{
