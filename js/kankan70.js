@@ -49,6 +49,19 @@ function get_qp_name44(qp_type) {
     return qp_type;
 }
 
+
+async function reconnnect(fetch,reqUrl,headers) {
+    await JadeLog.error("请求失败,请检查url:" + reqUrl + ",两秒后重试")
+    Utils.sleep(2)
+    if (ReconnectTimes < MaxReconnect) {
+        ReconnectTimes = ReconnectTimes + 1
+        return await fetch(reqUrl,headers)
+    } else {
+        await JadeLog.error("请求失败,重连失败")
+        return null
+    }
+}
+
 async function fetch(reqUrl, headers) {
     let uri = new Uri(reqUrl);
     let response = await req(uri.toString(), {
@@ -60,12 +73,12 @@ async function fetch(reqUrl, headers) {
         if (!_.isEmpty(response.content)) {
             return response.content
         } else {
-            await JadeLog.error(`请求失败,请求url为:${uri},回复内容为空`)
-            return null
+            return await reconnnect(fetch,reqUrl,headers)
         }
     } else {
         await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
-        return null
+        return await reconnnect(fetch,reqUrl,headers)
+
     }
 }
 
@@ -222,14 +235,13 @@ async function detail(id) {
 }
 
 async function play(flag, id, flags) {
-
-    return JSON.stringify({});
+    return result.play(id)
 }
 
 
-function paraseVodShortFromList(objectList){
+function paraseVodShortFromList(objectList) {
     let vod_list = []
-    for (const object of objectList){
+    for (const object of objectList) {
         let vodShort = new VodShort()
         vodShort.vod_id = object["url"]
         vodShort.vod_pic = object["thumb"]
@@ -240,6 +252,7 @@ function paraseVodShortFromList(objectList){
     return vod_list
 
 }
+
 async function search(wd, quick) {
     let url = siteUrl + "/search.php"
     let html = await fetch(url, getHeader())
