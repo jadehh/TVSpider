@@ -229,7 +229,7 @@ async function detail(id) {
         vod_detail.vod_id = id
         let mather = /<script type="text\/javascript" src="http:\/\/test.gqyy8.com:8077\/ne2(.*?)"><\/script>/g.exec(html)
         let js_url = "http://test.gqyy8.com:8077/ne2" + mather[1]
-        let js_str = await fetch(js_url)
+        let js_str = await fetch(js_url,getHeader())
         if (js_str !== null) {
             let playObject = paraseUrlObject(js_str)
             vod_detail.vod_play_url = playObject["play_url"]
@@ -269,9 +269,7 @@ async function search(wd, quick) {
             "q": wd,
         })
         let api_url = Utils.getStrByRegex(/var my_search='(.*?)';/, html) + "?" + data
-        await JadeLog.debug(`搜索API为:${api_url}`)
         let res = await fetch(api_url,getHeader())
-        await JadeLog.debug(`搜索API完成,为:${res}`)
         let res_json = JSON.parse(res)
         vod_list = paraseVodShortFromList(res_json)
     }else{
