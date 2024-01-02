@@ -273,6 +273,7 @@ async function search(wd, quick) {
         let res_json = JSON.parse(res)
         vod_list = paraseVodShortFromList(res_json)
     }
+    await JadeLog.debug(`搜索页面解析完成,搜索结果为:${result.search(vod_list)}`)
     return result.search(vod_list)
 }
 
