@@ -100,26 +100,17 @@ function parseVodShortListFromDoc($) {
     return vod_list
 }
 
-function getStrByRegex(pattern, str) {
-    let matcher = pattern.exec(str);
-    if (matcher !== null) {
-        if (matcher.length >= 1) {
-            if (matcher.length >= 1) return matcher[1]
-        }
-    }
-    return "";
-}
 
-function parseVodDetailFromDoc($, urlObject) {
+function parseVodDetailFromDoc($) {
     let vodDetail = new VodDetail()
     let infoElement = $("[class=info]")
     let dtElement = $(infoElement).find("dt.name")[0]
     vodDetail.vod_name = dtElement.children[0].data
     vodDetail.vod_remarks = dtElement.children[1].children[0].data
     let ddString = $(infoElement).find("dd").text()
-    vodDetail.vod_area = getStrByRegex(/地区：(.*?) /, ddString)
-    vodDetail.vod_year = getStrByRegex(/年代：(.*?)\n/, ddString)
-    vodDetail.type_name = getStrByRegex(/类型：(.*?)\n/, ddString)
+    vodDetail.vod_area = Utils.getStrByRegex(/地区：(.*?) /, ddString)
+    vodDetail.vod_year = Utils.getStrByRegex(/年代：(.*?)\n/, ddString)
+    vodDetail.type_name = Utils.getStrByRegex(/类型：(.*?)\n/, ddString)
     vodDetail.vod_content = $(infoElement).find("[class=des2]").text().replaceAll("\n", "").replaceAll("剧情：", "")
     vodDetail.vod_pic = $("img.lazy")[0].attribs["data-original"]
 
@@ -236,9 +227,35 @@ async function play(flag, id, flags) {
 }
 
 
+function paraseVodShortFromList(objectList){
+    let vod_list = []
+    for (const object of objectList){
+        let vodShort = new VodShort()
+        vodShort.vod_id = object["url"]
+        vodShort.vod_pic = object["thumb"]
+        vodShort.vod_remarks = object["time"]
+        vodShort.vod_name = object["title"]
+        vod_list.push(vodShort)
+    }
+    return vod_list
+
+}
 async function search(wd, quick) {
-    let url = ""
+    let url = siteUrl + "/search.php"
+    let html = await fetch(url, getHeader())
+    let vod_list = []
+    if (html !== null) {
+        let data = Utils.objectToStr({
+            "top": 10,
+            "q": wd,
+        })
+        let api_url = Utils.getStrByRegex(/var my_search='(.*?)';/, html) + "?" + data
+        let res = await fetch(api_url)
+        let res_json = JSON.parse(res)
+        vod_list = paraseVodShortFromList(res_json)
+    }
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${url}`)
+    return result.search(vod_list)
 }
 
 export function __jsEvalReturn() {
