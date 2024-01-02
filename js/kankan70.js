@@ -272,6 +272,8 @@ async function search(wd, quick) {
         let res = await fetch(api_url)
         let res_json = JSON.parse(res)
         vod_list = paraseVodShortFromList(res_json)
+    }else{
+        await  JadeLog.error("搜索失败")
     }
     await JadeLog.debug(`搜索页面解析完成,搜索结果为:${result.search(vod_list)}`)
     return result.search(vod_list)
