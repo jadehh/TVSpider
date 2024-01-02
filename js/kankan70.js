@@ -262,7 +262,6 @@ async function search(wd, quick) {
     let url = siteUrl + "/search.php"
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${url}`)
     let html = await fetch(url, getHeader())
-    await JadeLog.debug(`解析完成,html:${html}`)
     let vod_list = []
     if (html !== null) {
         let data = Utils.objectToStr({
@@ -270,6 +269,7 @@ async function search(wd, quick) {
             "q": wd,
         })
         let api_url = Utils.getStrByRegex(/var my_search='(.*?)';/, html) + "?" + data
+        await JadeLog.debug(`搜索API为:${api_url}`)
         let res = await fetch(api_url)
         let res_json = JSON.parse(res)
         vod_list = paraseVodShortFromList(res_json)
