@@ -262,6 +262,7 @@ async function search(wd, quick) {
     let url = siteUrl + "/search.php"
     await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${url}`)
     let html = await fetch(url, getHeader())
+    await JadeLog.debug(`解析完成,html:${html}`)
     let vod_list = []
     if (html !== null) {
         let data = Utils.objectToStr({
