@@ -88,7 +88,7 @@ async function fetch(reqUrl, headers, params = null) {
 }
 
 function getHeader() {
-    return {"User-Agent": Utils.CHROME};
+    return {"User-Agent": Utils.CHROME,"Referer":siteUrl};
 }
 
 async function init(cfg) {
@@ -173,7 +173,7 @@ async function detail(id) {
 
 async function play(flag, id, flags) {
     await JadeLog.info(result.m3u8().play(id))
-    return  result.m3u8().play(id)
+    return  result.setHeader(getHeader()).m3u8().play(id)
 }
 
 
