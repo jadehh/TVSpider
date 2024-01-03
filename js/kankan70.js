@@ -235,7 +235,8 @@ async function category(tid, pg, filter, extend) {
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${url}`)
 
     let timestamp = new Date()
-    let year = /(.*?)\//g.exec(timestamp.toLocaleDateString())[1]
+
+    let year = timestamp.getFullYear().toString()
 
     if (html !== null) {
         let api_str = getStrByRegex(/var _yu_gda_s="(.*?)";/, html)
