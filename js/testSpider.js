@@ -63,7 +63,9 @@ async function test() {
                             console.debug(flag + " | " + name + " | " + url);
                             var playUrl = await spider.play(flag, url, []);
                             console.debug('playURL: ' + playUrl);
+                            break
                         }
+                        break
                     }
                 }
             }
