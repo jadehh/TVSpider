@@ -1066,6 +1066,7 @@ async function category(tid, pg, filter, extend) {
     let class_name = tid.split("/")[1]
     let id = tid.split("/")[2]
     let html = await fetch(url, getHeader())
+    let limit = 30
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${url}`)
     if (html !== null) {
         let api_str = getStrByRegex(/var _yu_gda_s="(.*?)";/, html)
@@ -1085,7 +1086,7 @@ async function category(tid, pg, filter, extend) {
         await JadeLog.error("分类网页打开失败")
     }
     let page = parseInt(pg)
-    let count = 0, limit = vod_list.length, total = 0
+    let count = 0, total = 0
     await JadeLog.debug(`分类结果为:${result.category(vod_list, page, count, limit, total)}`)
     return result.category(vod_list, page, count, limit, total)
 }
