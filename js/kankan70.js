@@ -1042,7 +1042,7 @@ async function category(tid, pg, filter, extend) {
         let params = getParams(id,class_name,extend,pg)
         let cate_html = await fetch(api_str, getHeader(), params)
         if (cate_html !== null) {
-            await JadeLog.info(`分类详情解析成功,html为${cate_html},api url为:${api_str},传入参数为:${JSON.stringify(params)}`)
+            await JadeLog.info(`分类详情解析成功,api url为:${api_str},传入参数为:${JSON.stringify(params)}`)
             let $ = load(cate_html)
             vod_list = parseVodShortListFromDoc($)
             if (vod_list.length === 0) {
