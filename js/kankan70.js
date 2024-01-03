@@ -251,6 +251,8 @@ async function category(tid, pg, filter, extend) {
         }else{
             await JadeLog.error("分类结果API调用失败")
         }
+    }else{
+        await JadeLog.error("分类网页打开失败")
     }
     let page = parseInt(pg)
     let count = 0, limit = vod_list.length, total = 0
