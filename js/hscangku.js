@@ -11,31 +11,34 @@ import {JadeLogging} from "../lib/log.js";
 import {Result, SpiderInit} from "../lib/spider_object.js";
 import {} from "../lib/crypto-js.js"
 import * as Utils from "../lib/utils.js";
-import {_, Uri} from "../lib/cat.js";
+import {_, load, Uri} from "../lib/cat.js";
+import {VodShort} from "../lib/vod.js";
+
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let result = new Result()
 let classes = [
     {
-        "type_name": "日韩AV",
-        "type_id": "/vodtype/1.html"
+        "type_name": "国产新片",
+        "type_id": "?type=ycgc&p=1"
     },
     {
-        "type_name": "国产系列",
-        "type_id": "/vodtype/2.html"
+        "type_name": "无码中文字幕",
+        "type_id": "?type=wz&p=1"
     },
     {
-        "type_name": "欧美",
-        "type_id": "/vodtype/3.html"
+        "type_name": "有码中文字幕",
+        "type_id": "?type=yz&p=1"
     },
     {
-        "type_name": "成人动漫",
-        "type_id": "/vodtype/4.html"
+        "type_name": "日本无码",
+        "type_id": "?type=rw&p=1"
     }
 ]
 let CatOpenStatus = false
 let ReconnectTimes = 0
 let MaxReconnect = 5
-const siteUrl = "http://www.243333.xyz";
+const siteUrl = "https://hsck12.shop/";
+
 function getName() {
     return "┃黄色仓库┃"
 }
@@ -91,11 +94,26 @@ async function init(cfg) {
 }
 
 
+function parseVodShortListFromDoc($) {
+    let vod_list = []
+    let vodElements = $("[class=\"stui-vodlist clearfix\"]").find("li")
+    for (const vod_element of vodElements) {
+        let vodShort = new VodShort()
+        let vodElement = $(vod_element).find("a")[0]
+        vodShort.vod_id =  vodElement.attribs["href"]
+        vodShort.vod_name = vodElement.attribs["title"]
+        vodShort.vod_pic = vodElement.attribs["data-original"]
+        vod_list.push(vodShort)
+    }
+
+    return vod_list
+}
+
 async function home(filter) {
     await JadeLog.info("正在解析首页类别", true)
-    await JadeLog.debug(`首页类别内容为:${result.home(classes,[],{})}`)
+    await JadeLog.debug(`首页类别内容为:${result.home(classes, [], {})}`)
     await JadeLog.info("首页类别解析完成", true)
-    return result.home(classes,[],{})
+    return result.home(classes, [], {})
 }
 
 async function homeVod() {
@@ -111,7 +129,14 @@ async function homeVod() {
 async function category(tid, pg, filter, extend) {
     let url = siteUrl + tid
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${url}`)
-    let html = await fetch("https://www.google.com",getHeader())
+    let vod_list = []
+    let html = await fetch(url, getHeader())
+    if (html !== null) {
+        let $ = load(html)
+        vod_list = parseVodShortListFromDoc($)
+
+
+    }
     await JadeLog.info(html)
 }
 
