@@ -65,7 +65,7 @@ async function fetch(reqUrl, headers, params = null) {
     let response = await req(uri.toString(), {
         method: "get",
         headers: headers,
-        data: null,
+        data: null
     });
     if (response.code === 200 || response.code === undefined) {
         if (!_.isEmpty(response.content)) {
@@ -111,7 +111,7 @@ async function homeVod() {
 async function category(tid, pg, filter, extend) {
     let url = siteUrl + tid
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${url}`)
-    let html = await fetch(url,getHeader())
+    let html = await fetch("https://www.google.com",getHeader())
     await JadeLog.info(html)
 }
 
