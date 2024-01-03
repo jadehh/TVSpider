@@ -15,6 +15,8 @@ https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/js/tv_config.json
 
 ```bash
 gitee://Token@gitee.com/jadehh_743/TV/js/open_config.json
+github://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@github.com/jadehh/CatVodOpenConfig/js/open_config.json
+
 ```
 > CatVodOpen和TV中的requets请求不一致的问题
 > 使用Gitee导入,并设置为私有仓库,仅支持私有仓库

@@ -172,8 +172,8 @@ async function detail(id) {
 }
 
 async function play(flag, id, flags) {
-    await JadeLog.info(result.m3u8().play(id))
-    return  result.play(id)
+    await JadeLog.info(result.setHeader({"User-Agent":Utils.CHROME,"Host":"vip1.155bf.com"}).play(id))
+    return  result.setHeader({"User-Agent":Utils.CHROME,"Host":"vip1.155bf.com"}).play(id)
 }
 
 

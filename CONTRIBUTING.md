@@ -4,6 +4,7 @@
 * 修复阿里字幕的问题
 * 阿里云盘初始化时,不在删除文件夹,使用默认的文件夹File ID
 ---
+gitee://50e510596ebc5356ec22b3f8aeb19371@gitee.com/jadehh_743/TV/js/open_config.json
 
 
 <details onclose>
