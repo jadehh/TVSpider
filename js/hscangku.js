@@ -11,6 +11,7 @@ import {JadeLogging} from "../lib/log.js";
 import {Result, SpiderInit} from "../lib/spider_object.js";
 import {} from "../lib/crypto-js.js"
 import * as Utils from "../lib/utils.js";
+import {_, Uri} from "../lib/cat.js";
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let result = new Result()
 let classes = [
@@ -34,7 +35,7 @@ let classes = [
 let CatOpenStatus = false
 let ReconnectTimes = 0
 let MaxReconnect = 5
-const siteUrl = "http://www.243333.xyz/";
+const siteUrl = "http://www.243333.xyz";
 function getName() {
     return "┃黄色仓库┃"
 }
@@ -43,8 +44,44 @@ function getAppName() {
     return "黄色仓库"
 }
 
+async function reconnnect(fetch, reqUrl, headers, params) {
+    await JadeLog.error("请求失败,请检查url:" + reqUrl + ",两秒后重试")
+    Utils.sleep(2)
+    if (ReconnectTimes < MaxReconnect) {
+        ReconnectTimes = ReconnectTimes + 1
+        return await fetch(reqUrl, headers, params)
+    } else {
+        await JadeLog.error("请求失败,重连失败")
+        return null
+    }
+}
+
+async function fetch(reqUrl, headers, params = null) {
+    let data = Utils.objectToStr(params)
+    if (!_.isEmpty(data)) {
+        reqUrl = reqUrl + "?" + data
+    }
+    let uri = new Uri(reqUrl);
+    let response = await req(uri.toString(), {
+        method: "get",
+        headers: headers,
+        data: null,
+    });
+    if (response.code === 200 || response.code === undefined) {
+        if (!_.isEmpty(response.content)) {
+            return response.content
+        } else {
+            return await reconnnect(fetch, reqUrl, headers, params)
+        }
+    } else {
+        await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
+        return await reconnnect(fetch, reqUrl, headers)
+
+    }
+}
+
 function getHeader() {
-    return {"User-Agent": Utils.CHROME, "Referer": siteUrl + "/"};
+    return {"User-Agent": Utils.CHROME};
 }
 
 async function init(cfg) {
@@ -72,8 +109,10 @@ async function homeVod() {
 
 
 async function category(tid, pg, filter, extend) {
-    let url = ""
+    let url = siteUrl + tid
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${url}`)
+    let html = await fetch(url,getHeader())
+    await JadeLog.info(html)
 }
 
 
