@@ -1969,7 +1969,6 @@ async function init(cfg) {
             CatOpenStatus = true
         }
         await initAli(extObj["token"]);
-        let x = 0
     } catch (e) {
         await JadeLog.error("初始化失败,失败原因为:" + e.message)
     }
