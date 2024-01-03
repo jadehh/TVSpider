@@ -1066,7 +1066,7 @@ async function category(tid, pg, filter, extend) {
     let class_name = tid.split("/")[1]
     let id = tid.split("/")[2]
     let html = await fetch(url, getHeader())
-    let limit = 30
+    let limit = 0
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${url}`)
     if (html !== null) {
         let api_str = getStrByRegex(/var _yu_gda_s="(.*?)";/, html)
