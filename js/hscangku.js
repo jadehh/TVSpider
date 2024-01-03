@@ -100,7 +100,7 @@ function parseVodShortListFromDoc($) {
     for (const vod_element of vodElements) {
         let vodShort = new VodShort()
         let vodElement = $(vod_element).find("a")[0]
-        vodShort.vod_id =  vodElement.attribs["href"]
+        vodShort.vod_id = vodElement.attribs["href"]
         vodShort.vod_name = vodElement.attribs["title"]
         vodShort.vod_pic = vodElement.attribs["data-original"]
         vod_list.push(vodShort)
@@ -137,7 +137,10 @@ async function category(tid, pg, filter, extend) {
 
 
     }
-    await JadeLog.info(html)
+    let page = parseInt(pg)
+    let count = 0, total = 0,limit = 0;
+    await JadeLog.debug(`分类结果为:${result.category(vod_list, page, count, limit, total)}`)
+    return result.category(vod_list, page, count, limit, total)
 }
 
 
