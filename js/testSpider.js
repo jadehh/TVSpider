@@ -24,13 +24,13 @@ async function test() {
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("/acg/y2024/", "1", undefined, {"1":"19","2":"2024","3":"china"}));
+    // var page = JSON.parse(await spider.category("/acg/y2024/", "1", undefined, {"1":"19","2":"2024","3":"china"}));
     // console.debug(JSON.stringify(page));
 
     // var detail = JSON.parse(await spider.detail("/acg/70472/"));
     // 测试搜索
     //
-    var search_page = JSON.parse(await spider.search("坚如磐石"))
+    var search_page = JSON.parse(await spider.search("烈爱"))
     // console.debug(JSON.stringify(search_page));
 
     // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")

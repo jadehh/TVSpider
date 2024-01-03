@@ -943,29 +943,23 @@ function paraseUrlObject(js_str) {
     let urlObject = {}
     let next_index = 0;
     let js_name = ""
+    let play_id = 0
+    let pldy_id = 0
+    let js_key = ""
     for (let i = 0; i < content_list.length; i++) {
         let content = content_list[i]
-        if (i === 0) {
-            next_index = parseInt(content.split("=").slice(-1)[0])
+        if (content.indexOf("var lianzaijs") > -1) {
             js_name = content.split("=")[0].split(" ")[1]
-            urlObject[js_name] = {"play_id": "", "list": [], "pl_dy": ""}
-        } else {
-            if (i % (next_index + 5) === 3) {
-                urlObject[js_name]["play_id"] = content.split("=")[1]
-            } else if (i % (next_index + 5) === 2) {
-                urlObject[js_name]["pl_dy"] = content.split("=")[1]
-            } else if (i % (next_index + 5) === 1) {
-            } else if (i % (next_index + 5) === 0) {
-                next_index = parseInt(content.split("=").slice(-1)[0])
-                js_name = content.split("=")[0].split(" ")[1]
-                if (js_name !== undefined) {
-                    urlObject[js_name] = {"play_id": "", "list": [], "pl_dy": ""}
-                }
-            } else if (i % (next_index + 5) === next_index + 4) {
-            } else {
-                let play_url = content.split("=\"")[1].split(",")[0]
-                urlObject[js_name]["list"].push(play_url)
-            }
+            js_key = js_name.split("_")[1]
+        } else if (content.indexOf("pl_id=") > -1) {
+            play_id = content.split("=")[1]
+            urlObject[js_name] = {"play_id": play_id, "list": [], "pl_dy": pldy_id}
+        } else if (content.indexOf("var pl_dy") > -1) {
+            pldy_id = content.split("=")[1]
+        }
+        if (content.indexOf(`playarr_${js_key}[`) > -1) {
+            let play_url = content.split("=\"")[1].split(",")[0]
+            urlObject[js_name]["list"].push(play_url)
         }
     }
     let play_url_list = [], play_format_list = [];
@@ -1030,7 +1024,7 @@ function getParams(id, class_name, extend, pg) {
     } else if (extend["2"] === "0") {
         let timestamp = new Date()
         year = timestamp.getFullYear().toString()
-    }else{
+    } else {
         year = extend["2"]
     }
 
@@ -1038,13 +1032,13 @@ function getParams(id, class_name, extend, pg) {
         area = "all"
     } else if (extend["3"] === "0") {
         area = "all"
-    }else{
+    } else {
         area = extend["3"]
     }
 
     if (extend["1"] === undefined) {
         class_id = "0"
-    }else{
+    } else {
         class_id = extend["3"]
     }
 
@@ -1054,7 +1048,7 @@ function getParams(id, class_name, extend, pg) {
         "page": parseInt(pg),
         "year": extend["2"] ?? "0",
         "area": extend["3"] ?? "all",
-        "class":extend["1"] ?? "0",
+        "class": extend["1"] ?? "0",
         "dect": "",
         "id": id
     }
