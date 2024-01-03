@@ -238,7 +238,6 @@ async function category(tid, pg, filter, extend) {
     let year = /(.*?)\//g.exec(timestamp.toLocaleDateString())[1]
 
     if (html !== null) {
-        await JadeLog.debug(`html解析成功:${html}`)
         let api_str = getStrByRegex(/var _yu_gda_s="(.*?)";/, html)
         let params = {
             "action": class_name, "page": parseInt(pg),
