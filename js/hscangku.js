@@ -19,7 +19,7 @@ let result = new Result()
 let classes = [
     {
         "type_name": "国产视频",
-        "type_id":"type=gc"
+        "type_id":"?type=gc"
     },
     {
         "type_name": "国产新片",
