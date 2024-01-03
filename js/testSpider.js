@@ -27,7 +27,7 @@ async function test() {
     var page = JSON.parse(await spider.category("?type=gc", "1", undefined, {"1":"19","2":"2024","3":"china"}));
     // console.debug(JSON.stringify(page));
 
-    // var detail = JSON.parse(await spider.detail("/acg/70472/"));
+    var detail = JSON.parse(await spider.detail("/view/?id=rqcd91qs"));
     // 测试搜索
     //
     var search_page = JSON.parse(await spider.search("奥本海默"))

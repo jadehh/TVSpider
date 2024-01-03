@@ -12,7 +12,7 @@ import {Result, SpiderInit} from "../lib/spider_object.js";
 import {} from "../lib/crypto-js.js"
 import * as Utils from "../lib/utils.js";
 import {_, load, Uri} from "../lib/cat.js";
-import {VodShort} from "../lib/vod.js";
+import {VodDetail, VodShort} from "../lib/vod.js";
 
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let result = new Result()
@@ -112,6 +112,17 @@ function parseVodShortListFromDoc($) {
 
     return vod_list
 }
+function  parseVodDetailFromDoc($){
+    let vodDetail = new VodDetail()
+    let element = $($("[class=\"stui-pannel__head clearfix\"]")[1]).find("h3")
+    let stui_pannel_bd_element = $("div.stui-pannel-bd > div")
+    let video_element = stui_pannel_bd_element.find("video")[0]
+    vodDetail.vod_name = element.text()
+    vodDetail.vod_pic = video_element.attribs["poster"]
+    vodDetail.vod_play_from = "黄色仓库"
+    vodDetail.vod_play_url = $(video_element).find("source")[0].attribs["src"]
+    return vodDetail
+}
 
 async function home(filter) {
     await JadeLog.info("正在解析首页类别", true)
@@ -149,12 +160,19 @@ async function category(tid, pg, filter, extend) {
 
 async function detail(id) {
     await JadeLog.info(`正在获取详情界面,id为:${id}`)
-    return JSON.stringify({})
+    let url = siteUrl + id
+    let html = await fetch(url, getHeader())
+    let vodDetail = new VodDetail()
+    if (html !== null) {
+        let $ = load(html)
+        vodDetail = parseVodDetailFromDoc($)
+    }
+    vodDetail.vod_id = id
+    return result.detail(vodDetail)
 }
 
 async function play(flag, id, flags) {
-
-    return JSON.stringify({});
+    return  result.play(id)
 }
 
 
