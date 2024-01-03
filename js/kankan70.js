@@ -8,11 +8,10 @@
 */
 import {JadeLogging} from "../lib/log.js";
 import {Result, SpiderInit} from "../lib/spider_object.js";
-import {} from "../lib/crypto-js.js"
 import * as Utils from "../lib/utils.js";
+import {getStrByRegex} from "../lib/utils.js";
 import {_, load, Uri} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
-import {getStrByRegex} from "../lib/utils.js";
 
 const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let classes = [
@@ -1002,9 +1001,9 @@ function paraseVodShortFromList(objectList) {
 
 async function home(filter) {
     await JadeLog.info("正在解析首页类别", true)
-    await JadeLog.debug(`首页类别解析完成,内容为${result.home(classes, [],filterObj)}`)
+    await JadeLog.debug(`首页类别解析完成,内容为${result.home(classes, [], filterObj)}`)
     await JadeLog.info("首页类别解析完成", true)
-    return result.home(classes, [],filterObj)
+    return result.home(classes, [], filterObj)
 }
 
 
@@ -1021,6 +1020,15 @@ async function homeVod() {
     return result.homeVod(vod_list)
 }
 
+function getParams(id,class_name, extend, pg) {
+    let timestamp = new Date()
+    let year = timestamp.getFullYear().toString()
+    return {
+        "action": class_name, "page": parseInt(pg),
+        "year": extend["2"] ?? year, "area": extend["3"] ?? "all", "class": extend["1"] ?? "0", "dect": "",
+        "id": id
+    }
+}
 
 async function category(tid, pg, filter, extend) {
     let url = siteUrl + tid
@@ -1029,15 +1037,9 @@ async function category(tid, pg, filter, extend) {
     let id = tid.split("/")[2]
     let html = await fetch(url, getHeader())
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${url}`)
-    let timestamp = new Date()
-    let year = timestamp.getFullYear().toString()
     if (html !== null) {
         let api_str = getStrByRegex(/var _yu_gda_s="(.*?)";/, html)
-        let params = {
-            "action": class_name, "page": parseInt(pg),
-            "year": year.toString(), "area": "all", "class": 0, "dect": "",
-            "id": id
-        }
+        let params = getParams(id,class_name,extend,pg)
         let cate_html = await fetch(api_str, getHeader(), params)
         if (cate_html !== null) {
             await JadeLog.debug(`分类详情解析成功,html为${cate_html},api url为:${api_str},传入参数为:${JSON.stringify(params)}`)
