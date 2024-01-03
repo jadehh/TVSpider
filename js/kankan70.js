@@ -13,7 +13,7 @@ import {getStrByRegex} from "../lib/utils.js";
 import {_, load, Uri} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 
-const JadeLog = new JadeLogging(getAppName(), "INFO")
+const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let classes = [
     {
         "type_name": "电视剧",
@@ -1052,9 +1052,9 @@ function getParams(id, class_name, extend, pg) {
     return {
         "action": class_name,
         "page": parseInt(pg),
-        "year": year,
-        "area": area,
-        "class":class_id,
+        "year": extend["2"] ?? "0",
+        "area": extend["3"] ?? "all",
+        "class":extend["1"] ?? "0",
         "dect": "",
         "id": id
     }
