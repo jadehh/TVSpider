@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './wogg.js';
+import {__jsEvalReturn} from './hscangku.js';
 
 
 var spider = __jsEvalReturn();
@@ -14,7 +14,7 @@ async function test() {
     //
     //
     //
-    // var classes = JSON.parse(await spider.home(true));
+    var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // //

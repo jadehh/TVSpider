@@ -31,11 +31,9 @@ let classes = [
         "type_id": "/vodtype/4.html"
     }
 ]
-let result = new Result()
 let CatOpenStatus = false
 let ReconnectTimes = 0
 let MaxReconnect = 5
-let CatOpenStatus = false
 const siteUrl = "http://www.243333.xyz/";
 function getName() {
     return "┃黄色仓库┃"
