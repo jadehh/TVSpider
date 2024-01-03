@@ -177,7 +177,7 @@ async function play(flag, id, flags) {
         "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
         "Host":"vip1.155bf.com",
         "Accept": "*/*"
-    }).play(id)
+    }).play("https:\\/\\/t4t5t6t7.cdn2020.com\\/video\\/m3u8\\/2021\\/02\\/25\\/82ffd48b\\/index.m3u8")
 }
 
 
