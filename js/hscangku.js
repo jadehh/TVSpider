@@ -18,20 +18,24 @@ const JadeLog = new JadeLogging(getAppName(), "DEBUG")
 let result = new Result()
 let classes = [
     {
+        "type_name": "国产视频",
+        "type_id":"type=gc"
+    },
+    {
         "type_name": "国产新片",
-        "type_id": "?type=ycgc&p=1"
+        "type_id": "?type=ycgc"
     },
     {
         "type_name": "无码中文字幕",
-        "type_id": "?type=wz&p=1"
+        "type_id": "?type=wz"
     },
     {
         "type_name": "有码中文字幕",
-        "type_id": "?type=yz&p=1"
+        "type_id": "?type=yz"
     },
     {
         "type_name": "日本无码",
-        "type_id": "?type=rw&p=1"
+        "type_id": "?type=rw"
     }
 ]
 let CatOpenStatus = false
@@ -127,15 +131,13 @@ async function homeVod() {
 
 
 async function category(tid, pg, filter, extend) {
-    let url = siteUrl + tid
+    let url = siteUrl + tid + "&p=" + pg.toString()
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${url}`)
     let vod_list = []
     let html = await fetch(url, getHeader())
     if (html !== null) {
         let $ = load(html)
         vod_list = parseVodShortListFromDoc($)
-
-
     }
     let page = parseInt(pg)
     let count = 0, total = 0,limit = 0;
