@@ -149,7 +149,7 @@ let filterObj = {
             ]
         },
         {
-            "key": "1",
+            "key": "2",
             "name": "年代",
             "value": [
                 {
@@ -203,7 +203,7 @@ let filterObj = {
             ]
         },
         {
-            "key": "1",
+            "key": "3",
             "name": "地区",
             "value": [
                 {
@@ -341,7 +341,7 @@ let filterObj = {
             ]
         },
         {
-            "key": "1",
+            "key": "2",
             "name": "年代",
             "value": [
                 {
@@ -395,7 +395,7 @@ let filterObj = {
             ]
         },
         {
-            "key": "1",
+            "key": "3",
             "name": "地区",
             "value": [
                 {
@@ -513,7 +513,7 @@ let filterObj = {
             ]
         },
         {
-            "key": "1",
+            "key": "2",
             "name": "年代",
             "value": [
                 {
@@ -567,7 +567,7 @@ let filterObj = {
             ]
         },
         {
-            "key": "1",
+            "key": "3",
             "name": "地区",
             "value": [
                 {
@@ -729,7 +729,7 @@ let filterObj = {
             ]
         },
         {
-            "key": "1",
+            "key": "2",
             "name": "年代",
             "value": [
                 {
@@ -783,7 +783,7 @@ let filterObj = {
             ]
         },
         {
-            "key": "1",
+            "key": "3",
             "name": "地区",
             "value": [
                 {
