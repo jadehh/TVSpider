@@ -6,7 +6,11 @@ var spider = __jsEvalReturn();
 async function test() {
     let siteKey = 'niba';
     let siteType = 0;
-    await spider.init({skey: siteKey, stype: siteType, ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "TVBox"}});
+    await spider.init({
+        skey: siteKey,
+        stype: siteType,
+        ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "TVBox"}
+    });
     //
     //
     //
@@ -24,10 +28,33 @@ async function test() {
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("?type=gc", "1", undefined, {"1":"19","2":"2024","3":"china"}));
+    var page = JSON.parse(await spider.category("?type=gc", "1", undefined, {"1": "19", "2": "2024", "3": "china"}));
     // console.debug(JSON.stringify(page));
 
     var detail = JSON.parse(await spider.detail("/view/?id=rqcd91qs"));
+
+    if (detail.list && detail.list.length > 0) {
+        var pFlag = detail.list[0].vod_play_from.split('$$$');
+        var pUrls = detail.list[0].vod_play_url.split('$$$');
+        if (pFlag.length > 0 && pUrls.length > 0) {
+            for (const i in pFlag) {
+                // console.debug(i)
+                var flag = pFlag[i];
+                var urls = pUrls[i].split('#');
+                // console.debug(flag, urls)
+                for (const j in urls) {
+                    var name = urls[j].split('$')[0];
+                    var url = urls[j].split('$')[1];
+                    console.debug(flag + " | " + name + " | " + url);
+                    var playUrl = await spider.play(flag, url, []);
+                    console.debug('playURL: ' + playUrl);
+                    break
+                }
+                break
+            }
+        }
+    }
+
     // 测试搜索
     //
     var search_page = JSON.parse(await spider.search("奥本海默"))

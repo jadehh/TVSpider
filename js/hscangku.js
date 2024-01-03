@@ -172,7 +172,7 @@ async function detail(id) {
 }
 
 async function play(flag, id, flags) {
-    return  result.play(id)
+    return  result.m3u8().play(id)
 }
 
 
