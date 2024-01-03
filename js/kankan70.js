@@ -248,6 +248,8 @@ async function category(tid, pg, filter, extend) {
         if (cate_html !== null) {
             let $ = load(cate_html)
             vod_list = parseVodShortListFromDoc($)
+        }else{
+            await JadeLog.error("分类结果API调用失败")
         }
     }
     let page = parseInt(pg)
