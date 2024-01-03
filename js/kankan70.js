@@ -1052,9 +1052,9 @@ function getParams(id, class_name, extend, pg) {
     return {
         "action": class_name,
         "page": parseInt(pg),
-        "year": year,
-        "area": area,
-        "class":class_id,
+        "year": extend["2"] ?? "0",
+        "area": extend["3"] ?? "all",
+        "class":extend["1"] ?? "0",
         "dect": "",
         "id": id
     }
