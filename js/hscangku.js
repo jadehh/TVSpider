@@ -148,6 +148,7 @@ async function category(tid, pg, filter, extend) {
 
 
 async function detail(id) {
+    await JadeLog.info(`正在获取详情界面,id为:${id}`)
     return JSON.stringify({})
 }
 
