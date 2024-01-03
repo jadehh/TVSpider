@@ -238,6 +238,7 @@ async function category(tid, pg, filter, extend) {
     let year = /(.*?)\//g.exec(timestamp.toLocaleDateString())[1]
 
     if (html !== null) {
+        await JadeLog.debug(`html解析成功:${html}`)
         let api_str = getStrByRegex(/var _yu_gda_s="(.*?)";/, html)
         let params = {
             "action": class_name, "page": parseInt(pg),
@@ -246,6 +247,7 @@ async function category(tid, pg, filter, extend) {
         }
         let cate_html = await fetch(api_str, getHeader(), params)
         if (cate_html !== null) {
+            await JadeLog.debug(`分类详情解析成功,html为${cate_html}`)
             let $ = load(cate_html)
             vod_list = parseVodShortListFromDoc($)
         }else{
