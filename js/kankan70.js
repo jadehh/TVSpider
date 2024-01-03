@@ -158,47 +158,47 @@ let filterObj = {
                 },
                 {
                     "n": "2024",
-                    "v": "0"
+                    "v": "2024"
                 },
                 {
                     "n": "2023",
-                    "v": "0"
+                    "v": "2023"
                 },
                 {
                     "n": "2022",
-                    "v": "0"
+                    "v": "2022"
                 },
                 {
                     "n": "2021",
-                    "v": "0"
+                    "v": "2021"
                 },
                 {
                     "n": "2020",
-                    "v": "0"
+                    "v": "2020"
                 },
                 {
                     "n": "2019",
-                    "v": "0"
+                    "v": "2019"
                 },
                 {
                     "n": "2018",
-                    "v": "0"
+                    "v": "2018"
                 },
                 {
                     "n": "2017",
-                    "v": "0"
+                    "v": "2017"
                 },
                 {
                     "n": "2016",
-                    "v": "0"
+                    "v": "2016"
                 },
                 {
                     "n": "2015",
-                    "v": "0"
+                    "v": "2015"
                 },
                 {
                     "n": "更早",
-                    "v": "0"
+                    "v": "2000"
                 }
             ]
         },
@@ -208,27 +208,27 @@ let filterObj = {
             "value": [
                 {
                     "n": "全部",
-                    "v": "0"
+                    "v": "all"
                 },
                 {
                     "n": "日本",
-                    "v": "0"
+                    "v": "japan"
                 },
                 {
                     "n": "国产",
-                    "v": "0"
+                    "v": "china"
                 },
                 {
                     "n": "英国",
-                    "v": "0"
+                    "v": "england"
                 },
                 {
                     "n": "美国",
-                    "v": "0"
+                    "v": "american"
                 },
                 {
                     "n": "韩国",
-                    "v": "0"
+                    "v": "korea"
                 }
             ]
         }
@@ -350,47 +350,47 @@ let filterObj = {
                 },
                 {
                     "n": "2024",
-                    "v": "0"
+                    "v": "2024"
                 },
                 {
                     "n": "2023",
-                    "v": "0"
+                    "v": "2023"
                 },
                 {
                     "n": "2022",
-                    "v": "0"
+                    "v": "2022"
                 },
                 {
                     "n": "2021",
-                    "v": "0"
+                    "v": "2021"
                 },
                 {
                     "n": "2020",
-                    "v": "0"
+                    "v": "2020"
                 },
                 {
                     "n": "2019",
-                    "v": "0"
+                    "v": "2019"
                 },
                 {
                     "n": "2018",
-                    "v": "0"
+                    "v": "2018"
                 },
                 {
                     "n": "2017",
-                    "v": "0"
+                    "v": "2017"
                 },
                 {
                     "n": "2016",
-                    "v": "0"
+                    "v": "2016"
                 },
                 {
                     "n": "2015",
-                    "v": "0"
+                    "v": "2015"
                 },
                 {
                     "n": "更早",
-                    "v": "0"
+                    "v": "2000"
                 }
             ]
         },
@@ -400,35 +400,35 @@ let filterObj = {
             "value": [
                 {
                     "n": "全部",
-                    "v": "0"
+                    "v": "all"
                 },
                 {
                     "n": "国产",
-                    "v": "0"
+                    "v": "china"
                 },
                 {
                     "n": "港剧",
-                    "v": "0"
+                    "v": "hk"
                 },
                 {
                     "n": "台剧",
-                    "v": "0"
+                    "v": "tw"
                 },
                 {
                     "n": "美剧",
-                    "v": "0"
+                    "v": "american"
                 },
                 {
                     "n": "韩剧",
-                    "v": "0"
+                    "v": "korea"
                 },
                 {
                     "n": "泰剧",
-                    "v": "0"
+                    "v": "thailand"
                 },
                 {
                     "n": "日剧",
-                    "v": "0"
+                    "v": "japan"
                 }
             ]
         }
@@ -522,47 +522,47 @@ let filterObj = {
                 },
                 {
                     "n": "2024",
-                    "v": "0"
+                    "v": "2024"
                 },
                 {
                     "n": "2023",
-                    "v": "0"
+                    "v": "2023"
                 },
                 {
                     "n": "2022",
-                    "v": "0"
+                    "v": "2022"
                 },
                 {
                     "n": "2021",
-                    "v": "0"
+                    "v": "2021"
                 },
                 {
                     "n": "2020",
-                    "v": "0"
+                    "v": "2020"
                 },
                 {
                     "n": "2019",
-                    "v": "0"
+                    "v": "2019"
                 },
                 {
                     "n": "2018",
-                    "v": "0"
+                    "v": "2018"
                 },
                 {
                     "n": "2017",
-                    "v": "0"
+                    "v": "2017"
                 },
                 {
                     "n": "2016",
-                    "v": "0"
+                    "v": "2016"
                 },
                 {
                     "n": "2015",
-                    "v": "0"
+                    "v": "2015"
                 },
                 {
                     "n": "更早",
-                    "v": "0"
+                    "v": "2000"
                 }
             ]
         },
@@ -572,35 +572,35 @@ let filterObj = {
             "value": [
                 {
                     "n": "全部",
-                    "v": "0"
+                    "v": "all"
                 },
                 {
                     "n": "国产",
-                    "v": "0"
+                    "v": "china"
                 },
                 {
                     "n": "香港",
-                    "v": "0"
+                    "v": "hk"
                 },
                 {
                     "n": "英国",
-                    "v": "0"
+                    "v": "england"
                 },
                 {
                     "n": "美国",
-                    "v": "0"
+                    "v": "american"
                 },
                 {
                     "n": "韩国",
-                    "v": "0"
+                    "v": "korea"
                 },
                 {
                     "n": "泰国",
-                    "v": "0"
+                    "v": "thailand"
                 },
                 {
                     "n": "日本",
-                    "v": "0"
+                    "v": "japan"
                 }
             ]
         }
@@ -738,47 +738,47 @@ let filterObj = {
                 },
                 {
                     "n": "2024",
-                    "v": "0"
+                    "v": "2024"
                 },
                 {
                     "n": "2023",
-                    "v": "0"
+                    "v": "2023"
                 },
                 {
                     "n": "2022",
-                    "v": "0"
+                    "v": "2022"
                 },
                 {
                     "n": "2021",
-                    "v": "0"
+                    "v": "2021"
                 },
                 {
                     "n": "2020",
-                    "v": "0"
+                    "v": "2020"
                 },
                 {
                     "n": "2019",
-                    "v": "0"
+                    "v": "2019"
                 },
                 {
                     "n": "2018",
-                    "v": "0"
+                    "v": "2018"
                 },
                 {
                     "n": "2017",
-                    "v": "0"
+                    "v": "2017"
                 },
                 {
                     "n": "2016",
-                    "v": "0"
+                    "v": "2016"
                 },
                 {
                     "n": "2015",
-                    "v": "0"
+                    "v": "2015"
                 },
                 {
                     "n": "更早",
-                    "v": "0"
+                    "v": "2000"
                 }
             ]
         },
@@ -788,31 +788,31 @@ let filterObj = {
             "value": [
                 {
                     "n": "全部",
-                    "v": "0"
+                    "v": "all"
                 },
                 {
                     "n": "中国",
-                    "v": "0"
+                    "v": "china"
                 },
                 {
                     "n": "英国",
-                    "v": "0"
+                    "v": "england"
                 },
                 {
                     "n": "美国",
-                    "v": "0"
+                    "v": "american"
                 },
                 {
                     "n": "韩国",
-                    "v": "0"
+                    "v": "korea"
                 },
                 {
                     "n": "泰国",
-                    "v": "0"
+                    "v": "thailand"
                 },
                 {
                     "n": "日本",
-                    "v": "0"
+                    "v": "japan"
                 }
             ]
         }
@@ -1020,12 +1020,42 @@ async function homeVod() {
     return result.homeVod(vod_list)
 }
 
-function getParams(id,class_name, extend, pg) {
-    let timestamp = new Date()
-    let year = timestamp.getFullYear().toString()
+function getParams(id, class_name, extend, pg) {
+    let year = ""
+    let area = ""
+    let class_id = ""
+    if (extend["2"] === undefined) {
+        let timestamp = new Date()
+        year = timestamp.getFullYear().toString()
+    } else if (extend["2"] === "0") {
+        let timestamp = new Date()
+        year = timestamp.getFullYear().toString()
+    }else{
+        year = extend["2"]
+    }
+
+    if (extend["3"] === undefined) {
+        area = "all"
+    } else if (extend["3"] === "0") {
+        area = "all"
+    }else{
+        area = extend["3"]
+    }
+
+    if (extend["1"] === undefined) {
+        class_id = "0"
+    }else{
+        class_id = extend["3"]
+    }
+
+
     return {
-        "action": class_name, "page": parseInt(pg),
-        "year": extend["2"] ?? year, "area": extend["3"] ?? "all", "class": extend["1"] ?? "0", "dect": "",
+        "action": class_name,
+        "page": parseInt(pg),
+        "year": year,
+        "area": area,
+        "class":class_id,
+        "dect": "",
         "id": id
     }
 }
@@ -1039,7 +1069,7 @@ async function category(tid, pg, filter, extend) {
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${url}`)
     if (html !== null) {
         let api_str = getStrByRegex(/var _yu_gda_s="(.*?)";/, html)
-        let params = getParams(id,class_name,extend,pg)
+        let params = getParams(id, class_name, extend, pg)
         let cate_html = await fetch(api_str, getHeader(), params)
         if (cate_html !== null) {
             await JadeLog.info(`分类详情解析成功,api url为:${api_str},传入参数为:${JSON.stringify(params)}`)

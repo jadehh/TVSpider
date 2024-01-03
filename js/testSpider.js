@@ -14,17 +14,17 @@ async function test() {
     //
     //
     //
-    var classes = JSON.parse(await spider.home(true));
+    // var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // //
-    // // //测试首页列表
-    var homeVod = JSON.parse(await spider.homeVod())
+    // // // //测试首页列表
+    // var homeVod = JSON.parse(await spider.homeVod())
     // console.debug(homeVod);
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("/acg/y2024/", "1", undefined, {}));
+    var page = JSON.parse(await spider.category("/acg/y2024/", "1", undefined, {"1":"0","2":"0","3":"0"}));
     // console.debug(JSON.stringify(page));
 
     // var detail = JSON.parse(await spider.detail("/acg/70472/"));
