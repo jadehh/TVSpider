@@ -19,7 +19,7 @@ let result = new Result()
 let classes = [
     {
         "type_name": "国产视频",
-        "type_id":"?type=gc"
+        "type_id": "?type=gc"
     },
     {
         "type_name": "国产新片",
@@ -135,12 +135,13 @@ async function category(tid, pg, filter, extend) {
     await JadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)},url = ${url}`)
     let vod_list = []
     let html = await fetch(url, getHeader())
+    let page = parseInt(pg)
+    let count = 0, total = 0, limit = 40;
     if (html !== null) {
         let $ = load(html)
         vod_list = parseVodShortListFromDoc($)
+        total = parseInt($("[class=\"active\"]").find("span").text())
     }
-    let page = parseInt(pg)
-    let count = 0, total = 0,limit = 0;
     await JadeLog.debug(`分类结果为:${result.category(vod_list, page, count, limit, total)}`)
     return result.category(vod_list, page, count, limit, total)
 }

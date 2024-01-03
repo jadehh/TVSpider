@@ -24,7 +24,7 @@ async function test() {
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("?type=ycgc&p=1", "1", undefined, {"1":"19","2":"2024","3":"china"}));
+    var page = JSON.parse(await spider.category("?type=gc", "1", undefined, {"1":"19","2":"2024","3":"china"}));
     // console.debug(JSON.stringify(page));
 
     // var detail = JSON.parse(await spider.detail("/acg/70472/"));
