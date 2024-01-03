@@ -172,8 +172,12 @@ async function detail(id) {
 }
 
 async function play(flag, id, flags) {
-    await JadeLog.info(result.play(id))
-    return  result.play(id)
+    await JadeLog.info(JSON.stringify({
+            "url": id,
+        }))
+    return JSON.stringify({
+            "url": id,
+        })
 }
 
 
