@@ -35,7 +35,7 @@ async function init(cfg) {
 
 async function home(filter) {
     await JadeLog.info("正在解析首页类别", true)
-    await JadeLog.debug(`首页类别内容为:${result.homeVod()}`)
+    await JadeLog.debug(`首页类别内容为:${result.home()}`)
     await JadeLog.info("首页类别解析完成", true)
     return result.homeVod()
 }
