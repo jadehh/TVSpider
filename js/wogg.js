@@ -2218,6 +2218,7 @@ async function detail(id) {
         let con = await request(detailUrl);
         let $ = load(con);
         let vodDetail = new VodDetail()
+        vodDetail.vod_id = id
         vodDetail.vod_name = $('.page-title')[0].children[0].data
         vodDetail.vod_pic = $($(".mobile-play")).find(".lazyload")[0].attribs["data-src"]
         let video_info_aux_list = $($(".video-info-aux")).find(".tag-link")[1].children
