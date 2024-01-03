@@ -172,12 +172,15 @@ async function detail(id) {
 }
 
 async function play(flag, id, flags) {
-    await JadeLog.info(JSON.stringify({
+    let play_result = JSON.stringify({
             "url": id,
-        }))
-    return JSON.stringify({
-            "url": id,
+            "header": {
+                "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                "User-Agent":"Mozilla/5.0 (Linux;Android 6.0.1;MI 4LTE Build/MMB29M;wv) AppleWebKit/537.36 (KHTML,Like Gecko) Version/4.0 Chrome/57.0.2987.132 Mobile Safari/537.36",
+                "Upgrade-Insecure-Requests":"1"},
         })
+    await JadeLog.info(play_result)
+    return play_result
 }
 
 
