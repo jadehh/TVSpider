@@ -30,7 +30,7 @@ async function test() {
     // var detail = JSON.parse(await spider.detail("/acg/70472/"));
     // 测试搜索
     //
-    var search_page = JSON.parse(await spider.search("三大队"))
+    var search_page = JSON.parse(await spider.search("奥本海默"))
     // console.debug(JSON.stringify(search_page));
 
     // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
