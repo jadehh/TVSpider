@@ -173,7 +173,11 @@ async function detail(id) {
 
 async function play(flag, id, flags) {
     await JadeLog.info(result.setHeader({"User-Agent":Utils.CHROME,"Host":"vip1.155bf.com"}).play(id))
-    return  result.setHeader({"User-Agent":Utils.CHROME,"Host":"vip1.155bf.com"}).play(id)
+    return  result.setHeader({
+        "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36",
+        "Host":"vip1.155bf.com",
+        "Accept": "*/*"
+    }).play(id)
 }
 
 
