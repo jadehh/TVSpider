@@ -145,7 +145,7 @@ class JiuJiuLiuSpider extends Spider {
 
     async setPlay(flag, id, flags) {
         try {
-            await this.jadeLog.info("准备播放链接")
+            await this.jadeLog.info(`准备播放链接,链接ID:${id}`)
             let html = await this.fetch(id)
             await this.jadeLog.info(html)
             if (html !== null) {
