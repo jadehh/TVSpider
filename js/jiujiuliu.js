@@ -9,8 +9,8 @@
 
 import {Spider} from "./spider.js";
 import {load} from "../lib/cat.js";
-import {VodShort} from "../lib/vod.js";
-
+import {VodDetail, VodShort} from "../lib/vod.js";
+import * as Utils from "../lib/utils.js";
 
 class JiuJiuLiuSpider extends Spider {
     constructor() {
@@ -26,7 +26,7 @@ class JiuJiuLiuSpider extends Spider {
         return "九九六影视"
     }
 
-    parseVodShortListFromDoc($) {
+    async parseVodShortListFromDoc($) {
         let vod_list = []
         let vodElements = $("[class=\"stui-vodlist clearfix\"]").find("li")
         for (const vodElement of vodElements) {
@@ -39,6 +39,37 @@ class JiuJiuLiuSpider extends Spider {
             vod_list.push(vodShort)
         }
         return vod_list
+    }
+
+    async parseVodPlayFromUrl(play_url) {
+        let html = await this.fetch(play_url, null, this.getHeader())
+        if (html !== null) {
+            let $ = load(html)
+        }
+
+    }
+
+    async parseVodDetailFromDoc($) {
+        let vodDetail = new VodDetail()
+        let vodElement = $("[class=\"col-pd clearfix\"]")[1]
+        let vodShortElement = $(vodElement).find("[class=\"stui-content__thumb\"]")[0]
+        let vodItems = []
+        for (const playElement of $("[class=\"stui-content__playlist clearfix\"]").find("a")){
+            let  episodeUrl = this.siteUrl + playElement.attribs["href"];
+            let  episodeName = $(playElement).text();
+            vodItems.push(episodeName + "$" + episodeUrl);
+        }
+        vodDetail.vod_name = $(vodShortElement).find("[class=\"stui-vodlist__thumb picture v-thumb\"]")[0].attribs["title"]
+        vodDetail.vod_pic = $(vodShortElement).find("img")[0].attribs["data-original"]
+        vodDetail.vod_remarks = $($(vodShortElement).find("[class=\"pic-text text-right\"]")[0]).text()
+        let data_str = $($(vodElement).find("[class=\"data\"]")).text().replaceAll(" ", " ")
+        vodDetail.type_name = Utils.getStrByRegex(/类型：(.*?) /, data_str)
+        vodDetail.vod_area = Utils.getStrByRegex(/地区：(.*?) /, data_str)
+        vodDetail.vod_year = Utils.getStrByRegex(/年份：(.*?) /, data_str)
+        vodDetail.vod_actor = Utils.getStrByRegex(/主演：(.*?) /, data_str)
+        vodDetail.vod_director = Utils.getStrByRegex(/导演：(.*?) /, data_str)
+        vodDetail.vod_content = $($("[class=\"stui-pannel_bd\"]").find("[class=\"col-pd\"]")).text()
+        return vodDetail
     }
 
     async setClasses() {
@@ -97,8 +128,18 @@ class JiuJiuLiuSpider extends Spider {
         let html = await this.fetch(cateUrl, null, this.getHeader())
         if (html != null) {
             let $ = load(html)
-            this.vodList = this.parseVodShortListFromDoc($)
+            this.vodList = await this.parseVodShortListFromDoc($)
         }
+    }
+
+    async setDetail(id) {
+        let detailUrl = this.siteUrl + id
+        let html = await this.fetch(detailUrl, null, this.getHeader())
+        if (html != null) {
+            let $ = load(html)
+            this.vodDetail = await this.parseVodDetailFromDoc($)
+        }
+
     }
 }
 

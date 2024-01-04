@@ -28,8 +28,10 @@ async function test() {
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("/show/id/1", "1", undefined, {}));
+    // var page = JSON.parse(await spider.category("/show/id/2", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
+
+    let detail_2 = JSON.parse(await spider.detail("/detail/190.html"))
 
     // 测试搜索
     //

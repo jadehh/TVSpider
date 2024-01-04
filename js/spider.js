@@ -87,11 +87,15 @@ class Spider {
         return `基础`
     }
 
-    parseVodShortListFromDoc($) {
+   async parseVodShortListFromDoc($) {
 
     }
 
-    parseVodDetailFromDoc($) {
+    async parseVodDetailFromDoc($) {
+
+    }
+
+    async parseVodPlayFromUrl(play_url){
 
     }
 
