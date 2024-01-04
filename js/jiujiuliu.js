@@ -8,7 +8,7 @@
 */
 
 import {Spider} from "./spider.js";
-import {load} from "../lib/cat.js";
+import {Crypto, load} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
 
@@ -148,11 +148,9 @@ class JiuJiuLiuSpider extends Spider {
         if (html !== null) {
             let matcher = Utils.getStrByRegex(/player_aaaa=(.*?)<\/script>/, html)
             let player = JSON.parse(matcher);
-            await this.jadeLog.info(matcher)
             try {
-                         this.playUrl = decodeURIComponent(atob(player["url"]))
-
-            }catch (e) {
+                this.playUrl = decodeURIComponent(Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(player["url"])))
+            } catch (e) {
                 await this.jadeLog.error(e)
             }
         }
