@@ -167,3 +167,5 @@ class Spider {
         return this.result.search(this.vodList)
     }
 }
+
+export {Spider}

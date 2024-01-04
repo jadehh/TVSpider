@@ -15,6 +15,13 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
+            "key": "jiujiuliu",
+            "name": "九九六影视",
+            "type": 3,
+            "api": "./js/jiujiuliu.js",
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "kankan70",
             "name": "📺┃70看看┃📺",
             "type": 3,
