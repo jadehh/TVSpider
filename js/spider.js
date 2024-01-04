@@ -96,13 +96,8 @@ class Spider {
     }
 
     async init(cfg) {
-        console.debug("输出对象")
-        console.debug(this)
         let obj = await SpiderInit(cfg)
         this.catOpenStatus = obj.CatOpenStatus
-        console.debug(this)
-
-        // 读取缓存
     }
 
     async setHome(filter) {
