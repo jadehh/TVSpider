@@ -866,11 +866,11 @@ class Doll extends Spider {
                 ]
             }
             let index = 1
-
             for (const navElement of navElements) {
                 let type_list = $(navElement).text().split("\n")
                 let valueElements = $(navElement).find("a")
                 let valueList = []
+                let type_id = index.toString()
                 for (const valueElement of valueElements) {
                     let title = $(valueElement).text().replaceAll("\n","")
                     let href = valueElement.attribs["href"]
@@ -881,9 +881,9 @@ class Doll extends Spider {
                 type_list = type_list.filter(element => element !== "");
                 let type_dic = {
                     "type_name": type_list[0],
-                    "type_id": index.toString()
+                    "type_id": type_id
                 }
-                this.filterObj[index.toString()] = {"key": "1", "name": type_list[0], "value": valueList}
+                this.filterObj[type_id] = [{"key": "1", "name": type_list[0], "value": valueList}]
                 index = index + 1
                 this.classes.push(type_dic)
 
@@ -906,6 +906,7 @@ class Doll extends Spider {
 
     async setHome(filter) {
         await this.setClasses()
+
     }
 
     async setCategory(tid, pg, filter, extend) {
