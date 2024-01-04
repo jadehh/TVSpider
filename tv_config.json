@@ -43,6 +43,13 @@
             "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
         },
         {
+            "key": "weixine",
+            "name": "💂‍┃阿里影视车┃💂",
+            "type": 3,
+            "api": "./js/weixine.js",
+            "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+        },
+        {
             "key": "wogg",
             "name": "💂‍┃阿里玩偶┃💂",
             "type": 3,

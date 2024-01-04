@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './douban.js';
+import {__jsEvalReturn} from './weixine.js';
 
 
 var spider = __jsEvalReturn();
@@ -18,7 +18,7 @@ async function test() {
     //
     //
     //
-    // var classes = JSON.parse(await spider.home(true));
+    var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // //
@@ -28,32 +28,8 @@ async function test() {
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("hot_gaia", "2", undefined, {}));
+    var page = JSON.parse(await spider.category("1", "2", undefined, {}));
     // console.debug(JSON.stringify(page));
-
-    var detail = JSON.parse(await spider.detail("/view/?id=rqcd91qs"));
-
-    if (detail.list && detail.list.length > 0) {
-        var pFlag = detail.list[0].vod_play_from.split('$$$');
-        var pUrls = detail.list[0].vod_play_url.split('$$$');
-        if (pFlag.length > 0 && pUrls.length > 0) {
-            for (const i in pFlag) {
-                // console.debug(i)
-                var flag = pFlag[i];
-                var urls = pUrls[i].split('#');
-                // console.debug(flag, urls)
-                for (const j in urls) {
-                    var name = urls[j].split('$')[0];
-                    var url = urls[j].split('$')[1];
-                    console.debug(flag + " | " + name + " | " + url);
-                    var playUrl = await spider.play(flag, url, []);
-                    console.debug('playURL: ' + playUrl);
-                    break
-                }
-                break
-            }
-        }
-    }
 
     // 测试搜索
     //
