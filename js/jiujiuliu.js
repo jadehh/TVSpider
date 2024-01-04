@@ -7,7 +7,7 @@
 * @Desc     : 996影视
 */
 
-import {Spider} from "./spider.js";
+import {Spider} from "../lib/spider.js";
 
 class JiuJiuLiuSpider extends Spider {
     constructor() {
