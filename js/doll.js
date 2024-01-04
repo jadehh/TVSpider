@@ -83,7 +83,7 @@ class Doll extends Spider {
             for (const navElement of navElements) {
                 let type_list = $(navElement).text().split("\n")
                 let valueElements = $(navElement).find("a")
-                let valueList = []
+                let valueList = [{"n": "全部", "v": this.siteUrl}]
                 let type_id = index.toString()
                 for (const valueElement of valueElements) {
                     let title = $(valueElement).text().replaceAll("\n", "")
