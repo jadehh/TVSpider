@@ -16,6 +16,7 @@ import {_, Uri} from "../lib/cat.js";
 
 
 class Spider {
+    spider;
     constructor() {
         this.jadeLog = new JadeLogging(this.getAppName(), "DEBUG")
         this.classes = []
@@ -96,6 +97,7 @@ class Spider {
     async init(cfg) {
         let obj = await SpiderInit(cfg)
         this.catOpenStatus = obj.CatOpenStatus
+        console.debug(this.spider)
         // 读取缓存
     }
     async setHome(filter) {
