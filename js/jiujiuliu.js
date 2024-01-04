@@ -1981,7 +1981,7 @@ class JiuJiuLiuSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        this.vodList = this.result.errorCategory("测试")
+        this.vodList = JSON.parse(this.result.errorCategory("测试"))["list"]
     }
 }
 
