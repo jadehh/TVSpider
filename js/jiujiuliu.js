@@ -1986,7 +1986,6 @@ class JiuJiuLiuSpider extends Spider {
 }
 
 let spider = new JiuJiuLiuSpider()
-
 async function init(cfg) {
     await spider.init(cfg)
 }

@@ -136,6 +136,7 @@ class Spider {
 
     async category(tid, pg, filter, extend) {
         this.vodList = []
+        this.page = parseInt(pg)
         await this.jadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)}`)
         await this.setCategory(tid, pg, filter, extend)
         await this.jadeLog.debug(`分类页面内容为:${this.result.category(this.vodList, this.page, this.count, this.limit, this.total)}`)
