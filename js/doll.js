@@ -31,7 +31,7 @@ class Doll extends Spider {
         let vodElements = $("[class=\"row\"]").find("[class=\"video-detail\"]")
         for (const vodElement of vodElements) {
             let vodShort = new VodShort()
-            vodShort.vod_id =  $(vodElement).find("a")[0].attribs["href"]
+            vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
             let videoInfoElements = $($(vodElement).find("[class=\"video-info\"]")).find("a")
             vodShort.vod_name = videoInfoElements[0].attribs["title"]
             vodShort.vod_remarks = $(videoInfoElements[1]).text()
@@ -57,6 +57,7 @@ class Doll extends Spider {
         vodDetail.vod_pic = this.siteUrl + $(vodElement).find("video")[0].attribs["poster"]
         let html = $.html()
         let voteTag  = Utils.getStrByRegex(/var voteTag="(.*?)";/g,html)
+        let videoInfo = JSON.parse(Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g, html))
         vodDetail.vod_play_from = "doll"
         voteTag = Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(voteTag))
         let code = []
@@ -1392,13 +1393,13 @@ class Doll extends Spider {
         let html = await this.fetch(id, null, this.getHeader())
         if (html != null) {
             let $ = load(html)
-            let key = Utils.getStrByRegex(/video\/(\w+).html/,id)
-            this.vodDetail = await this.parseVodDetailFromDoc($,key)
+            let key = Utils.getStrByRegex(/video\/(\w+).html/, id)
+            this.vodDetail = await this.parseVodDetailFromDoc($, key)
         }
     }
 
     async setPlay(flag, id, flags) {
-        let html = await this.fetch(id,null,this.getHeader())
+        let html = await this.fetch(id, null, this.getHeader())
         this.playUrl = id
     }
 }
