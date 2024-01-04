@@ -25,11 +25,12 @@ class JiuJiuLiuSpider extends Spider {
 
     async setHome(filter) {
         this.classes = [
-            {'type_id': 1, 'type_name': '电影'}, {'type_id': 2, 'type_name': '电视剧'}, {
-            'type_id': 3, 'type_name': '动漫'
-        }, {'type_id': 4, 'type_name': '综艺'}, {'type_id': 6, 'type_name': '短剧'}, {
-            'type_id': 5,
-            'type_name': '音乐'
+            {'type_id': 1, 'type_name': '电影'},
+            {'type_id': 2, 'type_name': '电视剧'},
+            {'type_id': 3, 'type_name': '动漫'},
+            {'type_id': 4, 'type_name': '综艺'},
+            {'type_id': 6, 'type_name': '短剧'},
+            {'type_id': 5, 'type_name': '音乐'
         }];
         this.filterObj = {
             "1": [
@@ -1975,6 +1976,10 @@ class JiuJiuLiuSpider extends Spider {
                 }
             ]
         };
+    }
+
+    async setCategory(tid, pg, filter, extend) {
+        this.vodList = this.result.errorCategory("测试")
     }
 }
 
