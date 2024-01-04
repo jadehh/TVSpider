@@ -102,11 +102,11 @@ class Spider {
     }
     async home(filter) {
         this.vodList = []
-        await this.jadeLog.info("正在解析首页类别", true)
-        await this.setHome(filter)
-        await this.jadeLog.debug(`首页类别内容为:${this.result.home(this.classes, this.vodList, this.filterObj)}`)
-        await this.jadeLog.info("首页类别解析完成", true)
-        return this.result.home(this.classes, this.vodList, this.filterObj)
+        await this.spider.jadeLog.info("正在解析首页类别", true)
+        await this.spider.setHome(filter)
+        await this.spider.jadeLog.debug(`首页类别内容为:${this.spider.result.home(this.spider.classes, this.spider.vodList, this.spider.filterObj)}`)
+        await this.spider.jadeLog.info("首页类别解析完成", true)
+        return this.spider.result.home(this.spider.classes, this.spider.vodList, this.spider.filterObj)
     }
     async setHomeVod() {
 

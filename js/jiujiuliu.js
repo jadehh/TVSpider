@@ -1987,6 +1987,7 @@ class JiuJiuLiuSpider extends Spider {
 export function __jsEvalReturn() {
     let spider = new JiuJiuLiuSpider()
     return {
+        spider:spider,
         init: spider.init,
         home: spider.home,
         homeVod: spider.homeVod,

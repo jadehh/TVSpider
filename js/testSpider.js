@@ -1,7 +1,7 @@
 import {__jsEvalReturn} from './jiujiuliu.js';
 
 
-var spider = __jsEvalReturn();
+let spider = __jsEvalReturn();
 
 async function test() {
     let siteKey = 'niba';
