@@ -149,7 +149,12 @@ class JiuJiuLiuSpider extends Spider {
             let matcher = Utils.getStrByRegex(/player_aaaa=(.*?)<\/script>/, html)
             let player = JSON.parse(matcher);
             await this.jadeLog.info(matcher)
-            this.playUrl = decodeURIComponent(atob(player["url"]))
+            try {
+                         this.playUrl = decodeURIComponent(atob(player["url"]))
+
+            }catch (e) {
+                await this.jadeLog.error(e)
+            }
         }
     }
 }
