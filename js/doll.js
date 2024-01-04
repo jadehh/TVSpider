@@ -101,7 +101,7 @@ class Doll extends Spider {
                 let new_value_list = []
                 for (let i = 0; i < valueList.length; i++) {
                     new_value_list.push(valueList[i])
-                    if (i % 10 === 0 && i !== 0) {
+                    if (i % 5 === 0 && i !== 0) {
                         this.filterObj[type_id].push({"key": type_id, "name": type_list[0], "value": new_value_list})
                         new_value_list = []
                     }
