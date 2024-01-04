@@ -69,6 +69,8 @@ class JiuJiuLiuSpider extends Spider {
         vodDetail.vod_actor = Utils.getStrByRegex(/主演：(.*?) /, data_str)
         vodDetail.vod_director = Utils.getStrByRegex(/导演：(.*?) /, data_str)
         vodDetail.vod_content = $($("[class=\"stui-pannel_bd\"]").find("[class=\"col-pd\"]")).text()
+        vodDetail.vod_play_from = "996"
+        vodDetail.vod_play_url = vodItems.join("$$$")
         return vodDetail
     }
 
