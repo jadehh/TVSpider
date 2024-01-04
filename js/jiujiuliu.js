@@ -54,9 +54,9 @@ class JiuJiuLiuSpider extends Spider {
         let vodElement = $("[class=\"col-pd clearfix\"]")[1]
         let vodShortElement = $(vodElement).find("[class=\"stui-content__thumb\"]")[0]
         let vodItems = []
-        for (const playElement of $("[class=\"stui-content__playlist clearfix\"]").find("a")){
-            let  episodeUrl = this.siteUrl + playElement.attribs["href"];
-            let  episodeName = $(playElement).text();
+        for (const playElement of $("[class=\"stui-content__playlist clearfix\"]").find("a")) {
+            let episodeUrl = this.siteUrl + playElement.attribs["href"];
+            let episodeName = $(playElement).text();
             vodItems.push(episodeName + "$" + episodeUrl);
         }
         vodDetail.vod_name = $(vodShortElement).find("[class=\"stui-vodlist__thumb picture v-thumb\"]")[0].attribs["title"]
@@ -141,7 +141,15 @@ class JiuJiuLiuSpider extends Spider {
             let $ = load(html)
             this.vodDetail = await this.parseVodDetailFromDoc($)
         }
+    }
 
+    async setPlay(flag, id, flags) {
+        let html = await this.fetch(id)
+        if (html !== null) {
+            let matcher = Utils.getStrByRegex(/player_aaaa=(.*?)<\/script>/,html)
+            let player = JSON.parse(matcher);
+            this.playUrl  =  decodeURIComponent(atob(player["url"]))
+        }
     }
 }
 
