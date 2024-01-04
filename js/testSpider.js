@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './hscangku.js';
+import {__jsEvalReturn} from './douban.js';
 
 
 var spider = __jsEvalReturn();
@@ -18,7 +18,7 @@ async function test() {
     //
     //
     //
-    var classes = JSON.parse(await spider.home(true));
+    // var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // //
@@ -28,7 +28,7 @@ async function test() {
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("?type=gc", "1", undefined, {"1": "19", "2": "2024", "3": "china"}));
+    var page = JSON.parse(await spider.category("hot_gaia", "2", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     var detail = JSON.parse(await spider.detail("/view/?id=rqcd91qs"));

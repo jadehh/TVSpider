@@ -1017,7 +1017,7 @@ async function category(tid, pg, filter, extend) {
     let count = 0
     let limit = 20;
     let total = 0;
-    let start = (page - 1) * count
+    let start = (page - 1) * limit
     let cateUrl = ""
     let params = {"start": start.toString(), "count": limit.toString()}
     let itemKey = "items"
