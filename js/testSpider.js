@@ -28,7 +28,7 @@ async function test() {
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("1", "2", undefined, {}));
+    var page = JSON.parse(await spider.category("/show/id/1", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     // 测试搜索

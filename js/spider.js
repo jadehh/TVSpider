@@ -34,12 +34,12 @@ class Spider {
         this.playUrl = ""
     }
 
-    async reconnnect(fetch, reqUrl, params, headers) {
+    async reconnnect(reqUrl, params, headers) {
         await this.jadeLog.error("请求失败,请检查url:" + reqUrl + ",两秒后重试")
         Utils.sleep(2)
         if (this.reconnectTimes < this.maxReconnectTimes) {
             this.reconnectTimes = this.reconnectTimes + 1
-            return await fetch(reqUrl, params, headers)
+            return await this.fetch(reqUrl, params, headers)
         } else {
             await this.jadeLog.error("请求失败,重连失败")
             return null
@@ -65,11 +65,11 @@ class Spider {
             if (!_.isEmpty(response.content)) {
                 return response.content
             } else {
-                return await this.reconnnect(this.fetch, reqUrl, params, headers)
+                return await this.reconnnect(reqUrl, params, headers)
             }
         } else {
             await this.jadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
-            return await this.reconnnect(this.fetch, reqUrl, params, headers)
+            return await this.reconnnect(reqUrl, params, headers)
 
         }
     }
