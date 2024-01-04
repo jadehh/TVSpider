@@ -28,7 +28,7 @@ async function test() {
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("1", "1", undefined, {}));
+    var page = JSON.parse(await spider.category("https://hongkongdollvideo.com/91制片厂/", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     let detail = JSON.parse(await spider.detail("/detail/190.html"))
