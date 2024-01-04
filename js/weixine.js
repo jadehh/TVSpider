@@ -2014,7 +2014,6 @@ async function request(reqUrl) {
     let uri = new Uri(reqUrl);
     let res = await req(uri.toString(), {
         headers: header,
-        timeout: 100000,
     });
     if (_.isEmpty(res.content)) {
         await JadeLog.error("html内容读取失败,请检查url:" + reqUrl + ",两秒后重试")
