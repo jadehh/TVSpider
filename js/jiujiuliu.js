@@ -7,7 +7,7 @@
 * @Desc     : 996影视
 */
 
-import {Spider} from "../lib/spider.js";
+import {Spider} from "./spider.js";
 
 class JiuJiuLiuSpider extends Spider {
     constructor() {
@@ -30,8 +30,9 @@ class JiuJiuLiuSpider extends Spider {
             {'type_id': 3, 'type_name': '动漫'},
             {'type_id': 4, 'type_name': '综艺'},
             {'type_id': 6, 'type_name': '短剧'},
-            {'type_id': 5, 'type_name': '音乐'
-        }];
+            {
+                'type_id': 5, 'type_name': '音乐'
+            }];
         this.filterObj = {
             "1": [
                 {
@@ -1984,6 +1985,14 @@ class JiuJiuLiuSpider extends Spider {
 }
 
 export function __jsEvalReturn() {
-
-    return new JiuJiuLiuSpider();
+    let spider = new JiuJiuLiuSpider()
+    return {
+        init: spider.init,
+        home: spider.home,
+        homeVod: spider.homeVod,
+        category: spider.category,
+        detail: spider.detail,
+        play: spider.play,
+        search: spider.search,
+    };
 }
