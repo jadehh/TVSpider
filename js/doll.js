@@ -49,16 +49,22 @@ class Doll extends Spider {
 
     }
 
-    async parseVodDetailFromDoc($) {
+    async parseVodDetailFromDoc($,key) {
         let vodDetail = new VodDetail()
         let vodElement = $("[class=\"container-fluid\"]")
         vodDetail.vod_name = $($(vodElement).find("[class=\"page-title\"]")[0]).text()
         vodDetail.vod_remarks = $(vodElement).find("[class=\"tag my-1 text-center\"]")[0].attribs["href"].replaceAll("/","")
         vodDetail.vod_pic = this.siteUrl + $(vodElement).find("video")[0].attribs["poster"]
         let html = $.html()
-        let videoInfo  = JSON.parse( Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g,html))
+        let voteTag  = Utils.getStrByRegex(/var voteTag="(.*?)";/g,html)
         vodDetail.vod_play_from = "doll"
-        vodDetail.vod_play_url = videoInfo["contentUrl"]
+        voteTag = Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(voteTag))
+        let code = []
+        for (let i = 0; i < voteTag.length; i++) {
+            let k = i % key.length;
+            code.push(String.fromCharCode( voteTag.charCodeAt(i) ^ key.charCodeAt(k)))
+        }
+        vodDetail.vod_play_url = "玩偶姐姐" + "$" +  decodeURIComponent(Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(code.join(""))))
         return vodDetail
     }
 
@@ -1386,11 +1392,13 @@ class Doll extends Spider {
         let html = await this.fetch(id, null, this.getHeader())
         if (html != null) {
             let $ = load(html)
-            this.vodDetail = await this.parseVodDetailFromDoc($)
+            let key = Utils.getStrByRegex(/video\/(\w+).html/,id)
+            this.vodDetail = await this.parseVodDetailFromDoc($,key)
         }
     }
 
     async setPlay(flag, id, flags) {
+        let html = await this.fetch(id,null,this.getHeader())
         this.playUrl = id
     }
 }
