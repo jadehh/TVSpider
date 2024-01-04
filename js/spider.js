@@ -94,6 +94,7 @@ class Spider {
     }
 
     async init(cfg) {
+        console.debug(this)
         let obj = await SpiderInit(cfg)
         this.catOpenStatus = obj.CatOpenStatus
         // 读取缓存
