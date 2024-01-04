@@ -144,21 +144,13 @@ class JiuJiuLiuSpider extends Spider {
     }
 
     async setPlay(flag, id, flags) {
-        try {
-            await this.jadeLog.info(`准备播放链接,链接ID:${id}`)
-            let html = await this.fetch(id)
-            await this.jadeLog.info(html)
-            if (html !== null) {
-                let matcher = Utils.getStrByRegex(/player_aaaa=(.*?)<\/script>/, html)
-                let player = JSON.parse(matcher);
-                this.playUrl = decodeURIComponent(atob(player["url"]))
-            } else {
-                await this.jadeLog.info(html)
-            }
-        } catch (e) {
-            await this.jadeLog.error(e)
+        let html = await this.fetch(id, null, this.getHeader())
+        await this.jadeLog.info(html)
+        if (html !== null) {
+            let matcher = Utils.getStrByRegex(/player_aaaa=(.*?)<\/script>/, html)
+            let player = JSON.parse(matcher);
+            this.playUrl = decodeURIComponent(atob(player["url"]))
         }
-
     }
 }
 
