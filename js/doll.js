@@ -51,26 +51,14 @@ class Doll extends Spider {
 
     async parseVodDetailFromDoc($) {
         let vodDetail = new VodDetail()
-        let vodElement = $("[class=\"col-pd clearfix\"]")[1]
-        let vodShortElement = $(vodElement).find("[class=\"stui-content__thumb\"]")[0]
-        let vodItems = []
-        for (const playElement of $("[class=\"stui-content__playlist clearfix\"]").find("a")) {
-            let episodeUrl = this.siteUrl + playElement.attribs["href"];
-            let episodeName = $(playElement).text();
-            vodItems.push(episodeName + "$" + episodeUrl);
-        }
-        vodDetail.vod_name = $(vodShortElement).find("[class=\"stui-vodlist__thumb picture v-thumb\"]")[0].attribs["title"]
-        vodDetail.vod_pic = $(vodShortElement).find("img")[0].attribs["data-original"]
-        vodDetail.vod_remarks = $($(vodShortElement).find("[class=\"pic-text text-right\"]")[0]).text()
-        let data_str = $($(vodElement).find("[class=\"data\"]")).text().replaceAll(" ", " ")
-        vodDetail.type_name = Utils.getStrByRegex(/类型：(.*?) /, data_str)
-        vodDetail.vod_area = Utils.getStrByRegex(/地区：(.*?) /, data_str)
-        vodDetail.vod_year = Utils.getStrByRegex(/年份：(.*?) /, data_str)
-        vodDetail.vod_actor = Utils.getStrByRegex(/主演：(.*?) /, data_str)
-        vodDetail.vod_director = Utils.getStrByRegex(/导演：(.*?) /, data_str)
-        vodDetail.vod_content = $($("[class=\"stui-pannel_bd\"]").find("[class=\"col-pd\"]")).text()
-        vodDetail.vod_play_from = "996"
-        vodDetail.vod_play_url = vodItems.join("$$$")
+        let vodElement = $("[class=\"container-fluid\"]")
+        vodDetail.vod_name = $($(vodElement).find("[class=\"page-title\"]")[0]).text()
+        vodDetail.vod_remarks = $(vodElement).find("[class=\"tag my-1 text-center\"]")[0].attribs["href"].replaceAll("/","")
+        vodDetail.vod_pic = this.siteUrl + $(vodElement).find("video")[0].attribs["poster"]
+        let html = $.html()
+        let videoInfo  = JSON.parse( Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g,html))
+        vodDetail.vod_play_from = "doll"
+        vodDetail.vod_play_url = videoInfo["contentUrl"]
         return vodDetail
     }
 
@@ -1395,8 +1383,7 @@ class Doll extends Spider {
     }
 
     async setDetail(id) {
-        let detailUrl = this.siteUrl + id
-        let html = await this.fetch(detailUrl, null, this.getHeader())
+        let html = await this.fetch(id, null, this.getHeader())
         if (html != null) {
             let $ = load(html)
             this.vodDetail = await this.parseVodDetailFromDoc($)

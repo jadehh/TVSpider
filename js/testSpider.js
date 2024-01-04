@@ -28,10 +28,10 @@ async function test() {
     // // console.debug(JSON.stringify(homeVod));
     //
     // //测试分类列表
-    var page = JSON.parse(await spider.category("https://hongkongdollvideo.com/91制片厂/", "1", undefined, {}));
+    // var page = JSON.parse(await spider.category("https://hongkongdollvideo.com/91制片厂/", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
-    let detail = JSON.parse(await spider.detail("/detail/190.html"))
+    let detail = JSON.parse(await spider.detail("https://hongkongdollvideo.com/video/8ce8a3d14265a09c.html"))
     console.debug(JSON.stringify(detail));
 
     if (detail.list && detail.list.length > 0) {
