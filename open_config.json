@@ -2,6 +2,13 @@
     "video": {
         "sites": [
             {
+                "key": "doll",
+                "name": "玩偶姐姐",
+                "type": 3,
+                "api": "./js/doll.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "douban",
                 "name": "🍥┃豆瓣┃🍥",
                 "type": 3,

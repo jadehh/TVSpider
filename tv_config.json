@@ -1,6 +1,13 @@
 {
     "sites": [
         {
+            "key": "doll",
+            "name": "玩偶姐姐",
+            "type": 3,
+            "api": "./js/doll.js",
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "douban",
             "name": "🍥┃豆瓣┃🍥",
             "type": 3,
