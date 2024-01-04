@@ -1,12 +1,11 @@
 /*
-* @File     : base_spider.js
+* @File     : base_spider.js.js
 * @Author   : jade
-* @Date     : 2023/12/25 17:19
+* @Date     : 2024/1/4 14:13
 * @Email    : jadehh@1ive.com
 * @Software : Samples
 * @Desc     :
 */
-
 import {JadeLogging} from "../lib/log.js";
 import {Result, SpiderInit} from "../lib/spider_object.js";
 import {} from "../lib/crypto-js.js"
@@ -39,10 +38,6 @@ async function home(filter) {
     await JadeLog.info("首页类别解析完成", true)
     return result.homeVod()
 }
-
-
-
-
 
 
 async function homeVod() {
