@@ -16,8 +16,6 @@ import {_, Uri} from "../lib/cat.js";
 
 
 class Spider {
-    spider;
-
     constructor() {
         this.jadeLog = new JadeLogging(this.getAppName(), "DEBUG")
         this.classes = []
@@ -88,39 +86,31 @@ class Spider {
     getAppName() {
         return `基础`
     }
-
-    parseVodShortListFromDoc($) {
+    parseVodShortListFromDoc($){
 
     }
-
-    parseVodDetailFromDoc($) {
+    parseVodDetailFromDoc($){
 
     }
 
     async init(cfg) {
-        console.debug("输出对象")
-        console.debug(this.spider)
         let obj = await SpiderInit(cfg)
         this.catOpenStatus = obj.CatOpenStatus
         // 读取缓存
     }
-
     async setHome(filter) {
     }
-
     async home(filter) {
         this.vodList = []
-        await this.spider.jadeLog.info("正在解析首页类别", true)
-        await this.spider.setHome(filter)
-        await this.spider.jadeLog.debug(`首页类别内容为:${this.spider.result.home(this.spider.classes, this.spider.vodList, this.spider.filterObj)}`)
-        await this.spider.jadeLog.info("首页类别解析完成", true)
-        return this.spider.result.home(this.spider.classes, this.spider.vodList, this.spider.filterObj)
+        await this.jadeLog.info("正在解析首页类别", true)
+        await this.setHome(filter)
+        await this.jadeLog.debug(`首页类别内容为:${this.result.home(this.classes, this.vodList, this.filterObj)}`)
+        await this.jadeLog.info("首页类别解析完成", true)
+        return this.result.home(this.classes, this.vodList, this.filterObj)
     }
-
     async setHomeVod() {
 
     }
-
     async homeVod() {
         if (!this.catOpenStatus) {
             this.vodList = []
@@ -134,11 +124,9 @@ class Spider {
 
         }
     }
-
     async setCategory(tid, pg, filter, extend) {
 
     }
-
     async category(tid, pg, filter, extend) {
         this.vodList = []
         await this.jadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)}`)
@@ -147,11 +135,9 @@ class Spider {
         await this.jadeLog.info("分类页面解析完成", true)
         return this.result.category(this.vodList, this.page, this.count, this.limit, this.total)
     }
-
     async setDetail(id) {
 
     }
-
     async detail(id) {
         await this.jadeLog.info(`正在获取详情页面,id为:${id}`)
         await this.setDetail(id)
@@ -159,11 +145,9 @@ class Spider {
         await this.jadeLog.info("详情页面解析完成", true)
         return this.result.detail(this.vodDetail)
     }
-
     async setPlay(flag, id, flags) {
 
     }
-
     async play(flag, id, flags) {
         await this.jadeLog.info("正在解析播放页面", true)
         await this.setPlay(flag, id, flags)
@@ -171,11 +155,9 @@ class Spider {
         await this.jadeLog.info("播放页面解析完成", true)
         return this.result.play(this.playUrl)
     }
-
     async setSearch(wd, quick) {
 
     }
-
     async search(wd, quick) {
         this.vodList = []
         await this.jadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick}`)
