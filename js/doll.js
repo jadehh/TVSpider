@@ -1391,16 +1391,7 @@ class Doll extends Spider {
     }
 
     async setPlay(flag, id, flags) {
-        let html = await this.fetch(id, null, this.getHeader())
-        if (html !== null) {
-            let matcher = Utils.getStrByRegex(/player_aaaa=(.*?)<\/script>/, html)
-            let player = JSON.parse(matcher);
-            try {
-                this.playUrl = decodeURIComponent(Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(player["url"])))
-            } catch (e) {
-                await this.jadeLog.error(e)
-            }
-        }
+        this.playUrl = id
     }
 }
 
