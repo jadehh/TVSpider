@@ -61,8 +61,6 @@ class Doll extends Spider {
             let videoInfo = JSON.parse(Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g, html))
             let play_url_1 = await this.fetch(videoInfo["contentUrl"], null, null)
             await this.jadeLog.debug(`播放链接为:${play_url_1}`)
-
-
         } catch (e) {
             await this.jadeLog.error(e)
         }
@@ -1403,6 +1401,7 @@ class Doll extends Spider {
     async setDetail(id) {
         let html = await this.fetch(id, null, this.getHeader())
         if (html != null) {
+            await this.jadeLog.debug(`详情解析完成,html:${html}`)
             let $ = load(html)
             let key = Utils.getStrByRegex(/video\/(\w+).html/, id)
             this.vodDetail = await this.parseVodDetailFromDoc($, key)
