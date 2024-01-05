@@ -75,7 +75,7 @@ class Doll extends Spider {
         }
         let play_url_2 = decodeURIComponent(Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(code.join(""))))
         vodDetail.vod_play_from = "doll"
-        vodDetail.vod_play_url = "玩偶姐姐" + "$" + videoInfo["contentUrl"]
+        vodDetail.vod_play_url = "玩偶姐姐" + "$" + play_url_2
         return vodDetail
     }
 
