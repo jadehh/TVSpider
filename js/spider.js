@@ -63,9 +63,9 @@ class Spider {
             data: null,
         });
         if (response.code === 200 || response.code === undefined || response.code === 302) {
-            if (response.headers["location"] !== undefined){
+            if (response.headers["location"] !== undefined) {
                 return response.headers["location"]
-            }else if (!_.isEmpty(response.content)) {
+            } else if (!_.isEmpty(response.content)) {
                 return response.content
             } else {
                 return await this.reconnnect(reqUrl, params, headers)
@@ -90,7 +90,7 @@ class Spider {
         return `基础`
     }
 
-   async parseVodShortListFromDoc($) {
+    async parseVodShortListFromDoc($) {
 
     }
 
@@ -98,7 +98,7 @@ class Spider {
 
     }
 
-    async parseVodPlayFromUrl(play_url){
+    async parseVodPlayFromUrl(play_url) {
 
     }
 
@@ -157,9 +157,9 @@ class Spider {
 
     async detail(id) {
         await this.jadeLog.info(`正在获取详情页面,id为:${id}`)
-        await this.setDetail(id)
         await this.jadeLog.debug(`详情页面内容为:${this.result.detail(this.vodDetail)}`)
         await this.jadeLog.info("详情页面解析完成", true)
+        await this.setDetail(id)
         return this.result.detail(this.vodDetail)
     }
 
