@@ -1401,7 +1401,6 @@ class Doll extends Spider {
     async setDetail(id) {
         let html = await this.fetch(id, null, this.getHeader())
         if (html != null) {
-            await this.jadeLog.debug(`详情解析完成,html:${html}`)
             let $ = load(html)
             let key = Utils.getStrByRegex(/video\/(\w+).html/, id)
             this.vodDetail = await this.parseVodDetailFromDoc($, key)
