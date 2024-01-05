@@ -59,7 +59,7 @@ class Doll extends Spider {
         let voteTag = Utils.getStrByRegex(/var voteTag="(.*?)";/g, html)
         try {
             let videoInfo = JSON.parse(Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g, html))
-            let play_url_1 = await this.fetch(videoInfo["contentUrl"], null, null)
+            let play_url_1 = await this.fetch(videoInfo["contentUrl"], null, this.getHeader())
             await this.jadeLog.debug(`播放链接为:${play_url_1}`)
         } catch (e) {
             await this.jadeLog.error(e)
