@@ -32,6 +32,7 @@ class Spider {
         this.page = 0
         this.vodDetail = new VodDetail()
         this.playUrl = ""
+        this.header = {}
     }
 
     async reconnnect(reqUrl, params, headers) {
@@ -171,7 +172,7 @@ class Spider {
         await this.setPlay(flag, id, flags)
         await this.jadeLog.debug(`播放页面内容为:${this.result.play(this.playUrl)}`)
         await this.jadeLog.info("播放页面解析完成", true)
-        return this.result.play(this.playUrl)
+        return this.result.setHeader(this.header).play(this.playUrl)
     }
 
     async setSearch(wd, quick) {

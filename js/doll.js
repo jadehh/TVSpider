@@ -1403,8 +1403,8 @@ class Doll extends Spider {
     }
 
     async setPlay(flag, id, flags) {
-        let html = await this.fetch(id, null, this.getHeader())
         this.playUrl = id
+        this.playHeader = {}
     }
 }
 
