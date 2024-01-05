@@ -57,13 +57,14 @@ class Doll extends Spider {
         vodDetail.vod_pic = this.siteUrl + $(vodElement).find("video")[0].attribs["poster"]
         let html = $.html()
         let voteTag = Utils.getStrByRegex(/var voteTag="(.*?)";/g, html)
-        try {
-            let videoInfo = JSON.parse(Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g, html))
-            let play_url_1 = await this.fetch(videoInfo["contentUrl"], null, this.getHeader())
-            await this.jadeLog.debug(`播放链接为:${play_url_1}`)
-        } catch (e) {
-            await this.jadeLog.error(e)
-        }
+        let videoInfo = JSON.parse(Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g, html))
+        //
+        // try {
+        //     let play_url_1 = await this.fetch(videoInfo["contentUrl"], null, this.getHeader())
+        //     await this.jadeLog.debug(`播放链接为:${play_url_1}`)
+        // } catch (e) {
+        //     await this.jadeLog.error(e)
+        // }
 
 
         voteTag = Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(voteTag))
@@ -74,7 +75,7 @@ class Doll extends Spider {
         }
         let play_url_2 = decodeURIComponent(Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(code.join(""))))
         vodDetail.vod_play_from = "doll"
-        vodDetail.vod_play_url = "玩偶姐姐" + "$" + play_url_2
+        vodDetail.vod_play_url = "玩偶姐姐" + "$" + videoInfo["contentUrl"]
         return vodDetail
     }
 
