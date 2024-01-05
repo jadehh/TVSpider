@@ -58,7 +58,7 @@ class Doll extends Spider {
         let html = $.html()
         let voteTag = Utils.getStrByRegex(/var voteTag="(.*?)";/g, html)
         let videoInfo = JSON.parse(Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g, html))
-        // let play_url_1 = await this.fetch(videoInfo["contentUrl"],null,null)
+        let play_url_1 = await this.fetch(videoInfo["contentUrl"],null,null)
 
 
         voteTag = Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(voteTag))
