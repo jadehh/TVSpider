@@ -58,6 +58,7 @@ class Doll extends Spider {
         let html = $.html()
         let voteTag = Utils.getStrByRegex(/var voteTag="(.*?)";/g, html)
         let videoInfo = JSON.parse(Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g, html))
+        await this.jadeLog.debug(JSON.stringify(videoInfo))
         // try {
         //     let play_url_1 = await this.fetch(videoInfo["contentUrl"], null, null)
         //
