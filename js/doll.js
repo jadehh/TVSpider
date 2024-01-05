@@ -49,23 +49,27 @@ class Doll extends Spider {
 
     }
 
-    async parseVodDetailFromDoc($,key) {
+    async parseVodDetailFromDoc($, key) {
         let vodDetail = new VodDetail()
         let vodElement = $("[class=\"container-fluid\"]")
         vodDetail.vod_name = $($(vodElement).find("[class=\"page-title\"]")[0]).text()
-        vodDetail.vod_remarks = $(vodElement).find("[class=\"tag my-1 text-center\"]")[0].attribs["href"].replaceAll("/","")
+        vodDetail.vod_remarks = $(vodElement).find("[class=\"tag my-1 text-center\"]")[0].attribs["href"].replaceAll("/", "")
         vodDetail.vod_pic = this.siteUrl + $(vodElement).find("video")[0].attribs["poster"]
         let html = $.html()
-        let voteTag  = Utils.getStrByRegex(/var voteTag="(.*?)";/g,html)
+        let voteTag = Utils.getStrByRegex(/var voteTag="(.*?)";/g, html)
         let videoInfo = JSON.parse(Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g, html))
-        vodDetail.vod_play_from = "doll"
+        let play_url_1 = await this.fetch(videoInfo["contentUrl"],null,null)
+
+
         voteTag = Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(voteTag))
         let code = []
         for (let i = 0; i < voteTag.length; i++) {
             let k = i % key.length;
-            code.push(String.fromCharCode( voteTag.charCodeAt(i) ^ key.charCodeAt(k)))
+            code.push(String.fromCharCode(voteTag.charCodeAt(i) ^ key.charCodeAt(k)))
         }
-        vodDetail.vod_play_url = "玩偶姐姐" + "$" +  decodeURIComponent(Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(code.join(""))))
+        let play_url_2 = decodeURIComponent(Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(code.join(""))))
+        vodDetail.vod_play_from = "doll"
+        vodDetail.vod_play_url = "玩偶姐姐" + "$" + play_url_1
         return vodDetail
     }
 

@@ -61,8 +61,10 @@ class Spider {
             headers: headers,
             data: null,
         });
-        if (response.code === 200 || response.code === undefined) {
-            if (!_.isEmpty(response.content)) {
+        if (response.code === 200 || response.code === undefined || response.code === 302) {
+            if (response.headers["location"] !== undefined){
+                return response.headers["location"]
+            }else if (!_.isEmpty(response.content)) {
                 return response.content
             } else {
                 return await this.reconnnect(reqUrl, params, headers)
