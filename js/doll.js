@@ -58,12 +58,12 @@ class Doll extends Spider {
         let html = $.html()
         let voteTag = Utils.getStrByRegex(/var voteTag="(.*?)";/g, html)
         let videoInfo = JSON.parse(Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g, html))
-        try {
-            let play_url_1 = await this.fetch(videoInfo["contentUrl"], null, null)
-
-        } catch (e) {
-            await this.jadeLog.error(e)
-        }
+        // try {
+        //     let play_url_1 = await this.fetch(videoInfo["contentUrl"], null, null)
+        //
+        // } catch (e) {
+        //     await this.jadeLog.error(e)
+        // }
 
 
         voteTag = Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(voteTag))
