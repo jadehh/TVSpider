@@ -19,7 +19,7 @@ class Doll extends Spider {
     }
 
     getAppName() {
-        return "🍥┃玩偶姐姐┃🍥"
+        return "🔞┃玩偶姐姐┃🔞"
     }
 
     getName() {
@@ -40,15 +40,6 @@ class Doll extends Spider {
         }
         return vod_list
     }
-
-    async parseVodPlayFromUrl(play_url) {
-        let html = await this.fetch(play_url, null, this.getHeader())
-        if (html !== null) {
-            let $ = load(html)
-        }
-
-    }
-
     async parseVodDetailFromDoc($, key) {
         let vodDetail = new VodDetail()
         let vodElement = $("[class=\"container-fluid\"]")
