@@ -40,6 +40,7 @@ class Doll extends Spider {
         }
         return vod_list
     }
+
     async parseVodDetailFromDoc($, key) {
         let vodDetail = new VodDetail()
         let vodElement = $("[class=\"container-fluid\"]")
@@ -111,7 +112,7 @@ class Doll extends Spider {
             let menuElements = $("[id=\"side-menu\"]").find("li")
             for (const menuElement of menuElements) {
                 let type_id = $(menuElement).find("a")[0].attribs["href"]
-                if (type_id !== undefined) {
+                if (type_id !== undefined && type_id.indexOf(this.siteUrl) > -1) {
                     let type_dic = {
                         "type_name": $(menuElement).text(),
                         "type_id": type_id
@@ -1129,10 +1130,6 @@ class Doll extends Spider {
                 "type_id": "https://hongkongdollvideo.com/latest/"
             },
             {
-                "type_name": "亚洲成人视频",
-                "type_id": "https://cn.asianx.tube"
-            },
-            {
                 "type_name": "麻豆传媒映画",
                 "type_id": "https://hongkongdollvideo.com/麻豆传媒映画/"
             },
@@ -1247,14 +1244,6 @@ class Doll extends Spider {
             {
                 "type_name": "乌托邦传媒",
                 "type_id": "https://hongkongdollvideo.com/乌托邦传媒/"
-            },
-            {
-                "type_name": "最新",
-                "type_id": "/latest/"
-            },
-            {
-                "type_name": "亚洲成人视频",
-                "type_id": "https://cn.asianx.tube"
             },
             {
                 "type_name": "麻豆传媒映画",
