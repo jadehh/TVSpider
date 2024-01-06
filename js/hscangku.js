@@ -17,11 +17,11 @@ class HsCangkuSpider extends Spider {
         this.siteUrl = "https://hsck12.shop/"
     }
 
-    getAppName() {
+    getName() {
         return "🔞┃黄色仓库┃🔞"
     }
 
-    getName() {
+    getAppName() {
         return "黄色仓库"
     }
 

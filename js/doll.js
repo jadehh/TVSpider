@@ -18,11 +18,11 @@ class Doll extends Spider {
         this.siteUrl = "https://hongkongdollvideo.com/"
     }
 
-    getAppName() {
+    getName() {
         return "🔞┃玩偶姐姐┃🔞"
     }
 
-    getName() {
+    getAppName() {
         return "玩偶姐姐"
     }
 
