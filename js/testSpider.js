@@ -18,18 +18,18 @@ async function test() {
     //
     //
     //
-    var classes = JSON.parse(await spider.home(true));
-    // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
-    // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
+    // var classes = JSON.parse(await spider.home(true));
+    // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
+    // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
+    // // //
+    // // // // //测试首页列表
+    // var homeVod = JSON.parse(await spider.homeVod())
+    // // console.debug(homeVod);
+    // // // console.debug(JSON.stringify(homeVod));
     // //
-    // // // //测试首页列表
-    var homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(homeVod);
-    // // console.debug(JSON.stringify(homeVod));
-    //
-    // //测试分类列表
-    var page = JSON.parse(await spider.category("https://hongkongdollvideo.com/91制片厂/", "1", undefined, {}));
-    console.debug(JSON.stringify(page));
+    // // //测试分类列表
+    // var page = JSON.parse(await spider.category("https://hongkongdollvideo.com/91制片厂/", "1", undefined, {}));
+    // console.debug(JSON.stringify(page));
 
     // let detail = JSON.parse(await spider.detail("https://hongkongdollvideo.com/video/10b1a473f0b33032.html"))
     // console.debug(JSON.stringify(detail));
@@ -38,7 +38,7 @@ async function test() {
 
     // 测试搜索
     //
-    var search_page = JSON.parse(await spider.search("月月"))
+    var search_page = JSON.parse(await spider.search("繁花"))
     // console.debug(JSON.stringify(search_page));
 
     // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
