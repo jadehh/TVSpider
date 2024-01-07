@@ -35,13 +35,15 @@ async function test() {
     // console.debug(JSON.stringify(detail));
 
 
-
     // 测试搜索
     //
-    var search_page = JSON.parse(await spider.search("繁花"))
+    // var search_page = JSON.parse(await spider.search("繁花"))
     // console.debug(JSON.stringify(search_page));
 
     // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
+
+    let url2 = "6599cc283e24ce67258c46f9b8353683d40a33ce+86ZtUWv8uTr+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21Kc29uIjoie1wiZG9tYWluX2lkXCI6XCJiajI5XCIsXCJzaGFyZV9pZFwiOlwiODZadFVXdjh1VHJcIixcImNyZWF0b3JcIjpcIjI1YTJkY2QwYzg4ZTRhYTZhZGZkZmMxODEyODYwMTEwXCIsXCJ1c2VyX2lkXCI6XCJhbm9ueW1vdXNcIn0iLCJjdXN0b21UeXBlIjoic2hhcmVfbGluayIsImV4cCI6MTcwNDYxNDEyMSwiaWF0IjoxNzA0NjA2ODYxfQ.Wa4cic3qqgiOYlMTP87S77e8SBKpzl2mPmCE1RtzFXqKrDA9N70ubejsqFQy46Ue7Dd_63-hwbhTuCh6kowDknFWm1GL0DaFumUsxaZ29tNL6KeX0i1ecvc-JtBH01pRmBw6GT79vsHdw71Q9tZIkfwM13spB2pu9KPPwYitVF0"
+    var playUrl = await spider.play("标清", url2, []);
 
     // 测试详情
     if (search_page.list && search_page.list.length > 0) {
@@ -69,7 +71,8 @@ async function test() {
                             var name = urls[j].split('$')[0];
                             var url = urls[j].split('$')[1];
                             console.debug(flag + " | " + name + " | " + url);
-                            var playUrl = await spider.play(flag, url, []);
+                            url = "65993ab2ab57bf9526384d708274ca4c1aca9a6c+25YBKrkDt42+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21Kc29uIjoie1wiZG9tYWluX2lkXCI6XCJiajI5XCIsXCJzaGFyZV9pZFwiOlwiMjVZQktya0R0NDJcIixcImNyZWF0b3JcIjpcImUwYzhlZTZhYWYwZjQ5YzU5MDZhYWVmZWUzM2IzMDk2XCIsXCJ1c2VyX2lkXCI6XCJhbm9ueW1vdXNcIn0iLCJjdXN0b21UeXBlIjoic2hhcmVfbGluayIsImV4cCI6MTcwNDYxMzU3NywiaWF0IjoxNzA0NjA2MzE3fQ.m6ChB3hgKdem9cQuadzGA8TI-P2u3y9Fgmi83Jm9WGnRP2JF0lSfhSzJPMiFOxe8-4yzk6NnvGkQn-Uye4Zrt167IgeMdOq-dI5in20Hw_HjyPGkkgCAlIwmQQ4Z9-rCDVfC1ybRYIjzhsNzgsVRLQSyIi85wA5QaTgO8A6gMQI"
+                            var playUrl = await spider.play("标清", url, []);
                             console.debug('playURL: ' + playUrl);
                             break
                         }
