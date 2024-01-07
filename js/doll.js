@@ -66,7 +66,7 @@ class Doll extends Spider {
             code.push(String.fromCharCode(voteTag.charCodeAt(i) ^ key.charCodeAt(k)))
         }
         let play_url_2 = decodeURIComponent(Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(code.join(""))))
-        vodDetail.vod_play_from = "doll"
+        vodDetail.vod_play_from = "玩偶姐姐"
         vodDetail.vod_play_url = "玩偶姐姐" + "$" + play_url_2
         return vodDetail
     }
@@ -1391,6 +1391,15 @@ class Doll extends Spider {
     async setPlay(flag, id, flags) {
         this.playUrl = id
         this.playHeader = {}
+    }
+
+    async setSearch(wd, quick) {
+        let x = "https://hongkongdollvideo.com/search/%E6%9C%88%E6%9C%88"
+        let searchUrl = this.siteUrl + "search/" + encodeURIComponent(wd)
+        let html = await this.fetch(searchUrl,null,this.getHeader())
+        if (html !== null){
+            this.vodList = this.parseVodShortListFromDoc($)
+        }
     }
 }
 
