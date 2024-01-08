@@ -23,6 +23,9 @@ github://Token@github.com/jadehh/CatVodOpenConfig/js/open_config.json
 
 
 
+## 遇到的问题
+* 1. 玩偶姐姐播放不了,需要切换VPN节点
+
 
 
 
