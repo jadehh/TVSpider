@@ -936,6 +936,7 @@ function getAppName() {
 }
 
 async function init(cfg) {
+    pd
     let obj = await SpiderInit(cfg)
     CatOpenStatus = obj.CatOpenStatus
     // 读取缓存
