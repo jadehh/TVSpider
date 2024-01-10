@@ -160,6 +160,7 @@ class Spider {
         await this.jadeLog.debug(`详情页面内容为:${this.result.detail(this.vodDetail)}`)
         await this.jadeLog.info("详情页面解析完成", true)
         await this.setDetail(id)
+        this.vodDetail.vod_id = id
         return this.result.detail(this.vodDetail)
     }
 
