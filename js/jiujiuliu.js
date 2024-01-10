@@ -2479,7 +2479,7 @@ class JiuJiuLiuSpider extends Spider {
             let language = extend["5"] ?? "全部"; //全部
             let letter = extend["6"] ?? "全部"; //全部
             let time = extend["7"] ?? "全部"; //全部
-            cateUrl = this.siteUrl + `/area/${area}/by/${time}/class/${plot}/id/${typeName}/lang/${language}/letter/${letter}/year/${year}/page/${pg.toString()}.html`
+            cateUrl = this.siteUrl + `/show/area/${area}/by/${time}/class/${plot}/id/${typeName}/lang/${language}/letter/${letter}/year/${year}/page/${pg.toString()}.html`
         } else {
             cateUrl = this.siteUrl
         }
