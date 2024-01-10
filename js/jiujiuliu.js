@@ -2469,17 +2469,21 @@ class JiuJiuLiuSpider extends Spider {
         }
     }
 
+    getParams(params,value){
+
+    }
+
     async setCategory(tid, pg, filter, extend) {
         let cateUrl = ""
         if (tid !== "/") {
-            let typeName = extend["1"] ?? tid.split("/").slice(-1)[0]; //类型
-            let plot = extend["2"] ?? "全部"; //剧情
-            let area = extend["3"] ?? "全部";  // 地区
-            let year = extend["4"] ?? "全部"; //全部
-            let language = extend["5"] ?? "全部"; //全部
-            let letter = extend["6"] ?? "全部"; //全部
-            let time = extend["7"] ?? "全部"; //全部
-            cateUrl = this.siteUrl + `/show/area/${area}/by/${time}/class/${plot}/id/${typeName}/lang/${language}/letter/${letter}/year/${year}/page/${pg.toString()}.html`
+            let typeName = "/id/" + extend["1"]
+            let plot = "/class/" + extend["2"]
+            let area = "/area/" + extend["3"]
+            let year = "/year/" + extend["4"]
+            let language = "/lang/ " + extend["5"]
+            let letter = "/letter/ "+ extend["6"]
+            let time = "/by/" + extend["7"]
+            cateUrl = this.siteUrl + `/show/${area}${time}${plot}${typeName}${language}${letter}${year}/page/${pg.toString()}.html`
         } else {
             cateUrl = this.siteUrl
         }
