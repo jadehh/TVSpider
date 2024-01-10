@@ -2481,7 +2481,7 @@ class JiuJiuLiuSpider extends Spider {
             let time = extend["7"] ?? "全部"; //全部
             cateUrl = this.siteUrl + `/area/${area}/by/${time}/class/${plot}/id/${typeName}/lang/${language}/letter/${letter}/year/${year}/page/${pg.toString()}.html`
         } else {
-            cateUrl = this.siteUrl + tid + `/page/${pg.toString()}.html`
+            cateUrl = this.siteUrl
         }
         await this.jadeLog.info(`类别URL为:${cateUrl}`)
         this.limit = 36
