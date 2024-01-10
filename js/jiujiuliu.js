@@ -18,11 +18,11 @@ class JiuJiuLiuSpider extends Spider {
         this.siteUrl = "https://www.cs1369.com"
     }
 
-    getAppName() {
-        return "🍥┃九九六影视┃🍥"
+    getName() {
+        return "🥃┃九九六影视┃🥃"
     }
 
-    getName() {
+    getAppName() {
         return "九九六影视"
     }
 
