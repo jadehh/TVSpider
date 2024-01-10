@@ -2470,20 +2470,26 @@ class JiuJiuLiuSpider extends Spider {
     }
 
     getParams(params,value){
+        let x = value ??  "全部"
+        if (x === "全部"){
+            return  ""
+        }else{
+            return params + value
+        }
 
     }
 
     async setCategory(tid, pg, filter, extend) {
         let cateUrl = ""
         if (tid !== "/") {
-            let typeName = "/id/" + extend["1"]
-            let plot = "/class/" + extend["2"]
-            let area = "/area/" + extend["3"]
-            let year = "/year/" + extend["4"]
-            let language = "/lang/ " + extend["5"]
-            let letter = "/letter/ "+ extend["6"]
-            let time = "/by/" + extend["7"]
-            cateUrl = this.siteUrl + `/show/${area}${time}${plot}${typeName}${language}${letter}${year}/page/${pg.toString()}.html`
+            let typeName = this.getParams("/id/",extend["1"])
+            let plot = this.getParams("/class/",extend["2"])
+            let area = this.getParams("/area/" , extend["3"])
+            let year = this.getParams("/year/" , extend["4"])
+            let language = this.getParams("/lang/ ", extend["5"])
+            let letter = this.getParams( "/letter/ ",extend["6"])
+            let time = this.getParams("/by/",extend["7"])
+            cateUrl = this.siteUrl + `/show${area}${time}${plot}${typeName}${language}${letter}${year}/page/${pg.toString()}.html`
         } else {
             cateUrl = this.siteUrl
         }
