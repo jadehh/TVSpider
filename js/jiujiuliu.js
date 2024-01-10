@@ -2471,7 +2471,7 @@ class JiuJiuLiuSpider extends Spider {
 
     getParams(params,value){
         let x = value ??  "全部"
-        if (x === "全部"){
+        if (x === "全部" || x === undefined){
             return  ""
         }else{
             return params + value

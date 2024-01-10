@@ -28,7 +28,7 @@ async function test() {
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    var page = JSON.parse(await spider.category("/show/id/1", "1", undefined, {"1":"1","2":"全部","3":"全部","4":"全部","5":"全部","6":"全部"}));
+    var page = JSON.parse(await spider.category("/show/id/1", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     let detail = JSON.parse(await spider.detail("/detail/313.html"))
