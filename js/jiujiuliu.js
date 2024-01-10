@@ -2472,7 +2472,7 @@ class JiuJiuLiuSpider extends Spider {
     async setCategory(tid, pg, filter, extend) {
         let cateUrl = ""
         if (tid !== "/") {
-            let typeName = extend["1"] ?? "全部"; //类型
+            let typeName = extend["1"] ?? tid.split("/").slice(-1)[0]; //类型
             let plot = extend["2"] ?? "全部"; //剧情
             let area = extend["3"] ?? "全部";  // 地区
             let year = extend["4"] ?? "全部"; //全部
