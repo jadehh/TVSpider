@@ -28,16 +28,16 @@ async function test() {
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    var page = JSON.parse(await spider.category("/show/id/2", "1", undefined, {}));
+    // var page = JSON.parse(await spider.category("/show/id/2", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
-    let detail = JSON.parse(await spider.detail("/detail/313.html"))
+    // let detail = JSON.parse(await spider.detail("/detail/313.html"))
     // console.debug(JSON.stringify(detail));
 
 
     // 测试搜索
     //
-    var search_page = JSON.parse(await spider.search("奥本海默"))
+    var search_page = JSON.parse(await spider.search("速度与激情"))
     // console.debug(JSON.stringify(search_page));
 
     // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
