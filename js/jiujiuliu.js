@@ -8,7 +8,7 @@
 */
 
 import {Spider} from "./spider.js";
-import {Crypto, load} from "../lib/cat.js";
+import {_, Crypto, load} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
 
@@ -2051,6 +2051,10 @@ class JiuJiuLiuSpider extends Spider {
         let cateUrl = ""
         if (tid !== "/") {
             let typeName = this.getParams("/id/",extend["1"])
+            if (_.isEmpty(typeName))  {
+                typeName  = "/id/" + tid.split("/").slice(-1)[0]
+            }
+
             let plot = this.getParams("/class/",extend["2"])
             let area = this.getParams("/area/" , extend["3"])
             let year = this.getParams("/year/" , extend["4"])
