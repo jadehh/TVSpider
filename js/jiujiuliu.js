@@ -57,7 +57,7 @@ class JiuJiuLiuSpider extends Spider {
         for (const playElement of $("[class=\"stui-content__playlist clearfix\"]").find("a")) {
             let episodeUrl = this.siteUrl + playElement.attribs["href"];
             let episodeName = $(playElement).text();
-            vodItems.push(episodeName + "#" + episodeUrl);
+            vodItems.push(episodeName + "$" + episodeUrl);
         }
         vodDetail.vod_name = $(vodShortElement).find("[class=\"stui-vodlist__thumb picture v-thumb\"]")[0].attribs["title"]
         vodDetail.vod_pic = $(vodShortElement).find("img")[0].attribs["data-original"]
@@ -69,8 +69,8 @@ class JiuJiuLiuSpider extends Spider {
         vodDetail.vod_actor = Utils.getStrByRegex(/主演：(.*?) /, data_str)
         vodDetail.vod_director = Utils.getStrByRegex(/导演：(.*?) /, data_str)
         vodDetail.vod_content = $($("[class=\"stui-pannel_bd\"]").find("[class=\"col-pd\"]")).text()
-        vodDetail.vod_play_from = "996"
-        vodDetail.vod_play_url = vodItems.join("$$$")
+        vodDetail.vod_play_from = ["996"].join("$$$")
+        vodDetail.vod_play_url = [ vodItems.join("#")].join("$$$")
         return vodDetail
     }
 
