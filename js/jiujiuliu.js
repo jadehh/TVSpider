@@ -57,7 +57,7 @@ class JiuJiuLiuSpider extends Spider {
         for (const playElement of $("[class=\"stui-content__playlist clearfix\"]").find("a")) {
             let episodeUrl = this.siteUrl + playElement.attribs["href"];
             let episodeName = $(playElement).text();
-            vodItems.push(episodeName + "$" + episodeUrl);
+            vodItems.push(episodeName + "#" + episodeUrl);
         }
         vodDetail.vod_name = $(vodShortElement).find("[class=\"stui-vodlist__thumb picture v-thumb\"]")[0].attribs["title"]
         vodDetail.vod_pic = $(vodShortElement).find("img")[0].attribs["data-original"]
