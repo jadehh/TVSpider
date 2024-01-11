@@ -18,7 +18,7 @@ import {_, Uri} from "../lib/cat.js";
 class Spider {
     constructor() {
         this.jadeLog = new JadeLogging(this.getAppName(), "DEBUG")
-        this.classes = [ {"type_name": "首页", "type_id": "首页"}]
+        this.classes = [ {"type_name": "最近更新", "type_id": "最近更新"}]
         this.filterObj = {}
         this.result = new Result()
         this.catOpenStatus = false
