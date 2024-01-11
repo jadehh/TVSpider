@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './wogg.js';
+import {__jsEvalReturn} from './doll.js';
 
 
 let spider = __jsEvalReturn();
@@ -23,12 +23,12 @@ async function test() {
     // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // // //
     // // // // //测试首页列表
-    var homeVod = JSON.parse(await spider.homeVod())
+    // var homeVod = JSON.parse(await spider.homeVod())
     // // console.debug(homeVod);
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    var page = JSON.parse(await spider.category("1", "1", undefined, {}));
+    // var page = JSON.parse(await spider.category("1", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     // let detail = JSON.parse(await spider.detail("/detail/313.html"))
