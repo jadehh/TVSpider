@@ -73,10 +73,11 @@ class Spider {
         let response = await req(uri.toString(), {
             method: "get", headers: headers, data: null,
         });
-        if (response.code === 200 || response.code === undefined || response.code === 302 || response.code == 301) {
+        if (response.code === 200 || response.code === undefined || response.code === 302 || response.code === 301) {
             if (response.headers["location"] !== undefined) {
                 return this.fetch(response.headers["location"], params, headers)
             } else if (!_.isEmpty(response.content)) {
+                this.reconnectTimes = 0
                 return response.content
             } else {
                 return await this.reconnnect(reqUrl, params, headers)
@@ -103,6 +104,7 @@ class Spider {
             if (response.headers["location"] !== undefined) {
                 return await this.redirect(response)
             } else if (!_.isEmpty(response.content)) {
+                this.reconnectTimes = 0
                 return response.content
             } else {
                 return await this.postReconnect(reqUrl, params, headers)
