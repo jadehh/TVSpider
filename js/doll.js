@@ -1374,7 +1374,7 @@ class Doll extends Spider {
         if (tid.indexOf(this.siteUrl) > -1) {
             cateUrl = tid + pg.toString() + ".html"
         } else {
-            cateUrl = extend [tid] ?? this.siteUrl
+            cateUrl = this.siteUrl
         }
         this.limit = 36
         let html = await this.fetch(cateUrl, null, this.getHeader())
