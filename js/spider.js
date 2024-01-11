@@ -139,7 +139,7 @@ class Spider {
 
     }
 
-    async parseVodShortListFromDocBySearch() {
+    async parseVodShortListFromDocBySearch($) {
 
     }
 
@@ -161,6 +161,7 @@ class Spider {
         if (this.catOpenStatus) {
             this.classes.push({"type_name": "最近更新", "type_id": "最近更新"})
         }
+        return obj
     }
 
     async setHome(filter) {

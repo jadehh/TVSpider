@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './xb6v.js';
+import {__jsEvalReturn} from './wogg.js';
 
 
 let spider = __jsEvalReturn();
@@ -28,7 +28,7 @@ async function test() {
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    var page = JSON.parse(await spider.category("/xijupian/", "1", undefined, {}));
+    var page = JSON.parse(await spider.category("1", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     // let detail = JSON.parse(await spider.detail("/detail/313.html"))
@@ -37,7 +37,7 @@ async function test() {
 
     // 测试搜索
     //
-    var search_page = JSON.parse(await spider.search("繁花"))
+    var search_page = JSON.parse(await spider.search("王牌对王牌"))
     // console.debug(JSON.stringify(search_page));
 
     // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
