@@ -1369,6 +1369,7 @@ class Doll extends Spider {
                 tid = extend[1]
             }
         }
+        await this.jadeLog.info(`tid = ${tid}`)
         let cateUrl = ""
         if (tid.indexOf(this.siteUrl) > -1) {
             cateUrl = tid + pg.toString() + ".html"
