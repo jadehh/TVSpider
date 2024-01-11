@@ -222,6 +222,7 @@ class Xb6vSpider extends Spider {
             "show": "title", "tempid": "1", "tbname": "article", "mid": "1", "dopost": "search", "keyboard": wd,
         }
         let html = await this.post(searchUrl, params, this.getHeader())
+        await this.jadeLog.debug(html)
         if (!_.isEmpty(html)) {
             let $ = load(html)
             this.vodList = await this.parseVodShortListFromDoc($)
