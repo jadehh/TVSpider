@@ -186,7 +186,7 @@ class Spider {
             return this.result.homeVod(this.vodList)
         } else {
             await this.jadeLog.info("CatVodOpen无需解析首页", true)
-
+            return this.result.homeVod(this.vodList)
         }
     }
 

@@ -212,7 +212,7 @@ class Xb6vSpider extends Spider {
                 let items = $("#post_container .post_hover");
                 this.total = this.page === this.count ? (this.page - 1) * this.limit + items.length : this.count * this.limit;
             }
-            this.vodList = this.parseVodShortListFromDoc($)
+            this.vodList = await this.parseVodShortListFromDoc($)
         }
     }
 
