@@ -182,8 +182,7 @@ class Xb6vSpider extends Spider {
                     }]
                 }
             }
-            this.vodList = this.parseVodShortListFromDoc($)
-
+            this.homeVodList = await this.parseVodShortListFromDoc($)
         } else {
             await this.jadeLog.info("首页类别解析失败", true)
         }

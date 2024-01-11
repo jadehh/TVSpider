@@ -18,7 +18,7 @@ import {_, Uri} from "../lib/cat.js";
 class Spider {
     constructor() {
         this.jadeLog = new JadeLogging(this.getAppName(), "DEBUG")
-        this.classes = [ {"type_name": "最近更新", "type_id": "最近更新"}]
+        this.classes = []
         this.filterObj = {}
         this.result = new Result()
         this.catOpenStatus = false
@@ -26,6 +26,7 @@ class Spider {
         this.maxReconnectTimes = 5
         this.siteUrl = ""
         this.vodList = []
+        this.homeVodList = []
         this.count = 0
         this.limit = 0
         this.total = 0
@@ -74,7 +75,7 @@ class Spider {
         });
         if (response.code === 200 || response.code === undefined || response.code === 302 || response.code == 301) {
             if (response.headers["location"] !== undefined) {
-                return this.fetch(response.headers["location"],params,headers)
+                return this.fetch(response.headers["location"], params, headers)
             } else if (!_.isEmpty(response.content)) {
                 return response.content
             } else {
@@ -101,11 +102,10 @@ class Spider {
             // 重定向
             if (response.headers["location"] !== undefined) {
                 return await this.redirect(response)
-            }
-            else if (!_.isEmpty(response.content)) {
+            } else if (!_.isEmpty(response.content)) {
                 return response.content
             } else {
-               return await this.postReconnect(reqUrl, params, headers)
+                return await this.postReconnect(reqUrl, params, headers)
             }
         } else {
             await this.jadeLog.error(`请求失败,请求url为:${reqUrl},回复内容为${JSON.stringify(response)}`)
@@ -147,17 +147,20 @@ class Spider {
 
     }
 
-    async parseVodPlayFromUrl(flag,play_url) {
+    async parseVodPlayFromUrl(flag, play_url) {
 
     }
 
-    async parseVodPlayFromDoc(flag,$) {
+    async parseVodPlayFromDoc(flag, $) {
 
     }
 
     async init(cfg) {
         let obj = await SpiderInit(cfg)
         this.catOpenStatus = obj.CatOpenStatus
+        if (this.catOpenStatus) {
+            this.classes.push({"type_name": "最近更新", "type_id": "最近更新"})
+        }
     }
 
     async setHome(filter) {
@@ -177,17 +180,11 @@ class Spider {
     }
 
     async homeVod() {
-        if (!this.catOpenStatus) {
-            this.vodList = []
-            await this.jadeLog.info("正在解析首页内容", true)
-            await this.setHomeVod()
-            await this.jadeLog.debug(`首页内容为:${this.result.homeVod(this.vodList)}`)
-            await this.jadeLog.info("首页内容解析完成", true)
-            return this.result.homeVod(this.vodList)
-        } else {
-            await this.jadeLog.info("CatVodOpen无需解析首页", true)
-            return this.result.homeVod(this.vodList)
-        }
+        await this.jadeLog.info("正在解析首页内容", true)
+        await this.setHomeVod()
+        await this.jadeLog.debug(`首页内容为:${this.result.homeVod(this.homeVodList)}`)
+        await this.jadeLog.info("首页内容解析完成", true)
+        return this.result.homeVod(this.homeVodList)
     }
 
     async setCategory(tid, pg, filter, extend) {
@@ -195,13 +192,18 @@ class Spider {
     }
 
     async category(tid, pg, filter, extend) {
-        this.vodList = []
         this.page = parseInt(pg)
         await this.jadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)}`)
-        await this.setCategory(tid, pg, filter, extend)
-        await this.jadeLog.debug(`分类页面内容为:${this.result.category(this.vodList, this.page, this.count, this.limit, this.total)}`)
-        await this.jadeLog.info("分类页面解析完成", true)
-        return this.result.category(this.vodList, this.page, this.count, this.limit, this.total)
+        if (tid === "最近更新") {
+            return await this.homeVod()
+        } else {
+            this.vodList = []
+            await this.setCategory(tid, pg, filter, extend)
+            await this.jadeLog.debug(`分类页面内容为:${this.result.category(this.vodList, this.page, this.count, this.limit, this.total)}`)
+            await this.jadeLog.info("分类页面解析完成", true)
+            return this.result.category(this.vodList, this.page, this.count, this.limit, this.total)
+        }
+
     }
 
     async setDetail(id) {
