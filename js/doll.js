@@ -94,15 +94,18 @@ class Doll extends Spider {
                     }
                 }
                 type_list = type_list.filter(element => element !== "");
-                let new_value_list = []
-                for (let i = 0; i < valueList.length; i++) {
-                    new_value_list.push(valueList[i])
-                    if (i % 8 === 0 && i !== 0) {
-                        this.filterObj[class_id].push({"key": type_id, "name": type_list[0], "value": new_value_list})
-                        new_value_list = []
-                    }
-                }
-                this.filterObj[class_id].push({"key": type_id, "name": type_list[0], "value": new_value_list})
+                this.filterObj[class_id].push({"key": type_id, "name": type_list[0], "value": valueList})
+
+                //下面这段是为了切割使用
+                // let new_value_list = []
+                // for (let i = 0; i < valueList.length; i++) {
+                //     new_value_list.push(valueList[i])
+                //     if (i % 8 === 0 && i !== 0) {
+                //         this.filterObj[class_id].push({"key": type_id, "name": type_list[0], "value": new_value_list})
+                //         new_value_list = []
+                //     }
+                // }
+                // this.filterObj[class_id].push({"key": type_id, "name": type_list[0], "value": new_value_list})
 
             }
             let menuElements = $("[id=\"side-menu\"]").find("li")
