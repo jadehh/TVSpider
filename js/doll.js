@@ -1364,6 +1364,7 @@ class Doll extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
+        tid = extend["1"] ?? tid
         let cateUrl = ""
         if (tid.indexOf(this.siteUrl) > -1) {
             cateUrl = tid + pg.toString() + ".html"
