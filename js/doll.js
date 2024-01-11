@@ -79,7 +79,7 @@ class Doll extends Spider {
             let index = 1
             let class_id = index.toString()
             this.classes = []
-            this.classes.push({"type_name": "首页", "type_id": class_id})
+            this.classes.push({"type_name": "首页", "type_id": ""})
             this.filterObj[class_id] = []
             for (const navElement of navElements) {
                 let type_list = $(navElement).text().split("\n")
