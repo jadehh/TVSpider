@@ -78,6 +78,8 @@ class Doll extends Spider {
             let navElements = $("[class=\"list-unstyled topnav-menu d-flex d-lg-block align-items-center justify-content-center flex-fill topnav-menu-left m-0\"]").find("li")
             let index = 1
             let class_id = index.toString()
+            this.classes = []
+            this.classes.push({"type_name": "首页", "type_id": class_id})
             this.filterObj[class_id] = []
             for (const navElement of navElements) {
                 let type_list = $(navElement).text().split("\n")
@@ -103,7 +105,6 @@ class Doll extends Spider {
                 this.filterObj[class_id].push({"key": type_id, "name": type_list[0], "value": new_value_list})
 
             }
-            this.classes.push({"type_name": "首页", "type_id": class_id})
             let menuElements = $("[id=\"side-menu\"]").find("li")
             for (const menuElement of menuElements) {
                 let type_id = $(menuElement).find("a")[0].attribs["href"]
