@@ -1399,11 +1399,11 @@ class Doll extends Spider {
     }
 
     async setSearch(wd, quick) {
-        let x = "https://hongkongdollvideo.com/search/%E6%9C%88%E6%9C%88"
         let searchUrl = this.siteUrl + "search/" + encodeURIComponent(wd)
         let html = await this.fetch(searchUrl,null,this.getHeader())
         if (html !== null){
-            this.vodList = this.parseVodShortListFromDoc($)
+            let $ = load(html)
+            this.vodList = await this.parseVodShortListFromDoc($)
         }
     }
 }

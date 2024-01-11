@@ -28,7 +28,7 @@ async function test() {
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    var page = JSON.parse(await spider.category("1", "1", undefined, {"1":"https://hongkongdollvideo.com/tag/黑丝/"}));
+    // var page = JSON.parse(await spider.category("1", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     // let detail = JSON.parse(await spider.detail("/detail/313.html"))
@@ -37,7 +37,7 @@ async function test() {
 
     // 测试搜索
     //
-    var search_page = JSON.parse(await spider.search("王牌对王牌"))
+    var search_page = JSON.parse(await spider.search("月月"))
     // console.debug(JSON.stringify(search_page));
 
     // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")
