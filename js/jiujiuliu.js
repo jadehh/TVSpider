@@ -41,13 +41,6 @@ class JiuJiuLiuSpider extends Spider {
         return vod_list
     }
 
-    async parseVodPlayFromUrl(play_url) {
-        let html = await this.fetch(play_url, null, this.getHeader())
-        if (html !== null) {
-            let $ = load(html)
-        }
-
-    }
 
     async parseVodShortListFromDocBySearch($) {
         let vod_list = []

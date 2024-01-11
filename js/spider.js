@@ -47,6 +47,18 @@ class Spider {
         }
     }
 
+    async postReconnect(reqUrl, params, headers) {
+        await this.jadeLog.error("请求失败,请检查url:" + reqUrl + ",两秒后重试")
+        Utils.sleep(2)
+        if (this.reconnectTimes < this.maxReconnectTimes) {
+            this.reconnectTimes = this.reconnectTimes + 1
+            return await this.post(reqUrl, params, headers)
+        } else {
+            await this.jadeLog.error("请求失败,重连失败")
+            return null
+        }
+    }
+
     getHeader() {
         return {"User-Agent": Utils.CHROME, "Referer": this.siteUrl + "/"};
     }
@@ -58,13 +70,11 @@ class Spider {
         }
         let uri = new Uri(reqUrl);
         let response = await req(uri.toString(), {
-            method: "get",
-            headers: headers,
-            data: null,
+            method: "get", headers: headers, data: null,
         });
-        if (response.code === 200 || response.code === undefined || response.code === 302) {
+        if (response.code === 200 || response.code === undefined || response.code === 302 || response.code == 301) {
             if (response.headers["location"] !== undefined) {
-                return response.headers["location"]
+                return this.fetch(response.headers["location"],params,headers)
             } else if (!_.isEmpty(response.content)) {
                 return response.content
             } else {
@@ -77,8 +87,31 @@ class Spider {
         }
     }
 
-    async post(url, params, headers) {
+    async redirect(response) {
 
+    }
+
+
+    async post(reqUrl, params, headers) {
+        let uri = new Uri(reqUrl);
+        let response = await req(uri.toString(), {
+            method: "post", headers: headers, data: params, postType: "form"
+        });
+        if (response.code === 200 || response.code === undefined || response.code === 302) {
+            // 重定向
+            if (response.headers["location"] !== undefined) {
+                return await this.redirect(response)
+            }
+            else if (!_.isEmpty(response.content)) {
+                return response.content
+            } else {
+               return await this.postReconnect(reqUrl, params, headers)
+            }
+        } else {
+            await this.jadeLog.error(`请求失败,请求url为:${reqUrl},回复内容为${JSON.stringify(response)}`)
+            return await this.postReconnect(reqUrl, params, headers)
+
+        }
     }
 
 
@@ -94,19 +127,19 @@ class Spider {
 
     }
 
-    async getFilter(){
+    async getFilter() {
 
     }
 
-    async setClasses(){
+    async setClasses() {
 
     }
 
-    async setFilterObj(){
+    async setFilterObj() {
 
     }
 
-    async parseVodShortListFromDocBySearch(){
+    async parseVodShortListFromDocBySearch() {
 
     }
 
@@ -114,7 +147,11 @@ class Spider {
 
     }
 
-    async parseVodPlayFromUrl(play_url) {
+    async parseVodPlayFromUrl(flag,play_url) {
+
+    }
+
+    async parseVodPlayFromDoc(flag,$) {
 
     }
 
@@ -130,9 +167,9 @@ class Spider {
         this.vodList = []
         await this.jadeLog.info("正在解析首页类别", true)
         await this.setHome(filter)
-        await this.jadeLog.debug(`首页类别内容为:${this.result.home(this.classes, this.vodList, this.filterObj)}`)
+        await this.jadeLog.debug(`首页类别内容为:${this.result.home(this.classes, [], this.filterObj)}`)
         await this.jadeLog.info("首页类别解析完成", true)
-        return this.result.home(this.classes, this.vodList, this.filterObj)
+        return this.result.home(this.classes, [], this.filterObj)
     }
 
     async setHomeVod() {
@@ -172,6 +209,7 @@ class Spider {
     }
 
     async detail(id) {
+        this.vodDetail = new VodDetail();
         await this.jadeLog.info(`正在获取详情页面,id为:${id}`)
         await this.jadeLog.debug(`详情页面内容为:${this.result.detail(this.vodDetail)}`)
         await this.jadeLog.info("详情页面解析完成", true)
