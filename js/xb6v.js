@@ -32,7 +32,7 @@ class Xb6vSpider extends Spider {
         if (matcher.length > 1) {
             let new_url = this.siteUrl + "/e/search/" + matcher[1].replaceAll("\\", "").replaceAll("\"", "")
             await this.jadeLog.info(`重定向url为:${new_url}`)
-            return await this.fetch(new_url, this.getHeader())
+            return await this.fetch(new_url, null,this.getHeader())
         }
     }
 
