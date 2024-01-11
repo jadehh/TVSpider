@@ -79,7 +79,7 @@ class Doll extends Spider {
             let index = 1
             let class_id = index.toString()
             this.classes = []
-            this.classes.push({"type_name": "首页", "type_id": "/"})
+            this.classes.push({"type_name": "首页", "type_id": "1"})
             this.filterObj[class_id] = []
             for (const navElement of navElements) {
                 let type_list = $(navElement).text().split("\n")
@@ -1364,7 +1364,11 @@ class Doll extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        tid = extend["1"] ?? tid
+        if (extend["1"] !== undefined){
+            if (extend["1"] !== "1" ){
+                tid = extend[1]
+            }
+        }
         let cateUrl = ""
         if (tid.indexOf(this.siteUrl) > -1) {
             cateUrl = tid + pg.toString() + ".html"
