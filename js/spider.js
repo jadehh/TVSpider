@@ -94,6 +94,22 @@ class Spider {
 
     }
 
+    async getFilter(){
+
+    }
+
+    async setClasses(){
+
+    }
+
+    async setFilterObj(){
+
+    }
+
+    async parseVodShortListFromDocBySearch(){
+
+    }
+
     async parseVodDetailFromDoc($) {
 
     }
