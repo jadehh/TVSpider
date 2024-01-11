@@ -161,7 +161,7 @@ class WoggSpider extends Spider {
     }
 
     async setClasses() {
-        let con = await this.fetch(this.siteUrl);
+        let con = await this.fetch(this.siteUrl,null,this.getHeader());
         if (!_.isEmpty(con)) {
             const $ = load(con);
             let elements = $('.nav-link')
