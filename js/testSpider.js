@@ -31,7 +31,7 @@ async function test() {
     // var page = JSON.parse(await spider.category("/category/1,/hot/index-movie-热门.htm", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
-    let detail1 = JSON.parse(await spider.detail("/play/833104"))
+    let detail1 = JSON.parse(await spider.detail("/play/813595"))
     console.debug(JSON.stringify(detail1));
 
 
