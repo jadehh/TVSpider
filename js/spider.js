@@ -161,9 +161,8 @@ class Spider {
     }
 
     async init(cfg) {
-        let cfgObj = JSON.parse(cfg)
-        this.siteKey = cfgObj["skey"]
-        this.siteType = parseInt(cfgObj["stype"])
+        this.siteKey = cfg["skey"]
+        this.siteType = parseInt(cfg["stype"])
         let obj = await SpiderInit(cfg)
         await this.jadeLog.debug(`初始化参数为:${JSON.stringify(cfg)}`)
         this.catOpenStatus = obj.CatOpenStatus
