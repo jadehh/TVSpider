@@ -286,6 +286,7 @@ class JianPianSpider extends Spider {
     }
 
     async setPlay(flag, id, flags) {
+        await this.jadeLog.debug(`播放链接为:${id}`)
         this.playUrl = id
     }
 
