@@ -386,9 +386,13 @@ class IKanBotSpider extends Spider {
         let what = segments[0];
         let url = Utils.base64Decode(segments[1]);
         if (what === 'img') {
+            await this.jadeLog.info(`反向代理URL为:${url}`)
             const resp = await req(url, {
                 buffer: 2, headers: this.getHeader(),
             });
+            await this.jadeLog.info(`反向代理结果为:${JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            })}`)
             return JSON.stringify({
                 code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
             });
