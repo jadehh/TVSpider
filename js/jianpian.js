@@ -41,7 +41,7 @@ class JianPianSpider extends Spider {
             let vodShort = new VodShort();
             vodShort.vod_id = data["id"]
             if (data["path"] !== undefined) {
-                vodShort.vod_pic = data["path"]
+                vodShort.vod_pic = data["path"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353"
             } else {
                 vodShort.vod_pic = data["thumbnail"]
             }
