@@ -18,7 +18,7 @@ import {_, Uri} from "../lib/cat.js";
 class Spider {
     constructor() {
         this.siteKey = ""
-        this.siteType = ""
+        this.siteType = 0
         this.jadeLog = new JadeLogging(this.getAppName(), "DEBUG")
         this.classes = []
         this.filterObj = {}
@@ -161,6 +161,9 @@ class Spider {
     }
 
     async init(cfg) {
+        let cfgObj = JSON.parse(cfg)
+        this.siteKey = cfgObj["skey"]
+        this.siteType = parseInt(cfgObj["stype"])
         let obj = await SpiderInit(cfg)
         await this.jadeLog.debug(`初始化参数为:${JSON.stringify(cfg)}`)
         this.catOpenStatus = obj.CatOpenStatus

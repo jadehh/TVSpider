@@ -69,6 +69,10 @@ class IKanBotSpider extends Spider {
         return "|爱看机器人|"
     }
 
+    async init(cfg) {
+        await super.init(cfg);
+        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
+    }
 
     async parseVodShortListFromDoc($) {
         let vod_list = [];
@@ -77,8 +81,7 @@ class IKanBotSpider extends Spider {
             let vodShort = new VodShort()
             let reElement = $(vodShortElement).find("img")[0]
             vodShort.vod_id = vodShortElement.attribs["href"]
-            let jsBase = await js2Proxy(true, 3, "ikanbot_open", 'img/', {});
-            vodShort.vod_pic = jsBase + Utils.base64Encode(reElement.attribs["data-src"])
+            vodShort.vod_pic = this.jsBase + Utils.base64Encode(reElement.attribs["data-src"])
             vodShort.vod_name = reElement.attribs["alt"]
             vod_list.push(vodShort)
         }
@@ -87,9 +90,8 @@ class IKanBotSpider extends Spider {
 
     async parseVodDetailFromDoc($) {
         const detail = $('div.detail > .meta');
-        let jsBase = await js2Proxy(true, 3, "ikanbot_open", 'img/', {});
         let vodDetail = new VodDetail();
-        vodDetail.vod_pic = jsBase + Utils.base64Encode($('div.item-root > img')[0].attribs['data-src'])
+        vodDetail.vod_pic = this.jsBase + Utils.base64Encode($('div.item-root > img')[0].attribs['data-src'])
         for (const info of detail) {
             if ($(info).hasClass('title')) {
                 vodDetail.vod_name = info.children[0].data;
@@ -130,13 +132,12 @@ class IKanBotSpider extends Spider {
     async parseVodShortListFromDocBySearch($) {
         let vod_list = []
         const items = $('div.media > div.media-left > a');
-        let jsBase = await js2Proxy(true, 3, "ikanbot_open", 'img/', {});
         for (const item of items){
             let vodShort = new VodShort();
             const img = $(item).find('img:first')[0];
             vodShort.vod_id = item.attribs.href
             vodShort.vod_name = img.attribs.alt
-            vodShort.vod_pic = jsBase + Utils.base64Encode(img.attribs['data-src'])
+            vodShort.vod_pic = this.jsBase + Utils.base64Encode(img.attribs['data-src'])
             vod_list.push(vodShort)
         }
         return vod_list
