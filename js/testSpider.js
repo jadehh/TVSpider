@@ -18,7 +18,7 @@ async function test() {
     //
     //
     //
-    // var classes = JSON.parse(await spider.home(true));
+    var classes = JSON.parse(await spider.home(true));
     // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // // //
