@@ -381,23 +381,22 @@ class IKanBotSpider extends Spider {
         this.playUrl = id
     }
 
-    async proxy(segments, headers) {
-        await this.jadeLog.info("正在设置代理")
-        let what = segments[0];
-        let url = Utils.base64Decode(segments[1]);
-        if (what === 'img') {
-            const resp = await req(url, {
-                buffer: 2, headers: this.getHeader(),
-            });
-            return JSON.stringify({
-                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
-            });
-        }
-        return JSON.stringify({
-            code: 500, content: '',
-        });
-    }
-
+    // async proxy(segments, headers) {
+    //     await this.jadeLog.info("正在设置代理")
+    //     let what = segments[0];
+    //     let url = Utils.base64Decode(segments[1]);
+    //     if (what === 'img') {
+    //         const resp = await req(url, {
+    //             buffer: 2, headers: this.getHeader(),
+    //         });
+    //         return JSON.stringify({
+    //             code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+    //         });
+    //     }
+    //     return JSON.stringify({
+    //         code: 500, content: '',
+    //     });
+    // }
 }
 
 
