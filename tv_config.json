@@ -15,6 +15,13 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
+            "key": "ikanbot_open",
+            "name": "🤖|爱看机器人2|🤖",
+            "type": 3,
+            "api": "./js/ikanbot_open.js",
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "jiujiuliu",
             "name": "🥃┃九九六影视┃🥃",
             "type": 3,
