@@ -160,31 +160,8 @@ class Spider {
 
     }
 
-    async SpiderInit(cfg) {
-        try {
-            let extObj = null;
-            if (typeof cfg.ext === "string") {
-                await this.jadeLog.info(`读取配置文件,ext为:${cfg.ext}`)
-                extObj = JSON.parse(cfg.ext)
-            } else if (typeof cfg.ext === "object") {
-                await this.jadeLog.info(`读取配置文件,所有参数为:${JSON.stringify(cfg)}`)
-                await this.jadeLog.info(`读取配置文件,ext为:${JSON.stringify(cfg.ext)}`)
-                extObj = cfg.ext
-            } else {
-                await this.jadeLog.error(`不支持的数据类型,数据类型为${typeof cfg.ext}`)
-            }
-            let boxType = extObj["box"]
-            extObj["CatOpenStatus"] = boxType === "CatOpen";
-            return extObj
-        } catch (e) {
-            await this.jadeLog.error("初始化失败,失败原因为:" + e.message)
-            return {"token": null, "CatOpenStatus": false, "code": 0}
-        }
-
-    }
-
     async init(cfg) {
-        let obj = await this.SpiderInit(cfg)
+        let obj = await SpiderInit(cfg)
         await this.jadeLog.debug(`初始化参数为:${JSON.stringify(obj)}`)
         this.catOpenStatus = obj.CatOpenStatus
         if (this.catOpenStatus) {
