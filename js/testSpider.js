@@ -18,17 +18,17 @@ async function test() {
     //
     //
     //
-    // var classes = JSON.parse(await spider.home(true));
+    var classes = JSON.parse(await spider.home(true));
     // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // // //
     // // // // //测试首页列表
-    // var homeVod = JSON.parse(await spider.homeVod())
+    var homeVod = JSON.parse(await spider.homeVod())
     // // console.debug(homeVod);
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    // var page = JSON.parse(await spider.category("/category/1,/hot/index-movie-热门.htm", "1", undefined, {}));
+    var page = JSON.parse(await spider.category("/category/1,/hot/index-movie-热门.htm", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     // let detail1 = JSON.parse(await spider.detail("/play/813595"))

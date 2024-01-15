@@ -8,10 +8,9 @@
 */
 
 import {Spider} from "./spider.js";
-import {load, _, Crypto} from "../lib/cat.js";
+import {load, _} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
-import * as timers from "timers";
 
 
 function _0xf746(_0xbb40c4, _0x1cb776) {
@@ -381,22 +380,23 @@ class IKanBotSpider extends Spider {
         this.playUrl = id
     }
 
-    // async proxy(segments, headers) {
-    //     await this.jadeLog.info("正在设置代理")
-    //     let what = segments[0];
-    //     let url = Utils.base64Decode(segments[1]);
-    //     if (what === 'img') {
-    //         const resp = await req(url, {
-    //             buffer: 2, headers: this.getHeader(),
-    //         });
-    //         return JSON.stringify({
-    //             code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
-    //         });
-    //     }
-    //     return JSON.stringify({
-    //         code: 500, content: '',
-    //     });
-    // }
+    async proxy(segments, headers) {
+        await this.jadeLog.info("正在设置反向代理")
+        let what = segments[0];
+        let url = Utils.base64Decode(segments[1]);
+        if (what === 'img') {
+            const resp = await req(url, {
+                buffer: 2, headers: this.getHeader(),
+            });
+            return JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            });
+        }
+        return JSON.stringify({
+            code: 500, content: '',
+        });
+    }
+
 }
 
 
@@ -443,6 +443,7 @@ export function __jsEvalReturn() {
         category: category,
         detail: detail,
         play: play,
+        proxy: proxy,
         search: search,
     };
 }
