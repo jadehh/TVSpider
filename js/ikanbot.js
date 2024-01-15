@@ -8,8 +8,9 @@
 */
 
 import {Spider} from "./spider.js";
-import {load, _} from "../lib/cat.js";
+import {load, _, Crypto} from "../lib/cat.js";
 import {VodShort} from "../lib/vod.js";
+import * as Utils from "../lib/utils.js";
 
 class IKanBot extends Spider {
     constructor() {
@@ -25,6 +26,8 @@ class IKanBot extends Spider {
         return "|爱看机器人|"
     }
 
+
+
     async parseVodShortListFromDoc($) {
         let vod_list = [];
         let VodShortElements = $($("[class=\"row list-wp\"]")).find("a")
@@ -32,7 +35,8 @@ class IKanBot extends Spider {
             let vodShort = new VodShort()
             let reElement = $(vodShortElement).find("img")[0]
             vodShort.vod_id = vodShortElement.attribs["href"]
-            vodShort.vod_pic = reElement.attribs["data-src"]
+            let jsBase = await js2Proxy(true, "", "", 'img/', {});
+            vodShort.vod_pic =  jsBase + Utils.base64Encode(reElement.attribs["data-src"])
             vodShort.vod_name = reElement.attribs["alt"]
             vod_list.push(vodShort)
         }
