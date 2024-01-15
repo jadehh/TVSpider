@@ -381,7 +381,7 @@ class IKanBotSpider extends Spider {
     }
 
     async proxy(segments, headers) {
-        await this.jadeLog.info("正在设置反向代理")
+        await this.jadeLog.info(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
         let what = segments[0];
         let url = Utils.base64Decode(segments[1]);
         if (what === 'img') {
