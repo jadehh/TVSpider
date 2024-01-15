@@ -35,7 +35,7 @@ class IKanBot extends Spider {
             let vodShort = new VodShort()
             let reElement = $(vodShortElement).find("img")[0]
             vodShort.vod_id = vodShortElement.attribs["href"]
-            let jsBase = await js2Proxy(true, 3, "ikanbot_open", 'img/', {});
+            let jsBase = await js2Proxy(true, 3, "ikanbot_open", 'img/', this.getHeader());
             vodShort.vod_pic =  jsBase + Utils.base64Encode(reElement.attribs["data-src"])
             vodShort.vod_name = reElement.attribs["alt"]
             vod_list.push(vodShort)
@@ -116,16 +116,16 @@ class IKanBot extends Spider {
 
 
     async setCategory(tid, pg, filter, extend) {
-        let categoryUrl
-        if (tid.indexOf(",") > -1){
-            categoryUrl = this.siteUrl + tid.split(",")[0]
-        }else{
-            categoryUrl = this.siteUrl
-        }
+        let  categoryUrl = this.siteUrl + (extend[tid] || tid.split(",")[0]).replace('.html', pg > 1 ? `-p-${pg}.html` : '.html');
         let html = await this.fetch(categoryUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
             this.vodList = await this.parseVodShortListFromDoc($)
+            const hasMore = $('div.page-more > a:contains(下一页)').length > 0;
+            this.limit = 24
+            this.count = hasMore ? parseInt(pg) + 1 : parseInt(pg);
+            this.total = this.limit * this.count
+
         }
     }
 }
