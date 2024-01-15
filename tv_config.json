@@ -15,6 +15,13 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
+            "key": "jianpian",
+            "name": "🌼|荐片|🌼",
+            "type": 3,
+            "api": "./js/jianpian.js",
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "jiujiuliu",
             "name": "🥃┃九九六影视┃🥃",
             "type": 3,
