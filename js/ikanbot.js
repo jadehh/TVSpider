@@ -56,7 +56,7 @@ function get_tks(play_id, e_token) {
     return _0x2d9d1b[_0xf07220(0x1b2)]('');
 }
 
-class IKanBot extends Spider {
+class IKanBotSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = "https://v.ikanbot.com"
@@ -401,7 +401,7 @@ class IKanBot extends Spider {
 }
 
 
-let spider = new IKanBot()
+let spider = new IKanBotSpider()
 
 async function init(cfg) {
     await spider.init(cfg)
@@ -444,7 +444,6 @@ export function __jsEvalReturn() {
         category: category,
         detail: detail,
         play: play,
-        proxy: proxy,
         search: search,
     };
 }
