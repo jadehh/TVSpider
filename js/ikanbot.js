@@ -92,17 +92,10 @@ class IKanBotSpider extends Spider {
         const detail = $('div.detail > .meta');
         let vodDetail = new VodDetail();
         vodDetail.vod_pic = this.jsBase + Utils.base64Encode($('div.item-root > img')[0].attribs['data-src'])
-        for (const info of detail) {
-            if ($(info).hasClass('title')) {
-                vodDetail.vod_name = info.children[0].data;
-            } else if ($(info).hasClass('year')) {
-                vodDetail.vod_area = info.children[0].data;
-            } else if ($(info).hasClass('country')) {
-                vodDetail.vod_area = info.children[0].data;
-            } else if ($(info).hasClass('celebrity')) {
-                vodDetail.vod_actor = info.children[0].data;
-            }
-        }
+        vodDetail.vod_name = detail[0].children[0].data;
+        vodDetail.vod_year = detail[2].children[0].data;
+        vodDetail.vod_area = detail[3].children[0].data;
+        vodDetail.vod_actor =detail[4].children[0].data;
 
         let id = Utils.getStrByRegex(/<input type="hidden" id="current_id" value="(.*?)"/, $.html())
         let token = Utils.getStrByRegex(/<input type="hidden" id="e_token" value="(.*?)"/, $.html())
@@ -114,17 +107,22 @@ class IKanBotSpider extends Spider {
 
         const list = JSON.parse(content)["data"]["list"];
         let playlist = {};
+
+        let index = 0
+        let form_list = []
         for (const l of list) {
             const flagData = JSON.parse(l["resData"]);
             for (const f of flagData) {
+                index = index + 1
                 const from = f.flag;
                 const urls = f.url;
                 if (!from || !urls) continue;
                 if (playlist[from]) continue;
+                form_list.push(`线路${index}`)
                 playlist[from] = urls;
             }
         }
-        vodDetail.vod_play_from = _.keys(playlist).join('$$$');
+        vodDetail.vod_play_from = form_list.join('$$$');
         vodDetail.vod_play_url = _.values(playlist).join('$$$');
         return vodDetail
     }
