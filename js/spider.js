@@ -162,7 +162,7 @@ class Spider {
 
     async init(cfg) {
         let obj = await SpiderInit(cfg)
-        await this.jadeLog.debug(`初始化参数为:${JSON.stringify(obj)}`)
+        await this.jadeLog.debug(`初始化参数为:${JSON.stringify(cfg)}`)
         this.catOpenStatus = obj.CatOpenStatus
         if (this.catOpenStatus) {
             this.classes.push({"type_name": "最近更新", "type_id": "最近更新"})
