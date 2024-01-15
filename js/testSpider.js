@@ -31,13 +31,13 @@ async function test() {
     // var page = JSON.parse(await spider.category("/category/1,/hot/index-movie-热门.htm", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
-    let detail1 = JSON.parse(await spider.detail("/play/813595"))
-    console.debug(JSON.stringify(detail1));
+    // let detail1 = JSON.parse(await spider.detail("/play/813595"))
+    // console.debug(JSON.stringify(detail1));
 
 
     // 测试搜索
     //
-    var search_page = JSON.parse(await spider.search("王牌对王牌"))
+    var search_page = JSON.parse(await spider.search("繁花"))
     // console.debug(JSON.stringify(search_page));
 
     // var play = await spider.play("1080","8bDyvtQuZPgWFns5mExYR9LJ0focNK6z@9tisBJg0Lg8YjuawSm1jm0TSsOGSULdI")

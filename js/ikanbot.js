@@ -11,6 +11,7 @@ import {Spider} from "./spider.js";
 import {load, _, Crypto} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
+import * as timers from "timers";
 
 
 function _0xf746(_0xbb40c4, _0x1cb776) {
@@ -42,10 +43,9 @@ function _0x45e0() {
     }
 }(_0x45e0, 0x4a3d9));
 
-function get_tks(play_id,e_token) {
+function get_tks(play_id, e_token) {
     const _0xf07220 = _0xf746;
-    let _0x35162d = play_id,
-        _0xf25678 = e_token;
+    let _0x35162d = play_id, _0xf25678 = e_token;
     if (!_0x35162d || !_0xf25678) return;
     let _0x3882a3 = _0x35162d['length'], _0x52a097 = _0x35162d[_0xf07220(0x1af)](_0x3882a3 - 0x4, _0x3882a3),
         _0x2d9d1b = [];
@@ -53,7 +53,7 @@ function get_tks(play_id,e_token) {
         let _0x23e537 = parseInt(_0x52a097[_0x570711]), _0x48b93d = _0x23e537 % 0x3 + 0x1;
         _0x2d9d1b[_0x570711] = _0xf25678[_0xf07220(0x1af)](_0x48b93d, _0x48b93d + 0x8), _0xf25678 = _0xf25678[_0xf07220(0x1af)](_0x48b93d + 0x8, _0xf25678[_0xf07220(0x1ab)]);
     }
-    return  _0x2d9d1b[_0xf07220(0x1b2)]('');
+    return _0x2d9d1b[_0xf07220(0x1b2)]('');
 }
 
 class IKanBot extends Spider {
@@ -103,15 +103,13 @@ class IKanBot extends Spider {
             }
         }
 
-        let id = Utils.getStrByRegex(/<input type="hidden" id="current_id" value="(.*?)"/,$.html())
-        let token = Utils.getStrByRegex(/<input type="hidden" id="e_token" value="(.*?)"/,$.html())
-        let mtype =  Utils.getStrByRegex(/<input type="hidden" id="mtype" value="(.*?)"/,$.html())
+        let id = Utils.getStrByRegex(/<input type="hidden" id="current_id" value="(.*?)"/, $.html())
+        let token = Utils.getStrByRegex(/<input type="hidden" id="e_token" value="(.*?)"/, $.html())
+        let mtype = Utils.getStrByRegex(/<input type="hidden" id="mtype" value="(.*?)"/, $.html())
         let params = {
-            "videoId":id,
-            "mtype":mtype,
-            "token":get_tks(id,token),
+            "videoId": id, "mtype": mtype, "token": get_tks(id, token),
         }
-        let content = await this.fetch(this.siteUrl + '/api/getResN' ,params,this.getHeader())
+        let content = await this.fetch(this.siteUrl + '/api/getResN', params, this.getHeader())
 
         const list = JSON.parse(content)["data"]["list"];
         let playlist = {};
@@ -128,6 +126,21 @@ class IKanBot extends Spider {
         vodDetail.vod_play_from = _.keys(playlist).join('$$$');
         vodDetail.vod_play_url = _.values(playlist).join('$$$');
         return vodDetail
+    }
+
+    async parseVodShortListFromDocBySearch($) {
+        let vod_list = []
+        const items = $('div.media > div.media-left > a');
+        let jsBase = await js2Proxy(true, 3, "ikanbot_open", 'img/', {});
+        for (const item of items){
+            let vodShort = new VodShort();
+            const img = $(item).find('img:first')[0];
+            vodShort.vod_id = item.attribs.href
+            vodShort.vod_name = img.attribs.alt
+            vodShort.vod_pic = jsBase + Utils.base64Encode(img.attribs['data-src'])
+            vod_list.push(vodShort)
+        }
+        return vod_list
     }
 
     async setClasses() {
@@ -347,17 +360,44 @@ class IKanBot extends Spider {
     }
 
     async setDetail(id) {
-        let html = await this.fetch(this.siteUrl + id,null,this.getHeader())
+        let html = await this.fetch(this.siteUrl + id, null, this.getHeader())
         if (!_.isEmpty(html)) {
-            await this.jadeLog.debug(html)
             let $ = load(html);
             this.vodDetail = await this.parseVodDetailFromDoc($)
         }
     }
 
+
+    async setSearch(wd, quick) {
+        const html = await this.fetch(this.siteUrl + '/search?q=' + wd, null, this.getHeader());
+        if (!_.isEmpty(html)) {
+            let $ = load(html)
+            this.vodList = await this.parseVodShortListFromDocBySearch($)
+        }
+
+    }
+
     async setPlay(flag, id, flags) {
         this.playUrl = id
     }
+
+    async proxy(segments, headers) {
+        await this.jadeLog.info("正在设置代理")
+        let what = segments[0];
+        let url = Utils.base64Decode(segments[1]);
+        if (what === 'img') {
+            const resp = await req(url, {
+                buffer: 2, headers: this.getHeader(),
+            });
+            return JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            });
+        }
+        return JSON.stringify({
+            code: 500, content: '',
+        });
+    }
+
 }
 
 
@@ -391,8 +431,20 @@ async function search(wd, quick) {
     return await spider.search(wd, quick)
 }
 
+async function proxy(segments, headers) {
+    return await spider.proxy(segments, headers)
+}
+
+
 export function __jsEvalReturn() {
     return {
-        init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
+        init: init,
+        home: home,
+        homeVod: homeVod,
+        category: category,
+        detail: detail,
+        play: play,
+        proxy: proxy,
+        search: search,
     };
 }
