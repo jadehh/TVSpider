@@ -71,23 +71,25 @@ class IKanBot extends Spider {
     }
 
     async setFilterObj() {
-        for (const class_dic of this.classes.slice(1,-1)) {
+        for (const class_dic of this.classes.slice(1,9)) {
             let type_id = class_dic["type_id"]
             if (type_id.indexOf("category") === -1 || type_id.indexOf(",") > -1) {
                 let type_url = type_id.split(",").slice(-1)[0]
                 let html = await this.fetch(this.siteUrl + type_url, null, this.getHeader())
                 if (!_.isEmpty(html)) {
                     let $ = load(html)
-                    let filterElements = $("[class=\"row visible-xs-block visible-sm-block\"]").find("[class=\"nav nav-pills\"]").find("a")
+                    let containerElement = $("[class=\"row visible-xs-block visible-sm-block\"]")
+                    let filterElements = containerElement.find("[class=\"nav nav-pills\"]").find("a")
                     let value_list = []
                     if (type_id.indexOf(",") > -1) {
                         value_list.push({"n": "全部", "v": type_id.split(",")[0]})
 
                     }
+                    let extend_dic = {"key": type_id, "name": $(containerElement.find("h5")).text(), "value": value_list}
                     for (const filterElement of filterElements) {
                         value_list.push({"n": $(filterElement).text(), "v": filterElement.attribs["href"]})
                     }
-                    this.filterObj[type_id] = value_list
+                    this.filterObj[type_id] = extend_dic
                 }
             }
 
