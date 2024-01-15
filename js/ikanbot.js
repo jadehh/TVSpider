@@ -233,6 +233,7 @@ class IKanBot extends Spider {
 
     async setCategory(tid, pg, filter, extend) {
         let categoryUrl = this.siteUrl + (extend[tid] || tid.split(",")[0]).replace('.html', pg > 1 ? `-p-${pg}.html` : '.html');
+        await this.jadeLog.debug(`分类URL:${categoryUrl}`)
         let html = await this.fetch(categoryUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
