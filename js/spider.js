@@ -19,7 +19,7 @@ class Spider {
     constructor() {
         this.siteKey = ""
         this.siteType = 0
-        this.jadeLog = new JadeLogging(this.getAppName(), "INFO")
+        this.jadeLog = new JadeLogging(this.getAppName(), "DEBUG")
         this.classes = []
         this.filterObj = {}
         this.result = new Result()
