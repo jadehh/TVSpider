@@ -46,24 +46,30 @@ class Build(object):
         json_file_list = os.listdir(self.json_path)
         return json_file_list
 
-    def getJsFileList(self):
+    def getJsFileList(self, is_18=True):
+        new_js_file_list = []
         js_file_list = os.listdir(self.js_path)
-        return js_file_list
+        for js_file in js_file_list:
+            js_file_name = js_file.split(".")[0]
+            jsMoudle = JSMoudle(os.path.join(self.js_path, js_file))
+            if is_18 == False:
+                if jsMoudle.getName():
+                    if "🔞" not in jsMoudle.getName():
+                        new_js_file_list.append(js_file)
+            else:
+                if jsMoudle.getName():
+                    if "🔞" in jsMoudle.getName():
+                        new_js_file_list.append(js_file)
+
+        return new_js_file_list
 
     def readJsonFile(self, json_file):
         with open(os.path.join(self.json_path, json_file), "rb") as f:
             return json.load(f)
 
-    def build(self):
-        json_file_list = self.getJsonFileList()
-        js_file_list = self.getJsFileList()
-        site_obj = {
-            "key": "",
-            "name": "",
-            "type": 3,
-            "api": "",
-            "ext": {},
-        }
+
+    def write_config(self,json_file_list,js_file_list,is_18=True):
+        site_obj = {"key": "", "name": "", "type": 3, "api": "", "ext": {}, }
         for json_file in json_file_list:
             json_file_name = json_file.split(".")[0]
             dic = self.readJsonFile(json_file)
@@ -91,12 +97,29 @@ class Build(object):
                 site_obj_list.append(site_obj_copy_2)
             if json_file_name == "TVBox":
                 dic["sites"] = site_obj_list
-                with open("tv_config.json", "wb") as f:
-                    f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+                if is_18:
+                    with open("18_tv_config.json", "wb") as f:
+                        f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+                else:
+                    with open("tv_config.json", "wb") as f:
+                        f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
             elif json_file_name == "CatOpen":
                 dic["video"]["sites"] = site_obj_list
-                with open("open_config.json", "wb") as f:
-                    f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+                if is_18:
+                    with open("18_open_config.json", "wb") as f:
+                        f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+                else:
+                    with open("open_config.json", "wb") as f:
+                        f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+
+    def build(self):
+        json_file_list = self.getJsonFileList()
+        no_18_js_file_list = self.getJsFileList(is_18=False)
+        y_js_file_list = self.getJsFileList(is_18=True)
+        self.write_config(json_file_list,no_18_js_file_list,is_18=False)
+        self.write_config(json_file_list,y_js_file_list,is_18=True)
+
+
 
 
 if __name__ == '__main__':

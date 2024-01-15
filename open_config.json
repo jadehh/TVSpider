@@ -2,24 +2,10 @@
     "video": {
         "sites": [
             {
-                "key": "doll",
-                "name": "🔞┃玩偶姐姐┃🔞",
-                "type": 3,
-                "api": "./js/doll.js",
-                "ext": "{\"box\": \"CatOpen\"}"
-            },
-            {
                 "key": "douban",
                 "name": "🍥┃豆瓣┃🍥",
                 "type": 3,
                 "api": "./js/douban.js",
-                "ext": "{\"box\": \"CatOpen\"}"
-            },
-            {
-                "key": "hscangku",
-                "name": "🔞┃黄色仓库┃🔞",
-                "type": 3,
-                "api": "./js/hscangku.js",
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
