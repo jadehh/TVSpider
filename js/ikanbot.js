@@ -35,7 +35,7 @@ class IKanBot extends Spider {
             let vodShort = new VodShort()
             let reElement = $(vodShortElement).find("img")[0]
             vodShort.vod_id = vodShortElement.attribs["href"]
-            let jsBase = await js2Proxy(true, "", "", 'img/', {});
+            let jsBase = await js2Proxy(true, 3, "ikanbot_open", 'img/', {});
             vodShort.vod_pic =  jsBase + Utils.base64Encode(reElement.attribs["data-src"])
             vodShort.vod_name = reElement.attribs["alt"]
             vod_list.push(vodShort)
