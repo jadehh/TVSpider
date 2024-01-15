@@ -17,6 +17,8 @@ import {_, Uri} from "../lib/cat.js";
 
 class Spider {
     constructor() {
+        this.siteKey = ""
+        this.siteType = ""
         this.jadeLog = new JadeLogging(this.getAppName(), "DEBUG")
         this.classes = []
         this.filterObj = {}
@@ -160,6 +162,7 @@ class Spider {
 
     async init(cfg) {
         let obj = await SpiderInit(cfg)
+        await this.jadeLog.debug(`初始化参数为:${JSON.stringify(obj)}`)
         this.catOpenStatus = obj.CatOpenStatus
         if (this.catOpenStatus) {
             this.classes.push({"type_name": "最近更新", "type_id": "最近更新"})
