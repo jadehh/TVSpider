@@ -83,7 +83,7 @@ class JianPianSpider extends Spider {
         vodDetail.vod_remarks = "评分:" + obj["score"]
         let playKeyList = [
             {"btbo_downlist": "btbo"},
-            {"xunlei_downlist": "迅雷",},
+            {"xunlei_downlist": "迅雷"},
             {"m3u8_downlist": "m3u8"},
             {"new_ftp_list": "new_ftp"},
             {"new_m3u8_list": "new_m3u8"}
