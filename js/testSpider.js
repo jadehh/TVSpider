@@ -18,7 +18,7 @@ async function test() {
     //
     //
     //
-    var classes = JSON.parse(await spider.home(true));
+    // var classes = JSON.parse(await spider.home(true));
     // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // // //
@@ -28,11 +28,11 @@ async function test() {
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    var page = JSON.parse(await spider.category("/category/1,/hot/index-movie-热门.htm", "1", undefined, {}));
+    // var page = JSON.parse(await spider.category("/category/1,/hot/index-movie-热门.htm", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
-    // let detail = JSON.parse(await spider.detail("/detail/313.html"))
-    // console.debug(JSON.stringify(detail));
+    let detail1 = JSON.parse(await spider.detail("/play/833104"))
+    console.debug(JSON.stringify(detail1));
 
 
     // 测试搜索

@@ -9,8 +9,52 @@
 
 import {Spider} from "./spider.js";
 import {load, _, Crypto} from "../lib/cat.js";
-import {VodShort} from "../lib/vod.js";
+import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
+
+
+function _0xf746(_0xbb40c4, _0x1cb776) {
+    const _0x45e084 = _0x45e0();
+    return _0xf746 = function (_0xf74696, _0x4d32af) {
+        _0xf74696 = _0xf74696 - 0x1a8;
+        let _0xcbfa28 = _0x45e084[_0xf74696];
+        return _0xcbfa28;
+    }, _0xf746(_0xbb40c4, _0x1cb776);
+}
+
+function _0x45e0() {
+    const _0x58b10c = ['1580630GngmmA', '117uvwflw', 'join', 'current_id', '565448Apkhig', '23092JwmytW', '707152yowhOv', 'getElementById', '855936CGaczt', 'length', '2966831GCGpvn', '611266nfcTEf', 'value', 'substring'];
+    _0x45e0 = function () {
+        return _0x58b10c;
+    };
+    return _0x45e0();
+}
+
+(function (_0x27923d, _0x43d7fc) {
+    const _0x439396 = _0xf746, _0x30f164 = _0x27923d();
+    while (!![]) {
+        try {
+            const _0xa560eb = -parseInt(_0x439396(0x1b4)) / 0x1 + parseInt(_0x439396(0x1ad)) / 0x2 + -parseInt(_0x439396(0x1b1)) / 0x3 * (-parseInt(_0x439396(0x1b5)) / 0x4) + -parseInt(_0x439396(0x1b0)) / 0x5 + parseInt(_0x439396(0x1aa)) / 0x6 + parseInt(_0x439396(0x1ac)) / 0x7 + parseInt(_0x439396(0x1a8)) / 0x8;
+            if (_0xa560eb === _0x43d7fc) break; else _0x30f164['push'](_0x30f164['shift']());
+        } catch (_0x3ae316) {
+            _0x30f164['push'](_0x30f164['shift']());
+        }
+    }
+}(_0x45e0, 0x4a3d9));
+
+function get_tks(play_id,e_token) {
+    const _0xf07220 = _0xf746;
+    let _0x35162d = play_id,
+        _0xf25678 = e_token;
+    if (!_0x35162d || !_0xf25678) return;
+    let _0x3882a3 = _0x35162d['length'], _0x52a097 = _0x35162d[_0xf07220(0x1af)](_0x3882a3 - 0x4, _0x3882a3),
+        _0x2d9d1b = [];
+    for (let _0x570711 = 0x0; _0x570711 < _0x52a097[_0xf07220(0x1ab)]; _0x570711++) {
+        let _0x23e537 = parseInt(_0x52a097[_0x570711]), _0x48b93d = _0x23e537 % 0x3 + 0x1;
+        _0x2d9d1b[_0x570711] = _0xf25678[_0xf07220(0x1af)](_0x48b93d, _0x48b93d + 0x8), _0xf25678 = _0xf25678[_0xf07220(0x1af)](_0x48b93d + 0x8, _0xf25678[_0xf07220(0x1ab)]);
+    }
+    return  _0x2d9d1b[_0xf07220(0x1b2)]('');
+}
 
 class IKanBot extends Spider {
     constructor() {
@@ -34,12 +78,56 @@ class IKanBot extends Spider {
             let vodShort = new VodShort()
             let reElement = $(vodShortElement).find("img")[0]
             vodShort.vod_id = vodShortElement.attribs["href"]
-            let jsBase = await js2Proxy(true, 3, "ikanbot_open", 'img/',{});
+            let jsBase = await js2Proxy(true, 3, "ikanbot_open", 'img/', {});
             vodShort.vod_pic = jsBase + Utils.base64Encode(reElement.attribs["data-src"])
             vodShort.vod_name = reElement.attribs["alt"]
             vod_list.push(vodShort)
         }
         return vod_list
+    }
+
+    async parseVodDetailFromDoc($) {
+        const detail = $('div.detail > .meta');
+        let jsBase = await js2Proxy(true, 3, "ikanbot_open", 'img/', {});
+        let vodDetail = new VodDetail();
+        vodDetail.vod_pic = jsBase + Utils.base64Encode($('div.item-root > img')[0].attribs['data-src'])
+        for (const info of detail) {
+            if ($(info).hasClass('title')) {
+                vodDetail.vod_name = info.children[0].data;
+            } else if ($(info).hasClass('year')) {
+                vodDetail.vod_area = info.children[0].data;
+            } else if ($(info).hasClass('country')) {
+                vodDetail.vod_area = info.children[0].data;
+            } else if ($(info).hasClass('celebrity')) {
+                vodDetail.vod_actor = info.children[0].data;
+            }
+        }
+
+        let id = Utils.getStrByRegex(/<input type="hidden" id="current_id" value="(.*?)"/,$.html())
+        let token = Utils.getStrByRegex(/<input type="hidden" id="e_token" value="(.*?)"/,$.html())
+        let mtype =  Utils.getStrByRegex(/<input type="hidden" id="mtype" value="(.*?)"/,$.html())
+        let params = {
+            "videoId":id,
+            "mtype":mtype,
+            "token":get_tks(id,token),
+        }
+        let content = await this.fetch(this.siteUrl + '/api/getResN' ,params,this.getHeader())
+
+        const list = JSON.parse(content)["data"]["list"];
+        let playlist = {};
+        for (const l of list) {
+            const flagData = JSON.parse(l["resData"]);
+            for (const f of flagData) {
+                const from = f.flag;
+                const urls = f.url;
+                if (!from || !urls) continue;
+                if (playlist[from]) continue;
+                playlist[from] = urls;
+            }
+        }
+        vodDetail.vod_play_from = _.keys(playlist).join('$$$');
+        vodDetail.vod_play_url = _.values(playlist).join('$$$');
+        return vodDetail
     }
 
     async setClasses() {
@@ -234,9 +322,9 @@ class IKanBot extends Spider {
     async setCategory(tid, pg, filter, extend) {
         let categoryUrl = (this.siteUrl + (extend[tid] || tid.split(",")[0]))
         let update_page = false
-        if (categoryUrl.indexOf("html") > -1){
+        if (categoryUrl.indexOf("html") > -1) {
             categoryUrl = categoryUrl.replace('.html', pg > 1 ? `-p-${pg}.html` : '.html');
-        }else{
+        } else {
             categoryUrl = categoryUrl + `?p=${pg}`
             update_page = true
 
@@ -247,8 +335,8 @@ class IKanBot extends Spider {
             let $ = load(html)
             this.vodList = await this.parseVodShortListFromDoc($)
             let pageDoc = $('div.page-more > a:contains(下一页)')
-            if (update_page){
-               this.page =  parseInt(pageDoc[0].attribs["href"].split("p=")[1])
+            if (update_page) {
+                this.page = parseInt(pageDoc[0].attribs["href"].split("p=")[1])
             }
             const hasMore = pageDoc.length > 0;
             this.limit = 24
@@ -256,6 +344,16 @@ class IKanBot extends Spider {
             this.total = this.limit * this.count
 
         }
+    }
+
+    async setDetail(id) {
+        let html = await this.fetch(this.siteUrl + id)
+        if (!_.isEmpty(html)) {
+            let $ = load(html);
+            this.vodDetail = await this.parseVodDetailFromDoc($)
+
+        }
+
     }
 }
 

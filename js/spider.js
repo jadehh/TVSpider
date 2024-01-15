@@ -64,6 +64,7 @@ class Spider {
         return {"User-Agent": Utils.CHROME, "Referer": this.siteUrl + "/"};
     }
 
+
     async fetch(reqUrl, params, headers) {
         let data = Utils.objectToStr(params)
         if (!_.isEmpty(data)) {
@@ -216,9 +217,9 @@ class Spider {
     async detail(id) {
         this.vodDetail = new VodDetail();
         await this.jadeLog.info(`正在获取详情页面,id为:${id}`)
+        await this.setDetail(id)
         await this.jadeLog.debug(`详情页面内容为:${this.result.detail(this.vodDetail)}`)
         await this.jadeLog.info("详情页面解析完成", true)
-        await this.setDetail(id)
         this.vodDetail.vod_id = id
         return this.result.detail(this.vodDetail)
     }
