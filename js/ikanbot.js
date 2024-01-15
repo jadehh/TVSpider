@@ -89,7 +89,10 @@ class IKanBot extends Spider {
                     for (const filterElement of filterElements) {
                         value_list.push({"n": $(filterElement).text(), "v": filterElement.attribs["href"]})
                     }
-                    this.filterObj[type_id] = extend_dic
+                    if (value_list.length > 0) {
+                       this.filterObj[type_id] = [extend_dic]
+                    }
+
                 }
             }
 
@@ -99,6 +102,7 @@ class IKanBot extends Spider {
     async setHome(filter) {
         await this.setClasses()
         await this.setFilterObj()
+
         let html = await this.fetch(this.siteUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
