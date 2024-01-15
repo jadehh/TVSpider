@@ -49,7 +49,7 @@ class JianPianSpider extends Spider {
                 if (!this.catOpenStatus) {
                     vodShort.vod_pic = data["path"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353"
                 } else {
-                    vodShort.vod_pic = this.jsBase + data["path"]
+                    vodShort.vod_pic = this.jsBase + Utils.base64Encode(data["path"])
                 }
             } else {
                 vodShort.vod_pic = data["thumbnail"]
