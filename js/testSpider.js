@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './ikanbot_open.js';
+import {__jsEvalReturn} from './ikanbot.js';
 
 
 let spider = __jsEvalReturn();
@@ -18,7 +18,7 @@ async function test() {
     //
     //
     //
-    var classes = JSON.parse(await spider.home(true));
+    // var classes = JSON.parse(await spider.home(true));
     // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // // //
@@ -28,7 +28,7 @@ async function test() {
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    var page = JSON.parse(await spider.category("/hot/index-movie-热门.html", "1", undefined, {}));
+    var page = JSON.parse(await spider.category("/category/1,/hot/index-movie-热门.htm", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     // let detail = JSON.parse(await spider.detail("/detail/313.html"))

@@ -116,11 +116,16 @@ class IKanBot extends Spider {
 
 
     async setCategory(tid, pg, filter, extend) {
-        let categoryUrl = this.siteUrl + tid
-        let html = this.fetch(categoryUrl, null, this.getHeader())
+        let categoryUrl
+        if (tid.indexOf(",") > -1){
+            categoryUrl = this.siteUrl + tid.split(",")[0]
+        }else{
+            categoryUrl = this.siteUrl
+        }
+        let html = await this.fetch(categoryUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
-            this.vodList = this.parseVodShortListFromDoc($)
+            this.vodList = await this.parseVodShortListFromDoc($)
         }
     }
 }
