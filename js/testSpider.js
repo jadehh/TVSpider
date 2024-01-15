@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './ikanbot.js';
+import {__jsEvalReturn} from './jianpian.js';
 
 
 let spider = __jsEvalReturn();
@@ -28,7 +28,7 @@ async function test() {
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    var page = JSON.parse(await spider.category("/category/1,/hot/index-movie-热门.htm", "1", undefined, {}));
+    // var page = JSON.parse(await spider.category("0", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     // let detail1 = JSON.parse(await spider.detail("/play/813595"))

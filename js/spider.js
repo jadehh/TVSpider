@@ -132,6 +132,10 @@ class Spider {
 
     }
 
+    async parseVodShortListFromJson(obj){
+
+    }
+
     async getFilter() {
 
     }
@@ -151,6 +155,10 @@ class Spider {
     async parseVodDetailFromDoc($) {
 
     }
+    async parseVodDetailromJson(obj){
+
+    }
+
 
     async parseVodPlayFromUrl(flag, play_url) {
 
