@@ -8,7 +8,7 @@
 */
 
 import {Spider} from "./spider.js";
-import {load, _} from "../lib/cat.js";
+import { _} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
 
@@ -33,7 +33,12 @@ class JianPianSpider extends Spider {
 
     async init(cfg) {
         await super.init(cfg);
+        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {
+            "Referer": "www.jianpianapp.com",
+            "User-Agent": "jianpian-version353"
+        });
     }
+
 
     async parseVodShortListFromJson(data_list) {
         let vod_list = [];
@@ -41,7 +46,11 @@ class JianPianSpider extends Spider {
             let vodShort = new VodShort();
             vodShort.vod_id = data["id"]
             if (data["path"] !== undefined) {
-                vodShort.vod_pic = data["path"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353"
+                if (!this.catOpenStatus) {
+                    vodShort.vod_pic = data["path"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353"
+                } else {
+                    vodShort.vod_pic = this.jsBase + data["path"]
+                }
             } else {
                 vodShort.vod_pic = data["thumbnail"]
             }
@@ -50,7 +59,7 @@ class JianPianSpider extends Spider {
                 vodShort.vod_remarks = `评分:${data["score"]}`
             } else {
                 if (data["playlist"] !== undefined) {
-                    vodShort.vod_remarks = `评分:${data["score"]}` + data["playlist"]["title"]
+                    vodShort.vod_remarks = `评分:${data["score"]}` + " " + data["playlist"]["title"]
                 } else {
                     vodShort.vod_remarks = `评分:${data["score"]}`
                 }
@@ -94,8 +103,8 @@ class JianPianSpider extends Spider {
             let value = Object.values(dic)[0]
             if (obj[key].length > 0) {
                 let url_str_list = []
-                for (const  dic of obj[key]){
-                   url_str_list.push( dic["title"] + "$" + dic["url"])
+                for (const dic of obj[key]) {
+                    url_str_list.push(dic["title"] + "$" + dic["url"])
                 }
                 playlist[value] = url_str_list.join("#")
             }
@@ -280,6 +289,27 @@ class JianPianSpider extends Spider {
         this.playUrl = id
     }
 
+    async proxy(segments, headers) {
+        await this.jadeLog.debug(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
+        let what = segments[0];
+        let url = Utils.base64Decode(segments[1]);
+        if (what === 'img') {
+            await this.jadeLog.debug(`反向代理URL为:${url}`)
+            const resp = await req(url, {
+                buffer: 2, headers: headers,
+            });
+            await this.jadeLog.debug(`反向代理结果为:${JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            })}`)
+            return JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            });
+        }
+        return JSON.stringify({
+            code: 500, content: '',
+        });
+    }
+
 
 }
 
@@ -314,6 +344,9 @@ async function search(wd, quick) {
     return await spider.search(wd, quick)
 }
 
+async function proxy(segments, headers) {
+    return await spider.proxy(segments, headers)
+}
 
 export function __jsEvalReturn() {
     return {
@@ -323,6 +356,7 @@ export function __jsEvalReturn() {
         category: category,
         detail: detail,
         play: play,
+        proxy: proxy,
         search: search,
     };
 }
