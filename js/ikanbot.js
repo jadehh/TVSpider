@@ -85,9 +85,6 @@ class IKanBot extends Spider {
         }
     }
 
-    async setHomeVod() {
-        await super.setHomeVod();
-    }
 
     async setCategory(tid, pg, filter, extend) {
         let categoryUrl = this.siteUrl + tid
