@@ -9,6 +9,13 @@
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
+                "key": "ikanbot",
+                "name": "🤖|爱看机器人|🤖",
+                "type": 3,
+                "api": "./js/ikanbot.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "jiujiuliu",
                 "name": "🥃┃九九六影视┃🥃",
                 "type": 3,
@@ -20,13 +27,6 @@
                 "name": "📺┃70看看┃📺",
                 "type": 3,
                 "api": "./js/kankan70.js",
-                "ext": "{\"box\": \"CatOpen\"}"
-            },
-            {
-                "key": "kunyu77_open",
-                "name": "👒‍┃酷云┃👒",
-                "type": 3,
-                "api": "./js/kunyu77_open.js",
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
