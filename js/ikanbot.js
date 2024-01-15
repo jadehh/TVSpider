@@ -353,7 +353,10 @@ class IKanBot extends Spider {
             let $ = load(html);
             this.vodDetail = await this.parseVodDetailFromDoc($)
         }
+    }
 
+    async setPlay(flag, id, flags) {
+        this.playUrl = id
     }
 }
 
