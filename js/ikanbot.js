@@ -347,7 +347,7 @@ class IKanBot extends Spider {
     }
 
     async setDetail(id) {
-        let html = await this.fetch(this.siteUrl + id)
+        let html = await this.fetch(this.siteUrl + id,null,this.getHeader())
         if (!_.isEmpty(html)) {
             await this.jadeLog.debug(html)
             let $ = load(html);
