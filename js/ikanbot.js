@@ -44,34 +44,53 @@ class IKanBot extends Spider {
         if (!_.isEmpty(html)) {
             let $ = load(html)
             let navElements = $("[class=\"navbar navbar-default navbar-fixed-bottom visible-xs-block visible-sm-block\"]").find("li").find("a")
-            for (const navElement of navElements) {
-                let type_name = $(navElement).text().replaceAll("\n", "")
-                if (type_name !== "首页" && type_name !== "看过" && type_name !== "分类") {
-                    this.classes.push({"type_name": type_name, "type_id": navElement.attribs["href"]})
-                }
-            }
+
             let classElements = $($($("[class=\"row visible-xs-block visible-sm-block\"]")).find("li")).find("a")
+            let classList = []
             for (const classElement of classElements) {
+                classList.push($(classElement).text())
                 this.classes.push({"type_name": $(classElement).text(), "type_id": classElement.attribs["href"]})
             }
+
+
+            for (const navElement of navElements) {
+                let type_name = $(navElement).text().replaceAll("\n", "")
+
+                if (type_name !== "首页" && type_name !== "看过" && type_name !== "分类") {
+                    if (classList.indexOf(type_name) > -1) {
+                        this.classes[classList.indexOf(type_name) + 1]["type_id"] = this.classes[classList.indexOf(type_name) + 1]["type_id"] + "," + navElement.attribs["href"]
+                    } else {
+                        this.classes.push({"type_name": type_name, "type_id": navElement.attribs["href"]})
+                    }
+                }
+            }
+
 
         }
 
     }
 
     async setFilterObj() {
-        for (const class_dic of this.classes.slice(1, 4)) {
+        for (const class_dic of this.classes.slice(1,-1)) {
             let type_id = class_dic["type_id"]
-            let html = await this.fetch(this.siteUrl + type_id, null, this.getHeader())
-            if (!_.isEmpty(html)) {
-                let $ = load(html)
-                let filterElements = $("[class=\"row visible-xs-block visible-sm-block\"]").find("[class=\"nav nav-pills\"]").find("a")
-                let value_list = []
-                for (const filterElement of filterElements) {
-                    value_list.push({"n": $(filterElement).text(), "v": filterElement.attribs["href"]})
+            if (type_id.indexOf("category") === -1 || type_id.indexOf(",") > -1) {
+                let type_url = type_id.split(",").slice(-1)[0]
+                let html = await this.fetch(this.siteUrl + type_url, null, this.getHeader())
+                if (!_.isEmpty(html)) {
+                    let $ = load(html)
+                    let filterElements = $("[class=\"row visible-xs-block visible-sm-block\"]").find("[class=\"nav nav-pills\"]").find("a")
+                    let value_list = []
+                    if (type_id.indexOf(",") > -1) {
+                        value_list.push({"n": "全部", "v": type_id.split(",")[0]})
+
+                    }
+                    for (const filterElement of filterElements) {
+                        value_list.push({"n": $(filterElement).text(), "v": filterElement.attribs["href"]})
+                    }
+                    this.filterObj[type_id] = value_list
                 }
-                this.filterObj[type_id] = value_list
             }
+
         }
     }
 
@@ -81,7 +100,7 @@ class IKanBot extends Spider {
         let html = await this.fetch(this.siteUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
-            this.homeVodList = this.parseVodShortListFromDoc($)
+            this.homeVodList = await this.parseVodShortListFromDoc($)
         }
     }
 
