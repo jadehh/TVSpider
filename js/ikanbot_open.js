@@ -156,6 +156,7 @@ function base64Decode(text) {
 }
 
 async function proxy(segments, headers) {
+    console.debug("正在使用反向代理")
     let what = segments[0];
     let url = base64Decode(segments[1]);
     if (what == 'img') {
