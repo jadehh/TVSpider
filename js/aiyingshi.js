@@ -269,8 +269,8 @@ class AiYingShiSpider extends Spider {
 
     async setPlay(flag, id, flags) {
         let html = await this.fetch(this.siteUrl + id,null,this.getHeader())
+        await this.jadeLog.debug(html)
         if (!_.isEmpty(html)){
-            let $ = load(html)
             let player_str = Utils.getStrByRegex(/<script type="text\/javascript">var player_aaaa=(.*?)<\/script>/,html)
             let play_dic = JSON.parse(player_str)
             this.playUrl = play_dic["url"]
