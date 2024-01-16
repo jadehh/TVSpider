@@ -1,6 +1,13 @@
 {
     "sites": [
         {
+            "key": "aiyingshi",
+            "name": "🚀‍┃爱影视┃🚀",
+            "type": 3,
+            "api": "./js/aiyingshi.js",
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "douban",
             "name": "🍥┃豆瓣┃🍥",
             "type": 3,

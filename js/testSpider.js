@@ -1,10 +1,10 @@
-import {__jsEvalReturn} from './nivod.js';
+import {__jsEvalReturn} from './aiyingshi.js';
 
 
 let spider = __jsEvalReturn();
 
 async function test() {
-    let siteKey = 'nivod';
+    let siteKey = 'aiyingshi';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -18,21 +18,21 @@ async function test() {
     //
     //
     //
-    var classes = JSON.parse(await spider.home(true));
+    // var classes = JSON.parse(await spider.home(true));
     // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // // console.debug(classes);    // var classes = JSON.parse(await spider.home(true));
     // // //
     // // // // //测试首页列表
-    var homeVod = JSON.parse(await spider.homeVod())
+    // var homeVod = JSON.parse(await spider.homeVod())
     // // console.debug(homeVod);
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    // var page = JSON.parse(await spider.category("hot_gaia", "1", undefined, {}));
+    // var page = JSON.parse(await spider.category("1", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
-    // let detail1 = JSON.parse(await spider.detail("/play/813595"))
-    // console.debug(JSON.stringify(detail1));
+    let detail1 = JSON.parse(await spider.detail("/voddetail/336160.html"))
+    console.debug(JSON.stringify(detail1));
 
 
     // 测试搜索

@@ -2,6 +2,13 @@
     "video": {
         "sites": [
             {
+                "key": "aiyingshi",
+                "name": "🚀‍┃爱影视┃🚀",
+                "type": 3,
+                "api": "./js/aiyingshi.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "douban",
                 "name": "🍥┃豆瓣┃🍥",
                 "type": 3,
