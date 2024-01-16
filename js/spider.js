@@ -41,7 +41,7 @@ class Result {
     }
 
     homeVod(vod_list) {
-        return JSON.stringify({"list": vod_list})
+        return JSON.stringify({"page": this.page,"list": vod_list})
     }
 
     category(vod_list, page, count, limit, total) {
