@@ -487,8 +487,6 @@ class DoubanSpider extends Spider {
     }
 
     async setHome(filter) {
-        await this.setClasses();
-        await this.setFilterObj()
     }
 
     async setHomeVod() {
