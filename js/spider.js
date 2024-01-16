@@ -461,7 +461,6 @@ class Spider {
     }
 
     async setPlay(flag, id, flags) {
-        this.playUrl = id
     }
 
     async play(flag, id, flags) {

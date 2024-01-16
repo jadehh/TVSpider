@@ -266,8 +266,16 @@ class AiYingShiSpider extends Spider {
         }
     }
 
-    async play(flag, id, flags) {
-        await this.jadeLog.debug(id)
+
+    async setPlay(flag, id, flags) {
+        let html = await this.fetch(this.siteUrl + id,null,this.getHeader())
+        if (!_.isEmpty(html)){
+            let $ = load(html)
+            let player_str = Utils.getStrByRegex(/<script type="text\/javascript">var player_aaaa=(.*?)<\/script>/,html)
+            let play_dic = JSON.parse(player_str)
+            this.playUrl = play_dic["url"]
+        }
+
     }
 
     async setSearch(wd, quick) {
