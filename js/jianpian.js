@@ -103,6 +103,7 @@ class JianPianSpider extends Spider {
             {"new_m3u8_list": "new_m3u8"}
         ]
         let playlist = {}
+        let urlList = []
         for (const dic of playKeyList) {
             let key = Object.keys(dic)[0]
             let value = Object.values(dic)[0]
@@ -111,7 +112,14 @@ class JianPianSpider extends Spider {
                 for (const dic of obj[key]) {
                     url_str_list.push(dic["title"] + "$" + dic["url"])
                 }
-                playlist[value] = url_str_list.join("#")
+
+                if (urlList.indexOf(url_str_list.join("#")) === -1){
+                      urlList.push(url_str_list.join("#"))
+                    playlist[value] = url_str_list.join("#")
+                }else{
+                    await this.jadeLog.warning(`key为:${key},播放链接重复,无需保存`)
+                }
+
             }
         }
         vodDetail.vod_play_url = _.values(playlist).join('$$$');
