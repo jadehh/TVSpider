@@ -185,7 +185,6 @@ class AiYingShiSpider extends Spider {
             let extend_dic = {"key": (i + 1).toString(), "name": "", "value": []}
             if (i < elements.length - 1) {
                 extend_dic["name"] = $($(elements[i]).find("a")[0]).text()
-                extend_dic["value"].push({"n": "全部", "v": "0"})
                 for (const ele of $(elements[i]).find("a")) {
                     extend_dic["value"].push({"n": $(ele).text(), "v": $(ele).text()})
                 }
