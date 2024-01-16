@@ -347,12 +347,17 @@ class Spider {
         let obj = await this.SpiderInit(cfg)
         await this.jadeLog.debug(`初始化参数为:${JSON.stringify(cfg)}`)
         this.catOpenStatus = obj.CatOpenStatus
-        if (await this.loadFilterAndClasses()) {
-            await this.jadeLog.debug(`读取缓存列表和二级菜单成功`)
-        } else {
-            await this.jadeLog.warning(`读取缓存列表和二级菜单失败`)
-            await this.writeFilterAndClasses()
+        try {
+            if (await this.loadFilterAndClasses()) {
+                await this.jadeLog.debug(`读取缓存列表和二级菜单成功`)
+            } else {
+                await this.jadeLog.warning(`读取缓存列表和二级菜单失败`)
+                await this.writeFilterAndClasses()
+            }
+        } catch (e) {
+            await this.jadeLog.error("读取缓存失败,失败原因为:" + e)
         }
+
         return obj
 
     }
@@ -360,11 +365,11 @@ class Spider {
     async loadFilterAndClasses() {
         this.classes = await this.getClassesCache()
         this.filterObj = await this.getFiletObjCache()
-        if (this.classes.length > 0){
+        if (this.classes.length > 0) {
             return true
-        }else{
-            await local.set(this.siteKey, "classes",[]);
-            await local.set(this.siteKey, "filterObj",{});
+        } else {
+            await local.set(this.siteKey, "classes", []);
+            await local.set(this.siteKey, "filterObj", {});
         }
     }
 
@@ -374,24 +379,24 @@ class Spider {
         }
         await this.setClasses()
         await this.setFilterObj()
-        await local.set(this.siteKey, "classes",this.classes);
-        await local.set(this.siteKey, "filterObj",this.filterObj);
+        await local.set(this.siteKey, "classes", this.classes);
+        await local.set(this.siteKey, "filterObj", this.filterObj);
     }
 
     async getClassesCache() {
         let cacheClasses = await local.get(this.siteKey, "classes")
-        if (!_.isEmpty(cacheClasses)){
+        if (!_.isEmpty(cacheClasses)) {
             return cacheClasses
-        }else{
+        } else {
             return this.classes
         }
     }
 
     async getFiletObjCache() {
         let cacheFilterObj = await local.get(this.siteKey, "filterObj")
-        if ( !_.isEmpty(cacheFilterObj)){
+        if (!_.isEmpty(cacheFilterObj)) {
             return cacheFilterObj
-        }else{
+        } else {
             return this.filterObj
         }
     }
