@@ -12,7 +12,7 @@ import {detailContent, initAli, playContent} from "../lib/ali.js";
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 let patternAli  = /(https:\/\/www\.aliyundrive\.com\/s\/[^"]+|https:\/\/www\.alipan\.com\/s\/[^"]+)/
-class WoggSpider extends Spider {
+class WeiXineSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = 'https://www.weixine.net';
@@ -1170,7 +1170,7 @@ class WoggSpider extends Spider {
 
 }
 
-let spider = new WoggSpider()
+let spider = new WeiXineSpider()
 
 async function init(cfg) {
     await spider.init(cfg)

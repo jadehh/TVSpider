@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './jianpian.js';
+import {__jsEvalReturn} from './pan_search.js';
 
 
 let spider = __jsEvalReturn();

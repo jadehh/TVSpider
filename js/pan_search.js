@@ -6,130 +6,71 @@
 * @Software : Samples
 * @Desc     :
 */
-import {JadeLogging} from "../lib/log.js";
-import {Result, SpiderInit} from "../lib/spider_object.js";
-import {} from "../lib/crypto-js.js"
-import {_, load, Uri} from "../lib/cat.js";
+import {_, load} from "../lib/cat.js";
+import {Spider} from "./spider.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
-import * as Utils from "../lib/utils.js";
 import {detailContent, initAli, playContent} from "../lib/ali.js";
 
-const JadeLog = new JadeLogging(getAppName(), "DEBUG")
-let CatOpenStatus = false
-let URL = "https://www.pansearch.me/"
-let result = new Result()
-
-async function fetch(reqUrl, headers) {
-    let uri = new Uri(reqUrl);
-    let response = await req(uri.toString(), {
-        method: "get",
-        headers: headers,
-        data: null,
-    });
-    if (response.code === 200 || response.code === undefined) {
-        if (!_.isEmpty(response.content)) {
-            return response.content
-        } else {
-            await JadeLog.error(`请求失败,请求url为:${uri},回复内容为空`)
-            return null
-        }
-    } else {
-        await JadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
-        return null
+class PanSearchSpider extends Spider {
+    constructor() {
+        super();
+        this.siteUrl = "https://www.pansearch.me/"
     }
-}
 
-function getHeader() {
-    return {"User-Agent": Utils.CHROME}
-}
-
-function getSearchHeader() {
-    let headers = getHeader();
-    headers["x-nextjs-data"] = "1";
-    headers['referer'] = URL
-    return headers;
-}
-
-function getName() {
-    return "🗂️┃阿里盘搜┃🗂️"
-}
-
-function getAppName() {
-    return "阿里盘搜"
-}
-
-async function init(cfg) {
-    let extObj = await SpiderInit(cfg)
-    CatOpenStatus = extObj.CatOpenStatus
-    await initAli(extObj["token"]);
-    // 读取缓存
-}
-
-
-async function home(filter) {
-    return result.home()
-}
-
-
-async function homeVod() {
-    let vod_list = []
-    return JSON.stringify({"list": vod_list})
-}
-
-
-async function category(tid, pg, filter, extend) {
-    let vod_list = []
-    return JSON.stringify({"list": vod_list})
-}
-
-
-async function detail(id) {
-    await JadeLog.info(`正在获取详情界面,id为:${id}`)
-    let vodDetail = new VodDetail()
-    let item = JSON.parse(id)
-    let splitList = item["content"].split("\n");
-    vodDetail.vod_id = id
-    vodDetail.vod_name = splitList[0].replaceAll(/<\\?[^>]+>/g, "").replace("名称：", "");
-    let date = new Date(item["time"])
-    vodDetail.vod_remarks = date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
-    vodDetail.vod_pic = item["image"]
-    let share_url = ""
-    for (const content of splitList) {
-        if (content.indexOf("描述") > -1) {
-            vodDetail.vod_content = content.replace("描述：", "").replaceAll(/<\\?[^>]+>/g, "")
-        }
-        if (content.indexOf("标签：") > -1) {
-            vodDetail.type_name = content.replace("🏷 标签：", "")
-        }
-        if (content.indexOf("链接：") > -1) {
-            share_url = content.replaceAll(/<\\?[^>]+>/g, "").replace("链接：", "");
-        }
+    getName() {
+        return "🗂️┃阿里盘搜┃🗂️"
     }
-    try {
-        let aliVodDetail = await detailContent([share_url])
-        vodDetail.vod_play_url = aliVodDetail.vod_play_url
-        vodDetail.vod_play_from = aliVodDetail.vod_play_from
-    } catch (e) {
 
+    getAppName() {
+        return "阿里盘搜"
     }
-    return JSON.stringify({"list": [vodDetail]})
-}
 
-async function play(flag, id, flags) {
+    getSearchHeader() {
+        let headers = this.getHeader();
+        headers["x-nextjs-data"] = "1";
+        return headers;
+    }
 
-    return await playContent(flag, id, flags);
-}
 
+    async init(cfg) {
+        let extObj = await super.init(cfg);
+        await initAli(extObj["token"]);
+    }
 
-async function search(wd, quick) {
-    await JadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},url = ${URL}`)
-    let vod_list = []
-    let html = await fetch(URL, getHeader())
-    if (!_.isEmpty(html)) {
-        let $ = load(html)
+    async parseVodDetailromJson(obj) {
+        let item = JSON.parse(obj)
+        let vodDetail = new VodDetail();
+        let splitList = item["content"].split("\n");
+        vodDetail.vod_name = splitList[0].replaceAll(/<\\?[^>]+>/g, "").replace("名称：", "");
+        let date = new Date(item["time"])
+        vodDetail.vod_remarks = date.toLocaleDateString().replace(/\//g, "-") + " " + date.toTimeString().substr(0, 8)
+        vodDetail.vod_pic = item["image"]
+        let share_url = ""
+        for (const content of splitList) {
+            if (content.indexOf("描述") > -1) {
+                vodDetail.vod_content = content.replace("描述：", "").replaceAll(/<\\?[^>]+>/g, "")
+            }
+            if (content.indexOf("标签：") > -1) {
+                vodDetail.type_name = content.replace("🏷 标签：", "")
+            }
+            if (content.indexOf("链接：") > -1) {
+                share_url = content.replaceAll(/<\\?[^>]+>/g, "").replace("链接：", "");
+            }
+        }
+        try {
+            let aliVodDetail = await detailContent([share_url])
+            vodDetail.vod_play_url = aliVodDetail.vod_play_url
+            vodDetail.vod_play_from = aliVodDetail.vod_play_from
+        } catch (e) {
+        }
+        return vodDetail
+    }
+
+    async parseVodShortListFromDocBySearch($, wd) {
+        let vod_list = []
         let buildId = JSON.parse($("script[id=__NEXT_DATA__]")[0].children[0].data)["buildId"]
-        let url = URL + "_next/data/" + buildId + "/search.json?keyword=" + encodeURIComponent(wd) + "&pan=aliyundrive";
-        let aliContent = await fetch(url, getSearchHeader())
+        let url = this.siteUrl + "_next/data/" + buildId + "/search.json?keyword=" + encodeURIComponent(wd) + "&pan=aliyundrive";
+        let aliContent = await this.fetch(url, null, this.getSearchHeader())
         if (!_.isEmpty(aliContent)) {
             let items = JSON.parse(aliContent)["pageProps"]["data"]["data"]
             for (const item of items) {
@@ -142,27 +83,60 @@ async function search(wd, quick) {
                 vodShort.vod_pic = item["image"]
                 vod_list.push(vodShort)
             }
-            await JadeLog.info("搜索页面解析成功", true)
+            return vod_list
         } else {
-            await JadeLog.error("搜索页面解析失败", true)
+            await this.jadeLog.error("搜索页面解析失败", true)
         }
-
-    } else {
-        await JadeLog.error("搜索页面解析失败", true)
     }
-    await JadeLog.debug(`搜索页面内容为:${JSON.stringify({"list": vod_list})}`)
-    return JSON.stringify({"list": vod_list})
 
+    async setDetail(id) {
+        this.vodDetail = await this.parseVodDetailromJson(id)
+    }
+
+    async setSearch(wd, quick) {
+        let html = await this.fetch(this.siteUrl, null, this.getHeader())
+        if (!_.isEmpty(html)) {
+            let $ = load(html)
+            this.vodList = await this.parseVodShortListFromDocBySearch($, wd)
+        }
+    }
+    async play(flag, id, flags) {
+        return await playContent(flag, id, flags);
+    }
+}
+
+let spider = new PanSearchSpider()
+
+async function init(cfg) {
+    await spider.init(cfg)
+}
+
+async function home(filter) {
+    return await spider.home(filter)
+}
+
+async function homeVod() {
+    return await spider.homeVod()
+}
+
+async function category(tid, pg, filter, extend) {
+    return await spider.category(tid, pg, filter, extend)
+}
+
+async function detail(id) {
+    return await spider.detail(id)
+}
+
+async function play(flag, id, flags) {
+    return await spider.play(flag, id, flags)
+}
+
+async function search(wd, quick) {
+    return await spider.search(wd, quick)
 }
 
 export function __jsEvalReturn() {
     return {
-        init: init,
-        home: home,
-        homeVod: homeVod,
-        category: category,
-        detail: detail,
-        play: play,
-        search: search,
+        init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
