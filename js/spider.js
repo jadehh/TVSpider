@@ -436,6 +436,7 @@ class Spider {
         this.page = parseInt(pg)
         await this.jadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)}`)
         if (tid === "最近更新") {
+            this.page = 0
             return await this.homeVod()
         } else {
             this.vodList = []
