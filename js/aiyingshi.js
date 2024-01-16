@@ -240,6 +240,7 @@ class AiYingShiSpider extends Spider {
             }
         }
         let reqUrl = this.siteUrl + '/index.php/vodshow/' + urlParams.join("-") + '.html';
+        await this.jadeLog.debug(`类别详情URL:${reqUrl}`)
         let html = await this.fetch(reqUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
