@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './pan_search.js';
+import {__jsEvalReturn} from './douban.js';
 
 
 let spider = __jsEvalReturn();
@@ -28,7 +28,7 @@ async function test() {
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    // var page = JSON.parse(await spider.category("0", "1", undefined, {}));
+    var page = JSON.parse(await spider.category("hot_gaia", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     // let detail1 = JSON.parse(await spider.detail("/play/813595"))
