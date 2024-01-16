@@ -6,7 +6,7 @@
 * @Software : Samples
 * @Desc     :
 */
-import {getHeader, createSign, desDecrypt, ChannelResponse} from "../lib/nivid_object.js"
+import {getHeader, createSign, desDecrypt, ChannelResponse, getVod} from "../lib/nivid_object.js"
 import {_, Uri} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import {Spider} from "./spider.js";
@@ -62,6 +62,22 @@ class NivodSpider extends Spider {
         return vod_list
     }
 
+    async parseVodDetailromJson(vod_dic) {
+        let vodDetail = new VodDetail()
+        vodDetail.vod_id = vod_dic["showIdCode"]
+        vodDetail.vod_name = vod_dic["showTitle"]
+        vodDetail.vod_remarks = this.getVodRemarks(vod_dic["hot"], vod_dic["playResolutions"])
+        vodDetail.vod_pic = vod_dic["showImg"]
+        vodDetail.vod_director = vod_dic["director"]
+        vodDetail.vod_actor = vod_dic["actors"]
+        vodDetail.vod_year = vod_dic["postYear"]
+        vodDetail.vod_content = vod_dic["showDesc"]
+        vodDetail.type_name = vod_dic["showTypeName"]
+        vodDetail.vod_area = vod_dic["regionName"]
+        return vodDetail
+    }
+
+
     getVodRemarks(hot, playResolutions) {
         let vod_remarks
         if (this.catOpenStatus) {
@@ -99,13 +115,24 @@ class NivodSpider extends Spider {
 
     async setHomeVod() {
         let url = this.siteUrl + "/index/mobile/WAP/3.0" + await createSign()
-        let content = await this.post(url, null, getHeader())
+        let content = desDecrypt(await this.post(url, null, getHeader()))
         if (content !== null) {
             let content_json = JSON.parse(content)
-            this.vodList = await this.parseVodShortListFromJson(content_json["list"])
+            let cate_list = content_json.list
+            for (const cate_dic of cate_list) {
+                for (const row of cate_dic.rows) {
+                    for (const cells of row.cells) {
+                        let vodShort = new VodShort()
+                        vodShort.vod_id = cells.show["showIdCode"]
+                        vodShort.vod_pic = cells.img
+                        vodShort.vod_name = cells.title
+                        vodShort.vod_remarks = this.getVodRemarks(cells.show["hot"], cells.show["playResolutions"])
+                        this.homeVodList.push(vodShort)
+                    }
+                }
+            }
         }
     }
-
     async setCategory(tid, pg, filter, extend) {
         let params = {
             "sort_by": "0",
@@ -118,8 +145,8 @@ class NivodSpider extends Spider {
         }
         this.limit = 20;
         params = this.getExtendDic(extend, params)
-        let url = ApiUrl + "/show/filter/WEB/3.2" + await createSign(params)
-        let content = await request(url, params)
+        let url = this.siteUrl + "/show/filter/WEB/3.2" + await createSign(params)
+        let content = await this.post(url, params, getHeader())
         if (content != null) {
             let content_json = JSON.parse(content)
             for (const vod_dic of content_json["list"]) {
@@ -133,6 +160,49 @@ class NivodSpider extends Spider {
         }
     }
 
+    async setDetail(id) {
+        let params = {
+            "show_id_code": id.toString()
+        }
+        let url = this.siteUrl + "/show/detail/WEB/3.2" + await createSign(params)
+        let content = desDecrypt(await this.post(url, params, getHeader()))
+        if (content != null) {
+            let content_json = JSON.parse(content)
+            let vod_dic = content_json["entity"]
+            this.vodDetail = await this.parseVodDetailromJson(vod_dic)
+            let niBaVodDetail = getVod(vod_dic["plays"], ["原画"], id.toString())
+            this.vodDetail.vod_play_from = niBaVodDetail.vod_play_from
+            this.vodDetail.vod_play_url = niBaVodDetail.vod_play_url
+        }
+    }
+
+    async setSearch(wd, quick) {
+        let params = {"cat_id": "1", "keyword": wd, "keyword_type": "0", "start": "0"}
+        let url = this.siteUrl + "/show/search/WEB/3.2" + await createSign(params)
+        let content = desDecrypt(await this.post(url, params, getHeader()))
+        if (content != null) {
+            let content_json = JSON.parse(content)
+            for (const vod_dic of content_json["list"]) {
+                let vod_detail = await this.parseVodDetailromJson(vod_dic)
+                this.vodList.push(vod_detail)
+            }
+        }
+    }
+
+    async setPlay(flag, id, flags) {
+        let playId = id.split("@")[0]
+        let showId = id.split("@")[1]
+        let params = {
+            "show_id_code": showId,
+            "play_id_code": playId
+        }
+        let url = this.siteUrl + "/show/play/info/WEB/3.2" + await createSign(params)
+        let content = desDecrypt(await this.post(url, params,getHeader()))
+        if (content != null) {
+            let content_json = JSON.parse(content)
+            this.playUrl = content_json["entity"]["playUrl"]
+        }
+    }
 }
 
 let spider = new NivodSpider()
