@@ -344,9 +344,9 @@ class Spider {
     }
 
     async init(cfg) {
-        let obj = await this.SpiderInit(cfg)
+        this.cfgObj = await this.SpiderInit(cfg)
         await this.jadeLog.debug(`初始化参数为:${JSON.stringify(cfg)}`)
-        this.catOpenStatus = obj.CatOpenStatus
+        this.catOpenStatus = this.cfgObj.CatOpenStatus
         try {
             if (await this.loadFilterAndClasses()) {
                 await this.jadeLog.debug(`读取缓存列表和二级菜单成功`)
@@ -359,8 +359,6 @@ class Spider {
             await local.set(this.siteKey, "filterObj", JSON.stringify({}));
             await this.jadeLog.error("读取缓存失败,失败原因为:" + e)
         }
-
-        return obj
 
     }
 

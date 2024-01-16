@@ -235,7 +235,7 @@ class Kankan70Spider extends Spider {
             let mather = /<script type="text\/javascript" src="http:\/\/test.gqyy8.com:8077\/ne2(.*?)"><\/script>/g.exec(html)
             let js_url = "http://test.gqyy8.com:8077/ne2" + mather[1]
             let js_str = await this.fetch(js_url, null, this.getHeader())
-            if (js_str !== null) {
+            if (!_.isEmpty(js_str)) {
                 let playObject = this.paraseUrlObject(js_str)
                 this.vodDetail.vod_play_url = playObject["play_url"]
                 this.vodDetail.vod_play_from = playObject["play_format"]

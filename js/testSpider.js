@@ -1,15 +1,15 @@
-import {__jsEvalReturn} from './kankan70.js';
+import {__jsEvalReturn} from './nivod.js';
 
 
 let spider = __jsEvalReturn();
 
 async function test() {
-    let siteKey = 'kankan70';
+    let siteKey = 'nivod';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
         stype: siteType,
-        ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "CatOpen"}
+        ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "CatOpen","code":"1"}
     });
     //
     //
@@ -28,7 +28,7 @@ async function test() {
     // // // console.debug(JSON.stringify(homeVod));
     // //
     // // //测试分类列表
-    var page = JSON.parse(await spider.category("hot_gaia", "1", undefined, {}));
+    // var page = JSON.parse(await spider.category("hot_gaia", "1", undefined, {}));
     // console.debug(JSON.stringify(page));
 
     // let detail1 = JSON.parse(await spider.detail("/play/813595"))
