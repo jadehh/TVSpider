@@ -139,6 +139,7 @@ class NivodSpider extends Spider {
         this.limit = 20;
         params = this.getExtendDic(extend, params)
         let url = this.siteUrl + "/show/filter/WEB/3.2" + await createSign(params)
+        await this.jadeLog.debug(`请求URL为:${url}`)
         let content = await this.post(url, params, getHeader())
         if (content != null) {
             let content_json = JSON.parse(content)
