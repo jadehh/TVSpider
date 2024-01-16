@@ -368,8 +368,8 @@ class Spider {
         if (this.classes.length > 0) {
             return true
         } else {
-            await local.set(this.siteKey, "classes", []);
-            await local.set(this.siteKey, "filterObj", {});
+            await local.set(this.siteKey, "classes", JSON.stringify([]));
+            await local.set(this.siteKey, "filterObj", JSON.stringify({}));
         }
     }
 
@@ -379,14 +379,14 @@ class Spider {
         }
         await this.setClasses()
         await this.setFilterObj()
-        await local.set(this.siteKey, "classes", this.classes);
-        await local.set(this.siteKey, "filterObj", this.filterObj);
+        await local.set(this.siteKey, "classes", JSON.stringify(this.classes));
+        await local.set(this.siteKey, "filterObj", JSON.stringify(this.filterObj));
     }
 
     async getClassesCache() {
         let cacheClasses = await local.get(this.siteKey, "classes")
         if (!_.isEmpty(cacheClasses)) {
-            return cacheClasses
+            return JSON.parse(cacheClasses)
         } else {
             return this.classes
         }
@@ -395,7 +395,7 @@ class Spider {
     async getFiletObjCache() {
         let cacheFilterObj = await local.get(this.siteKey, "filterObj")
         if (!_.isEmpty(cacheFilterObj)) {
-            return cacheFilterObj
+            return JSON.parse(cacheFilterObj)
         } else {
             return this.filterObj
         }
