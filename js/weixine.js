@@ -173,7 +173,6 @@ class WeiXineSpider extends Spider {
                 let type_dic = {"type_id": type_id, "type_name": type_name}
                 this.classes.push(type_dic)
             }
-            this.homeVodList = await this.parseVodShortListFromDoc($)
         }
     }
 
@@ -218,6 +217,14 @@ class WeiXineSpider extends Spider {
     }
 
     async setHome(filter) {
+    }
+
+    async setHomeVod() {
+        let con = await this.fetch(this.siteUrl, null, this.getHeader());
+        if (!_.isEmpty(con)) {
+            const $ = load(con);
+            this.homeVodList = await this.parseVodShortListFromDoc($)
+        }
     }
 
     async setCategory(tid, pg, filter, extend) {
