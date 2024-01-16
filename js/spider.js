@@ -41,7 +41,7 @@ class Result {
     }
 
     homeVod(vod_list) {
-        return JSON.stringify({"page": this.page,"list": vod_list})
+        return JSON.stringify({"page": this.page, "list": vod_list})
     }
 
     category(vod_list, page, count, limit, total) {
@@ -463,7 +463,7 @@ class Spider {
     }
 
     async setPlay(flag, id, flags) {
-
+        this.playUrl = id
     }
 
     async play(flag, id, flags) {
@@ -487,5 +487,6 @@ class Spider {
         return this.result.search(this.vodList)
     }
 }
+
 
 export {Spider}

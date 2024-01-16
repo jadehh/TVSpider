@@ -1,10 +1,10 @@
-import {__jsEvalReturn} from './ikanbot.js';
+import {__jsEvalReturn} from './kankan70.js';
 
 
 let spider = __jsEvalReturn();
 
 async function test() {
-    let siteKey = 'ikanbot';
+    let siteKey = 'kankan70';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
