@@ -7,8 +7,7 @@
 * @Desc     :
 */
 import * as Utils from "../lib/utils.js";
-import {getStrByRegex} from "../lib/utils.js";
-import {_, load, Uri} from "../lib/cat.js";
+import {_, load} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import {Spider} from "./spider.js";
 
@@ -198,7 +197,7 @@ class Kankan70Spider extends Spider {
         let html = await this.fetch(this.siteUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
-            this.homeVodList = this.parseVodShortListFromDoc($)
+            this.homeVodList =await this.parseVodShortListFromDoc($)
         }
     }
 
@@ -208,7 +207,7 @@ class Kankan70Spider extends Spider {
         if (!_.isEmpty(html)) {
             let class_name = tid.split("/")[1]
             let id = tid.split("/")[2]
-            let api_str = getStrByRegex(/var _yu_gda_s="(.*?)";/, html)
+            let api_str = Utils.getStrByRegex(/var _yu_gda_s="(.*?)";/, html)
             let params = {
                 "action": class_name,
                 "page": parseInt(pg),
