@@ -7,7 +7,6 @@
 * @Desc     :
 */
 import {getHeader, createSign, desDecrypt, ChannelResponse, getVod} from "../lib/nivid_object.js"
-import {_, Uri} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import {Spider} from "./spider.js";
 
@@ -17,16 +16,12 @@ class NivodSpider extends Spider {
         this.siteUrl = "https://api.nivodz.com"
 
     }
-
     getName() {
         return "👑‍┃泥视频┃👑"
     }
-
     getAppName() {
         return "泥视频"
     }
-
-
     async setClasses() {
         this.Remove18ChannelCode = parseInt(this.cfgObj["code"])
         let url = this.siteUrl + "/show/channel/list/WEB/3.2" + await createSign()
@@ -43,8 +38,6 @@ class NivodSpider extends Spider {
             }
         }
     }
-
-
     async parseVodShortListFromJson(obj) {
         let vod_list = []
         for (const cate_dic of obj) {
@@ -175,7 +168,6 @@ class NivodSpider extends Spider {
             this.vodDetail.vod_play_url = niBaVodDetail.vod_play_url
         }
     }
-
     async setSearch(wd, quick) {
         let params = {"cat_id": "1", "keyword": wd, "keyword_type": "0", "start": "0"}
         let url = this.siteUrl + "/show/search/WEB/3.2" + await createSign(params)
@@ -188,7 +180,6 @@ class NivodSpider extends Spider {
             }
         }
     }
-
     async setPlay(flag, id, flags) {
         let playId = id.split("@")[0]
         let showId = id.split("@")[1]
