@@ -36,9 +36,7 @@ class Result {
 
     home(classes, list, filters) {
         return JSON.stringify({
-            "class": classes,
-            "list": list,
-            "filters": filters
+            "class": classes, "list": list, "filters": filters
         })
     }
 
@@ -48,11 +46,7 @@ class Result {
 
     category(vod_list, page, count, limit, total) {
         return JSON.stringify({
-            page: parseInt(page),
-            pagecount: count,
-            limit: limit,
-            total: total,
-            list: vod_list,
+            page: parseInt(page), pagecount: count, limit: limit, total: total, list: vod_list,
         });
     }
 
@@ -66,11 +60,7 @@ class Result {
 
     play(url) {
         return JSON.stringify({
-            "url": url,
-            "parse": this.parse,
-            "header": this.header,
-            "format": this.format,
-            "subs": this.subs
+            "url": url, "parse": this.parse, "header": this.header, "format": this.format, "subs": this.subs
         })
     }
 
@@ -81,11 +71,7 @@ class Result {
         vodShort.vod_pic = Utils.RESOURCEURL + "/resources/error.png"
         vodShort.vod_remarks = error_message
         return JSON.stringify({
-            page: parseInt(0),
-            pagecount: 0,
-            limit: 0,
-            total: 0,
-            list: [vodShort],
+            page: parseInt(0), pagecount: 0, limit: 0, total: 0, list: [vodShort],
         })
     }
 
@@ -294,11 +280,11 @@ class Spider {
 
     }
 
-    async parseVodShortListFromJson(obj){
+    async parseVodShortListFromJson(obj) {
 
     }
 
-    async getFilter() {
+    async getFilter($) {
 
     }
 
@@ -317,7 +303,8 @@ class Spider {
     async parseVodDetailFromDoc($) {
 
     }
-    async parseVodDetailromJson(obj){
+
+    async parseVodDetailromJson(obj) {
 
     }
 
@@ -329,41 +316,86 @@ class Spider {
     async parseVodPlayFromDoc(flag, $) {
 
     }
+
     async SpiderInit(cfg) {
-    try {
-        this.siteKey = cfg["skey"]
-        this.siteType = parseInt(cfg["stype"].toString())
-        let extObj = null;
-        if (typeof cfg.ext === "string") {
-            await this.jadeLog.info(`读取配置文件,ext为:${cfg.ext}`)
-            extObj = JSON.parse(cfg.ext)
+        try {
+            this.siteKey = cfg["skey"]
+            this.siteType = parseInt(cfg["stype"].toString())
+            let extObj = null;
+            if (typeof cfg.ext === "string") {
+                await this.jadeLog.info(`读取配置文件,ext为:${cfg.ext}`)
+                extObj = JSON.parse(cfg.ext)
 
-        } else if (typeof cfg.ext === "object") {
-            await this.jadeLog.info(`读取配置文件,所有参数为:${JSON.stringify(cfg)}`)
-            await this.jadeLog.info(`读取配置文件,ext为:${JSON.stringify(cfg.ext)}`)
-            extObj = cfg.ext
-        } else {
-            await this.jadeLog.error(`不支持的数据类型,数据类型为${typeof cfg.ext}`)
+            } else if (typeof cfg.ext === "object") {
+                await this.jadeLog.info(`读取配置文件,所有参数为:${JSON.stringify(cfg)}`)
+                await this.jadeLog.info(`读取配置文件,ext为:${JSON.stringify(cfg.ext)}`)
+                extObj = cfg.ext
+            } else {
+                await this.jadeLog.error(`不支持的数据类型,数据类型为${typeof cfg.ext}`)
+            }
+            let boxType = extObj["box"]
+            extObj["CatOpenStatus"] = boxType === "CatOpen";
+            return extObj
+        } catch (e) {
+            await this.jadeLog.error("初始化失败,失败原因为:" + e.message)
+            return {"token": null, "CatOpenStatus": false, "code": 0}
         }
-        let boxType = extObj["box"]
-        extObj["CatOpenStatus"] = boxType === "CatOpen";
-        return extObj
-    } catch (e) {
-        await this.jadeLog.error("初始化失败,失败原因为:" + e.message)
-        return {"token": null, "CatOpenStatus": false, "code": 0}
-    }
 
-}
+    }
 
     async init(cfg) {
         let obj = await this.SpiderInit(cfg)
         await this.jadeLog.debug(`初始化参数为:${JSON.stringify(cfg)}`)
         this.catOpenStatus = obj.CatOpenStatus
+        if (await this.loadFilterAndClasses()) {
+            await this.jadeLog.debug(`读取缓存列表和二级菜单成功`)
+        } else {
+            await this.jadeLog.warning(`读取缓存列表和二级菜单失败`)
+            await this.writeFilterAndClasses()
+        }
+        return obj
+
+    }
+
+    async loadFilterAndClasses() {
+        this.classes = await this.getClassesCache()
+        this.filterObj = await this.getFiletObjCache()
+        if (this.classes.length > 0){
+            return true
+        }else{
+            await local.set(this.siteKey, "classes",[]);
+            await local.set(this.siteKey, "filterObj",{});
+        }
+    }
+
+    async writeFilterAndClasses() {
         if (this.catOpenStatus) {
             this.classes.push({"type_name": "最近更新", "type_id": "最近更新"})
         }
-        return obj
+        await this.setClasses()
+        await this.setFilterObj()
+        await local.set(this.siteKey, "classes",this.classes);
+        await local.set(this.siteKey, "filterObj",this.filterObj);
     }
+
+    async getClassesCache() {
+        let cacheClasses = await local.get(this.siteKey, "classes")
+        if (!_.isEmpty(cacheClasses)){
+            return cacheClasses
+        }else{
+            return this.classes
+        }
+    }
+
+    async getFiletObjCache() {
+        let cacheFilterObj = await local.get(this.siteKey, "filterObj")
+        if ( !_.isEmpty(cacheFilterObj)){
+            return cacheFilterObj
+        }else{
+            return this.filterObj
+        }
+    }
+
 
     async setHome(filter) {
     }

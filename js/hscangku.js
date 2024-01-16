@@ -53,10 +53,6 @@ class HsCangkuSpider extends Spider {
     }
 
     async setClasses() {
-    }
-
-    async setHome(filter) {
-        // await this.setClasses()
         this.classes = [
             {
                 "type_name": "国产视频",
@@ -79,6 +75,9 @@ class HsCangkuSpider extends Spider {
                 "type_id": "?type=rw"
             }
         ]
+    }
+
+    async setHome(filter) {
     }
 
     async setCategory(tid, pg, filter, extend) {

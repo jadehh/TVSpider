@@ -1,10 +1,10 @@
-import {__jsEvalReturn} from './jiujiuliu.js';
+import {__jsEvalReturn} from './weixine.js';
 
 
 let spider = __jsEvalReturn();
 
 async function test() {
-    let siteKey = 'niba';
+    let siteKey = 'weixine';
     let siteType = 0;
     await spider.init({
         skey: siteKey,

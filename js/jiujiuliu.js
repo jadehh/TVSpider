@@ -162,8 +162,6 @@ class JiuJiuLiuSpider extends Spider {
 
 
     async setHome(filter) {
-        await this.setClasses()
-        await this.setFilterObj()
         let html = await this.fetch(this.siteUrl, null, this.getHeader())
         if (html != null) {
             let $ = load(html)

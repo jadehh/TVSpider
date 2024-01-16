@@ -18,6 +18,7 @@ class Xb6vSpider extends Spider {
         super();
         this.siteUrl = "https://www.xb6v.com";
     }
+
     getName() {
         return "🧲|磁力新6V|🧲"
     }
@@ -32,7 +33,7 @@ class Xb6vSpider extends Spider {
         if (matcher.length > 1) {
             let new_url = this.siteUrl + "/e/search/" + matcher[1].replaceAll("\\", "").replaceAll("\"", "")
             await this.jadeLog.info(`重定向url为:${new_url}`)
-            return await this.fetch(new_url, null,this.getHeader())
+            return await this.fetch(new_url, null, this.getHeader())
         }
     }
 
@@ -161,7 +162,8 @@ class Xb6vSpider extends Spider {
         return play_url
     }
 
-    async setHome(filter) {
+
+    async setClasses() {
         let html = await this.fetch(this.siteUrl, null, this.getHeader());
         if (!_.isEmpty(html)) {
             let $ = load(html);
@@ -182,6 +184,16 @@ class Xb6vSpider extends Spider {
                     }]
                 }
             }
+        }
+    }
+
+    async setFilterObj() {
+    }
+
+    async setHome(filter) {
+        let html = await this.fetch(this.siteUrl, null, this.getHeader());
+        if (!_.isEmpty(html)) {
+            let $ = load(html);
             this.homeVodList = await this.parseVodShortListFromDoc($)
         } else {
             await this.jadeLog.info("首页类别解析失败", true)

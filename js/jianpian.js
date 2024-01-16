@@ -250,8 +250,6 @@ class JianPianSpider extends Spider {
     }
 
     async setHome(filter) {
-        await this.setClasses()
-        await this.setFilterObj()
         let content = await this.fetch(this.siteUrl + "/api/tag/hand?code=unknown601193cf375db73d&channel=wandoujia", null, this.getHeader())
         if (!_.isEmpty(content)) {
             let content_json = JSON.parse(content)
