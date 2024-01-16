@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './douban.js';
+import {__jsEvalReturn} from './jiujiuliu.js';
 
 
 let spider = __jsEvalReturn();

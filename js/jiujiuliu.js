@@ -92,7 +92,10 @@ class JiuJiuLiuSpider extends Spider {
                 let type_dic = {
                     "type_name": $(menuElement).text(), "type_id": menuElement.attribs["href"]
                 }
-                this.classes.push(type_dic)
+                if ($(menuElement).text() !== "首页") {
+                    this.classes.push(type_dic)
+                }
+
             }
         }
     }
@@ -162,15 +165,15 @@ class JiuJiuLiuSpider extends Spider {
         // await this.setClasses()
         // await this.setFilterObj()
         this.classes = [{
-            "type_name": "首页", "type_id": "/"
+            "type_name": "最近更新", "type_id": "最近更新"
         }, {
-            "type_name": "电影", "type_id": "/show/id/1"
+            "type_name": "电影", "type_id": "/vod/type/id/1.html"
         }, {
-            "type_name": "电视剧", "type_id": "/show/id/2"
+            "type_name": "电视剧", "type_id": "/vod/type/id/2.html"
         }, {
-            "type_name": "动漫", "type_id": "/show/id/3"
+            "type_name": "动漫", "type_id": "/vod/type/id/3.html"
         }, {
-            "type_name": "爽文短剧", "type_id": "/show/id/4"
+            "type_name": "爽文短剧", "type_id": "/vod/type/id/4.html"
         }];
         this.filterObj = {
             "/show/id/1": [{
@@ -1101,8 +1104,10 @@ class JiuJiuLiuSpider extends Spider {
                 }]
             }]
         }
-        if (!this.catOpenStatus) {
-            this.classes.shift()
+        let html = await this.fetch(this.siteUrl, null, this.getHeader())
+        if (html != null) {
+            let $ = load(html)
+            this.homeVodList = await this.parseVodShortListFromDoc($)
         }
     }
 
@@ -1117,23 +1122,17 @@ class JiuJiuLiuSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        let cateUrl = ""
-        if (tid !== "/") {
-            let typeName = this.getParams("/id/", extend["1"])
-            if (_.isEmpty(typeName)) {
-                typeName = "/id/" + tid.split("/").slice(-1)[0]
-            }
-
-            let plot = this.getParams("/class/", extend["2"])
-            let area = this.getParams("/area/", extend["3"])
-            let year = this.getParams("/year/", extend["4"])
-            let language = this.getParams("/lang/ ", extend["5"])
-            let letter = this.getParams("/letter/ ", extend["6"])
-            let time = this.getParams("/by/", extend["7"])
-            cateUrl = this.siteUrl + `/show${area}${time}${plot}${typeName}${language}${letter}${year}/page/${pg.toString()}.html`
-        } else {
-            cateUrl = this.siteUrl
+        let typeName = this.getParams("/id/", extend["1"])
+        if (_.isEmpty(typeName)) {
+            typeName = "/id/" + tid.split("/").slice(-1)[0]
         }
+        let plot = this.getParams("/class/", extend["2"])
+        let area = this.getParams("/area/", extend["3"])
+        let year = this.getParams("/year/", extend["4"])
+        let language = this.getParams("/lang/ ", extend["5"])
+        let letter = this.getParams("/letter/ ", extend["6"])
+        let time = this.getParams("/by/", extend["7"])
+        let cateUrl = this.siteUrl + `/show${area}${time}${plot}${typeName}${language}${letter}${year}/page/${pg.toString()}.html`
         await this.jadeLog.info(`类别URL为:${cateUrl}`)
         this.limit = 36
         let html = await this.fetch(cateUrl, null, this.getHeader())
