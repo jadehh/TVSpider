@@ -355,6 +355,8 @@ class Spider {
                 await this.writeFilterAndClasses()
             }
         } catch (e) {
+            await local.set(this.siteKey, "classes", JSON.stringify([]));
+            await local.set(this.siteKey, "filterObj", JSON.stringify({}));
             await this.jadeLog.error("读取缓存失败,失败原因为:" + e)
         }
 
