@@ -107,60 +107,6 @@ class AiYingShiSpider extends Spider {
         return vod_list
     }
 
-    get_extend_sort_dic(tid) {
-        /***
-         tid为1,2,3的时候,电影,剧情,动漫
-         urlParams#0表示类别,1表示全部地区,2表示人气评分,3表示全部剧情,4表示全部语言,5表示字母查找,6表示页数,11表示时间
-         #key为1,代表全部剧情
-         #key为2,代表全部地区
-         #key为3,代表全部语言
-         #key为4,代表全部时间
-         #key为5,字幕查找
-         #key为6,时间排序
-         https://www.wogg.xyz/index.php/vodshow/1-全部地区-时间排序-全部剧情-全部语言-字幕查找------全部时间.html
-
-         tid为4,综艺
-         #key为1,代表全部地区
-         #key为2,代表全部时间
-         #key为3,字幕查找
-         #key为4,时间排序
-         https://tvfan.xxooo.cf/index.php/vodshow/4-全部地区-时间排序---字母查找------全部时间.html
-
-         tid为5:音乐
-         #key为1,字幕查找
-         #key为2,时间排序
-         https://tvfan.xxooo.cf/index.php/vodshow/5--时间排序---字幕查找------.html
-
-         tid为6,短剧
-         #key为1,代表全部剧情
-         #key为2,代表全部地区
-         #key为3,代表全部时间
-         #key为4,字幕查找
-         #key为5,时间排序
-         https://tvfan.xxooo.cf/index.php/vodshow/6-全部地区-时间排序-全部剧情--字母查找------全部时间.html
-         */
-        let extend_dic = {}
-        if (tid < 4) {
-            extend_dic = {
-                "1": 3, "2": 1, "3": 4, "4": 11, "5": 5, "6": 2
-            }
-        } else if (tid === 4) {
-            extend_dic = {
-                "1": 1, "2": 11, "3": 5, "4": 2,
-            }
-        } else if (tid === 6) {
-            extend_dic = {
-                "1": 3, "2": 1, "3": 11, "4": 5, "5": 2,
-            }
-        } else if (tid === 5) {
-            extend_dic = {
-                "1": 5, "2": 2,
-            }
-        }
-
-        return extend_dic
-    }
-
     async setClasses() {
         let con = await this.fetch(this.siteUrl, null, this.getHeader());
         if (!_.isEmpty(con)) {

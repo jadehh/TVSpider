@@ -184,7 +184,7 @@ class WoggSpider extends Spider {
             if (i < elements.length - 1) {
                 extend_dic["name"] = $($(elements[i]).find("a")[0]).text()
                 extend_dic["value"].push({"n": "全部", "v": "0"})
-                for (const ele of $(elements[i]).find("a")) {
+                for (const ele of $(elements[i]).find("a").slice(1)) {
                     extend_dic["value"].push({"n": $(ele).text(), "v": $(ele).text()})
                 }
                 extend_list.push(extend_dic)
