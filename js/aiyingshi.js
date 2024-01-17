@@ -130,14 +130,19 @@ class AiYingShiSpider extends Spider {
             let extend_dic = {"key": (i + 1).toString(), "name": "", "value": []}
             if (i < elements.length - 1) {
                 extend_dic["name"] = $($(elements[i]).find("a")[0]).text()
-                extend_dic["value"].push({"n": "全部", "v": "0"})
+                extend_dic["value"].push({"n": "全部", "v": undefined})
                 for (const ele of $(elements[i]).find("a").slice(1)) {
-                    extend_dic["value"].push({"n": $(ele).text(), "v": $(ele).text()})
+                    if ($($(elements[i]).find("a")[0]).text() === "全部类型"){
+                        extend_dic["value"].push({"n": $(ele).text(), "v":ele.attribs["href"].split("/").slice(-1)[0].split(".")[0]})
+                    }else{
+                        extend_dic["value"].push({"n": $(ele).text(), "v":$(ele).text()})
+
+                    }
                 }
                 extend_list.push(extend_dic)
             } else {
                 extend_dic["name"] = $($(elements[i]).find("a")[0]).text()
-                extend_dic["value"] = [{"n": "全部", "v": "0"}, {
+                extend_dic["value"] = [{"n": "全部", "v": undefined}, {
                     "n": $($(elements[i]).find("a")[1]).text(),
                     "v": "hits"
                 }, {"n": $($(elements[i]).find("a")[2]).text(), "v": "score"}]
@@ -174,18 +179,15 @@ class AiYingShiSpider extends Spider {
         }
     }
 
+    async getCateUrl(tid,pg,extend){
+        tid = extend["1"] === "0"  ?? tid
+        let cateUrl = this.siteUrl + `/vodshow/id/${tid}/page/${pg}.html`
+        await this.jadeLog.debug(`类别详情URL:${cateUrl}`)
+        return cateUrl
+    }
+
     async setCategory(tid, pg, filter, extend) {
-        let urlParams = [tid.toString(), "", "", "", "", "", "", "", pg.toString(), "", "", ""]
-        let extend_dic = this.get_extend_sort_dic(parseInt(tid))
-        for (const key of Object.keys(extend_dic)) {
-            if (extend[key] === "0") {
-                urlParams[extend_dic[key]] = ""
-            } else {
-                urlParams[extend_dic[key]] = extend[key]
-            }
-        }
-        let reqUrl = this.siteUrl + '/index.php/vodshow/' + urlParams.join("-") + '.html';
-        await this.jadeLog.debug(`类别详情URL:${reqUrl}`)
+        let reqUrl = await this.getCateUrl(tid,pg,extend)
         let html = await this.fetch(reqUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
