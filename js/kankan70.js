@@ -146,7 +146,9 @@ class Kankan70Spider extends Spider {
                 let typeElement = $($(element).find("[class=\"h1 clearfix\"]")[0]).find("a")
                 let type_id = typeElement[0].attribs["href"]
                 let type_name = $(typeElement[1]).text()
-                this.classes.push({"type_id": type_id, "type_name": type_name})
+                if (!_.isEmpty(type_name)){
+                    this.classes.push({"type_id": type_id, "type_name": type_name})
+                }
             }
         }
     }
@@ -253,6 +255,7 @@ class Kankan70Spider extends Spider {
             }
             let api_url = Utils.getStrByRegex(/var my_search='(.*?)';/, html)
             let content = await this.fetch(api_url, params, this.getHeader())
+            await this.jadeLog.debug(`搜索内容为:${content}`)
             if (!_.isEmpty(content)) {
                 let content_json = JSON.parse(content)
                 this.vodList = await this.parseVodShortListFromJson(content_json)
