@@ -363,6 +363,9 @@ class Spider {
     }
 
     async loadFilterAndClasses() {
+        // 强制清空
+        await local.set(this.siteKey, "classes", JSON.stringify([]));
+        await local.set(this.siteKey, "filterObj", JSON.stringify({}));
         this.classes = await this.getClassesCache()
         this.filterObj = await this.getFiletObjCache()
         if (this.classes.length > 0) {
@@ -370,6 +373,7 @@ class Spider {
         } else {
             await local.set(this.siteKey, "classes", JSON.stringify([]));
             await local.set(this.siteKey, "filterObj", JSON.stringify({}));
+            return false
         }
     }
 
