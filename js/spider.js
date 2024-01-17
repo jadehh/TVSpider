@@ -230,7 +230,7 @@ class Spider {
                 return this.fetch(response.headers["location"], params, headers)
             } else if (!_.isEmpty(response.content)) {
                 this.reconnectTimes = 0
-                return response.content
+                return response.content.replaceAll("﻿","")
             } else {
                 return await this.reconnnect(reqUrl, params, headers)
             }
