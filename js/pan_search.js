@@ -33,8 +33,8 @@ class PanSearchSpider extends Spider {
 
 
     async init(cfg) {
-        let extObj = await super.init(cfg);
-        await initAli(extObj["token"]);
+        await super.init(cfg);
+        await initAli(this.cfgObj["token"]);
     }
 
     async parseVodDetailromJson(obj) {

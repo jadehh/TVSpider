@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './aiyingshi.js';
+import {__jsEvalReturn} from './weixine.js';
 
 
 let spider = __jsEvalReturn();
