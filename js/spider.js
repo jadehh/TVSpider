@@ -217,10 +217,11 @@ class Spider {
 
     async fetch(reqUrl, params, headers) {
         let data = Utils.objectToStr(params)
+        let url = reqUrl
         if (!_.isEmpty(data)) {
-            reqUrl = reqUrl + "?" + data
+            url = reqUrl + "?" + data
         }
-        let uri = new Uri(reqUrl);
+        let uri = new Uri(url);
         let response = await req(uri.toString(), {
             method: "get", headers: headers, data: null,
         });

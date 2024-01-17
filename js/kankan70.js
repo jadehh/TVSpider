@@ -248,7 +248,6 @@ class Kankan70Spider extends Spider {
     async setSearch(wd, quick) {
         let url = this.siteUrl + "/search.php"
         let html = await this.fetch(url, null, this.getHeader())
-        await this.jadeLog.debug(`搜索html:${html}`)
         if (!_.isEmpty(html)) {
             let params = {
                 "top": 10, "q": wd,
@@ -256,15 +255,9 @@ class Kankan70Spider extends Spider {
             let api_url = Utils.getStrByRegex(/var my_search='(.*?)';/, html)
             await this.jadeLog.debug(`搜索Api为:${api_url}`)
             let content = await this.fetch(api_url, params, this.getHeader())
-            await this.jadeLog.debug(`搜索内容为:${content}`)
+            await this.jadeLog.debug(`搜索内容为:${content.replaceAll("\n","")}`)
             if (!_.isEmpty(content)) {
                 try {
-                    try{
-                        let content_json2 = JSON.parse(content)
-                        await this.jadeLog.debug("转JSON成功" + JSON.stringify(content_json2))
-                    }catch (e) {
-                        await this.jadeLog.error("转JSON出错")
-                    }
                     let content_json = JSON.parse(content)
                     this.vodList = await this.parseVodShortListFromJson(content_json)
                 } catch (e) {
