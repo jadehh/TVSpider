@@ -76,10 +76,6 @@ class HsCangkuSpider extends Spider {
             }
         ]
     }
-
-    async setHome(filter) {
-    }
-
     async setCategory(tid, pg, filter, extend) {
         let url = this.siteUrl + tid + "&p=" + pg.toString()
         let html = await this.fetch(url, null,this.getHeader())

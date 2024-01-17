@@ -167,10 +167,6 @@ class AiYingShiSpider extends Spider {
             }
         }
     }
-
-    async setHome(filter) {
-    }
-
     async setHomeVod() {
         let con = await this.fetch(this.siteUrl, null, this.getHeader());
         if (!_.isEmpty(con)) {

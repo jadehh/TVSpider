@@ -95,7 +95,7 @@ class IKanBotSpider extends Spider {
         vodDetail.vod_name = detail[0].children[0].data;
         vodDetail.vod_year = detail[2].children[0].data;
         vodDetail.vod_area = detail[3].children[0].data;
-        vodDetail.vod_actor =detail[4].children[0].data;
+        vodDetail.vod_actor = detail[4].children[0].data;
 
         let id = Utils.getStrByRegex(/<input type="hidden" id="current_id" value="(.*?)"/, $.html())
         let token = Utils.getStrByRegex(/<input type="hidden" id="e_token" value="(.*?)"/, $.html())
@@ -130,7 +130,7 @@ class IKanBotSpider extends Spider {
     async parseVodShortListFromDocBySearch($) {
         let vod_list = []
         const items = $('div.media > div.media-left > a');
-        for (const item of items){
+        for (const item of items) {
             let vodShort = new VodShort();
             const img = $(item).find('img:first')[0];
             vodShort.vod_id = item.attribs.href
@@ -203,14 +203,13 @@ class IKanBotSpider extends Spider {
         }
     }
 
-    async setHome(filter) {
+    async setHomeVod() {
         let html = await this.fetch(this.siteUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
             this.homeVodList = await this.parseVodShortListFromDoc($)
         }
     }
-
 
     async setCategory(tid, pg, filter, extend) {
         let categoryUrl = (this.siteUrl + (extend[tid] || tid.split(",")[0]))

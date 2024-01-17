@@ -90,7 +90,8 @@ class JiuJiuLiuSpider extends Spider {
             let menuElements = $("[class=\"stui-header__menu type-slide\"]").find("a")
             for (const menuElement of menuElements) {
                 let type_dic = {
-                    "type_name": $(menuElement).text(), "type_id": "/show/id/" + menuElement.attribs["href"].split("/").slice(-1)[0].split(".")[0]
+                    "type_name": $(menuElement).text(),
+                    "type_id": "/show/id/" + menuElement.attribs["href"].split("/").slice(-1)[0].split(".")[0]
                 }
                 if ($(menuElement).text() !== "首页") {
                     this.classes.push(type_dic)
@@ -160,8 +161,7 @@ class JiuJiuLiuSpider extends Spider {
 
     }
 
-
-    async setHome(filter) {
+    async setHomeVod() {
         let html = await this.fetch(this.siteUrl, null, this.getHeader())
         if (html != null) {
             let $ = load(html)

@@ -485,10 +485,6 @@ class DoubanSpider extends Spider {
         let raw_sign = [method.toLocaleUpperCase(), url_path, ts.toString()].join("&")
         return CryptoJS.HmacSHA1(raw_sign, _api_secret_key).toString(CryptoJS.enc.Base64)
     }
-
-    async setHome(filter) {
-    }
-
     async setHomeVod() {
         let url = this.siteUrl + "/subject_collection/subject_real_time_hotest/items"
         let content = await this.fetch(url, {"apikey": this.apiKey}, this.getHeader())

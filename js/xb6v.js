@@ -190,7 +190,7 @@ class Xb6vSpider extends Spider {
     async setFilterObj() {
     }
 
-    async setHome(filter) {
+    async setHomeVod() {
         let html = await this.fetch(this.siteUrl, null, this.getHeader());
         if (!_.isEmpty(html)) {
             let $ = load(html);

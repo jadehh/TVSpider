@@ -122,11 +122,6 @@ class Doll extends Spider {
         }
 
     }
-
-    async setHome(filter) {
-
-    }
-
     async setCategory(tid, pg, filter, extend) {
         if (extend["1"] !== undefined){
             if (extend["1"] !== "1" ){

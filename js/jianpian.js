@@ -8,7 +8,7 @@
 */
 
 import {Spider} from "./spider.js";
-import { _} from "../lib/cat.js";
+import {_} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
 
@@ -34,8 +34,7 @@ class JianPianSpider extends Spider {
     async init(cfg) {
         await super.init(cfg);
         this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {
-            "Referer": "www.jianpianapp.com",
-            "User-Agent": "jianpian-version353"
+            "Referer": "www.jianpianapp.com", "User-Agent": "jianpian-version353"
         });
     }
 
@@ -52,10 +51,10 @@ class JianPianSpider extends Spider {
                     vodShort.vod_pic = this.jsBase + Utils.base64Encode(data["path"])
                 }
             } else {
-                if (!this.catOpenStatus){
+                if (!this.catOpenStatus) {
                     vodShort.vod_pic = data["thumbnail"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353"
 
-                }else{
+                } else {
                     vodShort.vod_pic = this.jsBase + Utils.base64Encode(data["thumbnail"])
                 }
             }
@@ -95,13 +94,7 @@ class JianPianSpider extends Spider {
         vodDetail.vod_director = this.objToList(obj["directors"], "name")
         vodDetail.vod_actor = this.objToList(obj["actors"], "name")
         vodDetail.vod_remarks = "评分:" + obj["score"]
-        let playKeyList = [
-            {"btbo_downlist": "btbo"},
-            {"xunlei_downlist": "迅雷"},
-            {"m3u8_downlist": "m3u8"},
-            {"new_ftp_list": "new_ftp"},
-            {"new_m3u8_list": "new_m3u8"}
-        ]
+        let playKeyList = [{"btbo_downlist": "btbo"}, {"xunlei_downlist": "迅雷"}, {"m3u8_downlist": "m3u8"}, {"new_ftp_list": "new_ftp"}, {"new_m3u8_list": "new_m3u8"}]
         let playlist = {}
         let urlList = []
         for (const dic of playKeyList) {
@@ -113,10 +106,10 @@ class JianPianSpider extends Spider {
                     url_str_list.push(dic["title"] + "$" + dic["url"])
                 }
 
-                if (urlList.indexOf(url_str_list.join("#")) === -1){
-                      urlList.push(url_str_list.join("#"))
+                if (urlList.indexOf(url_str_list.join("#")) === -1) {
+                    urlList.push(url_str_list.join("#"))
                     playlist[value] = url_str_list.join("#")
-                }else{
+                } else {
                     await this.jadeLog.warning(`key为:${key},播放链接重复,无需保存`)
                 }
 
@@ -144,102 +137,83 @@ class JianPianSpider extends Spider {
                 "key": "year",
                 "name": "年代",
                 "value": [{"n": "全部", "v": "0"}, {"n": "2023", "v": "153"}, {"n": "2022", "v": "101"}, {
-                    "n": "2021",
-                    "v": "118"
+                    "n": "2021", "v": "118"
                 }, {"n": "2020", "v": "16"}, {"n": "2019", "v": "7"}, {"n": "2018", "v": "2"}, {
-                    "n": "2017",
-                    "v": "3"
+                    "n": "2017", "v": "3"
                 }, {"n": "2016", "v": "22"}]
             }, {
                 "key": "sort",
                 "name": "排序",
                 "value": [{"n": "更新", "v": "update"}, {"n": "热门", "v": "hot"}, {"n": "评分", "v": "rating"}]
-            }],
-            "1": [{
+            }], "1": [{
                 "key": "cateId",
                 "name": "分类",
                 "value": [{"n": "全部", "v": "1"}, {"n": "首推", "v": "5"}, {"n": "动作", "v": "6"}, {
-                    "n": "喜剧",
-                    "v": "7"
+                    "n": "喜剧", "v": "7"
                 }, {"n": "战争", "v": "8"}, {"n": "恐怖", "v": "9"}, {"n": "剧情", "v": "10"}, {
-                    "n": "爱情",
-                    "v": "11"
+                    "n": "爱情", "v": "11"
                 }, {"n": "科幻", "v": "12"}, {"n": "动画", "v": "13"}]
             }, {
                 "key": "year",
                 "name": "年代",
                 "value": [{"n": "全部", "v": "0"}, {"n": "2023", "v": "153"}, {"n": "2022", "v": "101"}, {
-                    "n": "2021",
-                    "v": "118"
+                    "n": "2021", "v": "118"
                 }, {"n": "2020", "v": "16"}, {"n": "2019", "v": "7"}, {"n": "2018", "v": "2"}, {
-                    "n": "2017",
-                    "v": "3"
+                    "n": "2017", "v": "3"
                 }, {"n": "2016", "v": "22"}]
             }, {
                 "key": "sort",
                 "name": "排序",
                 "value": [{"n": "热门", "v": "hot"}, {"n": "评分", "v": "rating"}, {"n": "更新", "v": "update"}]
-            }],
-            "2": [{
+            }], "2": [{
                 "key": "cateId",
                 "name": "分类",
                 "value": [{"n": "全部", "v": "2"}, {"n": "首推", "v": "14"}, {"n": "国产", "v": "15"}, {
-                    "n": "港台",
-                    "v": "16"
+                    "n": "港台", "v": "16"
                 }, {"n": "日韩", "v": "17"}, {"n": "海外", "v": "18"}]
             }, {
                 "key": "year",
                 "name": "年代",
                 "value": [{"n": "全部", "v": "0"}, {"n": "2023", "v": "153"}, {"n": "2022", "v": "101"}, {
-                    "n": "2021",
-                    "v": "118"
+                    "n": "2021", "v": "118"
                 }, {"n": "2020", "v": "16"}, {"n": "2019", "v": "7"}, {"n": "2018", "v": "2"}, {
-                    "n": "2017",
-                    "v": "3"
+                    "n": "2017", "v": "3"
                 }, {"n": "2016", "v": "22"}]
             }, {
                 "key": "sort",
                 "name": "排序",
                 "value": [{"n": "热门", "v": "hot"}, {"n": "评分", "v": "rating"}, {"n": "更新", "v": "update"}]
-            }],
-            "3": [{
+            }], "3": [{
                 "key": "cateId",
                 "name": "分类",
                 "value": [{"n": "全部", "v": "3"}, {"n": "首推", "v": "19"}, {"n": "海外", "v": "20"}, {
-                    "n": "日本",
-                    "v": "21"
+                    "n": "日本", "v": "21"
                 }, {"n": "国产", "v": "22"}]
             }, {
                 "key": "year",
                 "name": "年代",
                 "value": [{"n": "全部", "v": "0"}, {"n": "2023", "v": "153"}, {"n": "2022", "v": "101"}, {
-                    "n": "2021",
-                    "v": "118"
+                    "n": "2021", "v": "118"
                 }, {"n": "2020", "v": "16"}, {"n": "2019", "v": "7"}, {"n": "2018", "v": "2"}, {
-                    "n": "2017",
-                    "v": "3"
+                    "n": "2017", "v": "3"
                 }, {"n": "2016", "v": "22"}]
             }, {
                 "key": "sort",
                 "name": "排序",
                 "value": [{"n": "热门", "v": "hot"}, {"n": "评分", "v": "rating"}, {"n": "更新", "v": "update"}]
-            }],
-            "4": [{
+            }], "4": [{
                 "key": "cateId",
                 "name": "分类",
                 "value": [{"n": "全部", "v": "4"}, {"n": "首推", "v": "23"}, {"n": "国产", "v": "24"}, {
-                    "n": "海外",
-                    "v": "25"
+                    "n": "海外", "v": "25"
                 }, {"n": "港台", "v": "26"}]
             }, {
                 "key": "year",
                 "name": "年代",
                 "value": [{"n": "全部", "v": "0"}, {"n": "2023", "v": "153"}, {"n": "2022", "v": "101"}, {
-                    "n": "2021",
-                    "v": "118"
+                    "n": "2021", "v": "118"
                 }, {"n": "2020", "v": "16"}, {"n": "2019", "v": "7"}, {"n": "2018", "v": "2"}, {
-                    "n": "2017",
-                    "v": "3"
+                    "n": "2017", "v": "3"
                 }, {"n": "2016", "v": "22"}]
             }, {
                 "key": "sort",
@@ -248,8 +222,7 @@ class JianPianSpider extends Spider {
             }]
         }
     }
-
-    async setHome(filter) {
+    async setHomeVod() {
         let content = await this.fetch(this.siteUrl + "/api/tag/hand?code=unknown601193cf375db73d&channel=wandoujia", null, this.getHeader())
         if (!_.isEmpty(content)) {
             let content_json = JSON.parse(content)
