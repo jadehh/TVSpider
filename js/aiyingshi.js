@@ -130,7 +130,7 @@ class AiYingShiSpider extends Spider {
             let extend_dic = {"key": (i + 1).toString(), "name": "", "value": []}
             if (i < elements.length - 1) {
                 extend_dic["name"] = $($(elements[i]).find("a")[0]).text()
-                extend_dic["value"].push({"n": "全部", "v": undefined})
+                extend_dic["value"].push({"n": "全部", "v": "0"})
                 for (const ele of $(elements[i]).find("a").slice(1)) {
                     if ($($(elements[i]).find("a")[0]).text() === "全部类型"){
                         extend_dic["value"].push({"n": $(ele).text(), "v":ele.attribs["href"].split("/").slice(-1)[0].split(".")[0]})
@@ -142,7 +142,7 @@ class AiYingShiSpider extends Spider {
                 extend_list.push(extend_dic)
             } else {
                 extend_dic["name"] = $($(elements[i]).find("a")[0]).text()
-                extend_dic["value"] = [{"n": "全部", "v": undefined}, {
+                extend_dic["value"] = [{"n": "全部", "v": "0"}, {
                     "n": $($(elements[i]).find("a")[1]).text(),
                     "v": "hits"
                 }, {"n": $($(elements[i]).find("a")[2]).text(), "v": "score"}]

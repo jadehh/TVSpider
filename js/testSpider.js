@@ -36,7 +36,7 @@ async function test() {
         ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "CatOpen", "code": "1"}
     });
 
-    // let classes = JSON.parse(await spider.home(true));
+    let classes = JSON.parse(await spider.home(true));
     // console.debug(JSON.stringify(classes));
     // //
     // //测试首页列表
