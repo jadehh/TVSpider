@@ -260,7 +260,10 @@ class Kankan70Spider extends Spider {
             if (!_.isEmpty(content)) {
                 let content_json = JSON.parse(content)
                 this.vodList = await this.parseVodShortListFromJson(content_json)
+            }else{
+                await this.jadeLog.debug("搜索内容为空")
             }
+            await this.jadeLog.debug("搜索完成",true)
         }
     }
 
