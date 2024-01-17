@@ -126,12 +126,12 @@ class Kankan70Spider extends Spider {
 
     async parseVodShortListFromJson(obj) {
         let vod_list = []
-        for (const object of obj) {
+        for (const vod_object of obj) {
             let vodShort = new VodShort()
-            vodShort.vod_id = object["url"]
-            vodShort.vod_pic = object["thumb"]
-            vodShort.vod_remarks = object["time"]
-            vodShort.vod_name = object["title"]
+            vodShort.vod_id = vod_object["url"]
+            vodShort.vod_pic = vod_object["thumb"]
+            vodShort.vod_remarks = vod_object["time"]
+            vodShort.vod_name = vod_object["title"]
             vod_list.push(vodShort)
         }
         return vod_list
@@ -259,6 +259,12 @@ class Kankan70Spider extends Spider {
             await this.jadeLog.debug(`搜索内容为:${content}`)
             if (!_.isEmpty(content)) {
                 try {
+                    try{
+                        let content_json2 = JSON.parse(content)
+                        await this.jadeLog.debug("转JSON成功" + JSON.stringify(content_json2))
+                    }catch (e) {
+                        await this.jadeLog.error("转JSON出错")
+                    }
                     let content_json = JSON.parse(content)
                     this.vodList = await this.parseVodShortListFromJson(content_json)
                 } catch (e) {
