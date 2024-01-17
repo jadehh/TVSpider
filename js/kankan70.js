@@ -255,7 +255,7 @@ class Kankan70Spider extends Spider {
             let api_url = Utils.getStrByRegex(/var my_search='(.*?)';/, html)
             let content = await this.fetch(api_url, params, this.getHeader())
             if (!_.isEmpty(content)) {
-                let content_json = JSON.parse(content)
+                let content_json = JSON.parse(content.replaceAll("﻿",""))
                 this.vodList = await this.parseVodShortListFromJson(content_json)
             }
         }
