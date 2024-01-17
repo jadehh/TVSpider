@@ -255,7 +255,7 @@ class Kankan70Spider extends Spider {
             let api_url = Utils.getStrByRegex(/var my_search='(.*?)';/, html)
             await this.jadeLog.debug(`搜索Api为:${api_url}`)
             let content = await this.fetch(api_url, params, this.getHeader())
-            await this.jadeLog.debug(`搜索内容为:${content}`)
+            await this.jadeLog.debug(`搜索内容为:${content.replaceAll("    ","")}`)
 
             var jsonString = '[{"name":"John", "age":30}, {"name":"Jane", "age":25}]'; // JSON数组字符串
             await this.jadeLog.debug(`搜索内容为:${jsonString}`)
@@ -264,7 +264,7 @@ class Kankan70Spider extends Spider {
 
             if (!_.isEmpty(content)) {
                 try {
-                    let content_json = JSON.parse(content)
+                    let content_json = JSON.parse(content.replaceAll("    ",""))
                     this.vodList = await this.parseVodShortListFromJson(content_json)
                 } catch (e) {
                     await this.jadeLog.error(`搜索出错,出错原因为:${e}`)
