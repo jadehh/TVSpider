@@ -14,7 +14,8 @@
         "axios": "^1.4.0",
         "crypto-js": "^4.2.0",
         "log4js": "^6.9.1",
-        "qs": "^6.11.2"
+        "qs": "^6.11.2",
+        "tunnel": "^0.0.6"
     },
     "devDependencies": {
         "@types/node": "^20.1.5",

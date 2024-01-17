@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './aiyingshi.js';
+import {__jsEvalReturn} from './doll.js';
 
 
 let spider = __jsEvalReturn();
@@ -28,7 +28,7 @@ async function testPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'aiyingshi';
+    let siteKey = 'doll';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -37,11 +37,11 @@ async function test() {
     });
 
     let classes = JSON.parse(await spider.home(true));
-    // console.debug(JSON.stringify(classes));
+    console.debug(JSON.stringify(classes));
     // //
     // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
     //
 
 
@@ -52,12 +52,12 @@ async function test() {
 
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/voddetail/336160.html"))
+    // let detail1 = JSON.parse(await spider.detail("/voddetail/336160.html"))
 
 
     // 测试搜索
 
-    let search_page = JSON.parse(await spider.search("繁花"))
+    let search_page = JSON.parse(await spider.search("月月"))
     console.debug(JSON.stringify(search_page));
 
 

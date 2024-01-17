@@ -6,7 +6,9 @@ import crypto from 'crypto';
 import https from 'https';
 import fs from 'node:fs';
 import qs from 'qs';
-import { Uri, _ } from '../lib/cat.js';
+import {Uri, _} from '../lib/cat.js';
+// import * as tunnel from 'tunnel';
+
 
 const confs = {};
 
@@ -54,6 +56,12 @@ async function request(url, opt) {
                 data = qs.stringify(data, { encode: false });
             }
         }
+        // const agent = tunnel.httpsOverHttp({
+        //     proxy: {
+        //         host: '127.0.0.1',
+        //         port: 7890,
+        //     }
+        // });
         let respType = returnBuffer == 1 || returnBuffer == 2 ? 'arraybuffer' : undefined;
         var resp = await axios(url, {
             responseType: respType,
@@ -79,11 +87,11 @@ async function request(url, opt) {
                 data = JSON.stringify(data);
             }
         } else if (returnBuffer == 1) {
-            return { code: resp.status, headers: resHeader, content: data };
+            return {code: resp.status, headers: resHeader, content: data};
         } else if (returnBuffer == 2) {
-            return { code: resp.status, headers: resHeader, content: data.toString('base64') };
+            return {code: resp.status, headers: resHeader, content: data.toString('base64')};
         }
-        return { code: resp.status, headers: resHeader, content: data };
+        return {code: resp.status, headers: resHeader, content: data};
     } catch (error) {
         resp = error.response
         try {
@@ -92,7 +100,7 @@ async function request(url, opt) {
             return {headers: {}, content: ''};
         }
     }
-    return { headers: {}, content: '' };
+    return {headers: {}, content: ''};
 }
 
 function base64EncodeBuf(buff, urlsafe = false) {
@@ -214,9 +222,15 @@ function rsa(mode, pub, encrypt, input, inBase64, key, outBase64) {
             }
             let tmpBuf;
             if (pub) {
-                tmpBuf = encrypt ? crypto.publicEncrypt({ key: keyObj, padding: pd }, tmpInBuf) : crypto.publicDecrypt({ key: keyObj, padding: pd }, tmpInBuf);
+                tmpBuf = encrypt ? crypto.publicEncrypt({
+                    key: keyObj,
+                    padding: pd
+                }, tmpInBuf) : crypto.publicDecrypt({key: keyObj, padding: pd}, tmpInBuf);
             } else {
-                tmpBuf = encrypt ? crypto.privateEncrypt({ key: keyObj, padding: pd }, tmpInBuf) : crypto.privateDecrypt({ key: keyObj, padding: pd }, tmpInBuf);
+                tmpBuf = encrypt ? crypto.privateEncrypt({
+                    key: keyObj,
+                    padding: pd
+                }, tmpInBuf) : crypto.privateDecrypt({key: keyObj, padding: pd}, tmpInBuf);
             }
             bufIdx = bufEndIdx;
             outBuf = Buffer.concat([outBuf, tmpBuf]);

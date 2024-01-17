@@ -15,8 +15,9 @@ import * as Utils from "../lib/utils.js";
 class Doll extends Spider {
     constructor() {
         super();
-        this.siteUrl = "https://hongkongdollvideo.com/"
+        this.siteUrl = "https://hongkongdollvideo.com"
     }
+
 
     getName() {
         return "🔞┃玩偶姐姐┃🔞"
