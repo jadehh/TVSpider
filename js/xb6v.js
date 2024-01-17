@@ -27,6 +27,21 @@ class Xb6vSpider extends Spider {
         return "磁力新6V"
     }
 
+    /*
+    * 2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  │ '2024-01-18 01:15:23,933 - 70看看 - DEBUG: 搜索内容为:﻿    [{"url":"/tv/86252/",
+2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  │ "thumb":"http://fc.sinaimg.cn/large/8a65eec0gy1hl8lijdr9nj207i0b9got.jpg",
+2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  │ "title":"繁花 普通话",
+2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  │ "time":"2023",
+2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  │ "catid":"2",
+2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  │ "star":"胡歌 马伊琍 唐嫣 辛芷蕾 游本昌 郑恺 陈龙 吴越 姜逸磊 董勇 黄觉 陈国庆 曾美慧孜 范湉湉 佟晨洁 王菊 林熙蕾 喻恩泰 金宇澄",
+2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  │ "lianzaijs":"30",
+2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  │ "beizhu":"",
+2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  │ "alias_full":"",
+2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  │ "area":"中国大陆",
+2024-01-18 01:15:23.933  1177-5131  -quickjs                com.fongmi.android.tv                D  │ "sort":""}]'
+    * */
+
     async redirect(response) {
         await this.jadeLog.debug(`重定向回复值为:${response.content}`)
         let matcher = /<a HREF=(.*?)>/.exec(response.content)
