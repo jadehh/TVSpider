@@ -179,11 +179,23 @@ class AiYingShiSpider extends Spider {
         }
     }
 
+    getExtend(value,defaultvalue,key = ""){
+        if (value !== undefined && value !== "0"){
+            return key + value
+        }else{
+            return defaultvalue
+        }
+
+    }
+
     async getCateUrl(tid,pg,extend){
-        tid = extend["1"] === "0"  ?? tid
-        let cateUrl = this.siteUrl + `/vodshow/id/${tid}/page/${pg}.html`
-        await this.jadeLog.debug(`类别详情URL:${cateUrl}`)
-        return cateUrl
+        tid = this.getExtend(extend["1"],tid)
+        let area = this.getExtend(extend["2"],"","/area/")
+        let lanuage = this.getExtend(extend["3"],"","/lang/")
+        let year = this.getExtend(extend["4"],"","/year/")
+        let letter = this.getExtend(extend["5"],"","/letter/")
+        let time = this.getExtend(extend['6'],"","/by/")
+        return this.siteUrl + `/vodshow${time}${area}/id/${tid}${lanuage}${letter}${year}/page/${pg}.html`
     }
 
     async setCategory(tid, pg, filter, extend) {
@@ -226,7 +238,7 @@ class AiYingShiSpider extends Spider {
     }
 
     async setSearch(wd, quick) {
-        let searchUrl = this.siteUrl + '/index.php/vodsearch/-------------.html?wd=' + wd;
+        let searchUrl = this.siteUrl + `/vodsearch/wd/${wd}.html`
         let html = await this.fetch(searchUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
