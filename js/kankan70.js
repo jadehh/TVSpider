@@ -254,6 +254,7 @@ class Kankan70Spider extends Spider {
                 "top": 10, "q": wd,
             }
             let api_url = Utils.getStrByRegex(/var my_search='(.*?)';/, html)
+            await this.jadeLog.debug(`搜索Api为:${api_url}`)
             let content = await this.fetch(api_url, params, this.getHeader())
             await this.jadeLog.debug(`搜索内容为:${content}`)
             if (!_.isEmpty(content)) {
