@@ -146,7 +146,7 @@ class Kankan70Spider extends Spider {
                 let typeElement = $($(element).find("[class=\"h1 clearfix\"]")[0]).find("a")
                 let type_id = typeElement[0].attribs["href"]
                 let type_name = $(typeElement[1]).text()
-                if (!_.isEmpty(type_name)){
+                if (!_.isEmpty(type_name)) {
                     this.classes.push({"type_id": type_id, "type_name": type_name})
                 }
             }
@@ -183,7 +183,7 @@ class Kankan70Spider extends Spider {
                 i = i + 1
             }
         }
-            return extend_list
+        return extend_list
     }
 
     async setFilterObj() {
@@ -199,7 +199,7 @@ class Kankan70Spider extends Spider {
         let html = await this.fetch(this.siteUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
-            this.homeVodList =await this.parseVodShortListFromDoc($)
+            this.homeVodList = await this.parseVodShortListFromDoc($)
         }
     }
 
@@ -258,12 +258,17 @@ class Kankan70Spider extends Spider {
             let content = await this.fetch(api_url, params, this.getHeader())
             await this.jadeLog.debug(`搜索内容为:${content}`)
             if (!_.isEmpty(content)) {
-                let content_json = JSON.parse(content)
-                this.vodList = await this.parseVodShortListFromJson(content_json)
-            }else{
+                try {
+                    let content_json = JSON.parse(content)
+                    this.vodList = await this.parseVodShortListFromJson(content_json)
+                } catch (e) {
+                    await this.jadeLog.error(`搜索出错,出错原因为:${e}`)
+                }
+
+            } else {
                 await this.jadeLog.debug("搜索内容为空")
             }
-            await this.jadeLog.debug("搜索完成",true)
+            await this.jadeLog.debug("搜索完成", true)
         }
     }
 
