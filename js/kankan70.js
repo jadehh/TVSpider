@@ -246,6 +246,7 @@ class Kankan70Spider extends Spider {
     async setSearch(wd, quick) {
         let url = this.siteUrl + "/search.php"
         let html = await this.fetch(url, null, this.getHeader())
+        await this.jadeLog.debug(`搜索html:${html}`)
         if (!_.isEmpty(html)) {
             let params = {
                 "top": 10, "q": wd,
@@ -255,8 +256,6 @@ class Kankan70Spider extends Spider {
             if (!_.isEmpty(content)) {
                 let content_json = JSON.parse(content)
                 this.vodList = await this.parseVodShortListFromJson(content_json)
-
-
             }
         }
     }
