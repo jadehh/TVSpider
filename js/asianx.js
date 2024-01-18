@@ -79,9 +79,24 @@ class AsianXSpider extends Spider {
         }
     }
 
+
+    getExtend(extend){
+        if (extend["1"] !== undefined){
+            if (extend["1"] === "全部"){
+                return this.siteUrl
+            }else{
+                return this.siteUrl + extend["1"]
+            }
+        }else{
+            return this.siteUrl
+        }
+
+    }
+
     async setCategory(tid, pg, filter, extend) {
         if (tid === "/") {
-            let html = await this.fetch(this.siteUrl, null, this.getHeader())
+            let url = this.getExtend(extend)
+            let html = await this.fetch(url, null, this.getHeader())
             if (!_.isEmpty(html)) {
                 let $ = load(html)
                 this.vodList = await this.parseVodShortListFromDoc($)
