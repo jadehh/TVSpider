@@ -37,11 +37,11 @@ class JSMoudle():
 
 
 class Build(object):
-    def __init__(self, js_path, json_path):
+    def __init__(self, js_path, json_path,token_name,aliToken=""):
         self.js_path = js_path
         self.json_path = json_path
-        self.ali_token = "a5bf471ef70d4069b55758839d8ef4d1"
-
+        self.ali_name = token_name
+        self.ali_token = aliToken
     def getJsonFileList(self):
         json_file_list = os.listdir(self.json_path)
         return json_file_list
@@ -68,7 +68,7 @@ class Build(object):
             return json.load(f)
 
 
-    def write_config(self,json_file_list,js_file_list,is_18=True):
+    def write_config(self,ali_name,json_file_list,js_file_list,is_18=True):
         site_obj = {"key": "", "name": "", "type": 3, "api": "", "ext": {}, }
         for json_file in json_file_list:
             json_file_name = json_file.split(".")[0]
@@ -101,27 +101,37 @@ class Build(object):
                     with open("18_tv_config.json", "wb") as f:
                         f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
                 else:
-                    with open("tv_config.json", "wb") as f:
-                        f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+                    if len(ali_name) > 0:
+                        with open("{}_tv_config.json".format(ali_name), "wb") as f:
+                            f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+                    else:
+                        with open("tv_config.json", "wb") as f:
+                            f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
             elif json_file_name == "CatOpen":
                 dic["video"]["sites"] = site_obj_list
                 if is_18:
                     with open("18_open_config.json", "wb") as f:
                         f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
                 else:
-                    with open("open_config.json", "wb") as f:
-                        f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+                    if len(ali_name) > 0:
+                        with open("{}_open_config.json".format(ali_name), "wb") as f:
+                            f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+                    else:
+                        with open("open_config.json", "wb") as f:
+                            f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
 
     def build(self):
         json_file_list = self.getJsonFileList()
         no_18_js_file_list = self.getJsFileList(is_18=False)
         y_js_file_list = self.getJsFileList(is_18=True)
-        self.write_config(json_file_list,no_18_js_file_list,is_18=False)
-        self.write_config(json_file_list,y_js_file_list,is_18=True)
+        self.write_config(self.ali_name,json_file_list,no_18_js_file_list,is_18=False)
+        self.write_config(self.ali_name,json_file_list,y_js_file_list,is_18=True)
 
 
 
 
 if __name__ == '__main__':
-    build = Build("js", "json")
+    build = Build("js", "json",token_name="he",aliToken="3d3c5c67581e4db188e753a56ea5829a")
+    build.build()
+    build = Build("js", "json",token_name="",aliToken="a5bf471ef70d4069b55758839d8ef4d1")
     build.build()
