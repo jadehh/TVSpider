@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './kankan70.js';
+import {__jsEvalReturn} from './gitcafe.js';
 
 
 let spider = __jsEvalReturn();
@@ -28,7 +28,7 @@ async function testPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'doll';
+    let siteKey = 'gitcafe';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -36,18 +36,18 @@ async function test() {
         ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "CatOpen", "code": "1"}
     });
 
-    // let classes = JSON.parse(await spider.home(true));
-    // console.debug(JSON.stringify(classes));
+    let classes = JSON.parse(await spider.home(true));
+    console.debug(JSON.stringify(classes));
     // // //
     // // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
     // //
     //
     //
     // //测试分类列表
-    // let  catePage = JSON.parse(await spider.category("37", "1", undefined, {"1":"0","2":"大陆","3":"英语","4":"2022","5":"A","6":"hits"}));
-    // console.debug(JSON.stringify(catePage));
+    let  catePage = JSON.parse(await spider.category("hyds", "1", undefined,{}));
+    console.debug(JSON.stringify(catePage));
 
 
 

@@ -15,6 +15,13 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
+            "key": "gitcafe",
+            "name": "🦊┃阿里纸条┃🦊",
+            "type": 3,
+            "api": "./js/gitcafe.js",
+            "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+        },
+        {
             "key": "ikanbot",
             "name": "🤖|爱看机器人|🤖",
             "type": 3,

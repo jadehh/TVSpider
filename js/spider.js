@@ -298,7 +298,7 @@ class Spider {
     }
 
     async parseVodShortListFromDocBySearch($) {
-
+        return []
     }
 
     async parseVodDetailFromDoc($) {
