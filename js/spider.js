@@ -186,12 +186,12 @@ class Spider {
         this.header = {}
     }
 
-    async reconnnect(reqUrl, params, headers,redirect_url) {
+    async reconnnect(reqUrl, params, headers, redirect_url) {
         await this.jadeLog.error("请求失败,请检查url:" + reqUrl + ",两秒后重试")
         Utils.sleep(2)
         if (this.reconnectTimes < this.maxReconnectTimes) {
             this.reconnectTimes = this.reconnectTimes + 1
-            return await this.fetch(reqUrl, params, headers,redirect_url)
+            return await this.fetch(reqUrl, params, headers, redirect_url)
         } else {
             await this.jadeLog.error("请求失败,重连失败")
             return null
@@ -231,7 +231,7 @@ class Spider {
     }
 
 
-    async fetch(reqUrl, params, headers,redirect_url=false) {
+    async fetch(reqUrl, params, headers, redirect_url = false) {
         let data = Utils.objectToStr(params)
         let url = reqUrl
         if (!_.isEmpty(data)) {
@@ -239,29 +239,28 @@ class Spider {
         }
         let uri = new Uri(url);
         let response;
-        if (redirect_url){
-            response = await req(uri.toString(), {method: "get", headers: headers, data: null,redirect:2})
-        }
-        else {
+        if (redirect_url) {
+            response = await req(uri.toString(), {method: "get", headers: headers, data: null, redirect: 2})
+        } else {
             response = await req(uri.toString(), {method: "get", headers: headers, data: null});
         }
         if (response.code === 200 || response.code === undefined || response.code === 302 || response.code === 301) {
             if (response.headers["location"] !== undefined) {
-                if (redirect_url){
+                if (redirect_url) {
                     await this.jadeLog.debug(`返回重定向连接:${response.headers["location"]}`)
                     return response.headers["location"]
-                }else{
-                   return this.fetch(response.headers["location"], params, headers,redirect_url)
+                } else {
+                    return this.fetch(response.headers["location"], params, headers, redirect_url)
                 }
             } else if (!_.isEmpty(response.content)) {
                 this.reconnectTimes = 0
                 return response.content
             } else {
-                return await this.reconnnect(reqUrl, params, headers,redirect_url)
+                return await this.reconnnect(reqUrl, params, headers, redirect_url)
             }
         } else {
             await this.jadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
-            return await this.reconnnect(reqUrl, params, headers,redirect_url)
+            return await this.reconnnect(reqUrl, params, headers, redirect_url)
 
         }
     }
@@ -527,9 +526,20 @@ class Spider {
         let url = Utils.base64Decode(segments[1]);
         if (what === 'img') {
             await this.jadeLog.debug(`反向代理URL为:${url}`)
-            const resp = await req(url, {
-                buffer: 2, headers: headers,
-            });
+            let resp;
+            if (!_.isEmpty(headers)) {
+                resp = await req(url, {
+                    buffer: 2,
+                    headers: headers});
+            } else {
+                resp = await req(url, {
+                    buffer: 2,
+                    headers: {
+                        Referer: url,
+                        'User-Agent': Utils.CHROME,
+                    },
+                });
+            }
             return JSON.stringify({
                 code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
             });

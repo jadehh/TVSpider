@@ -1,4 +1,5 @@
 import {__jsEvalReturn} from './alipansou.js';
+import * as Utils from "../lib/utils.js";
 
 
 let spider = __jsEvalReturn();
@@ -30,6 +31,13 @@ async function testPlay(vodDetail){
 async function test() {
     let siteKey = 'alipansou';
     let siteType = 0;
+
+    let resp = await req("https://img1.ikanbot.com/images/7/c8/f990526e86badc70eb53198b51ec3c87.jpg", {
+            buffer: 2,
+            headers: {
+                Referer: "https://img1.ikanbot.com/images/7/c8/f990526e86badc70eb53198b51ec3c87.jpg",
+                'User-Agent': Utils.CHROME}})
+
     await spider.init({
         skey: siteKey,
         stype: siteType,
