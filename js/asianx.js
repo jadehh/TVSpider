@@ -8,9 +8,8 @@
  */
 
 
-
 import {Spider} from "./spider.js";
-import {Crypto,_ ,load} from "../lib/cat.js";
+import {Crypto, _, load} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
 
@@ -32,11 +31,11 @@ class AsianXSpider extends Spider {
 
     async getFilter($) {
         let navElements = $($("[class=\"menu m-0 mb-2 mb-lg-0\"]")).find("a").slice(6)
-        let extend_dic = {"key": "1", "name": "分类", "value": [{"n":"全部","v":"全部"}]}
-        for (const navElement of navElements){
+        let extend_dic = {"key": "1", "name": "分类", "value": [{"n": "全部", "v": "全部"}]}
+        for (const navElement of navElements) {
             let type_name = $($(navElement).find("span")).text()
             let type_id = navElement.attribs["href"]
-            extend_dic["value"].push({"n":type_name,"v":type_id})
+            extend_dic["value"].push({"n": type_name, "v": type_id})
         }
         return [extend_dic]
     }
@@ -44,7 +43,7 @@ class AsianXSpider extends Spider {
     async parseVodShortListFromDoc($) {
         let vod_list = []
         let vodShortElements = $($("[class=\"gal-box\"]")).slice(12)
-        for (const vodShortElement of vodShortElements){
+        for (const vodShortElement of vodShortElements) {
             let vodShort = new VodShort()
             let vodElements = $(vodShortElement).find("a")
             vodShort.vod_id = vodElements[0].attribs["href"]
@@ -58,17 +57,17 @@ class AsianXSpider extends Spider {
 
     async setClasses() {
         this.classes = []
-        this.classes.push({"type_name":"首页","type_id":"/"})
-        let html = await this.fetch(this.siteUrl,null,this.getHeader())
-        if (!_.isEmpty(html)){
+        this.classes.push({"type_name": "首页", "type_id": "/"})
+        let html = await this.fetch(this.siteUrl, null, this.getHeader())
+        if (!_.isEmpty(html)) {
             let $ = load(html)
-            let navElements = $($("[class=\"menu m-0 mb-2 mb-lg-0\"]")).find("a").slice(0,5)
-            for (const navElement of navElements){
+            let navElements = $($("[class=\"menu m-0 mb-2 mb-lg-0\"]")).find("a").slice(0, 5)
+            for (const navElement of navElements) {
                 let type_name = $($(navElement).find("span")).text()
                 let type_id = navElement.attribs["href"]
-                this.classes.push({"type_name":type_name,"type_id":type_id})
+                this.classes.push({"type_name": type_name, "type_id": type_id})
             }
-             this.filterObj[this.classes[0].type_id] = await this.getFilter($)
+            this.filterObj[this.classes[0].type_id] = await this.getFilter($)
         }
     }
 
@@ -81,9 +80,13 @@ class AsianXSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        if (tid === "/"){
-            this.vodList = this.homeVodList
-        }else{
+        if (tid === "/") {
+            let html = await this.fetch(this.siteUrl, null, this.getHeader())
+            if (html != null) {
+                let $ = load(html)
+                this.homeVodList = await this.parseVodShortListFromDoc($)
+            }
+        } else {
             await this.jadeLog.error(`不是首页`)
         }
     }
