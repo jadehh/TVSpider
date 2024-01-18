@@ -40,9 +40,14 @@ class AsianXSpider extends Spider {
         return [extend_dic]
     }
 
-    async parseVodShortListFromDoc($) {
+    async parseVodShortListFromDoc($,is_home=false) {
         let vod_list = []
-        let vodShortElements = $($("[class=\"gal-box\"]")).slice(12)
+        let vodShortElements;
+        if (is_home){
+             vodShortElements = $($("[class=\"gal-box\"]")).slice(12)
+        }else{
+            vodShortElements = $($("[class=\"gal-box\"]"))
+        }
         for (const vodShortElement of vodShortElements) {
             let vodShort = new VodShort()
             let vodElements = $(vodShortElement).find("a")
@@ -75,7 +80,7 @@ class AsianXSpider extends Spider {
         let html = await this.fetch(this.siteUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
-            this.homeVodList = await this.parseVodShortListFromDoc($)
+            this.homeVodList = await this.parseVodShortListFromDoc($,true)
         }
     }
 
@@ -102,7 +107,7 @@ class AsianXSpider extends Spider {
         let html = await this.fetch(url, null, this.getHeader())
             if (!_.isEmpty(html)) {
                 let $ = load(html)
-                this.vodList = await this.parseVodShortListFromDoc($)
+                this.vodList = await this.parseVodShortListFromDoc($,false)
             }
     }
 }
