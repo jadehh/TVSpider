@@ -19,8 +19,6 @@ import {_, load} from "../lib/cat.js";
 import {Spider} from "./spider.js";
 import {detailContent, initAli, playContent} from "../lib/ali.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
-import * as Utils from "../lib/utils.js";
-import * as http from "http";
 
 class GitCafeSpider extends Spider {
     constructor() {
