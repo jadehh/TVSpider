@@ -90,22 +90,21 @@ class AsianXSpider extends Spider {
         }else{
             return this.siteUrl
         }
-
     }
 
     async setCategory(tid, pg, filter, extend) {
+        let url;
         if (tid === "/") {
-            let url = this.getExtend(pg,extend)
-            let html = await this.fetch(url, null, this.getHeader())
+            url = this.getExtend(pg,extend)
+        } else {
+            url = this.siteUrl + tid + "/" + pg
+        }
+        let html = await this.fetch(url, null, this.getHeader())
             if (!_.isEmpty(html)) {
                 let $ = load(html)
                 this.vodList = await this.parseVodShortListFromDoc($)
             }
-        } else {
-            await this.jadeLog.error(`不是首页`)
-        }
     }
-
 }
 
 let spider = new AsianXSpider()
