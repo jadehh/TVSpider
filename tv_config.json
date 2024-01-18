@@ -8,6 +8,13 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
+            "key": "alipansou",
+            "name": "😸┃猫狸盘搜┃😸",
+            "type": 3,
+            "api": "./js/alipansou.js",
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "douban",
             "name": "🍥┃豆瓣┃🍥",
             "type": 3,
