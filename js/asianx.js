@@ -67,8 +67,8 @@ class AsianXSpider extends Spider {
         let textList =  content_json["name"].split(" ")
         vodDetail.vod_name = textList[0]
         vodDetail.vod_play_from = ["未加密线路","加密线路"].join("$$$")
-        let playUrl1 =  await this.fetch(content_json["contentUrl"],null,this.getHeader(),true)
-        let playUrl2 =  await this.fetch(content_json["embedUrl"],null,this.getHeader(),true)
+        let playUrl1 =  content_json["contentUrl"]
+        let playUrl2 =  content_json["embedUrl"]
         vodDetail.vod_play_url = [`${textList[0]}$${playUrl1}`,`${textList[0]}$${playUrl2}`].join("$$$")
         vodDetail.vod_remarks = content_json["uploadDate"]
         vodDetail.vod_content = content_json["description"]
