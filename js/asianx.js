@@ -84,7 +84,7 @@ class AsianXSpider extends Spider {
         if (tid === "/"){
             this.vodList = this.homeVodList
         }else{
-
+            await this.jadeLog.error(`不是首页`)
         }
     }
 
