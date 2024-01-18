@@ -133,7 +133,9 @@ class GitCafeSpider extends Spider {
 
     async setDetail(id) {
         if (id.indexOf("search") > -1) {
-            let html = await this.fetch(this.siteUrl + id, null, this.getHeader())
+            let url = this.siteUrl + "/search"
+            let params = {"k":decodeURIComponent(id.split("search?k=").slice(-1)[0]) }
+            let html = await this.fetch(url, params, this.getHeader())
             if (!_.isEmpty(html)) {
                 let $ = load(html)
                 let vod_list = await this.parseVodShortListFromDocBySearch($)
