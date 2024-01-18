@@ -133,15 +133,23 @@ class GitCafeSpider extends Spider {
 
     async setDetail(id) {
         if (id.indexOf("search") > -1) {
-            let html = await this.fetch(id, null, this.getHeader())
+            let html = await this.fetch(this.siteUrl + id, null, this.getHeader())
             if (!_.isEmpty(html)) {
                 let $ = load(html)
                 let vod_list = await this.parseVodShortListFromDocBySearch($)
-                id = vod_list[i].id
+                if (vod_list.length > 0) {
+                    id = vod_list[0]["vod_id"]
+                } else {
+                    id = ""
+                }
+
             }
         }
-        let json_content = JSON.parse(id)
-        this.vodDetail = await this.parseVodDetailfromJson(json_content)
+        if (!_.isEmpty(id)) {
+            let json_content = JSON.parse(id)
+            this.vodDetail = await this.parseVodDetailfromJson(json_content)
+        }
+
     }
 
     async setCategory(tid, pg, filter, extend) {

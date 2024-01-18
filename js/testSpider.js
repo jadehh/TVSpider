@@ -52,8 +52,8 @@ async function test() {
 
 
     // 测试详情
-    // let detail1 = JSON.parse(await spider.detail("/voddetail/336160.html"))
-
+    let detail1 = JSON.parse(await spider.detail("/search?k=%e7%b9%81%e8%8a%b1"))
+    await testPlay(detail1)
 
     // 测试搜索
 
