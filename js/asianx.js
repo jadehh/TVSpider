@@ -85,7 +85,7 @@ class AsianXSpider extends Spider {
             if (extend["1"] === "全部"){
                 return this.siteUrl
             }else{
-                return this.siteUrl + extend["1"]
+                return this.siteUrl + extend["1"] + "/" + pg
             }
         }else{
             return this.siteUrl
