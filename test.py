@@ -30,10 +30,10 @@ def test_spider(Spider):
     start_time = time.time()
     spider = Spider()
     spider.init()
-    #content_list = spider.homeContent(True)["list"]
-    # content_list = spider.searchContent("奥本海默")["list"]
-    content_list = spider.categoryContent("1",1,None,None)["list"]
-    for content in [content_list[0]]:
+    content_list = spider.homeContent(True)["list"]
+    content_list = spider.searchContent("王牌对王牌")["list"]
+    # content_list = spider.categoryContent("1",1,None,None)["list"]
+    for content in [content_list[2]]:
         vod_url_list = spider.detailContent([content['vod_id']])['list'][0]['vod_play_url'].split("$$$")[0].split("#")
         print(content["vod_name"], content["vod_id"])
         for vod_url in vod_url_list:
@@ -111,4 +111,4 @@ def test_js_log_to_txt():
         for value in js_log_dic.values():
             f.write((value + "\n").encode("utf-8"))
 if __name__ == '__main__':
-    test_js_log_to_txt()
+    test_pansou()
