@@ -485,6 +485,12 @@ class Spider {
         this.vodList = []
         await this.jadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick}`)
         await this.setSearch(wd, quick)
+        if (this.vodList.length === 0){
+            if (wd.indexOf(" ") > -1 ){
+                await this.jadeLog.debug(`搜索关键词为:${wd},其中有空格,去除空格在搜索一次`)
+                await this.search(wd.replaceAll(" ","").replaceAll("﻿",""),quick)
+            }
+        }
         await this.jadeLog.debug(`搜索页面内容为:${this.result.search(this.vodList)}`)
         await this.jadeLog.info("搜索页面解析完成", true)
         return this.result.search(this.vodList)
