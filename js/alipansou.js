@@ -35,11 +35,11 @@ class GitCafeSpider extends Spider {
     }
 
     getName() {
-        return "😸┃猫狸盘搜┃😸"
+        return "😸┃阿里猫狸┃😸"
     }
 
     getAppName() {
-        return "猫狸盘搜"
+        return "阿里猫狸"
     }
 
     async getContentHtml() {

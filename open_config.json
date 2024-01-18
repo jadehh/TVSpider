@@ -10,10 +10,10 @@
             },
             {
                 "key": "alipansou",
-                "name": "😸┃猫狸盘搜┃😸",
+                "name": "😸┃阿里猫狸┃😸",
                 "type": 3,
                 "api": "./js/alipansou.js",
-                "ext": "{\"box\": \"CatOpen\"}"
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
             },
             {
                 "key": "douban",
