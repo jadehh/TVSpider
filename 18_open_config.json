@@ -2,6 +2,13 @@
     "video": {
         "sites": [
             {
+                "key": "asianx",
+                "name": "🔞┃海外宅┃🔞",
+                "type": 3,
+                "api": "./js/asianx.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "doll",
                 "name": "🔞┃玩偶姐姐┃🔞",
                 "type": 3,

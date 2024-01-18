@@ -4,6 +4,8 @@
 
 ```bash
 https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/js/tv_config.json
+https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/js/he_tv_config.json
+
 ```
 * js不支持code代码
 

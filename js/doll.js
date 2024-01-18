@@ -123,6 +123,15 @@ class Doll extends Spider {
         }
 
     }
+
+    async setHomeVod() {
+        let html = await this.fetch(this.siteUrl, null, this.getHeader())
+        if (html != null) {
+            let $ = load(html)
+            this.homeVodList = await this.parseVodShortListFromDoc($)
+        }
+    }
+
     async setCategory(tid, pg, filter, extend) {
         if (extend["1"] !== undefined){
             if (extend["1"] !== "1" ){
