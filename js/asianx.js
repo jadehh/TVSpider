@@ -113,7 +113,7 @@ class AsianXSpider extends Spider {
     async setDetail(id) {
         let html = await this.fetch(id,null,this.getHeader())
         if (!_.isEmpty(html)){
-            this.vodList = await this.parseVodDetailFromDoc(html)
+            this.vodDetail = await this.parseVodDetailFromDoc(html)
         }
     }
 
