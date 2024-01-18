@@ -495,6 +495,24 @@ class Spider {
         await this.jadeLog.info("搜索页面解析完成", true)
         return this.result.search(this.vodList)
     }
+
+    async proxy(segments, headers) {
+        await this.jadeLog.debug(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
+        let what = segments[0];
+        let url = Utils.base64Decode(segments[1]);
+        if (what === 'img') {
+            await this.jadeLog.debug(`反向代理URL为:${url}`)
+            const resp = await req(url, {
+                buffer: 2, headers: headers,
+            });
+            return JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            });
+        }
+        return JSON.stringify({
+            code: 500, content: '',
+        });
+    }
 }
 
 
