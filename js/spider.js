@@ -183,7 +183,7 @@ class Spider {
         this.page = 0
         this.vodDetail = new VodDetail()
         this.playUrl = ""
-        this.header = {"User-Agent": Utils.CHROME}
+        this.header = {}
     }
 
     async reconnnect(reqUrl, params, headers, redirect_url) {
