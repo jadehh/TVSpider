@@ -2,31 +2,17 @@
     "video": {
         "sites": [
             {
-                "key": "aiyingshi",
-                "name": "🚀‍┃爱影视┃🚀",
+                "key": "weixine",
+                "name": "💂‍┃阿里影视┃💂",
                 "type": 3,
-                "api": "./js/aiyingshi.js",
-                "ext": "{\"box\": \"CatOpen\"}"
+                "api": "./js/weixine.js",
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
             },
             {
                 "key": "douban",
                 "name": "🍥┃豆瓣┃🍥",
                 "type": 3,
                 "api": "./js/douban.js",
-                "ext": "{\"box\": \"CatOpen\"}"
-            },
-            {
-                "key": "gitcafe",
-                "name": "🦊┃阿里纸条┃🦊",
-                "type": 3,
-                "api": "./js/gitcafe.js",
-                "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
-            },
-            {
-                "key": "ikanbot",
-                "name": "🤖|爱看机器人|🤖",
-                "type": 3,
-                "api": "./js/ikanbot.js",
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
@@ -37,10 +23,24 @@
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
-                "key": "jiujiuliu",
-                "name": "🥃┃九九六影视┃🥃",
+                "key": "nivod",
+                "name": "👑‍┃泥视频┃👑",
                 "type": 3,
-                "api": "./js/jiujiuliu.js",
+                "api": "./js/nivod.js",
+                "ext": "{\"box\": \"CatOpen\", \"code\": 1}"
+            },
+            {
+                "key": "xb6v",
+                "name": "🧲|磁力新6V|🧲",
+                "type": 3,
+                "api": "./js/xb6v.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "aiyingshi",
+                "name": "🚀‍┃爱影视┃🚀",
+                "type": 3,
+                "api": "./js/aiyingshi.js",
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
@@ -51,11 +51,25 @@
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
-                "key": "nivod",
-                "name": "👑‍┃泥视频┃👑",
+                "key": "jiujiuliu",
+                "name": "🥃┃九九六影视┃🥃",
                 "type": 3,
-                "api": "./js/nivod.js",
-                "ext": "{\"box\": \"CatOpen\", \"code\": 1}"
+                "api": "./js/jiujiuliu.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "ikanbot",
+                "name": "🤖|爱看机器人|🤖",
+                "type": 3,
+                "api": "./js/ikanbot.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "gitcafe",
+                "name": "🦊┃阿里纸条┃🦊",
+                "type": 3,
+                "api": "./js/gitcafe.js",
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
             },
             {
                 "key": "pan_search",
@@ -65,25 +79,11 @@
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
             },
             {
-                "key": "weixine",
-                "name": "💂‍┃阿里影视┃💂",
-                "type": 3,
-                "api": "./js/weixine.js",
-                "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
-            },
-            {
                 "key": "wogg",
                 "name": "💂‍┃阿里玩偶┃💂",
                 "type": 3,
                 "api": "./js/wogg.js",
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
-            },
-            {
-                "key": "xb6v",
-                "name": "🧲|磁力新6V|🧲",
-                "type": 3,
-                "api": "./js/xb6v.js",
-                "ext": "{\"box\": \"CatOpen\"}"
             }
         ]
     },
