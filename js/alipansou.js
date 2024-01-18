@@ -79,13 +79,10 @@ class GitCafeSpider extends Spider {
         return vod_list
     }
 
-    async getAliUrl(url){
-        let html = await this.fetch(url,null,this.getHeader())
-        if (!_.isEmpty(html)){
-            let $ = load(html)
-            let x = 0
-        }
-
+    async getAliUrl(url) {
+        let headers = this.getHeader()
+        headers["Referer"] = url
+        return await this.fetch(url.replace("/s/", "/cv/"), null, headers, true)
     }
 
     async parseVodDetailfromJson(obj) {
@@ -93,6 +90,11 @@ class GitCafeSpider extends Spider {
         vodDetail.vod_name = obj["name"]
         vodDetail.vod_remarks = obj["remarks"]
         let ali_url = await this.getAliUrl(this.siteUrl + obj["id"])
+        if (!_.isEmpty(ali_url)) {
+            let aliVodDetail = await detailContent([ali_url])
+            vodDetail.vod_play_url = aliVodDetail.vod_play_url
+            vodDetail.vod_play_from = aliVodDetail.vod_play_from
+        }
         return vodDetail
     }
 
@@ -111,9 +113,7 @@ class GitCafeSpider extends Spider {
                     vodShort.vod_name = textList[0]
                     vodShort.vod_remarks = textList[1].split("格式")[0].replaceAll(":", "").replaceAll(" ", "").replaceAll("﻿", "").replaceAll(" ", "")
                     vodShort.vod_id = JSON.stringify({
-                        "name": vodShort.vod_name,
-                        "remarks": vodShort.vod_remarks,
-                        "id": id
+                        "name": vodShort.vod_name, "remarks": vodShort.vod_remarks, "id": id
                     })
                     vod_list.push(vodShort)
                 }

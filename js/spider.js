@@ -231,7 +231,7 @@ class Spider {
     }
 
 
-    async fetch(reqUrl, params, headers) {
+    async fetch(reqUrl, params, headers,redirect_url=false) {
         let data = Utils.objectToStr(params)
         let url = reqUrl
         if (!_.isEmpty(data)) {
@@ -243,7 +243,12 @@ class Spider {
         });
         if (response.code === 200 || response.code === undefined || response.code === 302 || response.code === 301) {
             if (response.headers["location"] !== undefined) {
-                return this.fetch(response.headers["location"], params, headers)
+                if (redirect_url){
+                    return response.headers["location"]
+                }else{
+                   return this.fetch(response.headers["location"], params, headers)
+                }
+
             } else if (!_.isEmpty(response.content)) {
                 this.reconnectTimes = 0
                 return response.content
