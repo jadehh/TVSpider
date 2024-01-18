@@ -1,41 +1,6 @@
 {
     "sites": [
         {
-            "key": "weixine",
-            "name": "💂‍┃阿里影视┃💂",
-            "type": 3,
-            "api": "./js/weixine.js",
-            "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
-        },
-        {
-            "key": "douban",
-            "name": "🍥┃豆瓣┃🍥",
-            "type": 3,
-            "api": "./js/douban.js",
-            "ext": "{\"box\": \"TVBox\"}"
-        },
-        {
-            "key": "jianpian",
-            "name": "🌼|荐片|🌼",
-            "type": 3,
-            "api": "./js/jianpian.js",
-            "ext": "{\"box\": \"TVBox\"}"
-        },
-        {
-            "key": "nivod",
-            "name": "👑‍┃泥视频┃👑",
-            "type": 3,
-            "api": "./js/nivod.js",
-            "ext": "{\"box\": \"TVBox\", \"code\": 1}"
-        },
-        {
-            "key": "xb6v",
-            "name": "🧲|磁力新6V|🧲",
-            "type": 3,
-            "api": "./js/xb6v.js",
-            "ext": "{\"box\": \"TVBox\"}"
-        },
-        {
             "key": "aiyingshi",
             "name": "🚀‍┃爱影视┃🚀",
             "type": 3,
@@ -43,24 +8,10 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
-            "key": "kankan70",
-            "name": "📺┃70看看┃📺",
+            "key": "douban",
+            "name": "🍥┃豆瓣┃🍥",
             "type": 3,
-            "api": "./js/kankan70.js",
-            "ext": "{\"box\": \"TVBox\"}"
-        },
-        {
-            "key": "jiujiuliu",
-            "name": "🥃┃九九六影视┃🥃",
-            "type": 3,
-            "api": "./js/jiujiuliu.js",
-            "ext": "{\"box\": \"TVBox\"}"
-        },
-        {
-            "key": "ikanbot",
-            "name": "🤖|爱看机器人|🤖",
-            "type": 3,
-            "api": "./js/ikanbot.js",
+            "api": "./js/douban.js",
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
@@ -71,10 +22,52 @@
             "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
         },
         {
+            "key": "ikanbot",
+            "name": "🤖|爱看机器人|🤖",
+            "type": 3,
+            "api": "./js/ikanbot.js",
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
+            "key": "jianpian",
+            "name": "🌼|荐片|🌼",
+            "type": 3,
+            "api": "./js/jianpian.js",
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
+            "key": "jiujiuliu",
+            "name": "🥃┃九九六影视┃🥃",
+            "type": 3,
+            "api": "./js/jiujiuliu.js",
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
+            "key": "kankan70",
+            "name": "📺┃70看看┃📺",
+            "type": 3,
+            "api": "./js/kankan70.js",
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
+            "key": "nivod",
+            "name": "👑‍┃泥视频┃👑",
+            "type": 3,
+            "api": "./js/nivod.js",
+            "ext": "{\"box\": \"TVBox\", \"code\": 1}"
+        },
+        {
             "key": "pan_search",
             "name": "🗂️┃阿里盘搜┃🗂️",
             "type": 3,
             "api": "./js/pan_search.js",
+            "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+        },
+        {
+            "key": "weixine",
+            "name": "💂‍┃阿里影视┃💂",
+            "type": 3,
+            "api": "./js/weixine.js",
             "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
         },
         {
@@ -83,6 +76,13 @@
             "type": 3,
             "api": "./js/wogg.js",
             "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+        },
+        {
+            "key": "xb6v",
+            "name": "🧲|磁力新6V|🧲",
+            "type": 3,
+            "api": "./js/xb6v.js",
+            "ext": "{\"box\": \"TVBox\"}"
         }
     ],
     "ijk": [
