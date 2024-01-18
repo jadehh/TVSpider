@@ -47,7 +47,7 @@ class AsianXSpider extends Spider {
             let vodShort = new VodShort()
             let vodElements = $(vodShortElement).find("a")
             vodShort.vod_id = vodElements[0].attribs["href"]
-            vodShort.vod_pic = $(vodElements[0]).find("img")[0]["data-src"]
+            vodShort.vod_pic = $(vodElements[0]).find("img")[0].attribs["data-src"]
             vodShort.vod_name = vodElements[1].attribs["title"]
             vodShort.vod_remarks = $($(vodShortElement).find("[class=\"meta text-muted text-truncate\"]")).text()
             vod_list.push(vodShort)
@@ -73,7 +73,7 @@ class AsianXSpider extends Spider {
 
     async setHomeVod() {
         let html = await this.fetch(this.siteUrl, null, this.getHeader())
-        if (html != null) {
+        if (!_.isEmpty(html)) {
             let $ = load(html)
             this.homeVodList = await this.parseVodShortListFromDoc($)
         }
@@ -82,7 +82,7 @@ class AsianXSpider extends Spider {
     async setCategory(tid, pg, filter, extend) {
         if (tid === "/") {
             let html = await this.fetch(this.siteUrl, null, this.getHeader())
-            if (html != null) {
+            if (!_.isEmpty(html)) {
                 let $ = load(html)
                 this.vodList = await this.parseVodShortListFromDoc($)
             }

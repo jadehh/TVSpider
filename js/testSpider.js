@@ -47,7 +47,7 @@ async function test() {
     //
     //
     // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("1", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("/", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
 
 
