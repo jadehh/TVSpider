@@ -40,6 +40,7 @@
             "name": "🌼|荐片|🌼",
             "type": 3,
             "api": "./js/jianpian.js",
+            "timeout":30,
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
