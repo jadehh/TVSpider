@@ -80,7 +80,7 @@ class AsianXSpider extends Spider {
     }
 
 
-    getExtend(extend){
+    getExtend(pg,extend){
         if (extend["1"] !== undefined){
             if (extend["1"] === "全部"){
                 return this.siteUrl
@@ -95,7 +95,7 @@ class AsianXSpider extends Spider {
 
     async setCategory(tid, pg, filter, extend) {
         if (tid === "/") {
-            let url = this.getExtend(extend)
+            let url = this.getExtend(pg,extend)
             let html = await this.fetch(url, null, this.getHeader())
             if (!_.isEmpty(html)) {
                 let $ = load(html)
