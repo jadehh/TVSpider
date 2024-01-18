@@ -142,7 +142,6 @@ class GitCafeSpider extends Spider {
                 } else {
                     id = ""
                 }
-
             }
         }
         if (!_.isEmpty(id)) {

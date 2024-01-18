@@ -52,7 +52,7 @@ async function test() {
 
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/search?k=%e7%b9%81%e8%8a%b1"))
+    let detail1 = JSON.parse(await spider.detail("/search?k=%e6%b5%b7%e7%8e%8b2"))
     await testPlay(detail1)
 
     // 测试搜索
