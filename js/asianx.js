@@ -60,6 +60,19 @@ class AsianXSpider extends Spider {
         return vod_list
     }
 
+    async parseVodDetailFromDoc(html) {
+        let vodDetail = new VodDetail();
+        let content = Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/,html)
+        let content_json = JSON.parse(content)
+        let textList =  content_json["name"].split(" ")
+        vodDetail.vod_name = textList[0]
+        vodDetail.vod_play_from = ["未加密线路","加密线路"].join("$$$")
+        vodDetail.vod_play_url = [`${textList[0]}$${content_json["contentUrl"]}`,`${textList[0]}$${content_json["embedUrl"]}`].join("$$$")
+        vodDetail.vod_remarks = content_json["uploadDate"]
+        vodDetail.vod_content = content_json["description"]
+        return vodDetail
+    }
+
     async setClasses() {
         this.classes = []
         this.classes.push({"type_name": "首页", "type_id": "/"})
@@ -94,6 +107,13 @@ class AsianXSpider extends Spider {
             }
         }else{
             return this.siteUrl
+        }
+    }
+
+    async setDetail(id) {
+        let html = await this.fetch(id,null,this.getHeader())
+        if (!_.isEmpty(html)){
+            this.vodList = await this.parseVodDetailFromDoc(html)
         }
     }
 
