@@ -88,6 +88,7 @@ class GitCafeSpider extends Spider {
         vodDetail.vod_name = obj["name"]
         vodDetail.vod_remarks = obj["remarks"]
         let ali_url = await this.getAliUrl(this.siteUrl + obj["id"])
+        await this.jadeLog.debug(`阿里分享链接为:${ali_url}`)
         if (!_.isEmpty(ali_url)) {
             let aliVodDetail = await detailContent([ali_url])
             vodDetail.vod_play_url = aliVodDetail.vod_play_url
