@@ -6,14 +6,6 @@
 * @Software : Samples
 * @Desc     :
 */
-/*
-* @File     : gitcafe.js
-* @Author   : jade
-* @Date     : 2024/1/18 9:56
-* @Email    : jadehh@1ive.com
-* @Software : Samples
-* @Desc     : 阿里纸条
-*/
 
 import {_, load} from "../lib/cat.js";
 import {Spider} from "./spider.js";
@@ -80,6 +72,7 @@ class GitCafeSpider extends Spider {
     async getAliUrl(url) {
         let headers = this.getHeader()
         headers["Referer"] = url
+        await this.jadeLog.debug(`获取阿里链接url:${url.replace("/s/", "/cv/")},headers:${JSON.stringify(headers)}`)
         return await this.fetch(url.replace("/s/", "/cv/"), null, headers, true)
     }
 

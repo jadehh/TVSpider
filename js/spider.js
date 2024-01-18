@@ -249,7 +249,6 @@ class Spider {
                 }else{
                    return this.fetch(response.headers["location"], params, headers)
                 }
-
             } else if (!_.isEmpty(response.content)) {
                 this.reconnectTimes = 0
                 return response.content
