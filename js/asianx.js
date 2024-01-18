@@ -117,6 +117,10 @@ class AsianXSpider extends Spider {
         }
     }
 
+    async setPlay(flag, id, flags) {
+        this.playUrl =  await this.fetch(id,null,this.getHeader(),true)
+    }
+
     async setCategory(tid, pg, filter, extend) {
         let url;
         if (tid === "/") {
