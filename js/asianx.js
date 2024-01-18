@@ -84,7 +84,7 @@ class AsianXSpider extends Spider {
             let html = await this.fetch(this.siteUrl, null, this.getHeader())
             if (html != null) {
                 let $ = load(html)
-                this.homeVodList = await this.parseVodShortListFromDoc($)
+                this.vodList = await this.parseVodShortListFromDoc($)
             }
         } else {
             await this.jadeLog.error(`不是首页`)
