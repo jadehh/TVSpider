@@ -33,7 +33,7 @@ class GitCafeSpider extends Spider {
             let paper_js_url = Utils.getStrByRegex(/<script src='(.*?)'><\/script>/, html)
             let paper_js_content = await this.fetch(paper_js_url, null, this.getHeader())
             return {
-                "api": Utils.getStrByRegex(/ return '(.*?)' \+ /, paper_js_content) + new Date().getTime(),
+                "api": "https:" + Utils.getStrByRegex(/ return '(.*?)' \+ /, paper_js_content) + new Date().getTime(),
                 "search_api": Utils.getStrByRegex(/const SEARCH_API = '(.*?)';/, paper_js_content)
 
             }
@@ -101,7 +101,7 @@ class GitCafeSpider extends Spider {
         let classIdList = this.getClassesId()
         let vodDetail = new VodDetail()
         vodDetail.vod_name = obj["title"]
-        vodDetail.vod_remarks  = obj["creatime"] ?? obj["date"]
+        vodDetail.vod_remarks = obj["creatime"] ?? obj["date"]
         vodDetail.type_name = classNamesList[classIdList.indexOf(obj["cat"])]
         vodDetail.vod_content = obj["des"]
         let ali_url = "https://www.aliyundrive.com/s/" + obj["alikey"]
@@ -141,16 +141,17 @@ class GitCafeSpider extends Spider {
             this.vodList = await this.parseVodShortListFromJson(content_json["data"])
         }
     }
-    async refreshToken(){
+
+    async refreshToken() {
         let this_time = new Date().getTime()
-        if (_.isEmpty(this.token_dic["token"])){
+        if (_.isEmpty(this.token_dic["token"])) {
             await this.get_token()
             await this.jadeLog.debug("Token为空,刷新Token")
-        }else if (this_time - parseInt(this.token_dic["date"]) > 24*60*60*1000){
-            await this.jadeLog.debug(`Token到期,上次获取Token时间为:${this_time },当前时间为:${parseInt(this.token_dic["date"])},刷新Token`)
+        } else if (this_time - parseInt(this.token_dic["date"]) > 24 * 60 * 60 * 1000) {
+            await this.jadeLog.debug(`Token到期,上次获取Token时间为:${this_time},当前时间为:${parseInt(this.token_dic["date"])},刷新Token`)
             await this.get_token()
-        }else{
-            await this.jadeLog.debug(`Token仍然有效,无需刷新`,true)
+        } else {
+            await this.jadeLog.debug(`Token仍然有效,无需刷新`, true)
         }
     }
 
@@ -164,7 +165,7 @@ class GitCafeSpider extends Spider {
             if (!_.isEmpty(content)) {
                 let content_json = JSON.parse(content)
                 let this_time = new Date().getTime()
-                this.token_dic["token"] =  content_json["data"]
+                this.token_dic["token"] = content_json["data"]
                 this.token_dic["date"] = this_time.toString()
                 await this.write_cache()
             }
@@ -174,12 +175,12 @@ class GitCafeSpider extends Spider {
     }
 
     async write_cache() {
-        await local.set("gitcafe_token","token",JSON.stringify( this.token_dic))
+        await local.set("gitcafe_token", "token", JSON.stringify(this.token_dic))
     }
 
     async load_cache() {
         try {
-            let str = await local.get("gitcafe_token","token")
+            let str = await local.get("gitcafe_token", "token")
             return JSON.parse(str)
         } catch (e) {
             return {"token": "", "date": ""}
