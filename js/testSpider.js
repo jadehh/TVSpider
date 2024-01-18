@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './gitcafe.js';
+import {__jsEvalReturn} from './alipansou.js';
 
 
 let spider = __jsEvalReturn();
@@ -28,7 +28,7 @@ async function testPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'gitcafe';
+    let siteKey = 'alipansou';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -46,7 +46,7 @@ async function test() {
     //
     //
     // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("hyds", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("1", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
 
 

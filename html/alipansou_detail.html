@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="Cache-Control" content="no-transform " />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="applicable-device" content="pc">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="keywords" content="王牌对王牌" />
+    <meta name="description" content="王牌对王牌 - 阿里云盘资源 - 阿里盘搜" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <title>王牌对王牌 - 云盘资源 - 猫狸盘搜</title>
+    <link rel="stylesheet" href="https://code.bdstatic.com/npm/vant@2.12.22/lib/index.css">
+    <link rel="stylesheet" href="/css/pc.css?t=1">
+    <script type="text/javascript" src="https://code.bdstatic.com/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://code.bdstatic.com/npm/@vant/touch-emulator@1.3.2/index.js"></script>
+    <script src="/js/ck.min.js?t=2"></script>
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/fingerprintjs2/2.1.5/fingerprint2.min.js" onload="fingerprintjs()"></script>
+    <script src="/js/tool.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYNC791BP2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NYNC791BP2');
+</script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?02f69e0ba673e328ef49b5fb98dd4601";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+</head>
+<body>
+<div id="app" v-cloak>
+
+
+    <div>
+        <van-row>
+
+            <van-col span="8" offset="8">
+                <div style=" text-align: center;text-decoration:none;"><a href="/"><h1 style="color: #374f67">猫狸盘搜</h1></a></div>
+            </van-col>
+        </van-row>
+        <van-row>
+
+            <van-col span="8" offset="8">
+                <van-popover
+                        style="display: inline;"
+                        v-model="showPopover"
+                        trigger="click"
+                        :actions="actions"
+                        @select="onSelect"  placement="bottom-start"
+                >
+
+                    <template #reference>
+                        <form action="/">
+                            <van-search
+                                    v-model="search_val"
+                                    show-action
+                                    placeholder="请输入搜索关键词"
+                                    @search="onSearch"
+                                    @clear="onClear" @input="onSearchChange"
+                            >
+                                <template #action>
+                                    <div @click="onSearch">搜索</div>
+                                </template>
+                            </van-search>
+                        </form>
+                    </template>
+                </van-popover>
+
+            </van-col>
+        </van-row>
+
+        <van-row>
+            <van-col span="8" offset="8">
+                <h3 align="center">
+                    王牌对王牌
+                </h3>
+            </van-col>
+        </van-row>
+
+        <van-row>
+            <van-col span="8" offset="8">
+                <van-cell title="名称" value="王牌对王牌"></van-cell>
+
+            </van-col>
+        </van-row>
+        <van-row>
+            <van-col span="8" offset="8">
+                <van-cell title="类型">
+
+                    文件夹
+
+                </van-cell>
+
+            </van-col>
+        </van-row>
+        <van-row>
+            <van-col span="8" offset="8">
+                <van-cell title="类别">
+                   其他
+                </van-cell>
+
+            </van-col>
+        </van-row>
+
+        <van-row>
+            <van-col span="8" offset="8">
+                <van-cell title="分享时间">
+                    2023-02-17
+                </van-cell>
+
+            </van-col>
+        </van-row>
+
+
+        <van-row>
+            <van-col span="8" offset="8">
+                <van-goods-action style="position: static;">
+                    <van-goods-action-button  type="info" text="同意声明,继续访问下载"
+                                             @click="onDownload();"></van-goods-action-button>
+                    <van-goods-action-button  id="invalidRes"  type="warning" text="资源失效"
+                                              @click="invalidRes();"></van-goods-action-button>
+
+                    </van-dialog>
+                </van-goods-action>
+
+            </van-col>
+
+        </van-row>
+
+        <van-row>
+            <van-col span="8" offset="8">
+                <div style="padding-left: 16px;">
+                    <h4>
+                        随机阅读
+                    </h4>
+                </div>
+                <div>
+                    <van-cell-group>
+
+                        <van-cell style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                            <a href="/s/heuSDSSDVjLLTKBSmvfQjwUtoBNBT"> 1、D 大江大河1-3</a>
+                        </van-cell>
+
+                        <van-cell style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                            <a href="/s/peasxORMlC3XicTmQEh7oyWwwpxAG"> 2、地下墓穴地下墓穴</a>
+                        </van-cell>
+
+                        <van-cell style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                            <a href="/s/zelNvcztPBgtO5wKEwPQAYwYu6cGU"> 3、天降厨神独宠我</a>
+                        </van-cell>
+
+                        <van-cell style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                            <a href="/s/seuFwnVhev4GE6RUfOw7hGgxHqc3A"> 4、仙剑奇侠传4 (2024) 【首更06】奇幻/古装  鞠婧祎/陈哲远【...</a>
+                        </van-cell>
+
+                        <van-cell style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                            <a href="/s/JecNx31wmopZopf3pMGfyjh2wZKE7"> 5、民主东北留下他打老蒋</a>
+                        </van-cell>
+
+                        <van-cell style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                            <a href="/s/VeuyE2zI1wgbDG0s82uIAxXTHfmWu"> 6、小说《我有一剑》txt</a>
+                        </van-cell>
+
+                        <van-cell style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                            <a href="/s/pevb6iuZdeSprSJ48FwXGSuwHlLYB"> 7、《领导的语言：瞬间赢得人心的23个科学沟通法则》</a>
+                        </van-cell>
+
+                        <van-cell style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                            <a href="/s/beuFwnXZVo5eX4cGH5MZwOgbfao7v"> 8、大江大河之岁月如歌 [2024] 1080/4K【更新16】王凯/杨烁/董子...</a>
+                        </van-cell>
+
+                    </van-cell-group>
+                </div>
+
+            </van-col>
+        </van-row>
+
+        <van-row>
+            <van-col span="8" offset="8">
+                <div style="padding-left: 16px;">
+                    <h4>
+                        请认真阅读以下说明，您只有在了解并同意该说明后，才可继续访问本站。
+                    </h4>
+                </div>
+                <div>
+                    <van-cell-group>
+                        <van-cell>
+                            1.全站链接通过蜘蛛程序收集自网盘分享链接，以非人工方式自动生成，网站本身不储存、复制、传播、控制编辑任何网盘文件，也不提供下载服务，其链接跳转至官方网盘，文件的有效性和安全性需要您自行判断。
+                        </van-cell>
+                        <van-cell>2. 本站遵守相关法律法规，坚决杜绝一切违规不良信息，如您发现任何涉嫌违规的网盘信息，请立即向<b><a href="https://terms.alicdn.com/legal-agreement/terms/suit_bu1_dingtalk/suit_bu1_dingtalk202103181300_11832.html">网盘官方网站</a></b>举报
+                        </van-cell>
+                        <van-cell>3. 本站作为非经营性网站，所有服务仅供学习交流使用，无任何收费请求，切勿上当支付。</van-cell>
+
+                    </van-cell-group>
+                </div>
+
+            </van-col>
+        </van-row>
+
+
+    </div>
+    <div>
+        <van-row>
+            <van-col span="8" offset="8">
+
+<van-divider></van-divider>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div style="position: fixed;bottom: 20%;right: 10%;">
+        <div align="center" ><img src="/img/vip2.png" style="padding: 10px" width="130px">
+            <div><a href="http://mtw.so/6oah47" target="_blank">👉🔥阿里云盘会员<b style="color: red">大折扣</b></a></div>
+        </div>
+    </div>
+
+<van-cell-group>
+    <van-cell>
+        <div  style="text-align: center;padding-top: 15px;">
+            <a target="_blank" href="https://xiongdipan.com/">百度云盘搜索</a>
+            &nbsp;&nbsp;<a target="_blank" href="https://aipanso.com/">夸克网盘搜索</a>
+            &nbsp;&nbsp;<a target="_blank" href="https://xunjiso.com/">迅雷云盘搜索</a> &nbsp;&nbsp;
+            <a target="_blank" href="https://yyurl.cc/">资源论坛</a> &nbsp;&nbsp;<a target="_blank"  href="/submitRes">资源提交</a> &nbsp;&nbsp; <a target="_blank" href="https://wj.qq.com/s2/13841121/1c57">意见反馈</a>
+            &nbsp;&nbsp; <a target="_blank" href="https://wj.qq.com/s2/13999333/e94f/">商务合作</a></div>
+    </van-cell>
+</van-cell-group>
+
+            </van-col>
+        </van-row>
+    </div>
+
+    <van-dialog v-model="down_donate_show" show-cancel-button="true" cancel-button-text="不再提示"	 confirm-button-text="下次一定" overlay="false" @cancel="no_show_donate()" @closed="close_down()">
+        <div  style="text-align: center;padding-bottom: 15px">
+            <div style="text-align: center;background-color:#fafafa;padding-bottom: 10px;padding-top: 18px;padding-left: 10px;padding-right: 10px" >
+                <div>关注官方公众号`<b style="color: red" id="gzh_name">不知名热心网友酥</b>`不迷路，站长也会经常免费送云盘VIP、扩容码等福利!</div>
+            </div>
+
+            <image style="width: 250px;" src="/img/gzh.jpg" />
+            <div><a href="http://mtw.so/6oah47" target="_blank">👉🔥阿里云盘会员<b style="color: red">大折扣</b></a></div>
+
+        </div>
+    </van-dialog>
+
+</div>
+
+
+
+
+<script src="https://code.bdstatic.com/npm/vue@2.6.12/dist/vue.min.js"></script>
+<script src="https://code.bdstatic.com/npm/vant@2.12.22/lib/vant.min.js"></script>
+
+<script>
+
+    var app =new Vue({
+        el: '#app',
+        data() {
+            return {
+                search_val: '',
+                donate_show: false,
+                donate: 0,
+                down_donate_show:false,
+                showPopover: false,
+                actions: [],
+            };
+        },
+        methods: {
+            onSearch(val) {
+                if(this.search_val == null || this.search_val == ""){
+                    vant.Toast('请输入搜索内容');
+                    return;
+                }
+                window.location.href = "/search?k=" + this.search_val;
+            },
+            onCancel() {
+                this.search_val = '';
+            },
+            onClear() {
+                this.search_val = '';
+            },
+
+            onDownload() {
+                var c =getCookie("no_show_donate")
+                if (c=='1') {
+                    _hmt.push(['_trackEvent', 'download','pc','old']);
+                    window.open("/cv/seg3BAkJVZEjQhHNEFwrigItyKQlY","target");
+                    return
+                }
+                _hmt.push(['_trackEvent', 'download','pc','new']);
+                this.down_donate_show=true
+            },
+
+            toastSuccess(){
+                this.$toast.success('提交成功');
+            },
+            toastFail(){
+                this.$toast.fail('服务器异常');
+            },
+            invalidRes() {
+                vant.Dialog.alert({
+                    title: '资源失效?',
+                    showCancelButton: true,
+                    beforeClose,
+                });
+
+                function beforeClose(action, done) {
+                    if (action === 'confirm') {
+
+                        $.post("/invalid",{fid:"seg3BAkJVZEjQhHNEFwrigItyKQlY"},function(result){
+                            done();
+                            $("#invalidRes").attr('disabled',true);
+                            app.toastSuccess()
+                        });
+                        return false;
+
+
+                    } else {
+                        done();
+                    }
+                }
+            },
+            sponsor2(){
+                this.donate_show=true
+            },
+            close_down(){
+                window.open("/cv/seg3BAkJVZEjQhHNEFwrigItyKQlY","target");
+            },
+            no_show_donate(){
+                setCookie2("no_show_donate",1,14)
+            },
+            onSearchChange(val) {
+                var results = []
+                $.ajax({
+                    url: 'https://suggestion.baidu.com/su?wd=' + val,
+                    dataType: 'jsonp',
+                    jsonp: 'cb',
+                    async:false,
+                    success: function (data) {
+                        $.each(data.s, function (i, val) {
+                            results.push(JSON.parse('{"text":"' + val + '"}'))
+                        });
+                        if(results.length>0){
+                            app.actions=results
+                            app.showPopover=true
+                        }else{
+                            app.actions=results
+                            app.showPopover=false
+                        }
+                    },
+                    error: function () {
+                        results = [];
+                        app.showPopover=false
+                    }
+                })
+
+            },
+            onSelect(action) {
+                this.search_val = action.text
+                 app.actions=[]
+            },
+        },
+
+    });
+</script>
+<div aria-hidden="true" id="iframeContainer"></div>
+<script>
+    function createIframe() {
+        var containerId = 'iframeContainer';
+        var srcUrl = 'https://api.hanersi.cn/filesystem/api/static/enforcement.html';
+
+        var container = document.getElementById(containerId);
+        if (container) {
+            var iframe = document.createElement('iframe');
+            iframe.setAttribute('src', srcUrl);
+            iframe.style.width = '0px';
+            iframe.style.height = '0px';
+
+            container.appendChild(iframe);
+        } else {
+            console.error('Container element not found');
+        }
+    }
+
+    window.onload = createIframe;
+</script>
+
+  <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script>   window.googletag = window.googletag || {cmd: []};
+          googletag.cmd.push(function() {
+            var interstitialSlot = googletag.defineOutOfPageSlot('/21849154601,22899665896/Ad.Plus-Interstitial', googletag.enums.OutOfPageFormat.INTERSTITIAL);
+            if (interstitialSlot) interstitialSlot.addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();   googletag.display(interstitialSlot);     }); </script>
+                <script>
+                  window.googletag = window.googletag || {cmd: []};
+                  var anchorSlot;
+                  googletag.cmd.push(function() {
+                      anchorSlot = googletag.defineOutOfPageSlot(
+                        '21849154601,22899665896/Ad.Plus-Anchor', googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR);
+                      anchorSlot
+                          .addService(googletag.pubads());
+                    googletag.pubads().enableSingleRequest();
+                    googletag.enableServices();  });</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691507666889239"
+     crossorigin="anonymous"></script>
+</body>
+</html>

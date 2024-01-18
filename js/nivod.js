@@ -55,7 +55,7 @@ class NivodSpider extends Spider {
         return vod_list
     }
 
-    async parseVodDetailromJson(vod_dic) {
+    async parseVodDetailfromJson(vod_dic) {
         let vodDetail = new VodDetail()
         vodDetail.vod_id = vod_dic["showIdCode"]
         vodDetail.vod_name = vod_dic["showTitle"]
@@ -162,7 +162,7 @@ class NivodSpider extends Spider {
         if (content != null) {
             let content_json = JSON.parse(content)
             let vod_dic = content_json["entity"]
-            this.vodDetail = await this.parseVodDetailromJson(vod_dic)
+            this.vodDetail = await this.parseVodDetailfromJson(vod_dic)
             let niBaVodDetail = getVod(vod_dic["plays"], ["原画"], id.toString())
             this.vodDetail.vod_play_from = niBaVodDetail.vod_play_from
             this.vodDetail.vod_play_url = niBaVodDetail.vod_play_url
@@ -175,7 +175,7 @@ class NivodSpider extends Spider {
         if (content != null) {
             let content_json = JSON.parse(content)
             for (const vod_dic of content_json["list"]) {
-                let vod_detail = await this.parseVodDetailromJson(vod_dic)
+                let vod_detail = await this.parseVodDetailfromJson(vod_dic)
                 this.vodList.push(vod_detail)
             }
         }

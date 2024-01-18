@@ -82,7 +82,7 @@ class JianPianSpider extends Spider {
         return value_list.join(split_value)
     }
 
-    async parseVodDetailromJson(obj) {
+    async parseVodDetailfromJson(obj) {
         let vodDetail = new VodDetail();
         vodDetail.vod_id = obj["id"]
         vodDetail.vod_year = obj["year"]["title"]
@@ -254,7 +254,7 @@ class JianPianSpider extends Spider {
         if (!_.isEmpty(content)) {
             let content_json = JSON.parse(content);
             let data_list = content_json["data"]
-            this.vodDetail = await this.parseVodDetailromJson(data_list)
+            this.vodDetail = await this.parseVodDetailfromJson(data_list)
         }
     }
 

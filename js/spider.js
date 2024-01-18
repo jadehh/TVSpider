@@ -198,6 +198,22 @@ class Spider {
         }
     }
 
+    getClassIdList() {
+        let class_id_list = []
+        for (const class_dic of this.classes) {
+            class_id_list.push(class_dic["type_id"])
+        }
+        return class_id_list
+    }
+
+    getClassNameList() {
+        let class_name_list = []
+        for (const class_dic of this.classes) {
+            class_name_list.push(class_dic["type_name"])
+        }
+        return class_name_list
+    }
+
     async postReconnect(reqUrl, params, headers) {
         await this.jadeLog.error("请求失败,请检查url:" + reqUrl + ",两秒后重试")
         Utils.sleep(2)
@@ -305,7 +321,7 @@ class Spider {
 
     }
 
-    async parseVodDetailromJson(obj) {
+    async parseVodDetailfromJson(obj) {
 
     }
 
@@ -485,10 +501,10 @@ class Spider {
         this.vodList = []
         await this.jadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick}`)
         await this.setSearch(wd, quick)
-        if (this.vodList.length === 0){
-            if (wd.indexOf(" ") > -1 ){
+        if (this.vodList.length === 0) {
+            if (wd.indexOf(" ") > -1) {
                 await this.jadeLog.debug(`搜索关键词为:${wd},其中有空格,去除空格在搜索一次`)
-                await this.search(wd.replaceAll(" ","").replaceAll("﻿",""),quick)
+                await this.search(wd.replaceAll(" ", "").replaceAll("﻿", ""), quick)
             }
         }
         await this.jadeLog.debug(`搜索页面内容为:${this.result.search(this.vodList)}`)

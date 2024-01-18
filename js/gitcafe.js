@@ -64,25 +64,10 @@ class GitCafeSpider extends Spider {
         }
     }
 
-    getClassesId() {
-        let class_id_list = []
-        for (const class_dic of this.classes) {
-            class_id_list.push(class_dic["type_id"])
-        }
-        return class_id_list
-    }
-
-    getClassesName() {
-        let class_name_list = []
-        for (const class_dic of this.classes) {
-            class_name_list.push(class_dic["type_name"])
-        }
-        return class_name_list
-    }
 
     async parseVodShortListFromJson(obj) {
         let vod_list = []
-        let class_id_list = this.getClassesId()
+        let class_id_list = this.getClassIdList()
         for (const data_obj of obj) {
             let vodShort = new VodShort()
             if (class_id_list.includes(data_obj["cat"])) {
@@ -96,9 +81,9 @@ class GitCafeSpider extends Spider {
 
     }
 
-    async parseVodDetailromJson(obj) {
-        let classNamesList = this.getClassesName()
-        let classIdList = this.getClassesId()
+    async parseVodDetailfromJson(obj) {
+        let classNamesList = this.getClassNameList()
+        let classIdList = this.getClassIdList()
         let vodDetail = new VodDetail()
         vodDetail.vod_name = obj["title"]
         vodDetail.vod_remarks = obj["creatime"] ?? obj["date"]
@@ -123,7 +108,7 @@ class GitCafeSpider extends Spider {
 
     async setDetail(id) {
         let content_json = JSON.parse(id)
-        this.vodDetail = await this.parseVodDetailromJson(content_json)
+        this.vodDetail = await this.parseVodDetailfromJson(content_json)
     }
 
     async setCategory(tid, pg, filter, extend) {

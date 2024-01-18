@@ -12,7 +12,6 @@ import {detailContent, initAli, playContent} from "../lib/ali.js";
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 
-let patternAli = /(https:\/\/www\.aliyundrive\.com\/s\/[^"]+|https:\/\/www\.alipan\.com\/s\/[^"]+)/
 
 class WeiXineSpider extends Spider {
     constructor() {
@@ -80,7 +79,7 @@ class WeiXineSpider extends Spider {
         let items = $('.module-row-info')
         for (const item of items) {
             let aliUrl = $(item).find("p")[0].children[0].data
-            let matches = aliUrl.match(patternAli);
+            let matches = aliUrl.match(Utils.patternAli);
             if (!_.isEmpty(matches)) share_url_list.push(matches[1])
         }
         if (share_url_list.length > 0) {

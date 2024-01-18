@@ -37,7 +37,7 @@ class PanSearchSpider extends Spider {
         await initAli(this.cfgObj["token"]);
     }
 
-    async parseVodDetailromJson(obj) {
+    async parseVodDetailfromJson(obj) {
         let item = JSON.parse(obj)
         let vodDetail = new VodDetail();
         let splitList = item["content"].split("\n");
@@ -90,7 +90,7 @@ class PanSearchSpider extends Spider {
     }
 
     async setDetail(id) {
-        this.vodDetail = await this.parseVodDetailromJson(id)
+        this.vodDetail = await this.parseVodDetailfromJson(id)
     }
 
     async setSearch(wd, quick) {

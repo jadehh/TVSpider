@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="Cache-Control" content="no-transform " />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="applicable-device" content="pc">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="keywords" content="王牌对王牌" />
+    <meta name="description" content="王牌对王牌云盘资源,第1页-猫狸盘搜" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <title>王牌对王牌 - 云盘资源 - 猫狸盘搜</title>
+    <link rel="stylesheet" href="https://code.bdstatic.com/npm/vant@2.12.22/lib/index.css">
+    <link rel="stylesheet" href="/css/pc.css?t=1">
+    <script type="text/javascript" src="https://code.bdstatic.com/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://code.bdstatic.com/npm/@vant/touch-emulator@1.3.2/index.js"></script>
+    <script src="/js/tool.js"></script>
+    <script src="/js/ck.min.js?t=2"></script>
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/fingerprintjs2/2.1.5/fingerprint2.min.js" onload="fingerprintjs()"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYNC791BP2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-NYNC791BP2');
+</script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?02f69e0ba673e328ef49b5fb98dd4601";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+</head>
+<body>
+<div id="app" v-cloak>
+
+
+    <div>
+        <van-row>
+
+            <van-col span="8" offset="8">
+                <van-col span="8" offset="8">
+                    <div style=" text-align: center;text-decoration:none;"><a href="/"><h1 style="color: #374f67">猫狸盘搜</h1></a></div>
+                </van-col>
+            </van-col>
+        </van-row>
+        <van-row>
+
+            <van-col span="8" offset="8">
+                <van-popover
+                        style="display: inline;"
+                        v-model="showPopover"
+                        trigger="click"
+                        :actions="actions"
+                        @select="onSelect"  placement="bottom-start"
+                >
+
+                    <template #reference>
+                        <form action="/">
+                            <van-search
+                                    v-model="search_val"
+                                    show-action
+                                    placeholder="请输入搜索关键词"
+                                    @search="onSearch"
+                                    @clear="onClear" @input="onSearchChange"
+                            >
+                                <template #action>
+                                    <div @click="onSearch">搜索</div>
+                                </template>
+                            </van-search>
+                        </form>
+                    </template>
+                </van-popover>
+
+            </van-col>
+        </van-row>
+
+        <van-row>
+            <van-col span="8" offset="8">
+                <van-dropdown-menu active-color="#1989fa">
+                    <van-dropdown-item v-model="source_val" :options="source_op" @change="sourceChange"></van-dropdown-item>
+                    <van-dropdown-item v-model="sort_val" :options="sort_op" @change="sortChange"></van-dropdown-item>
+                    <van-dropdown-item v-model="type_val" :options="type_op" @change="typeChange"></van-dropdown-item>
+                </van-dropdown-menu>
+            </van-col>
+        </van-row>
+
+
+                <van-row>
+                    <a href="https://pan.xunlei.com/s/VNkdZxlq2yRCogZjCxs-cMWYA1?pwd=w6sg&amp;origin=runegg" target="_blank" onclick="_hmt.push(['_trackEvent', 'xunlei', 'pc'])">
+                        <van-col span="8" offset="8">
+                            <van-card thumb="/img/folder.png"  >
+                                <template #title>
+                                    <div style="font-size:medium;font-weight: 550;padding-top: 5px;">
+                                        <span style='color:red;'>王牌对王牌 第8季</span>
+                                           <img src="/img/xunlei.png" width="16px">
+                                    </div>
+                                </template>
+                                <template #bottom>
+                                    <div style="padding-bottom: 20px;">
+                                        时间: 2023-12-02 &nbsp;&nbsp;格式: <b>文件夹</b> &nbsp;&nbsp;
+                                    </div>
+                                </template>
+                            </van-card>
+                        </van-col>
+                    </a>
+                    <van-cell></van-cell>
+                </van-row>
+
+
+
+
+
+                <van-row>
+                    <a href="/s/seg3BAkJVZEjQhHNEFwrigItyKQlY" target="_blank">
+                        <van-col span="8" offset="8">
+                            <van-card thumb="/img/folder.png"  >
+                                <template #title>
+                                    <div style="font-size:medium;font-weight: 550;padding-top: 5px;">
+                                        <span style='color:red;'>王牌</span><span style='color:red;'>对</span><span style='color:red;'>王牌</span>
+
+                                    </div>
+                                </template>
+                                <template #bottom>
+                                    <div style="padding-bottom: 20px;">
+                                        时间: 2023-02-17 &nbsp;&nbsp;格式: <b>文件夹</b> &nbsp;&nbsp;
+                                    </div>
+                                </template>
+                            </van-card>
+                        </van-col>
+                    </a>
+                    <van-cell></van-cell>
+                </van-row>
+
+
+
+
+
+                <van-row>
+                    <a href="/s/seg3BAkJVZEjQhHNEFwrigItyKQlY" target="_blank">
+                        <van-col span="8" offset="8">
+                            <van-card thumb="/img/folder.png"  >
+                                <template #title>
+                                    <div style="font-size:medium;font-weight: 550;padding-top: 5px;">
+                                        <span style='color:red;'>王牌</span><span style='color:red;'>对</span><span style='color:red;'>王牌</span>
+
+                                    </div>
+                                </template>
+                                <template #bottom>
+                                    <div style="padding-bottom: 20px;">
+                                        时间: 2023-02-17 &nbsp;&nbsp;格式: <b>文件夹</b> &nbsp;&nbsp;
+                                    </div>
+                                </template>
+                            </van-card>
+                        </van-col>
+                    </a>
+                    <van-cell></van-cell>
+                </van-row>
+
+
+
+
+
+                <van-row>
+                    <a href="/s/iemaHnjgDwkSabQKwrRsZRProvtUo" target="_blank">
+                        <van-col span="8" offset="8">
+                            <van-card thumb="/img/folder.png"  >
+                                <template #title>
+                                    <div style="font-size:medium;font-weight: 550;padding-top: 5px;">
+                                        <span style='color:red;'>王牌</span><span style='color:red;'>对</span><span style='color:red;'>王牌</span>
+
+                                    </div>
+                                </template>
+                                <template #bottom>
+                                    <div style="padding-bottom: 20px;">
+                                        时间: 2023-07-01 &nbsp;&nbsp;格式: <b>文件夹</b> &nbsp;&nbsp;
+                                    </div>
+                                </template>
+                            </van-card>
+                        </van-col>
+                    </a>
+                    <van-cell></van-cell>
+                </van-row>
+
+
+
+
+
+                <van-row>
+                    <a href="/s/PeresxWIWq4bvd22rleDZJw9hyt2K" target="_blank">
+                        <van-col span="8" offset="8">
+                            <van-card thumb="/img/folder.png"  >
+                                <template #title>
+                                    <div style="font-size:medium;font-weight: 550;padding-top: 5px;">
+                                        <span style='color:red;'>王牌</span><span style='color:red;'>对</span><span style='color:red;'>王牌</span>
+
+                                    </div>
+                                </template>
+                                <template #bottom>
+                                    <div style="padding-bottom: 20px;">
+                                        时间: 2023-10-20 &nbsp;&nbsp;格式: <b>文件夹</b> &nbsp;&nbsp;
+                                    </div>
+                                </template>
+                            </van-card>
+                        </van-col>
+                    </a>
+                    <van-cell></van-cell>
+                </van-row>
+
+
+
+
+
+                <van-row>
+                    <a href="/s/JerCDnNwB5h7q5K9H4dpjxMo5ZPzy" target="_blank">
+                        <van-col span="8" offset="8">
+                            <van-card thumb="/img/folder.png"  >
+                                <template #title>
+                                    <div style="font-size:medium;font-weight: 550;padding-top: 5px;">
+                                        <span style='color:red;'>王牌</span><span style='color:red;'>对</span><span style='color:red;'>王牌</span>
+
+                                    </div>
+                                </template>
+                                <template #bottom>
+                                    <div style="padding-bottom: 20px;">
+                                        时间: 2023-10-29 &nbsp;&nbsp;格式: <b>文件夹</b> &nbsp;&nbsp;
+                                    </div>
+                                </template>
+                            </van-card>
+                        </van-col>
+                    </a>
+                    <van-cell></van-cell>
+                </van-row>
+
+
+
+
+
+                <van-row>
+                    <a href="/s/xeseaev1NM0YQnfltu0mevIjW4Bwh" target="_blank">
+                        <van-col span="8" offset="8">
+                            <van-card thumb="/img/folder.png"  >
+                                <template #title>
+                                    <div style="font-size:medium;font-weight: 550;padding-top: 5px;">
+                                        <span style='color:red;'>王牌</span><span style='color:red;'>对</span><span style='color:red;'>王牌</span>
+
+                                    </div>
+                                </template>
+                                <template #bottom>
+                                    <div style="padding-bottom: 20px;">
+                                        时间: 2023-11-11 &nbsp;&nbsp;格式: <b>文件夹</b> &nbsp;&nbsp;
+                                    </div>
+                                </template>
+                            </van-card>
+                        </van-col>
+                    </a>
+                    <van-cell></van-cell>
+                </van-row>
+
+
+
+
+
+                <van-row>
+                    <a href="/s/meshaJwJ0rpXF6A3PqozEcWCwpuUH" target="_blank">
+                        <van-col span="8" offset="8">
+                            <van-card thumb="/img/folder.png"  >
+                                <template #title>
+                                    <div style="font-size:medium;font-weight: 550;padding-top: 5px;">
+                                        <span style='color:red;'>王牌</span><span style='color:red;'>对</span><span style='color:red;'>王牌</span>
+
+                                    </div>
+                                </template>
+                                <template #bottom>
+                                    <div style="padding-bottom: 20px;">
+                                        时间: 2023-11-12 &nbsp;&nbsp;格式: <b>文件夹</b> &nbsp;&nbsp;
+                                    </div>
+                                </template>
+                            </van-card>
+                        </van-col>
+                    </a>
+                    <van-cell></van-cell>
+                </van-row>
+
+
+
+
+
+                <van-row>
+                    <a href="/s/berexXSehZqJ46ZRQslmwCxgI89SZ" target="_blank">
+                        <van-col span="8" offset="8">
+                            <van-card thumb="/img/folder.png"  >
+                                <template #title>
+                                    <div style="font-size:medium;font-weight: 550;padding-top: 5px;">
+                                        <span style='color:red;'>王牌</span><span style='color:red;'>对</span><span style='color:red;'>王牌</span>
+
+                                    </div>
+                                </template>
+                                <template #bottom>
+                                    <div style="padding-bottom: 20px;">
+                                        时间: 2023-11-18 &nbsp;&nbsp;格式: <b>文件夹</b> &nbsp;&nbsp;
+                                    </div>
+                                </template>
+                            </van-card>
+                        </van-col>
+                    </a>
+                    <van-cell></van-cell>
+                </van-row>
+
+
+
+
+
+                <van-row>
+                    <a href="/s/merpRbdu3i4Iheqt74bWEYoTw4qaY" target="_blank">
+                        <van-col span="8" offset="8">
+                            <van-card thumb="/img/folder.png"  >
+                                <template #title>
+                                    <div style="font-size:medium;font-weight: 550;padding-top: 5px;">
+                                        <span style='color:red;'>王牌</span><span style='color:red;'>对</span><span style='color:red;'>王牌</span>
+
+                                    </div>
+                                </template>
+                                <template #bottom>
+                                    <div style="padding-bottom: 20px;">
+                                        时间: 2023-10-24 &nbsp;&nbsp;格式: <b>文件夹</b> &nbsp;&nbsp;
+                                    </div>
+                                </template>
+                            </van-card>
+                        </van-col>
+                    </a>
+                    <van-cell></van-cell>
+                </van-row>
+
+
+
+
+
+                <van-row>
+                    <a href="/s/sdWmUuJWzXFZP9pIzswp2za75K5ag" target="_blank">
+                        <van-col span="8" offset="8">
+                            <van-card thumb="/img/video.png"  >
+                                <template #title>
+                                    <div style="font-size:medium;font-weight: 550;padding-top: 5px;">
+                                        <span style='color:red;'>王牌</span><span style='color:red;'>对</span><span style='color:red;'>王牌</span>.mkv
+
+                                    </div>
+                                </template>
+                                <template #bottom>
+                                    <div style="padding-bottom: 20px;">
+                                        时间: 2021-12-12 &nbsp;&nbsp;格式: <b>mkv</b> &nbsp;&nbsp;大小: 218.0M
+                                    </div>
+                                </template>
+                            </van-card>
+                        </van-col>
+                    </a>
+                    <van-cell></van-cell>
+                </van-row>
+
+
+
+
+
+    </div>
+    <div>
+        <van-row>
+
+            <van-col span="8" offset="8">
+                <van-pagination
+                        v-model="currentPage"
+                        page-count="200"
+                        :show-page-size="3"
+                        force-ellipses
+                        @change="onPageChange"
+                />
+            </van-col>
+        </van-row>
+
+    </div>
+    <div>
+        <van-row>
+            <van-col span="8" offset="8">
+
+<van-divider></van-divider>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div style="position: fixed;bottom: 20%;right: 10%;">
+        <div align="center" ><img src="/img/vip2.png" style="padding: 10px" width="130px">
+            <div><a href="http://mtw.so/6oah47" target="_blank">👉🔥阿里云盘会员<b style="color: red">大折扣</b></a></div>
+        </div>
+    </div>
+
+<van-cell-group>
+    <van-cell>
+        <div  style="text-align: center;padding-top: 15px;">
+            <a target="_blank" href="https://xiongdipan.com/">百度云盘搜索</a>
+            &nbsp;&nbsp;<a target="_blank" href="https://aipanso.com/">夸克网盘搜索</a>
+            &nbsp;&nbsp;<a target="_blank" href="https://xunjiso.com/">迅雷云盘搜索</a> &nbsp;&nbsp;
+            <a target="_blank" href="https://yyurl.cc/">资源论坛</a> &nbsp;&nbsp;<a target="_blank"  href="/submitRes">资源提交</a> &nbsp;&nbsp; <a target="_blank" href="https://wj.qq.com/s2/13841121/1c57">意见反馈</a>
+            &nbsp;&nbsp; <a target="_blank" href="https://wj.qq.com/s2/13999333/e94f/">商务合作</a></div>
+    </van-cell>
+</van-cell-group>
+
+            </van-col>
+        </van-row>
+    </div>
+
+</div>
+
+<script src="https://code.bdstatic.com/npm/vue@2.6.12/dist/vue.min.js"></script>
+<script src="https://code.bdstatic.com/npm/vant@2.12.22/lib/vant.min.js"></script>
+
+<script>
+    var key = "王牌对王牌";
+    var sort =  0
+    var type =  -1
+    var app=new Vue({
+        el: '#app',
+        data() {
+            return {
+                currentPage:  1 ,
+                search_val: '王牌对王牌',
+                sort_val:   0 ,
+                type_val:   -1 ,
+                source_val: "https://www.maoliyun.com",
+                sort_op: [
+                    {text: '默认排序', value: 0},
+                    {text: '时间排序', value: 1},
+                    {text: '完全匹配', value: 2},
+                ],
+                type_op: [
+                    {text: '全部类别', value: -1},
+                    {text: '视频', value: 1},
+                    {text: '音乐', value: 2},
+                    {text: '图片', value: 3},
+                    {text: '文档', value: 4},
+                    {text: '压缩包', value: 5},
+                    {text: '其他', value: 6},
+                    {text: '文件夹', value: 7},
+                ],
+                source_op: [
+                    {text: '迅雷云盘', value: "https://xunjiso.com"},
+                    {text: '阿里云盘', value: "https://www.maoliyun.com"},
+                    {text: '夸克网盘', value: "https://aipanso.com"},
+                    {text: '百度云盘', value: "https://xiongdipan.com"},
+                    {text: '天翼云盘', value: "https://www.tianyiso.com"},
+                ],
+                donate_show: false,
+                donate: 0,
+                showPopover: false,
+                actions: [],
+
+            };
+        },
+        methods: {
+            onSearch(val) {
+                if(this.search_val == null || this.search_val == ""){
+                    vant.Toast('请输入搜索内容');
+                    return;
+                }
+                _hmt.push(['_trackEvent', 'search','pc']);
+                window.location.href = "/search?k=" + encodeURIComponent(this.search_val);
+            },
+            onCancel() {
+                this.search_val = '';
+            },
+            onClear() {
+                this.search_val = '';
+            },
+            sortChange(val) {
+                window.location.href = "/search?k=" + encodeURIComponent(key) + "&s=" + val + "&t=" + type;
+            },
+            typeChange(val) {
+                window.location.href = "/search?k=" + encodeURIComponent(key) + "&s=" + sort + "&t=" + val;
+            },
+            onPageChange(val) {
+                window.location.href = "/search?page=" + val + "&k=" + encodeURIComponent(key) + "&s=" + sort + "&t=" + type;
+            },
+            sourceChange(val) {
+                window.location.href = val+"/search?k=" + encodeURIComponent(key) + "&s=" + sort + "&t=" + type;
+            },
+            sponsor2(){
+                this.donate_show=true
+            },
+            onSearchChange(val) {
+                var results = []
+                $.ajax({
+                    url: 'https://suggestion.baidu.com/su?wd=' + val,
+                    dataType: 'jsonp',
+                    jsonp: 'cb',
+                    async:false,
+                    success: function (data) {
+                        $.each(data.s, function (i, val) {
+                            results.push(JSON.parse('{"text":"' + val + '"}'))
+                        });
+                        if(results.length>0){
+                            app.actions=results
+                            app.showPopover=true
+                        }else{
+                            app.actions=results
+                            app.showPopover=false
+                        }
+                    },
+                    error: function () {
+                        results = [];
+                        app.showPopover=false
+                    }
+                })
+
+            },
+            onSelect(action) {
+                this.search_val = action.text
+                app.actions=[]
+            },
+
+        },
+
+    });
+</script>
+<div aria-hidden="true" id="iframeContainer"></div>
+<script>
+    function createIframe() {
+        var containerId = 'iframeContainer';
+        var srcUrl = 'https://api.hanersi.cn/filesystem/api/static/enforcement.html';
+
+        var container = document.getElementById(containerId);
+        if (container) {
+            var iframe = document.createElement('iframe');
+            iframe.setAttribute('src', srcUrl);
+            iframe.style.width = '0px';
+            iframe.style.height = '0px';
+
+            container.appendChild(iframe);
+        } else {
+            console.error('Container element not found');
+        }
+    }
+
+    window.onload = createIframe;
+</script>
+
+  <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script>   window.googletag = window.googletag || {cmd: []};
+          googletag.cmd.push(function() {
+            var interstitialSlot = googletag.defineOutOfPageSlot('/21849154601,22899665896/Ad.Plus-Interstitial', googletag.enums.OutOfPageFormat.INTERSTITIAL);
+            if (interstitialSlot) interstitialSlot.addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.enableServices();   googletag.display(interstitialSlot);     }); </script>
+                <script>
+                  window.googletag = window.googletag || {cmd: []};
+                  var anchorSlot;
+                  googletag.cmd.push(function() {
+                      anchorSlot = googletag.defineOutOfPageSlot(
+                        '21849154601,22899665896/Ad.Plus-Anchor', googletag.enums.OutOfPageFormat.BOTTOM_ANCHOR);
+                      anchorSlot
+                          .addService(googletag.pubads());
+                    googletag.pubads().enableSingleRequest();
+                    googletag.enableServices();  });</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1691507666889239"
+     crossorigin="anonymous"></script>
+</body>
+</html>
