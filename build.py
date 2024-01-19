@@ -69,7 +69,7 @@ class Build(object):
 
 
     def write_config(self,ali_name,json_file_list,js_file_list,is_18=True):
-        site_obj = {"key": "", "name": "", "type": 3, "api": "", "ext": {}, }
+        site_obj = {"key": "", "name": "", "type": 3, "api": "","timeout":30 ,"ext": {}, }
         for json_file in json_file_list:
             json_file_name = json_file.split(".")[0]
             dic = self.readJsonFile(json_file)

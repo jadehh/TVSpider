@@ -6,6 +6,7 @@
                 "name": "🚀‍┃爱影视┃🚀",
                 "type": 3,
                 "api": "./js/aiyingshi.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
@@ -13,6 +14,7 @@
                 "name": "😸┃阿里猫狸┃😸",
                 "type": 3,
                 "api": "./js/alipansou.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
             },
             {
@@ -20,6 +22,7 @@
                 "name": "🍥┃豆瓣┃🍥",
                 "type": 3,
                 "api": "./js/douban.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
@@ -27,6 +30,7 @@
                 "name": "🦊┃阿里纸条┃🦊",
                 "type": 3,
                 "api": "./js/gitcafe.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
             },
             {
@@ -34,6 +38,7 @@
                 "name": "🤖|爱看机器人|🤖",
                 "type": 3,
                 "api": "./js/ikanbot.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
@@ -41,7 +46,7 @@
                 "name": "🌼|荐片|🌼",
                 "type": 3,
                 "api": "./js/jianpian.js",
-                "timeout":30,
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
@@ -49,6 +54,7 @@
                 "name": "🥃┃九九六影视┃🥃",
                 "type": 3,
                 "api": "./js/jiujiuliu.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
@@ -56,6 +62,7 @@
                 "name": "📺┃70看看┃📺",
                 "type": 3,
                 "api": "./js/kankan70.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
@@ -63,6 +70,7 @@
                 "name": "👑‍┃泥视频┃👑",
                 "type": 3,
                 "api": "./js/nivod.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"code\": 1}"
             },
             {
@@ -70,6 +78,7 @@
                 "name": "🗂️┃阿里盘搜┃🗂️",
                 "type": 3,
                 "api": "./js/pan_search.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
             },
             {
@@ -77,6 +86,7 @@
                 "name": "💂‍┃阿里影视┃💂",
                 "type": 3,
                 "api": "./js/weixine.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
             },
             {
@@ -84,6 +94,7 @@
                 "name": "💂‍┃阿里玩偶┃💂",
                 "type": 3,
                 "api": "./js/wogg.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
             },
             {
@@ -91,6 +102,7 @@
                 "name": "🧲|磁力新6V|🧲",
                 "type": 3,
                 "api": "./js/xb6v.js",
+                "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\"}"
             }
         ]

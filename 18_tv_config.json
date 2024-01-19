@@ -5,6 +5,7 @@
             "name": "🔞┃海外宅┃🔞",
             "type": 3,
             "api": "./js/asianx.js",
+            "timeout": 30,
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
@@ -12,6 +13,7 @@
             "name": "🔞┃玩偶姐姐┃🔞",
             "type": 3,
             "api": "./js/doll.js",
+            "timeout": 30,
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
@@ -19,6 +21,7 @@
             "name": "🔞┃黄色仓库┃🔞",
             "type": 3,
             "api": "./js/hscangku.js",
+            "timeout": 30,
             "ext": "{\"box\": \"TVBox\"}"
         }
     ],
