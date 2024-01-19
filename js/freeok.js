@@ -87,7 +87,7 @@ class OkSpider extends Spider {
             }
             play_url_list.push(vodItems.join("#"))
         }
-        vodDetail.vod_play_from = play_from_list.push("$$$")
+        vodDetail.vod_play_from = play_from_list.join("$$$")
         vodDetail.vod_play_url = play_url_list.join("$$$")
         return vodDetail
     }
