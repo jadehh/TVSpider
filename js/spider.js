@@ -10,7 +10,7 @@
 import {JadeLogging} from "../lib/log.js";
 import * as Utils from "../lib/utils.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
-import {_, Uri} from "../lib/cat.js";
+import {_, load, Uri} from "../lib/cat.js";
 
 class Result {
     constructor() {
@@ -206,6 +206,15 @@ class Spider {
         return class_id_list
     }
 
+    async getHtml(url,headers){
+        let html = await this.fetch(url, null, headers)
+        if (!_.isEmpty(html)) {
+            return load(html)
+        }else{
+            await this.jadeLog.error(`html获取失败`,true)
+        }
+    }
+
     getClassNameList() {
         let class_name_list = []
         for (const class_dic of this.classes) {
@@ -229,6 +238,8 @@ class Spider {
     getHeader() {
         return {"User-Agent": Utils.CHROME, "Referer": this.siteUrl + "/"};
     }
+
+
 
 
     async fetch(reqUrl, params, headers, redirect_url = false) {
@@ -259,9 +270,8 @@ class Spider {
                 return await this.reconnnect(reqUrl, params, headers, redirect_url)
             }
         } else {
-            await this.jadeLog.error(`请求失败,请求url为:${uri},回复内容为${JSON.stringify(response)}`)
+            await this.jadeLog.error(`请求失败,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
             return await this.reconnnect(reqUrl, params, headers, redirect_url)
-
         }
     }
 

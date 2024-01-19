@@ -25,6 +25,14 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
+            "key": "freeok",
+            "name": "🆗|OK资源网|🆗",
+            "type": 3,
+            "api": "./js/freeok.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "gitcafe",
             "name": "🦊┃阿里纸条┃🦊",
             "type": 3,

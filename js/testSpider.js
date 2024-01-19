@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './asianx.js';
+import {__jsEvalReturn} from './freeok.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -29,7 +29,7 @@ async function testPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'asianx';
+    let siteKey = 'freeok';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -46,15 +46,19 @@ async function test() {
     // //
     //
     //
+
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("/vod-detail/63397.html"))
+    await testPlay(detail1)
+
     // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("/", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("1", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
 
 
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://cn.asianx.tube/video/1013547497.html"))
-    await testPlay(detail1)
+
+
 
     // 测试搜索
 
