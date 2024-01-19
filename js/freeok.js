@@ -14,7 +14,7 @@ import * as Utils from "../lib/utils.js";
 class OkSpider extends Spider {
     constructor() {
         super();
-        this.siteUrl = "https://www.freeok.vip/"
+        this.siteUrl = "https://www.freeok.vip"
     }
 
     getName() {
