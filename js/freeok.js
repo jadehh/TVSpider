@@ -10,6 +10,7 @@ import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
+import {} from "../lib/crypto-js.js"
 
 class OkSpider extends Spider {
     constructor() {
@@ -48,40 +49,40 @@ class OkSpider extends Spider {
         let vodDetail = new VodDetail();
         let moudleElements = $("[class=\"module-info-tag-link\"]").find("a")
         let mobilePlay = $("[class=\"module-mobile-play\"]").find("a")[0]
-        vodDetail.vod_name = mobilePlay.attribs["title"].replaceAll("立刻播放","")
-        vodDetail.vod_content = $($("[class=\"module-info-introduction-content\"]")).text().replaceAll("\n","").replaceAll(" ","")
+        vodDetail.vod_name = mobilePlay.attribs["title"].replaceAll("立刻播放", "")
+        vodDetail.vod_content = $($("[class=\"module-info-introduction-content\"]")).text().replaceAll("\n", "").replaceAll(" ", "")
         let type_list = []
-        for (const moudleElement of moudleElements.slice(2)){
-            type_list.push( $(moudleElement).text())
+        for (const moudleElement of moudleElements.slice(2)) {
+            type_list.push($(moudleElement).text())
         }
         vodDetail.type_name = type_list.join("/")
-        vodDetail.vod_year= $(moudleElements[0]).text()
+        vodDetail.vod_year = $(moudleElements[0]).text()
         vodDetail.vod_area = $(moudleElements[1]).text()
         let itemElements = $("[class=\"module-info-item\"]")
         let itemText = ""
-        for (const itemElement of itemElements){
-            itemText = itemText + $(itemElement).text().replaceAll("\n","").replaceAll("：",":") + "\n"
+        for (const itemElement of itemElements) {
+            itemText = itemText + $(itemElement).text().replaceAll("\n", "").replaceAll("：", ":") + "\n"
         }
         vodDetail.vod_pic = $("[class=\"module-item-pic\"]").find("img")[0].attribs["data-original"]
-        vodDetail.vod_director = Utils.getStrByRegex(/导演:(.*?)\n/,itemText)
-        vodDetail.vod_actor = Utils.getStrByRegex(/主演:(.*?)\n/,itemText)
-        vodDetail.vod_year = Utils.getStrByRegex(/上映:(.*?)\n/,itemText)
-        vodDetail.vod_remarks = Utils.getStrByRegex(/备注:(.*?)\n/,itemText)
-        if (_.isEmpty(vodDetail.vod_remarks)){
-            vodDetail.vod_remarks = Utils.getStrByRegex(/集数:(.*?)\n/,itemText)
+        vodDetail.vod_director = Utils.getStrByRegex(/导演:(.*?)\n/, itemText)
+        vodDetail.vod_actor = Utils.getStrByRegex(/主演:(.*?)\n/, itemText)
+        vodDetail.vod_year = Utils.getStrByRegex(/上映:(.*?)\n/, itemText)
+        vodDetail.vod_remarks = Utils.getStrByRegex(/备注:(.*?)\n/, itemText)
+        if (_.isEmpty(vodDetail.vod_remarks)) {
+            vodDetail.vod_remarks = Utils.getStrByRegex(/集数:(.*?)\n/, itemText)
         }
-        let playElements =  $($("[class=\"module-tab-items-box hisSwiper\"]")).find("span")
+        let playElements = $($("[class=\"module-tab-items-box hisSwiper\"]")).find("span")
         let play_from_list = []
-        for (const playElement of playElements){
+        for (const playElement of playElements) {
             play_from_list.push($(playElement).text())
         }
         let playUrlElements = $("[class=\"module-list sort-list tab-list his-tab-list\"]")
         let play_url_list = []
-        for (const playUrlElement of playUrlElements){
+        for (const playUrlElement of playUrlElements) {
             let playDetailElements = $(playUrlElement).find("a")
             let vodItems = []
-            for (const playDetailElement of playDetailElements){
-                let play_name = playDetailElement.attribs["title"].replaceAll("播放","").replaceAll(vodDetail.vod_name,"")
+            for (const playDetailElement of playDetailElements) {
+                let play_name = playDetailElement.attribs["title"].replaceAll("播放", "").replaceAll(vodDetail.vod_name, "")
                 let play_url = playDetailElement.attribs["href"]
                 vodItems.push(`${play_name}$${play_url}`)
             }
@@ -136,8 +137,85 @@ class OkSpider extends Spider {
         this.vodDetail = await this.parseVodDetailFromDoc($)
     }
 
+    async getplayerMp4Data(url) {
+        const html = await this.fetch(url, null, this.getHeader())
+        const $ = load(html);
+        const metas = $("meta");
+
+        let charsetId = null;
+        let viewportId = null;
+        metas.each((_, item) => {
+            if ($(item).attr("charset") === "UTF-8") {
+                charsetId = $(item).attr("id").replace(/now_/, "");
+            }
+
+            if ($(item).attr("name") === "viewport") {
+                viewportId = $(item).attr("id").replace(/now_/, "");
+            }
+        })
+
+        const scripts = $("script");
+        let scriptText = "";
+        scripts.each((_, item) => {
+            if ($(item).attr("type") === "text/javascript") {
+                scriptText = $(item).text();
+            }
+        });
+
+        const regex = /var\s+config\s+=\s+({[\s\S]+?})/;
+        const match = scriptText.match(regex);
+        const configString = match[1];
+
+        const regexUrl = /"url":\s*"([^"]+)"/g;
+        const matches = configString.match(regexUrl);
+        const urls = matches.map(match => match.replace(/"url":\s*"/, "").replace(/"$/, ""))?.[0];
+        const result = mp4Decrypt({url: urls, viewportId, charsetId})
+        return result;
+
+    }
+    async setPlay(flag, id, flags) {
+        let $ = await this.getHtml(this.siteUrl + id, this.getHeader())
+        const js = JSON.parse($('script:contains(player_)').html().replace('var player_aaaa=', ''));
+        let url = this.siteUrl + "/okplayer/"
+        let params = {"url":decodeURIComponent(js.url),"next":decodeURIComponent(js.url_next),"title":js.vod_data.vod_name}
+        let playHtml = await this.fetch(url,params,this.getHeader());
+
+    }
+
+
 }
 
+function decryptUrl(html) {
+    const result = html.match(/var config = {[\w\W]*}[\w\W]*player/);
+    const jsConfig = eval(result[0].replace(/player$/g, ';config'));
+    const url = jsConfig.url;
+    const $ = load(html);
+    const textStr = $('meta[name="viewport"]').attr('id').replace('now_', '');
+    const idStr = $('meta[charset="UTF-8"]').attr('id').replace('now_', '');
+    let keyList = [];
+    let sortedList = [];
+    let keyStr = '';
+    for (let index = 0; index < idStr.length; index++) {
+        keyList.push({
+            'id': idStr[index],
+            'text': textStr[index]
+        });
+    }
+    sortedList = keyList.sort((a, b)=> a.id - b.id);
+    for (const item of sortedList) {
+        keyStr += item.text;
+    }
+    const md5Key = CryptoJS.MD5(keyStr + '0xd8@pS^vOL$WuOF3').toString();
+    const endStr = CryptoJS.enc.Utf8.parse(md5Key.substring(16));
+    const iv = CryptoJS.enc.Utf8.parse(md5Key.substring(0, 16));
+    const decrypted = CryptoJS.AES.decrypt(url, endStr, {
+        'iv': iv,
+        'mode': CryptoJS.mode.CBC,
+        'padding': CryptoJS.pad.Pkcs7,
+    });
+    const decryptedUrl = CryptoJS.enc.Utf8.stringify(decrypted);
+    return decryptedUrl;
+}
 
 let spider = new OkSpider()
 
