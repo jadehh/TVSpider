@@ -11,7 +11,7 @@ import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 import {player} from "../lib/freeok_setttings.js";
-const OCR_API = 'http://drpy.nokia.press:8028/ocr/drpy/text';//ocr在线识别接口
+const OCR_API = 'https://api.nn.ci/ocr/b64/text';//ocr在线识别接口
 
 
 class OkSpider extends Spider {
@@ -211,22 +211,22 @@ class OkSpider extends Spider {
 
     async setSearch(wd, quick) {
 
-        let url =  this.siteUrl + "/so1so/-------------.html?wd=" + wd
-        let headers = this.getHeader()
-        headers["cookie"] = this.cookie
-        let html =await this.fetch(url,null,headers)
-        if (html.indexOf("安全验证") > -1){
-            await this.refreshCookie()
-            await this.setSearch(wd,quick)
-        }
-        let x = 0
+        // let url =  this.siteUrl + "/so1so/-------------.html?wd=" + wd
+        // let headers = this.getHeader()
+        // headers["cookie"] = this.cookie
+        // let html =await this.fetch(url,null,headers)
+        // if (html.indexOf("安全验证") > -1){
+        //     await this.refreshCookie()
+        //     await this.setSearch(wd,quick)
+        // }
+        // let x = 0
     }
 
     async refreshCookie() {
         let passUrl = this.siteUrl + "/index.php/verify/index.html?"
         let passHtml = await this.fetch(passUrl,null,this.getHeader(),false,true)
 
-        response = await this.post(OCR_API,{"img":passHtml["content"]},this.getHeader())
+        let response2 = await this.post(OCR_API,passHtml["content"],this.getHeader())
         this.cookie = Utils.getStrByRegex(/(.*?);/,passHtml["cookie"])
         let verifyUrl = this.siteUrl + "/index.php/ajax/verify_check?type=search&verify=5286"
         let headers = this.getHeader()
