@@ -240,7 +240,7 @@ class Spider {
     }
 
 
-    async fetch(reqUrl, params, headers, redirect_url = false) {
+    async fetch(reqUrl, params, headers, redirect_url = false, return_cookie = false) {
         let data = Utils.objectToStr(params)
         let url = reqUrl
         if (!_.isEmpty(data)) {
@@ -262,8 +262,13 @@ class Spider {
                     return this.fetch(response.headers["location"], params, headers, redirect_url)
                 }
             } else if (!_.isEmpty(response.content)) {
-                this.reconnectTimes = 0
-                return response.content
+                if (return_cookie) {
+                    return {"cookie":response.headers["set-cookie"],"content":response.content}
+                } else {
+                    this.reconnectTimes = 0
+                    return response.content
+                }
+
             } else {
                 return await this.reconnnect(reqUrl, params, headers, redirect_url)
             }
@@ -316,7 +321,8 @@ class Spider {
     async parseVodShortListFromJson(obj) {
 
     }
-    parseVodShortFromElement($,element){
+
+    parseVodShortFromElement($, element) {
 
     }
 

@@ -11,6 +11,8 @@ import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 import {player} from "../lib/freeok_setttings.js";
+const OCR_API = 'http://drpy.nokia.press:8028/ocr/drpy/text';//ocr在线识别接口
+
 
 class OkSpider extends Spider {
     constructor() {
@@ -27,6 +29,7 @@ class OkSpider extends Spider {
     }
 
     async init(cfg) {
+        this.cookie = await this.load_cache()
         await super.init(cfg);
     }
 
@@ -205,6 +208,48 @@ class OkSpider extends Spider {
             this.vodList = await this.parseVodShortListFromDocByCategory($)
         }
     }
+
+    async setSearch(wd, quick) {
+
+        let url =  this.siteUrl + "/so1so/-------------.html?wd=" + wd
+        let headers = this.getHeader()
+        headers["cookie"] = this.cookie
+        let html =await this.fetch(url,null,headers)
+        if (html.indexOf("安全验证") > -1){
+            await this.refreshCookie()
+            await this.setSearch(wd,quick)
+        }
+        let x = 0
+    }
+
+    async refreshCookie() {
+        let passUrl = this.siteUrl + "/index.php/verify/index.html?"
+        let passHtml = await this.fetch(passUrl,null,this.getHeader(),false,true)
+
+        response = await this.post(OCR_API,{"img":passHtml["content"]},this.getHeader())
+        this.cookie = Utils.getStrByRegex(/(.*?);/,passHtml["cookie"])
+        let verifyUrl = this.siteUrl + "/index.php/ajax/verify_check?type=search&verify=5286"
+        let headers = this.getHeader()
+        headers["cookie"] = this.cookie
+        let response = await this.post(verifyUrl,null,headers)
+        await this.write_cache()
+    }
+
+
+
+    async load_cache() {
+        try {
+            return  await local.get("freeok_cookie", "cookie")
+        } catch (e) {
+            return ""
+        }
+    }
+
+    async write_cache() {
+        await local.set("freeok_cookie", "cookie", JSON.stringify(this.cookie))
+    }
+
+
 
     async setDetail(id) {
         let $ = await this.getHtml(this.siteUrl + id, this.getHeader())
