@@ -48,7 +48,7 @@ async function test() {
     // //
 
         // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("1", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("1", "1", undefined,{"1":"剧情-动作"}));
     console.debug(JSON.stringify(catePage));
 
     // 测试详情
