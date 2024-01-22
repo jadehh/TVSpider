@@ -206,12 +206,12 @@ class Spider {
         return class_id_list
     }
 
-    async getHtml(url,headers){
+    async getHtml(url, headers) {
         let html = await this.fetch(url, null, headers)
         if (!_.isEmpty(html)) {
             return load(html)
-        }else{
-            await this.jadeLog.error(`html获取失败`,true)
+        } else {
+            await this.jadeLog.error(`html获取失败`, true)
         }
     }
 
@@ -238,8 +238,6 @@ class Spider {
     getHeader() {
         return {"User-Agent": Utils.CHROME, "Referer": this.siteUrl + "/"};
     }
-
-
 
 
     async fetch(reqUrl, params, headers, redirect_url = false) {
@@ -539,14 +537,12 @@ class Spider {
             let resp;
             if (!_.isEmpty(headers)) {
                 resp = await req(url, {
-                    buffer: 2,
-                    headers: headers});
+                    buffer: 2, headers: headers
+                });
             } else {
                 resp = await req(url, {
-                    buffer: 2,
-                    headers: {
-                        Referer: url,
-                        'User-Agent': Utils.CHROME,
+                    buffer: 2, headers: {
+                        Referer: url, 'User-Agent': Utils.CHROME,
                     },
                 });
             }

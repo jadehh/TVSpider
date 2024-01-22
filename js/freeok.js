@@ -109,6 +109,38 @@ class OkSpider extends Spider {
         }
     }
 
+    async getFilter($) {
+        let titleElements = $("[class=\"module-item-title\"]")
+        let boxElements = $("[class=\"module-item-box\"]")
+        let extend_list = []
+        let type_id_dic = {"类型":1,"剧情":4,"地区":2,"语言":5,"年份":12,"排序":3}
+        for (let i = 0; i < titleElements.length; i++) {
+            let extend_dic = {"key": (i + 1).toString(), "name": $(titleElements[i]).text(), "value": []}
+            if ($(titleElements[i]).text() === "排序"){
+                extend_dic["value"].push({"n":"全部","v":""})
+            }
+            let typeElements = $(boxElements[i]).find("a")
+            for (let j = 0; j <  typeElements.length; j++) {
+                let type_name = $(typeElements[j]).text()
+                let type_id = decodeURIComponent(typeElements[j].attribs["href"].split("-")[type_id_dic[$(titleElements[i]).text()]]).replaceAll(".html","")
+                extend_dic["value"].push({"n":type_name,"v":type_id})
+            }
+            extend_list.push(extend_dic)
+
+        }
+        return extend_list;
+    }
+
+    async setFilterObj() {
+        for (const class_dic of this.classes) {
+            if (class_dic["type_name"] !== "最近更新"  && class_dic["type_name"] !== "热榜") {
+                let cateUrl = this.siteUrl + `/vod-show/${class_dic["type_id"]}--------1---.html`
+                let $ = await this.getHtml(cateUrl, this.getHeader())
+                this.filterObj[class_dic["type_id"]] = this.getFilter($)
+            }
+
+        }
+    }
 
     async setHomeVod() {
         let $ = await this.getHtml(this.siteUrl, this.getHeader())
@@ -128,8 +160,9 @@ class OkSpider extends Spider {
         let headers = {
             'Content-Type': 'application/json'
         }
-        let html = await this.post("http://192.168.29.156:8191/v1", payload, headers)
-        // let html = await this.getHtml(cateUrl,this.getHeader());
+        // let html = await this.post("http://192.168.29.156:8191/v1", payload, headers)
+        let html = await this.getHtml(cateUrl, this.getHeader());
+        let x = html.html()
         this.vodDetail = await this.parseVodShortListFromDoc($)
     }
 
