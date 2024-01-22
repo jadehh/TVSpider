@@ -164,11 +164,13 @@ class OkSpider extends Spider {
         let cateUrl
         if (tid.indexOf(".html") > -1) {
             cateUrl = this.siteUrl + tid
+            let $ = await this.getHtml(cateUrl, this.getHeader());
+            this.vodList = await this.parseVodShortListFromDoc($)
         } else {
             cateUrl = this.siteUrl + `/vod-show/${tid}--------${pg}---.html`
+            let $ = await this.getHtml(cateUrl, this.getHeader());
+            this.vodList = await this.parseVodShortListFromDocByCategory($)
         }
-        let $ = await this.getHtml(cateUrl, this.getHeader());
-        this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
     async setDetail(id) {
