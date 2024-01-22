@@ -48,7 +48,7 @@ async function test() {
     // //
 
         // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("1", "2", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("/label/hot.html", "2", undefined,{}));
     console.debug(JSON.stringify(catePage));
 
     // 测试详情

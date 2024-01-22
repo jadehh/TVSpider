@@ -35,10 +35,11 @@ class OkSpider extends Spider {
         let vod_list = []
         let vodElements = $($("[class=\"module\"]")).find("a").slice(0, 12)
         for (const vodElement of vodElements) {
-            vod_list.push(this.parseVodShortFromElement($,vodElement))
+            vod_list.push(this.parseVodShortFromElement($, vodElement))
         }
         return vod_list
     }
+
     parseVodShortFromElement($, element) {
         let vodShort = new VodShort();
         vodShort.vod_name = element.attribs["title"]
@@ -51,8 +52,27 @@ class OkSpider extends Spider {
     async parseVodShortListFromDocByCategory($) {
         let vod_list = []
         let itemElements = $($("[class=\"module-items module-poster-items-base \"]")).find("a")
-        for (const itemElement of itemElements){
-            vod_list.push(this.parseVodShortFromElement($,itemElement))
+        for (const itemElement of itemElements) {
+            vod_list.push(this.parseVodShortFromElement($, itemElement))
+        }
+        return vod_list
+    }
+
+    async parseVodShortListFromDocByHot($) {
+        let vod_list = []
+        let itemElement = $($("[class=\"module-items module-card-items\"]"))[0]
+        let titleElements = $(itemElement).find("[class=\"module-card-item-title\"]").find("a")
+        let infoElements = $(itemElement).find("[class=\"module-card-item-info\"]")
+        let picElements = $(itemElement).find("[class=\"module-item-pic\"]").find("img")
+
+        for (let i=0;i<titleElements.length;i++){
+            let vodShort = new VodShort();
+            vodShort.vod_id = titleElements[i].attribs["href"]
+            vodShort.vod_name = $( titleElements[i]).text()
+            vodShort.vod_pic = picElements[i].attribs["data-original"]
+            vodShort.vod_remarks = $($(infoElements[i])).text().split("\n")[5]
+            vod_list.push(vodShort)
+
         }
         return vod_list
     }
@@ -165,7 +185,7 @@ class OkSpider extends Spider {
         if (tid.indexOf(".html") > -1) {
             cateUrl = this.siteUrl + tid
             let $ = await this.getHtml(cateUrl, this.getHeader());
-            this.vodList = await this.parseVodShortListFromDoc($)
+            this.vodList = await this.parseVodShortListFromDocByHot($)
         } else {
             cateUrl = this.siteUrl + `/vod-show/${tid}--------${pg}---.html`
             let $ = await this.getHtml(cateUrl, this.getHeader());
