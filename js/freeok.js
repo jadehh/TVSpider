@@ -73,20 +73,21 @@ class OkSpider extends Spider {
         }
         let playElements = $($("[class=\"module-tab-items-box hisSwiper\"]")).find("span")
         let play_from_list = []
-        for (const playElement of playElements) {
-            play_from_list.push($(playElement).text())
-        }
         let playUrlElements = $("[class=\"module-list sort-list tab-list his-tab-list\"]")
         let play_url_list = []
-        for (const playUrlElement of playUrlElements) {
-            let playDetailElements = $(playUrlElement).find("a")
-            let vodItems = []
-            for (const playDetailElement of playDetailElements) {
-                let play_name = playDetailElement.attribs["title"].replaceAll("播放", "").replaceAll(vodDetail.vod_name, "")
-                let play_url = playDetailElement.attribs["href"]
-                vodItems.push(`${play_name}$${play_url}`)
+        for (let i = 0; i < playElements.length; i++) {
+            let text = $(playElements[i]).text()
+            if (text.indexOf("夸克") === -1) {
+                let playDetailElements = $(playUrlElements[i]).find("a")
+                let vodItems = []
+                for (const playDetailElement of playDetailElements) {
+                    let play_name = playDetailElement.attribs["title"].replaceAll("播放", "").replaceAll(vodDetail.vod_name, "")
+                    let play_url = playDetailElement.attribs["href"]
+                    vodItems.push(`${play_name}$${play_url}`)
+                }
+                play_url_list.push(vodItems.join("#"))
+                play_from_list.push($(playElements[i]).text())
             }
-            play_url_list.push(vodItems.join("#"))
         }
         vodDetail.vod_play_from = play_from_list.join("$$$")
         vodDetail.vod_play_url = play_url_list.join("$$$")
@@ -179,9 +180,7 @@ class OkSpider extends Spider {
         const js = JSON.parse($('script:contains(player_)').html().replace('var player_aaaa=', ''));
         let url = this.siteUrl + "/okplayer/"
         let params = {
-            "url": decodeURIComponent(js.url),
-            "next": decodeURIComponent(js.url_next),
-            "title": js.vod_data.vod_name
+            "url": decodeURIComponent(js.url), "next": decodeURIComponent(js.url_next), "title": js.vod_data.vod_name
         }
         let playHtml = await this.fetch(url, params, this.getHeader());
         let view_port_id = Utils.getStrByRegex(/<meta name="viewport"(.*?)>/, playHtml).split("id=\"")[1].replaceAll("now_", "")
