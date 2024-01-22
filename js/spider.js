@@ -206,7 +206,7 @@ class Spider {
         return class_id_list
     }
 
-    async getHtml(url, headers) {
+    async getHtml(url=this.siteUrl, headers=this.getHeader()) {
         let html = await this.fetch(url, null, headers)
         if (!_.isEmpty(html)) {
             return load(html)

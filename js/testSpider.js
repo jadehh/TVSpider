@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './freeok.js';
+import {__jsEvalReturn} from './dytt.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -29,7 +29,7 @@ async function testPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'freeok';
+    let siteKey = 'dytt';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -37,23 +37,23 @@ async function test() {
         ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "CatOpen", "code": "1"}
     });
 
-    // let classes = JSON.parse(await spider.home(true));
-    // console.debug(JSON.stringify(classes));
-    // // // // //
-    // // // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
+    let classes = JSON.parse(await spider.home(true));
+    console.debug(JSON.stringify(classes));
+    //
+    //测试首页列表
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
     // //
     //
     // //
 
-    //     // //测试分类列表
+    // //测试分类列表
     // let  catePage = JSON.parse(await spider.category("1", "1", undefined,{"1":"剧情-动作"}));
     // console.debug(JSON.stringify(catePage));
     //
     // // 测试详情
-    // let detail1 = JSON.parse(await spider.detail("/vod-detail/13225.html"))
-    // await testPlay(detail1)
+    let detail1 = JSON.parse(await spider.detail("/show/188840.html"))
+    await testPlay(detail1)
 
 
 
