@@ -48,7 +48,7 @@ async function test() {
     // //
 
         // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("2", "1", undefined,{"1":"类型-show/6","2":"剧情-古装","3":"地区-中国大陆","4":"语言-国语","5":"年份-2024","6":"排序-hits"}));
+    let  catePage = JSON.parse(await spider.category("1", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
 
     // 测试详情

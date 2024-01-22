@@ -179,7 +179,7 @@ class OkSpider extends Spider {
     getCateUrl(tid, pg, extend) {
         let value_list = Object.values(extend)
         let type_id_dic = {"类型": 1, "剧情": 3, "地区": 1, "语言": 4, "年份": 11, "排序": 2}
-        let urlParams = [tid.toString(), "", "","","", "", "", "", "", "", ""]
+        let urlParams = [tid.toString(), "", "","","", "", "", "", "", "", "",""]
         urlParams[8] = pg.toString()
         for (const value of value_list) {
             if (value.split("-")[0] === "类型") {
