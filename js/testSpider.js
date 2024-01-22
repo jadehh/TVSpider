@@ -37,23 +37,25 @@ async function test() {
         ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "CatOpen", "code": "1"}
     });
 
-    // let classes = JSON.parse(await spider.home(true));
-    // console.debug(JSON.stringify(classes));
+    let classes = JSON.parse(await spider.home(true));
+    console.debug(JSON.stringify(classes));
     // // // //
     // // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
     // //
     //
     // //
+
+        // //测试分类列表
+    let  catePage = JSON.parse(await spider.category("1", "2", undefined,{}));
+    console.debug(JSON.stringify(catePage));
 
     // 测试详情
     let detail1 = JSON.parse(await spider.detail("/vod-detail/13225.html"))
     await testPlay(detail1)
 
-    // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("1", "1", undefined,{}));
-    console.debug(JSON.stringify(catePage));
+
 
 
 

@@ -35,12 +35,24 @@ class OkSpider extends Spider {
         let vod_list = []
         let vodElements = $($("[class=\"module\"]")).find("a").slice(0, 12)
         for (const vodElement of vodElements) {
-            let vodShort = new VodShort()
-            vodShort.vod_name = vodElement.attribs["title"]
-            vodShort.vod_id = vodElement.attribs["href"]
-            vodShort.vod_remarks = $($(vodElement).find("[class=\"module-item-note\"]")).text()
-            vodShort.vod_pic = $(vodElement).find("[class=\"lazy lazyload\"]")[0].attribs["data-original"]
-            vod_list.push(vodShort)
+            vod_list.push(this.parseVodShortFromElement($,vodElement))
+        }
+        return vod_list
+    }
+    parseVodShortFromElement($, element) {
+        let vodShort = new VodShort();
+        vodShort.vod_name = element.attribs["title"]
+        vodShort.vod_id = element.attribs["href"]
+        vodShort.vod_remarks = $($(element).find("[class=\"module-item-note\"]")).text()
+        vodShort.vod_pic = $(element).find("[class=\"lazy lazyload\"]")[0].attribs["data-original"]
+        return vodShort
+    }
+
+    async parseVodShortListFromDocByCategory($) {
+        let vod_list = []
+        let itemElements = $($("[class=\"module-items module-poster-items-base \"]")).find("a")
+        for (const itemElement of itemElements){
+            vod_list.push(this.parseVodShortFromElement($,itemElement))
         }
         return vod_list
     }
@@ -94,6 +106,7 @@ class OkSpider extends Spider {
         return vodDetail
     }
 
+
     async setClasses() {
         let $ = await this.getHtml(this.siteUrl, this.getHeader())
         let navElements = $($("[class=\"navbar-items swiper-wrapper\"]")).find("a")
@@ -136,9 +149,8 @@ class OkSpider extends Spider {
             if (class_dic["type_name"] !== "最近更新" && class_dic["type_name"] !== "热榜") {
                 let cateUrl = this.siteUrl + `/vod-show/${class_dic["type_id"]}--------1---.html`
                 let $ = await this.getHtml(cateUrl, this.getHeader())
-                this.filterObj[class_dic["type_id"]] = this.getFilter($)
+                this.filterObj[class_dic["type_id"]] = await this.getFilter($)
             }
-
         }
     }
 
@@ -147,6 +159,7 @@ class OkSpider extends Spider {
         this.homeVodList = await this.parseVodShortListFromDoc($)
     }
 
+
     async setCategory(tid, pg, filter, extend) {
         let cateUrl
         if (tid.indexOf(".html") > -1) {
@@ -154,58 +167,13 @@ class OkSpider extends Spider {
         } else {
             cateUrl = this.siteUrl + `/vod-show/${tid}--------${pg}---.html`
         }
-        let payload = {
-            "cmd": "request.get", "url": cateUrl, "maxTimeout": 60000
-        }
-        let headers = {
-            'Content-Type': 'application/json'
-        }
-        // let html = await this.post("http://192.168.29.156:8191/v1", payload, headers)
-        let html = await this.getHtml(cateUrl, this.getHeader());
-        let x = html.html()
-        this.vodDetail = await this.parseVodShortListFromDoc($)
+        let $ = await this.getHtml(cateUrl, this.getHeader());
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
     async setDetail(id) {
         let $ = await this.getHtml(this.siteUrl + id, this.getHeader())
         this.vodDetail = await this.parseVodDetailFromDoc($)
-    }
-
-    async getplayerMp4Data(url) {
-        const html = await this.fetch(url, null, this.getHeader())
-        const $ = load(html);
-        const metas = $("meta");
-
-        let charsetId = null;
-        let viewportId = null;
-        metas.each((_, item) => {
-            if ($(item).attr("charset") === "UTF-8") {
-                charsetId = $(item).attr("id").replace(/now_/, "");
-            }
-
-            if ($(item).attr("name") === "viewport") {
-                viewportId = $(item).attr("id").replace(/now_/, "");
-            }
-        })
-
-        const scripts = $("script");
-        let scriptText = "";
-        scripts.each((_, item) => {
-            if ($(item).attr("type") === "text/javascript") {
-                scriptText = $(item).text();
-            }
-        });
-
-        const regex = /var\s+config\s+=\s+({[\s\S]+?})/;
-        const match = scriptText.match(regex);
-        const configString = match[1];
-
-        const regexUrl = /"url":\s*"([^"]+)"/g;
-        const matches = configString.match(regexUrl);
-        const urls = matches.map(match => match.replace(/"url":\s*"/, "").replace(/"$/, ""))?.[0];
-        const result = mp4Decrypt({url: urls, viewportId, charsetId})
-        return result;
-
     }
 
     async setPlay(flag, id, flags) {

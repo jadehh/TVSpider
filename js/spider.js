@@ -316,6 +316,13 @@ class Spider {
     async parseVodShortListFromJson(obj) {
 
     }
+    parseVodShortFromElement($,element){
+
+    }
+
+    async parseVodShortListFromDocByCategory($) {
+
+    }
 
     async getFilter($) {
 
