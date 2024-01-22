@@ -6,7 +6,7 @@
 * @Software : Samples
 * @Desc     : OK资源网
 */
-import {_, load} from '../lib/cat.js';
+import {_} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
@@ -65,10 +65,10 @@ class OkSpider extends Spider {
         let infoElements = $(itemElement).find("[class=\"module-card-item-info\"]")
         let picElements = $(itemElement).find("[class=\"module-item-pic\"]").find("img")
 
-        for (let i=0;i<titleElements.length;i++){
+        for (let i = 0; i < titleElements.length; i++) {
             let vodShort = new VodShort();
             vodShort.vod_id = titleElements[i].attribs["href"]
-            vodShort.vod_name = $( titleElements[i]).text()
+            vodShort.vod_name = $(titleElements[i]).text()
             vodShort.vod_pic = picElements[i].attribs["data-original"]
             vodShort.vod_remarks = $($(infoElements[i])).text().split("\n")[5]
             vod_list.push(vodShort)
@@ -149,9 +149,6 @@ class OkSpider extends Spider {
         let type_id_dic = {"类型": 1, "剧情": 4, "地区": 2, "语言": 5, "年份": 12, "排序": 3}
         for (let i = 0; i < titleElements.length; i++) {
             let extend_dic = {"key": (i + 1).toString(), "name": $(titleElements[i]).text(), "value": []}
-            if ($(titleElements[i]).text() === "排序") {
-                extend_dic["value"].push({"n": "全部", "v": $(titleElements[i]).text() + "-" + ""})
-            }
             let typeElements = $(boxElements[i]).find("a")
             for (let j = 0; j < typeElements.length; j++) {
                 let type_name = $(typeElements[j]).text()
@@ -179,6 +176,22 @@ class OkSpider extends Spider {
         this.homeVodList = await this.parseVodShortListFromDoc($)
     }
 
+    getCateUrl(tid, pg, extend) {
+        let value_list = Object.values(extend)
+        let type_id_dic = {"类型": 1, "剧情": 3, "地区": 1, "语言": 4, "年份": 11, "排序": 2}
+        let urlParams = [tid.toString(), "", "","","", "", "", "", "", "", ""]
+        urlParams[8] = pg.toString()
+        for (const value of value_list) {
+            if (value.split("-")[0] === "类型") {
+                urlParams[0] = value.split("-")[1].split("show/")[1].toString()
+            } else {
+                let type_index = type_id_dic[value.split("-")[0]]
+                urlParams[type_index] = value.split("-")[1]
+            }
+
+        }
+        return this.siteUrl + `/vod-show/` + urlParams.join("-") + ".html"
+    }
 
     async setCategory(tid, pg, filter, extend) {
         let cateUrl
@@ -187,7 +200,7 @@ class OkSpider extends Spider {
             let $ = await this.getHtml(cateUrl, this.getHeader());
             this.vodList = await this.parseVodShortListFromDocByHot($)
         } else {
-            cateUrl = this.siteUrl + `/vod-show/${tid}--------${pg}---.html`
+            cateUrl = this.getCateUrl(tid, pg, extend)
             let $ = await this.getHtml(cateUrl, this.getHeader());
             this.vodList = await this.parseVodShortListFromDocByCategory($)
         }

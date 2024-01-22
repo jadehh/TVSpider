@@ -37,18 +37,18 @@ async function test() {
         ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "CatOpen", "code": "1"}
     });
 
-    let classes = JSON.parse(await spider.home(true));
-    console.debug(JSON.stringify(classes));
-    // // // //
-    // // //测试首页列表
-    let homeVod = JSON.parse(await spider.homeVod())
-    console.debug(JSON.stringify(homeVod));
+    // let classes = JSON.parse(await spider.home(true));
+    // console.debug(JSON.stringify(classes));
+    // // // // //
+    // // // //测试首页列表
+    // let homeVod = JSON.parse(await spider.homeVod())
+    // console.debug(JSON.stringify(homeVod));
     // //
     //
     // //
 
         // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("/label/hot.html", "2", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("2", "1", undefined,{"1":"类型-show/6","2":"剧情-古装","3":"地区-中国大陆","4":"语言-国语","5":"年份-2024","6":"排序-hits"}));
     console.debug(JSON.stringify(catePage));
 
     // 测试详情
