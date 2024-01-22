@@ -10,7 +10,7 @@ import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
-import {} from "../lib/crypto-js.js"
+import {player} from "../lib/freeok_setttings.js";
 
 class OkSpider extends Spider {
     constructor() {
@@ -173,49 +173,24 @@ class OkSpider extends Spider {
         return result;
 
     }
+
     async setPlay(flag, id, flags) {
         let $ = await this.getHtml(this.siteUrl + id, this.getHeader())
         const js = JSON.parse($('script:contains(player_)').html().replace('var player_aaaa=', ''));
         let url = this.siteUrl + "/okplayer/"
-        let params = {"url":decodeURIComponent(js.url),"next":decodeURIComponent(js.url_next),"title":js.vod_data.vod_name}
-        let playHtml = await this.fetch(url,params,this.getHeader());
-
+        let params = {
+            "url": decodeURIComponent(js.url),
+            "next": decodeURIComponent(js.url_next),
+            "title": js.vod_data.vod_name
+        }
+        let playHtml = await this.fetch(url, params, this.getHeader());
+        let view_port_id = Utils.getStrByRegex(/<meta name="viewport"(.*?)>/, playHtml).split("id=\"")[1].replaceAll("now_", "")
+        let player_id = Utils.getStrByRegex(/meta charset="UTF-8" id="(.*?)">/, playHtml).replaceAll("now_", "")
+        let player_url = Utils.getStrByRegex(/"url": "(.*?)",/, playHtml)
+        this.playUrl = player(player_url, view_port_id, player_id)
     }
-
-
 }
 
-function decryptUrl(html) {
-    const result = html.match(/var config = {[\w\W]*}[\w\W]*player/);
-    const jsConfig = eval(result[0].replace(/player$/g, ';config'));
-    const url = jsConfig.url;
-    const $ = load(html);
-    const textStr = $('meta[name="viewport"]').attr('id').replace('now_', '');
-    const idStr = $('meta[charset="UTF-8"]').attr('id').replace('now_', '');
-    let keyList = [];
-    let sortedList = [];
-    let keyStr = '';
-    for (let index = 0; index < idStr.length; index++) {
-        keyList.push({
-            'id': idStr[index],
-            'text': textStr[index]
-        });
-    }
-    sortedList = keyList.sort((a, b)=> a.id - b.id);
-    for (const item of sortedList) {
-        keyStr += item.text;
-    }
-    const md5Key = CryptoJS.MD5(keyStr + '0xd8@pS^vOL$WuOF3').toString();
-    const endStr = CryptoJS.enc.Utf8.parse(md5Key.substring(16));
-    const iv = CryptoJS.enc.Utf8.parse(md5Key.substring(0, 16));
-    const decrypted = CryptoJS.AES.decrypt(url, endStr, {
-        'iv': iv,
-        'mode': CryptoJS.mode.CBC,
-        'padding': CryptoJS.pad.Pkcs7,
-    });
-    const decryptedUrl = CryptoJS.enc.Utf8.stringify(decrypted);
-    return decryptedUrl;
-}
 
 let spider = new OkSpider()
 
