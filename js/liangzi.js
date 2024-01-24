@@ -59,15 +59,15 @@ class LiangziSpider extends Spider {
             "ac": "detail", "ids": url
             }, this.getHeader())
             await this.jadeLog.debug(`详情信息为:${content}`)
-            let vodDetail = await this.parseVodDetailfromJson(JSON.parse(content))
-            await this.jadeLog.debug(`图片地址为:${vodDetail.vod_pic}`)
+            let pic_url = JSON.parse(content)["list"][0]["vod_pic"]
+            await this.jadeLog.debug(`图片地址为:${pic_url}`)
             let resp;
             if (!_.isEmpty(headers)) {
-                resp = await req(vodDetail.vod_pic, {
+                resp = await req(pic_url, {
                     buffer: 2, headers: headers
                 });
             } else {
-                resp = await req(vodDetail.vod_pic, {
+                resp = await req(pic_url, {
                     buffer: 2, headers: {
                         Referer: url, 'User-Agent': Utils.CHROME,
                     },
