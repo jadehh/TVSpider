@@ -29,10 +29,10 @@ class LiangziSpider extends Spider {
         let vod_list = []
         for (const vod_data of obj["list"]) {
             let vodShort = new VodShort();
-            vodShort.vod_pic = obj["vod_pic"]
-            vodShort.vod_id = obj["vod_id"]
-            vodShort.vod_name = obj["vod_name"]
-            vodShort.vod_remarks = obj["vod_remarks"]
+            vodShort.vod_pic = vod_data["vod_pic"]
+            vodShort.vod_id = vod_data["vod_id"]
+            vodShort.vod_name = vod_data["vod_name"]
+            vodShort.vod_remarks = vod_data["vod_remarks"]
             vod_list.push(vodShort)
         }
         return vod_list
