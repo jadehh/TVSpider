@@ -1,6 +1,14 @@
 {
     "sites": [
         {
+            "key": "4kysxz",
+            "name": "🚄|4K高清网|🚄",
+            "type": 3,
+            "api": "./js/4kysxz.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "aiyingshi",
             "name": "🚀‍┃爱影视┃🚀",
             "type": 3,

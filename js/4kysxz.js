@@ -43,11 +43,20 @@ class YSXZSpider extends Spider {
 
     async parseVodDetailFromDoc($) {
         let vodDetail = new VodDetail();
+        let vodElement = $("[class=\"entry-content u-text-format u-clearfix\"]")
+        let text = $(vodElement).text().replaceAll("：",":")
+        vodDetail.vod_name = $($("[class=\"article-title\"]")).text()
+        vodDetail.vod_pic = $($("[class=\"entry-content u-text-format u-clearfix\"]")).find("img")[0].attribs["src"]
+        vodDetail.vod_remarks = "集数:"+Utils.getStrByRegex(/集数(.*?)\n/,text).replaceAll(":","")
+        vodDetail.vod_area = Utils.getStrByRegex(/上映地区(.*?)\n/,text).replaceAll(":","")
+        vodDetail.vod_director =Utils.getStrByRegex(/导演(.*?)\n/,text).replaceAll(":","")
+        vodDetail.vod_actor = Utils.getStrByRegex(/主演:(.*?)\n/,text).replaceAll(":","")
+        vodDetail.vod_content = Utils.getStrByRegex(/剧情简介(.*?)\n/,text).replaceAll(":","").replaceAll("·","")
         let actors = _.map($('div.entry-content.u-text-format.u-clearfix > div:nth-child(10) > div > span > span'), (n) => {
             return $(n).text().split(' ')[0];
         });
         vodDetail.vod_actor = actors.join('/');
-        let directors = _.map($('div.entry-content.u-text-format.u-clearfix > div:nth-child(8) > div > span'), (n) => {
+        let directors = _.map($('div.entry-content.u-text-format.u-clearfix > div:nth-child(6) > div > span'), (n) => {
             return $(n).text().split(' ')[0];
         });
         vodDetail.vod_director = directors.join('/');
@@ -95,7 +104,7 @@ class YSXZSpider extends Spider {
                 }
             }
         }
-        vodDetail.vod_play_url = playFromStr
+        vodDetail.vod_play_from = playFromStr
         vodDetail.vod_play_url = playUrlStr
         return vodDetail
     }
@@ -161,11 +170,6 @@ class YSXZSpider extends Spider {
     async setDetail(id) {
         const $ = await this.getHtml(id);
         this.vodDetail = await this.parseVodDetailFromDoc($)
-    }
-
-    async setPlay(flag, id, flags) {
-
-
     }
 
     async setSearch(wd, quick) {
