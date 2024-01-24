@@ -25,11 +25,16 @@ class LiangziSpider extends Spider {
         return "🐝|量子资源|🐝"
     }
 
+    async init(cfg) {
+        await super.init(cfg);
+        this.jsBase = js2Proxy(true, this.siteType, this.siteKey, 'img/');
+    }
+
     async parseVodShortListFromJson(obj) {
         let vod_list = []
         for (const vod_data of obj["list"]) {
             let vodShort = new VodShort();
-            vodShort.vod_pic = vod_data["vod_pic"]
+            vodShort.vod_pic = this.jsBase + vod_data["vod_pic"]
             vodShort.vod_id = vod_data["vod_id"]
             vodShort.vod_name = vod_data["vod_name"]
             vodShort.vod_remarks = vod_data["vod_remarks"]
@@ -189,9 +194,12 @@ async function play(flag, id, flags) {
 async function search(wd, quick) {
     return await spider.search(wd, quick)
 }
+async function proxy(segments, headers) {
+    return await spider.proxy(segments, headers)
+}
 
 export function __jsEvalReturn() {
     return {
-        init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
+        init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,proxy:proxy
     };
 }
