@@ -103,7 +103,7 @@ class LiangziSpider extends Spider {
             vodShort.vod_id =  $(vodShortElement).find("a")[0].attribs["href"].split("/").slice(-1)[0].split(".")[0]
             vodShort.vod_remarks = $($($(vodShortElement).find("a")[0]).find("i")).text()
             vodShort.vod_name = $($(vodShortElement).find("a")[0]).text().replaceAll(vodShort.vod_remarks,"")
-            vodShort.vod_pic = this.jsBaseDetail + + Utils.base64Encode(vodShort.vod_id)
+            vodShort.vod_pic = this.jsBaseDetail  + Utils.base64Encode(vodShort.vod_id)
             vod_list.push(vodShort)
         }
         return vod_list
