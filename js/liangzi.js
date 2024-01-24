@@ -41,7 +41,7 @@ class LiangziSpider extends Spider {
     async parseVodDetailfromJson(obj) {
         let vodDetail = new VodDetail();
         let vod_data_list = obj["list"]
-        if (vod_data_list.length > 0){
+        if (vod_data_list.length > 0) {
             let vod_data = vod_data_list[0]
             vodDetail.vod_name = vod_data["vod_name"]
             vodDetail.vod_pic = vod_data["vod_pic"]
@@ -59,19 +59,25 @@ class LiangziSpider extends Spider {
     }
 
     async setClasses() {
-        let content = await this.fetch(this.siteUrl + "/api.php/provide/vod/from/liangzi/", {"ac": "list"}, this.getHeader())
-        let contentJson = JSON.parse(content)
-        for (const class_dic of contentJson["class"]) {
-            this.classes.push(this.getTypeDic(class_dic["type_name"], class_dic["type_id"]))
+        let $ = await this.getHtml("http://www.lzzy.tv/")
+        let navElements = $("[class=\"dropdown\"]")
+        for (const navElement of navElements) {
+            let typeElements = $(navElement).find("a")
+            let type_id = typeElements[0].attribs["href"].split("/").slice(-1)[0].split(".")[0]
+            let type_name = typeElements[0].attribs["title"]
+            this.classes.push(this.getTypeDic(type_name,type_id))
         }
     }
 
     async getFilter(typeElements) {
         let value_list = []
+        value_list.push({
+            "n": "全部", "v": "全部",
+        })
         for (const typeElement of typeElements) {
             value_list.push({
                 "n": typeElement.attribs["title"],
-                "v":typeElement.attribs["href"].split("/").slice(-1)[0].split(".")[0],
+                "v": typeElement.attribs["href"].split("/").slice(-1)[0].split(".")[0],
             })
         }
         return [{"key": "1", "name": "类型", "value": value_list}]
@@ -84,7 +90,7 @@ class LiangziSpider extends Spider {
             let typeElements = $(navElement).find("a")
             let type_id = typeElements[0].attribs["href"].split("/").slice(-1)[0].split(".")[0]
             if (typeElements.length > 1) {
-                this.filterObj[type_id] = await this.getFilter(typeElements)
+                this.filterObj[type_id] = await this.getFilter(typeElements.slice(1))
             }
         }
     }
@@ -95,15 +101,18 @@ class LiangziSpider extends Spider {
     }
 
     async setDetail(id) {
-        let content = await this.fetch(this.siteUrl + "/api.php/provide/vod",{"ac":"detail","ids":id},this.getHeader())
-        this.vodDetail = await  this.parseVodDetailfromJson(JSON.parse(content))
+        let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {
+            "ac": "detail",
+            "ids": id
+        }, this.getHeader())
+        this.vodDetail = await this.parseVodDetailfromJson(JSON.parse(content))
     }
 
     async setPlay(flag, id, flags) {
-        if (flag === "liangzi"){
+        if (flag === "liangzi") {
             let $ = await this.getHtml(id)
-            this.playUrl =id.split("/")[0] + "//" + id.split("/")[2] + Utils.getStrByRegex(/var main = "(.*?)";/,$.html())
-        }else{
+            this.playUrl = id.split("/")[0] + "//" + id.split("/")[2] + Utils.getStrByRegex(/var main = "(.*?)";/, $.html())
+        } else {
             this.playUrl = id
         }
 
