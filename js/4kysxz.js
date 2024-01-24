@@ -112,7 +112,7 @@ class YSXZSpider extends Spider {
 
     async setClasses() {
         this.classes = []
-        this.classes.push({"首页": "/#"})
+        this.classes.push(this.getTypeDic("首页", "/#"))
     }
 
     async getFilter(typeElements) {
