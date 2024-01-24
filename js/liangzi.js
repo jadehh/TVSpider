@@ -98,6 +98,16 @@ class LiangziSpider extends Spider {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod",{"ac":"detail","ids":id},this.getHeader())
         this.vodDetail = await  this.parseVodDetailfromJson(JSON.parse(content))
     }
+
+    async setPlay(flag, id, flags) {
+        if (flag === "liangzi"){
+            let $ = await this.getHtml(id)
+            this.playUrl =id.split("/")[0] + "//" + id.split("/")[2] + Utils.getStrByRegex(/var main = "(.*?)";/,$.html())
+        }else{
+            this.playUrl = id
+        }
+
+    }
 }
 
 let spider = new LiangziSpider()
