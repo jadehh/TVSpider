@@ -58,7 +58,9 @@ class LiangziSpider extends Spider {
             let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {
             "ac": "detail", "ids": url
             }, this.getHeader())
+            await this.jadeLog.debug(`详情信息为:${content}`)
             let vodDetail = await this.parseVodDetailfromJson(JSON.parse(content))
+            await this.jadeLog.debug(`图片地址为:${vodDetail.vod_pic}`)
             let resp;
             if (!_.isEmpty(headers)) {
                 resp = await req(vodDetail.vod_pic, {
