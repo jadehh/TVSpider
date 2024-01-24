@@ -116,7 +116,7 @@ class LiangziSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        if (extend["1"] === undefined) {
+        if (extend["1"] === undefined || extend["1"] === "全部") {
             let $ = await this.getHtml(this.siteUrl + `/index.php/vod/type/id/${tid}/page/${pg}.html`)
             this.vodList = await this.parseVodShortListFromDoc($)
         } else {
