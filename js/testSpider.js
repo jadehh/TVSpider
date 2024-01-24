@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './aiyingshi.js';
+import {__jsEvalReturn} from './4kysxz.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -29,7 +29,7 @@ async function testPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'aiyingshi';
+    let siteKey = '4kysxz';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -48,12 +48,12 @@ async function test() {
     // //
 
     // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("1", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("/#", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
     //
     // // 测试详情
-    // let detail1 = JSON.parse(await spider.detail("69229"))
-    // await testPlay(detail1)
+    let detail1 = JSON.parse(await spider.detail("https://4kysxz.top/post/21425.html"))
+    await testPlay(detail1)
 
 
 
