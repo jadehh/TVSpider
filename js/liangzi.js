@@ -38,6 +38,25 @@ class LiangziSpider extends Spider {
         return vod_list
     }
 
+    async parseVodDetailfromJson(obj) {
+        let vodDetail = new VodDetail();
+        let vod_data_list = obj["list"]
+        if (vod_data_list.length > 0){
+            let vod_data = vod_data_list[0]
+            vodDetail.vod_name = vod_data["vod_name"]
+            vodDetail.vod_pic = vod_data["vod_pic"]
+            vodDetail.vod_remarks = vod_data["vod_remarks"]
+            vodDetail.vod_area = vod_data["vod_area"]
+            vodDetail.vod_year = vod_data["vod_year"]
+            vodDetail.vod_actor = vod_data["vod_actor"]
+            vodDetail.vod_director = vod_data["vod_director"]
+            vodDetail.vod_content = vod_data["vod_content"]
+            vodDetail.vod_play_from = vod_data["vod_play_from"]
+            vodDetail.vod_play_url = vod_data["vod_play_url"]
+            vodDetail.type_name = vod_data["type_name"]
+        }
+        return vodDetail
+    }
 
     async setClasses() {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod/from/liangzi/", {"ac": "list"}, this.getHeader())
@@ -73,6 +92,11 @@ class LiangziSpider extends Spider {
     async setHomeVod() {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {"ac": "detail"}, this.getHeader());
         this.homeVodList = await this.parseVodShortListFromJson(JSON.parse(content))
+    }
+
+    async setDetail(id) {
+        let content = await this.fetch(this.siteUrl + "/api.php/provide/vod",{"ac":"detail","ids":id},this.getHeader())
+        this.vodDetail = await  this.parseVodDetailfromJson(JSON.parse(content))
     }
 }
 
