@@ -22,7 +22,7 @@
             "type": 3,
             "api": "./js/alipansou.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+            "ext": "{\"box\": \"TVBox\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
         },
         {
             "key": "douban",
@@ -54,7 +54,7 @@
             "type": 3,
             "api": "./js/gitcafe.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+            "ext": "{\"box\": \"TVBox\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
         },
         {
             "key": "ikanbot",
@@ -110,7 +110,7 @@
             "type": 3,
             "api": "./js/pan_search.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+            "ext": "{\"box\": \"TVBox\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
         },
         {
             "key": "weixine",
@@ -118,7 +118,7 @@
             "type": 3,
             "api": "./js/weixine.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+            "ext": "{\"box\": \"TVBox\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
         },
         {
             "key": "wogg",
@@ -126,7 +126,7 @@
             "type": 3,
             "api": "./js/wogg.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"token\": \"a5bf471ef70d4069b55758839d8ef4d1\"}"
+            "ext": "{\"box\": \"TVBox\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
         },
         {
             "key": "xb6v",
