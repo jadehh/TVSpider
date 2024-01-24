@@ -37,12 +37,15 @@ class AiYingShiSpider extends Spider {
             let pic = $(item).find('.module-item-cover .module-item-pic img').first().attr('data-src')
             if (pic.indexOf("img.php?url=") > 0) {
                 pic = pic.split("img.php?url=")[1]
-            }else if (pic.indexOf("https:") === -1){
+            }else if (pic.indexOf("https:") === -1 && pic.indexOf("http:") === -1){
                 pic = "https:" + pic
             }
             vodShort.vod_pic = pic
             vodShort.vod_remarks = $(item).find('.module-item-text').first().text();
-            vod_list.push(vodShort)
+            if (vodShort.vod_name !== undefined){
+                 vod_list.push(vodShort)
+            }
+
         }
         return vod_list
     }
