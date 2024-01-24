@@ -121,7 +121,7 @@ class LiangziSpider extends Spider {
 
             vodShort.vod_id = $(vodShortElement).find("a")[0].attribs["href"].split("/").slice(-1)[0].split(".")[0]
             let category_name = $($(vodShortElement).find("span")[1]).text()
-            if (this.cfgObj["code"] === "1" && category_name !== "伦理片") {
+            if (parseInt(this.cfgObj["code"]) === 1 && category_name !== "伦理片") {
                 vodShort.vod_remarks = $($($(vodShortElement).find("a")[0]).find("i")).text()
                 vodShort.vod_name = $($(vodShortElement).find("a")[0]).text().replaceAll(vodShort.vod_remarks, "")
                 vodShort.vod_pic = this.jsBaseDetail + Utils.base64Encode(vodShort.vod_id)
@@ -161,7 +161,7 @@ class LiangziSpider extends Spider {
         })
         for (const typeElement of typeElements) {
             let title = typeElement.attribs["title"]
-            if (this.cfgObj["code"] === "1" && title !== "伦理片") {
+            if (parseInt(this.cfgObj["code"]) === 1 && title !== "伦理片") {
                 value_list.push({
                     "n": typeElement.attribs["title"],
                     "v": typeElement.attribs["href"].split("/").slice(-1)[0].split(".")[0],
