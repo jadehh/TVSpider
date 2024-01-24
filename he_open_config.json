@@ -95,7 +95,7 @@
                 "type": 3,
                 "api": "./js/liangzi.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\"}"
+                "ext": "{\"box\": \"CatOpen\", \"code\": 1}"
             },
             {
                 "key": "nivod",

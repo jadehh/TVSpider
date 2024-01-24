@@ -90,6 +90,9 @@ class Build(object):
                     elif jsMoudle.getAppName() == "泥视频":
                         site_obj_copy["name"] = jsMoudle.getName()
                         site_obj_copy["ext"]["code"] = 1
+                    elif jsMoudle.getAppName() == "量子资源":
+                        site_obj_copy["name"] = jsMoudle.getName()
+                        site_obj_copy["ext"]["code"] = 1
                     site_obj_copy["ext"] = json.dumps(site_obj_copy["ext"])
                     site_obj_list.append(site_obj_copy)
                     print(site_obj_list)
