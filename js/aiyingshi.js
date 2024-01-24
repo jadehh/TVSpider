@@ -247,6 +247,7 @@ class AiYingShiSpider extends Spider {
 
 let spider = new AiYingShiSpider()
 
+
 async function init(cfg) {
     await spider.init(cfg)
 }
@@ -275,9 +276,20 @@ async function search(wd, quick) {
     return await spider.search(wd, quick)
 }
 
+async function proxy(segments, headers) {
+    return await spider.proxy(segments, headers)
+}
+
 export function __jsEvalReturn() {
     return {
-        init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
+        init: init,
+        home: home,
+        homeVod: homeVod,
+        category: category,
+        detail: detail,
+        play: play,
+        proxy: proxy,
+        search: search,
     };
 }
 
