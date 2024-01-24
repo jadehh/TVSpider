@@ -43,15 +43,17 @@ class YSXZSpider extends Spider {
 
     async parseVodDetailFromDoc($) {
         let vodDetail = new VodDetail();
-        let vodElement = $("[class=\"entry-content u-text-format u-clearfix\"]")
-        let text = $(vodElement).text().replaceAll("：",":")
+        let vodElement = $("[class=\"entry-content u-text-format u-clearfix\"]").find("div")
+        let text = "";
+        for (const vodEle of vodElement){
+            text = text + $(vodEle).text().replaceAll("：",":") + "\n"
+        }
         vodDetail.vod_name = $($("[class=\"article-title\"]")).text()
         vodDetail.vod_pic = $($("[class=\"entry-content u-text-format u-clearfix\"]")).find("img")[0].attribs["src"]
-        vodDetail.vod_remarks = "集数:"+Utils.getStrByRegex(/集数(.*?)\n/,text).replaceAll(":","")
         vodDetail.vod_area = Utils.getStrByRegex(/上映地区(.*?)\n/,text).replaceAll(":","")
         vodDetail.vod_director =Utils.getStrByRegex(/导演(.*?)\n/,text).replaceAll(":","")
         vodDetail.vod_actor = Utils.getStrByRegex(/主演:(.*?)\n/,text).replaceAll(":","")
-        vodDetail.vod_content = Utils.getStrByRegex(/剧情简介(.*?)\n/,text).replaceAll(":","").replaceAll("·","")
+        vodDetail.vod_content = Utils.getStrByRegex(/剧情简介(.*?)。/,text).replaceAll(":","").replaceAll("·","")
         let actors = _.map($('div.entry-content.u-text-format.u-clearfix > div:nth-child(10) > div > span > span'), (n) => {
             return $(n).text().split(' ')[0];
         });

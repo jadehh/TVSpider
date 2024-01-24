@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './weixine.js';
+import {__jsEvalReturn} from './4kysxz.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -52,7 +52,7 @@ async function test() {
     console.debug(JSON.stringify(catePage));
     //
     // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://4kysxz.top/post/62014.html"))
+    let detail1 = JSON.parse(await spider.detail("https://4kysxz.top/post/21425.html"))
     await testPlay(detail1)
 
 
