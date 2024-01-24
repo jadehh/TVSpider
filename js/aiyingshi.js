@@ -34,10 +34,13 @@ class AiYingShiSpider extends Spider {
             let oneA = $(item).find('.module-item-cover .module-item-pic a').first();
             vodShort.vod_id = oneA.attr('href');
             vodShort.vod_name = oneA.attr('title');
-            vodShort.vod_pic = this.jsBase + Utils.base64Encode($(item).find('.module-item-cover .module-item-pic img').first().attr('data-src'))
-            if (vodShort.vod_pic.indexOf("img.php?url=") > 0) {
-                vodShort.vod_pic = this.jsBase + Utils.base64Encode(vodShort.vod_pic.split("img.php?url=")[1])
+            let pic = $(item).find('.module-item-cover .module-item-pic img').first().attr('data-src')
+            if (pic.indexOf("img.php?url=") > 0) {
+                pic = pic.split("img.php?url=")[1]
+            }else if (pic.indexOf("https:") === -1){
+                pic = "https:" + pic
             }
+            vodShort.vod_pic = pic
             vodShort.vod_remarks = $(item).find('.module-item-text').first().text();
             vod_list.push(vodShort)
         }
@@ -47,7 +50,7 @@ class AiYingShiSpider extends Spider {
     async parseVodDetailFromDoc($) {
         let vodDetail = new VodDetail()
         vodDetail.vod_name = $('.page-title')[0].children[0].data
-        vodDetail.vod_pic = this.jsBase + Utils.base64Encode($($("[class=\"video-cover\"]")).find(".lazyload")[0].attribs["data-src"])
+        vodDetail.vod_pic = this.jsBase + $($("[class=\"video-cover\"]")).find(".lazyload")[0].attribs["data-src"]
         let video_info_list = $($(".video-info-aux")).text().replaceAll("\t","").split("\n")
         let type_list = []
         for (const video_info of video_info_list){
