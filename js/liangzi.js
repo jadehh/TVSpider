@@ -65,7 +65,9 @@ class LiangziSpider extends Spider {
             let typeElements = $(navElement).find("a")
             let type_id = typeElements[0].attribs["href"].split("/").slice(-1)[0].split(".")[0]
             let type_name = typeElements[0].attribs["title"]
-            this.classes.push(this.getTypeDic(type_name,type_id))
+            if (type_name !== "演员" && type_name !== "新闻资讯") {
+                this.classes.push(this.getTypeDic(type_name, type_id))
+            }
         }
     }
 
@@ -88,10 +90,14 @@ class LiangziSpider extends Spider {
         let navElements = $("[class=\"dropdown\"]")
         for (const navElement of navElements) {
             let typeElements = $(navElement).find("a")
-            let type_id = typeElements[0].attribs["href"].split("/").slice(-1)[0].split(".")[0]
-            if (typeElements.length > 1) {
-                this.filterObj[type_id] = await this.getFilter(typeElements.slice(1))
+            let type_name = typeElements[0].attribs["title"]
+            if (type_name !== "演员" && type_name !== "新闻资讯") {
+                let type_id = typeElements[0].attribs["href"].split("/").slice(-1)[0].split(".")[0]
+                if (typeElements.length > 1) {
+                    this.filterObj[type_id] = await this.getFilter(typeElements.slice(1))
+                }
             }
+
         }
     }
 
@@ -102,8 +108,7 @@ class LiangziSpider extends Spider {
 
     async setDetail(id) {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {
-            "ac": "detail",
-            "ids": id
+            "ac": "detail", "ids": id
         }, this.getHeader())
         this.vodDetail = await this.parseVodDetailfromJson(JSON.parse(content))
     }
