@@ -393,6 +393,7 @@ class Spider {
     }
 
     async init(cfg) {
+        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
         this.cfgObj = await this.SpiderInit(cfg)
         await this.jadeLog.debug(`初始化参数为:${JSON.stringify(cfg)}`)
         this.catOpenStatus = this.cfgObj.CatOpenStatus

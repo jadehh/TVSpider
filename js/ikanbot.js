@@ -71,7 +71,7 @@ class IKanBotSpider extends Spider {
 
     async init(cfg) {
         await super.init(cfg);
-        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
+        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
     }
 
     async parseVodShortListFromDoc($) {

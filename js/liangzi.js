@@ -27,7 +27,6 @@ class LiangziSpider extends Spider {
 
     async init(cfg) {
         await super.init(cfg);
-        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
         this.jsBaseDetail = await js2Proxy(true, this.siteType, this.siteKey, 'detail/', {});
     }
 
