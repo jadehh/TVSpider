@@ -131,6 +131,16 @@ class Build(object):
 
 
 if __name__ == '__main__':
+    new_jiguang_dic = {}
+    with open("极光影院.json","rb") as f:
+        jiguang_dic = json.load(f)
+    jiguang_list = []
+    for dic_str in jiguang_dic["r_list"]:
+        dic = (json.loads(dic_str))
+        jiguang_list.append(dic)
+    new_jiguang_dic["list"] = jiguang_list
+    with open("jiguang.json","wb") as f:
+        f.write(json.dumps(new_jiguang_dic,ensure_ascii=False,indent=True).encode("utf-8"))
     build = Build("js", "json",token_name="he",aliToken="3d3c5c67581e4db188e753a56ea5829a")
     build.build()
     build = Build("js", "json",token_name="",aliToken="a5bf471ef70d4069b55758839d8ef4d1")
