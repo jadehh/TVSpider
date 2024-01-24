@@ -155,7 +155,7 @@ class YSXZSpider extends Spider {
             url = this.siteUrl + tid
         } else {
             if (extend["1"].indexOf("category") > -1) {
-                url = this.siteUrl + extend["1"].split(".") + "_" + pg + ".html"
+                url = this.siteUrl + extend["1"].split(".")[0] + "_" + pg + ".html"
             } else {
                 url = this.siteUrl + extend["1"]
             }
