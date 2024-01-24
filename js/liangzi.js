@@ -28,7 +28,59 @@ class LiangziSpider extends Spider {
     async init(cfg) {
         await super.init(cfg);
         this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
+        this.jsBaseDetail = await js2Proxy(true, this.siteType, this.siteKey, 'detail/', {});
     }
+
+     async proxy(segments, headers) {
+        await this.jadeLog.debug(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
+        let what = segments[0];
+        let url = Utils.base64Decode(segments[1]);
+        if (what === 'img') {
+            await this.jadeLog.debug(`反向代理URL为:${url}`)
+            let resp;
+            if (!_.isEmpty(headers)) {
+                resp = await req(url, {
+                    buffer: 2, headers: headers
+                });
+            } else {
+                resp = await req(url, {
+                    buffer: 2, headers: {
+                        Referer: url, 'User-Agent': Utils.CHROME,
+                    },
+                });
+            }
+            return JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            });
+        }
+        else if (what === 'detail'){
+            await this.jadeLog.debug(`反向代理ID为:${url}`)
+            let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {
+            "ac": "detail", "ids": url
+            }, this.getHeader())
+            let vodDetail = await this.parseVodDetailfromJson(JSON.parse(content))
+            let resp;
+            if (!_.isEmpty(headers)) {
+                resp = await req(vodDetail.vod_pic, {
+                    buffer: 2, headers: headers
+                });
+            } else {
+                resp = await req(vodDetail.vod_pic, {
+                    buffer: 2, headers: {
+                        Referer: url, 'User-Agent': Utils.CHROME,
+                    },
+                });
+            }
+            return JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            });
+
+        }
+        return JSON.stringify({
+            code: 500, content: '',
+        });
+    }
+
 
     async parseVodShortListFromJson(obj) {
         let vod_list = []
@@ -51,7 +103,7 @@ class LiangziSpider extends Spider {
             vodShort.vod_id =  $(vodShortElement).find("a")[0].attribs["href"].split("/").slice(-1)[0].split(".")[0]
             vodShort.vod_remarks = $($($(vodShortElement).find("a")[0]).find("i")).text()
             vodShort.vod_name = $($(vodShortElement).find("a")[0]).text().replaceAll(vodShort.vod_remarks,"")
-            vodShort.vod_pic = Utils.RESOURCEURL + "/resources/liangzi.jpg"
+            vodShort.vod_pic = this.jsBaseDetail + + Utils.base64Encode(vodShort.vod_id)
             vod_list.push(vodShort)
         }
         return vod_list
