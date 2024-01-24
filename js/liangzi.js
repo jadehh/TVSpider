@@ -51,8 +51,8 @@ class LiangziSpider extends Spider {
         let value_list = []
         for (const typeElement of typeElements) {
             value_list.push({
-                "n": typeElement.attribs["href"].split("/").slice(-1)[0].split(".")[0],
-                "v": typeElement.attribs["title"]
+                "n": typeElement.attribs["title"],
+                "v":typeElement.attribs["href"].split("/").slice(-1)[0].split(".")[0],
             })
         }
         return [{"key": "1", "name": "类型", "value": value_list}]
@@ -68,14 +68,12 @@ class LiangziSpider extends Spider {
                 this.filterObj[type_id] = await this.getFilter(typeElements)
             }
         }
-        let x = 0
     }
 
     async setHomeVod() {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {"ac": "detail"}, this.getHeader());
         this.homeVodList = await this.parseVodShortListFromJson(JSON.parse(content))
     }
-
 }
 
 let spider = new LiangziSpider()
