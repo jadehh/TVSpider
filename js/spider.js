@@ -206,6 +206,9 @@ class Spider {
         return class_id_list
     }
 
+    getTypeDic(type_name,type_id){
+        return {"type_name":type_name,"type_id":type_id}
+    }
     async getHtml(url=this.siteUrl, headers=this.getHeader()) {
         let html = await this.fetch(url, null, headers)
         if (!_.isEmpty(html)) {

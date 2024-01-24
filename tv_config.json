@@ -25,6 +25,14 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
+            "key": "dytt",
+            "name": "👼|电影天堂|👼",
+            "type": 3,
+            "api": "./js/dytt.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "freeok",
             "name": "🆗|OK资源网|🆗",
             "type": 3,
@@ -69,6 +77,14 @@
             "name": "📺┃70看看┃📺",
             "type": 3,
             "api": "./js/kankan70.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
+            "key": "liangzi",
+            "name": "🐝|量子资源|🐝",
+            "type": 3,
+            "api": "./js/liangzi.js",
             "timeout": 30,
             "ext": "{\"box\": \"TVBox\"}"
         },
