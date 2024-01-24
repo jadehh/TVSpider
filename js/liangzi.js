@@ -27,14 +27,14 @@ class LiangziSpider extends Spider {
 
     async init(cfg) {
         await super.init(cfg);
-        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/');
+        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
     }
 
     async parseVodShortListFromJson(obj) {
         let vod_list = []
         for (const vod_data of obj["list"]) {
             let vodShort = new VodShort();
-            vodShort.vod_pic = this.jsBase + vod_data["vod_pic"]
+            vodShort.vod_pic = this.jsBase + Utils.base64Encode(vod_data["vod_pic"])
             vodShort.vod_id = vod_data["vod_id"]
             vodShort.vod_name = vod_data["vod_name"]
             vodShort.vod_remarks = vod_data["vod_remarks"]
@@ -63,7 +63,7 @@ class LiangziSpider extends Spider {
         if (vod_data_list.length > 0) {
             let vod_data = vod_data_list[0]
             vodDetail.vod_name = vod_data["vod_name"]
-            vodDetail.vod_pic = vod_data["vod_pic"]
+            vodDetail.vod_pic = this.jsBase + Utils.base64Encode(vod_data["vod_pic"])
             vodDetail.vod_remarks = vod_data["vod_remarks"]
             vodDetail.vod_area = vod_data["vod_area"]
             vodDetail.vod_year = vod_data["vod_year"]
