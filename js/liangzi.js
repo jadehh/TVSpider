@@ -101,6 +101,12 @@ class LiangziSpider extends Spider {
         }
     }
 
+    async setCategory(tid, pg, filter, extend) {
+        tid = extend["1"] ?? tid;
+        let content = await this.fetch(this.siteUrl+"/api.php/provide/vod?",{"ac":"detail","t":tid,"pg":pg,"f":""},this.getHeader())
+        this.vodList = await this.parseVodShortListFromJson(JSON.parse(content))
+    }
+
     async setHomeVod() {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {"ac": "detail"}, this.getHeader());
         this.homeVodList = await this.parseVodShortListFromJson(JSON.parse(content))
