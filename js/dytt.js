@@ -10,8 +10,7 @@ import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
-// import pkg from '../lib/iconv-lite/lib/index.js';
-// const {decode} = pkg
+
 
 class DyttSpider extends Spider {
     constructor() {
@@ -30,7 +29,7 @@ class DyttSpider extends Spider {
 
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
         let buffer = await this.fetch(url,null,headers,false,false,1)
-        let html = decode(buffer,"gb2312")
+        let html = Utils.gb2312Decode(buffer,"gb2312")
         if (!_.isEmpty(html)) {
             return load(html)
         } else {
