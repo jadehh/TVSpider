@@ -26,7 +26,7 @@ class SHTSpider extends Spider {
 
     getHeader() {
         return {
-            "User-Agent": "PostmanRuntime/7.36.1",
+            "User-Agent": Utils.CHROME,
             "Host": "www.sehuatang.net",
             "Cookie": "cPNj_2132_saltkey=Q4BKEOEC; cf_clearance=6Gz2tvOXPkkJP2UhLnSsN4s0RrnDUy0jBN0kUvC5FNQ-1706109144-1-AebvwBnAURwWWQhj0QRBrRPku2n8xI73PIeuZVj2ckqY9zjQ7zFzDviX7Gkex1P1bUw9SXHGEYnkBB9nmWe6Nhk=; _safe=vqd37pjm4p5uodq339yzk6b7jdt6oich",
             "Connection": "keep-alive",
