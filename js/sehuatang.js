@@ -36,7 +36,6 @@ class SHTSpider extends Spider {
         let vod_list = []
         let vodShortElements = $("[id=\"portal_block_43_content\"]").find("li")
         for (const vodShortElement of vodShortElements){
-            await this.jadeLog.debug(`${$(vodShortElement).html()}`)
             let vodShort = new VodShort()
             vodShort.vod_remarks = $($(vodShortElement).find("a")[1]).text()
             vodShort.vod_id = $(vodShortElement).find("a")[2].attribs["href"]
@@ -66,7 +65,6 @@ class SHTSpider extends Spider {
 
     async setHomeVod() {
         let $ = await this.getHtml()
-        await this.jadeLog.debug($.html())
         this.homeVodList = await this.parseVodShortListFromDoc($)
     }
 
