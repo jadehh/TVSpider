@@ -8,7 +8,7 @@
 */
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
-import {VodShort} from "../lib/vod.js";
+import {VodDetail, VodShort} from "../lib/vod.js";
 import {_} from "../lib/cat.js";
 
 class SHTSpider extends Spider {
@@ -66,6 +66,19 @@ class SHTSpider extends Spider {
         return vod_list
     }
 
+    async parseVodDetailFromDoc($) {
+        let vodDetail = new VodDetail();
+        let vodElement = $("[class=\"t_f\"]")[0]
+        let content = $(vodElement).text().replaceAll("：",":").replaceAll("【","").replaceAll("】","")
+        vodDetail.vod_pic = $(vodElement).find("img")[0].attribs["file"]
+        vodDetail.vod_name = Utils.getStrByRegex(/影片名称(.*?)\n/,content).replaceAll(":","").replaceAll("\n","")
+        vodDetail.vod_actor = Utils.getStrByRegex(/出演女优(.*?)\n/,content).replaceAll(":","").replaceAll("\n","")
+        vodDetail.vod_remarks = Utils.getStrByRegex(/是否有码(.*?)\n/,content).replaceAll(":","").replaceAll("\n","")
+        vodDetail.vod_play_from = "BT"
+        vodDetail.vod_play_url = vodDetail.vod_name + "$" + Utils.getStrByRegex(/磁力链接: (.*)复制代码/,content)
+        return vodDetail
+    }
+
     async setClasses() {
         let $ = await this.getHtml()
         let tagElements = $("[id=\"category_1\"]").find("tr").slice(0,-1)
@@ -96,14 +109,35 @@ class SHTSpider extends Spider {
         this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
+    async setDetail(id) {
+        let $ = await this.getHtml(this.siteUrl + "/" + id)
+        this.vodDetail = await this.parseVodDetailFromDoc($)
+    }
+
     async proxy(segments, headers) {
         await this.jadeLog.debug(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
         let what = segments[0];
         let url = Utils.base64Decode(segments[1]);
         if (what === 'detail') {
             await this.jadeLog.debug(`反向代理ID为:${url}`)
-            let html = await this.getHtml(this.siteUrl + "/" + url)
-            await this.jadeLog.debug(`详情信息为:${html}`)
+            let $ = await this.getHtml(this.siteUrl + "/" + url)
+            let vodDetail = await this.parseVodDetailFromDoc($)
+            await this.jadeLog.debug(`图片地址为:${vodDetail.vod_pic}`)
+            let resp;
+            if (!_.isEmpty(headers)) {
+                resp = await req(vodDetail.vod_pic, {
+                    buffer: 2, headers: headers
+                });
+            } else {
+                resp = await req(vodDetail.vod_pic, {
+                    buffer: 2, headers: {
+                        Referer: url, 'User-Agent': Utils.CHROME,
+                    },
+                });
+            }
+            return JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            });
         }
         return JSON.stringify({
             code: 500, content: '',
