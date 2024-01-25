@@ -15,7 +15,8 @@ import {Spider} from "./spider.js";
 class DyttSpider extends Spider {
     constructor() {
         super();
-        this.siteUrl = "https://dytt17.com"
+        this.siteUrl = "https://www.dy2018.com"
+
     }
 
     getName() {
@@ -35,7 +36,7 @@ class DyttSpider extends Spider {
         let navElements = $("[class=\"swiper-slide\"]").find("a")
         for (const navElement of navElements) {
             let type_name = $(navElement).text()
-            if (type_name !== "首页" && type_name !== "留言/求片") {
+            if (type_name !== "首页" && type_name !== "留言/求片" && type_name!=="娱乐") {
                 let type_id = navElement.attribs["href"]
                 this.classes.push({"type_name": type_name, "type_id": type_id})
             }
@@ -61,11 +62,29 @@ class DyttSpider extends Spider {
         this.homeVodList = await this.parseVodShortListFromDoc($)
     }
 
+    async setCategory(tid, pg, filter, extend) {
+        let params = {
+            "type": "2",
+            "class":"",
+            "area":"",
+            "version":"",
+            "state":"",
+            "letter":"",
+            "page":pg,
+            "A":"",
+            "time":"",
+            "key":""
+        }
+        let content = this.fetch(this.siteUrl + "/index.php/api/vod")
+    }
+
 
     async detail(id) {
         let $ = await this.getHtml(this.siteUrl + id)
 
     }
+
+
 }
 
 
