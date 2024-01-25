@@ -243,7 +243,7 @@ class Spider {
     }
 
 
-    async fetch(reqUrl, params, headers, redirect_url = false, return_cookie = false) {
+    async fetch(reqUrl, params, headers, redirect_url = false, return_cookie = false,buffer=0) {
         let data = Utils.objectToStr(params)
         let url = reqUrl
         if (!_.isEmpty(data)) {
@@ -252,9 +252,9 @@ class Spider {
         let uri = new Uri(url);
         let response;
         if (redirect_url) {
-            response = await req(uri.toString(), {method: "get", headers: headers, data: null, redirect: 2})
+            response = await req(uri.toString(), {method: "get", headers: headers,buffer:buffer, data: null, redirect: 2})
         } else {
-            response = await req(uri.toString(), {method: "get", headers: headers, data: null});
+            response = await req(uri.toString(), {method: "get", headers: headers, buffer:buffer,data: null});
         }
         if (response.code === 200 || response.code === undefined || response.code === 302 || response.code === 301) {
             if (response.headers["location"] !== undefined) {

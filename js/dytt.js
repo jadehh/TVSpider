@@ -6,11 +6,12 @@
 * @Software : Samples
 * @Desc     : 电影天堂
 */
-import {_} from '../lib/cat.js';
+import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
-
+import pkg from '../lib/iconv-lite/lib/index.js';
+const {decode} = pkg
 
 class DyttSpider extends Spider {
     constructor() {
@@ -27,31 +28,57 @@ class DyttSpider extends Spider {
         return "|电影天堂|"
     }
 
+    async getHtml(url = this.siteUrl, headers = this.getHeader()) {
+        let buffer = await this.fetch(url,null,headers,false,false,1)
+        let html = decode(buffer,"gb2312")
+        if (!_.isEmpty(html)) {
+            return load(html)
+        } else {
+            await this.jadeLog.error(`html获取失败`, true)
+        }
+    }
+
+
     async setFilterObj() {
-        super.setFilterObj();
+
     }
 
     async setClasses() {
         let $ = await this.getHtml()
-        let navElements = $("[class=\"swiper-slide\"]").find("a")
-        for (const navElement of navElements) {
-            let type_name = $(navElement).text()
-            if (type_name !== "首页" && type_name !== "留言/求片" && type_name!=="娱乐") {
-                let type_id = navElement.attribs["href"]
-                this.classes.push({"type_name": type_name, "type_id": type_id})
+        let vodShortElements = $("[class=\"title_all\"]")
+        for (const vodShortElement of vodShortElements){
+            await this.jadeLog.debug(`${$(vodShortElement).html()}`)
+            let spanElement = $(vodShortElement).find("span")[0]
+            let aElement = $(vodShortElement).find("a")[0]
+            let type_name= $(spanElement).text()
+            let type_id = aElement.attribs["href"]
+            if (type_id.indexOf("https:") === -1 && type_id.indexOf("http:") === -1){
+                type_id = this.siteUrl + type_id
             }
+            this.classes.push(this.getTypeDic(type_name,type_id))
+        }
+        let containElements = $($("[id=\"menu\"]").find("[class=\"contain\"]")).find("a").slice(0,-3)
+        for (const contaElement of containElements){
+            let type_name= $(contaElement).text()
+            let type_id = contaElement.attribs["href"]
+            if (type_id.indexOf("https:") === -1 && type_id.indexOf("http:") === -1){
+                type_id = this.siteUrl + type_id
+            }
+            this.classes.push(this.getTypeDic(type_name,type_id))
         }
     }
 
     async parseVodShortListFromDoc($) {
         let vod_list = []
-        let vodShortElements = $("[class=\"public-list-box public-pic-a [swiper]\"]")
+        let vodShortElements = $($("[class=\"co_area2\"]")[0]).find("li").slice(1)
         for (const vodShortElement of vodShortElements){
+            await this.jadeLog.debug(`${$(vodShortElement).html()}`)
             let vodShort = new VodShort()
-            vodShort.vod_id = $(vodShortElement).find("a")[0].attribs["href"]
-            vodShort.vod_name = $(vodShortElement).find("a")[0].attribs["title"]
+            let vodElement = $(vodShortElement).find("a")[0]
+            vodShort.vod_id = vodElement.attribs["href"]
+            vodShort.vod_name = vodElement.attribs["title"]
             vodShort.vod_remarks = $($(vodShortElement).find("span")).text().replaceAll("","")
-            vodShort.vod_pic = $(vodShortElement).find("img")[0].attribs["data-src"]
+            vodShort.vod_pic = ""
             vod_list.push(vodShort)
         }
         return vod_list
@@ -63,19 +90,7 @@ class DyttSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        let params = {
-            "type": "2",
-            "class":"",
-            "area":"",
-            "version":"",
-            "state":"",
-            "letter":"",
-            "page":pg,
-            "A":"",
-            "time":"",
-            "key":""
-        }
-        let content = this.fetch(this.siteUrl + "/index.php/api/vod")
+
     }
 
 
