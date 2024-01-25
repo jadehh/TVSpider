@@ -46,6 +46,20 @@ class SHTSpider extends Spider {
         return vod_list
     }
 
+    async parseVodShortListFromDocByCategory($) {
+        let vod_list = []
+        let vodElements = $($("[class=\"bm_c\"]")[0]).find("tbody").slice(6)
+        for (const vodElement of vodElements){
+            let vodShort = new VodShort()
+            vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
+            vodShort.vod_remarks = $($(vodElement).find("a")[2]).text()
+            vodShort.vod_name = $($(vodElement).find("a")[3]).text()
+            vodShort.vod_pic = ""
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
     async setClasses() {
         let $ = await this.getHtml()
         let tagElements = $("[id=\"category_1\"]").find("tr").slice(0,-1)
@@ -69,7 +83,11 @@ class SHTSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        super.setCategory(tid, pg, filter, extend);
+        let tid_list = tid.split(".")[0].split("-")
+        tid_list[2] = pg
+        let cateUrl = this.siteUrl +"/" + tid_list.join("-") + ".html"
+        let $ = await this.getHtml(cateUrl)
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
 
