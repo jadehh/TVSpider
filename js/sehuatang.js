@@ -102,7 +102,13 @@ class SHTSpider extends Spider {
         let extend_dic1 = {"key": 1, "name": "类型", "value": []}
         let typeElements = $("[id=\"thread_types\"]").find("a")
         for (const typeElement of typeElements){
-            extend_dic1["value"].push({"n":$(typeElement).text(),"v":typeElement.attribs["href"]})
+            let type_name = ""
+            if (typeElement.children.length > 1){
+                type_name = typeElement.children[0].data + ":" + $(typeElement.children[1]).text()
+            }else{
+                type_name = typeElement.children[0].data
+            }
+            extend_dic1["value"].push({"n":type_name,"v":typeElement.attribs["href"]})
         }
         extend_list.push(extend_dic1)
         let extend_dic2 = {"key": 1, "name": "主题", "value": []}
