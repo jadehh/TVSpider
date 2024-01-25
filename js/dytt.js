@@ -10,8 +10,8 @@ import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
-import pkg from '../lib/iconv-lite/lib/index.js';
-const {decode} = pkg
+// import pkg from '../lib/iconv-lite/lib/index.js';
+// const {decode} = pkg
 
 class DyttSpider extends Spider {
     constructor() {
