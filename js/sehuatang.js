@@ -102,28 +102,8 @@ class SHTSpider extends Spider {
         let url = Utils.base64Decode(segments[1]);
         if (what === 'detail') {
             await this.jadeLog.debug(`反向代理ID为:${url}`)
-            let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {
-                "ac": "detail", "ids": url
-            }, this.getHeader())
-            await this.jadeLog.debug(`详情信息为:${content}`)
-            let pic_url = JSON.parse(content)["list"][0]["vod_pic"]
-            await this.jadeLog.debug(`图片地址为:${pic_url}`)
-            let resp;
-            if (!_.isEmpty(headers)) {
-                resp = await req(pic_url, {
-                    buffer: 2, headers: headers
-                });
-            } else {
-                resp = await req(pic_url, {
-                    buffer: 2, headers: {
-                        Referer: url, 'User-Agent': Utils.CHROME,
-                    },
-                });
-            }
-            return JSON.stringify({
-                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
-            });
-
+            let html = await this.getHtml(this.siteUrl + "/" + url)
+            await this.jadeLog.debug(`详情信息为:${html}`)
         }
         return JSON.stringify({
             code: 500, content: '',
