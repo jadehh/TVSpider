@@ -134,6 +134,10 @@ class SHTSpider extends Spider {
 
 let spider = new SHTSpider()
 
+async function init(cfg) {
+    await spider.init(cfg)
+}
+
 async function home(filter) {
     return await spider.home(filter)
 }
