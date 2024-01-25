@@ -140,7 +140,10 @@ class SHTSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        tid = extend["1"] ?? tid
+        if (extend["1"]!==undefined && extend[1] ==="javascript:;"){
+        }else{
+            tid = extend["1"] ?? tid
+        }
         let cateUrl
         let tid_list = tid.split(".")[0].split("-")
         if (tid_list.length > 2){
