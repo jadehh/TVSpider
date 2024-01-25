@@ -54,7 +54,7 @@ class SHTSpider extends Spider {
 
     async parseVodShortListFromDocByCategory($) {
         let vod_list = []
-        let vodElements = $($("[class=\"bm_c\"]")[0]).find("tbody").slice(6)
+        let vodElements = $($("[class=\"bm_c\"]")[0]).find("tbody").slice(6,-1)
         for (const vodElement of vodElements){
             let vodShort = new VodShort()
             vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
