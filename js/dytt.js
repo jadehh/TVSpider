@@ -29,7 +29,7 @@ class DyttSpider extends Spider {
 
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
         let buffer = await this.fetch(url,null,headers,false,false,1)
-        let html = Utils.gb2312Decode(buffer,"gb2312")
+        let html = Utils.decode(buffer,"gb2312")
         if (!_.isEmpty(html)) {
             return load(html)
         } else {
