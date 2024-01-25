@@ -69,6 +69,7 @@ class SHTSpider extends Spider {
 
     async setHomeVod() {
         let $ = await this.getHtml()
+        await this.jadeLog.debug($.html())
         this.homeVodList = await this.parseVodShortListFromDoc($)
     }
 
