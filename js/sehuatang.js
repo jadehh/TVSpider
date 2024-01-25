@@ -140,9 +140,16 @@ class SHTSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
+        tid = extend["1"] ?? tid
+        let cateUrl
         let tid_list = tid.split(".")[0].split("-")
-        tid_list[2] = pg
-        let cateUrl = this.siteUrl + "/" + tid_list.join("-") + ".html"
+        if (tid_list.length > 2){
+            tid_list[2] = pg
+            cateUrl = this.siteUrl + "/" + tid_list.join("-") + ".html"
+        }else{
+            cateUrl = this.siteUrl + "/" + tid + "&page=" + pg
+        }
+
         let $ = await this.getHtml(cateUrl)
         this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
