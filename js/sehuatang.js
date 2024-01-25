@@ -9,6 +9,7 @@
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 import {VodShort} from "../lib/vod.js";
+import {_} from "../lib/cat.js";
 
 class SHTSpider extends Spider {
     constructor() {
@@ -18,6 +19,11 @@ class SHTSpider extends Spider {
 
     getAppName() {
         return "色花堂BT"
+    }
+
+    async init(cfg) {
+        await super.init(cfg);
+        this.jsBaseDetail = await js2Proxy(true, this.siteType, this.siteKey, 'detail/', {});
     }
 
     getName() {
@@ -40,7 +46,7 @@ class SHTSpider extends Spider {
             vodShort.vod_remarks = $($(vodShortElement).find("a")[1]).text()
             vodShort.vod_id = $(vodShortElement).find("a")[2].attribs["href"]
             vodShort.vod_name = $(vodShortElement).find("a")[2].attribs["title"]
-            vodShort.vod_pic = ""
+            vodShort.vod_pic = this.jsBaseDetail + Utils.base64Encode(vodShort.vod_id)
             vod_list.push(vodShort)
         }
         return vod_list
@@ -54,7 +60,7 @@ class SHTSpider extends Spider {
             vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
             vodShort.vod_remarks = $($(vodElement).find("a")[2]).text()
             vodShort.vod_name = $($(vodElement).find("a")[3]).text()
-            vodShort.vod_pic = ""
+            vodShort.vod_pic = this.jsBaseDetail + Utils.base64Encode(vodShort.vod_id)
             vod_list.push(vodShort)
         }
         return vod_list
@@ -90,14 +96,43 @@ class SHTSpider extends Spider {
         this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
+    async proxy(segments, headers) {
+        await this.jadeLog.debug(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
+        let what = segments[0];
+        let url = Utils.base64Decode(segments[1]);
+        if (what === 'detail') {
+            await this.jadeLog.debug(`反向代理ID为:${url}`)
+            let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {
+                "ac": "detail", "ids": url
+            }, this.getHeader())
+            await this.jadeLog.debug(`详情信息为:${content}`)
+            let pic_url = JSON.parse(content)["list"][0]["vod_pic"]
+            await this.jadeLog.debug(`图片地址为:${pic_url}`)
+            let resp;
+            if (!_.isEmpty(headers)) {
+                resp = await req(pic_url, {
+                    buffer: 2, headers: headers
+                });
+            } else {
+                resp = await req(pic_url, {
+                    buffer: 2, headers: {
+                        Referer: url, 'User-Agent': Utils.CHROME,
+                    },
+                });
+            }
+            return JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            });
+
+        }
+        return JSON.stringify({
+            code: 500, content: '',
+        });
+    }
 
 }
 
 let spider = new SHTSpider()
-
-async function init(cfg) {
-    await spider.init(cfg)
-}
 
 async function home(filter) {
     return await spider.home(filter)
