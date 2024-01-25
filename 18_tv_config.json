@@ -23,6 +23,14 @@
             "api": "./js/hscangku.js",
             "timeout": 30,
             "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
+            "key": "sehuatang",
+            "name": "🔞|色花堂BT|🔞",
+            "type": 3,
+            "api": "./js/sehuatang.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
         }
     ],
     "ijk": [

@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './dytt.js';
+import {__jsEvalReturn} from './sehuatang.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -29,7 +29,7 @@ async function testPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'dytt';
+    let siteKey = 'sehuatang';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
