@@ -41,7 +41,7 @@ class SHTSpider extends Spider {
     async parseVodShortListFromDoc($) {
         let vod_list = []
         let vodShortElements = $("[id=\"portal_block_43_content\"]").find("li")
-        for (const vodShortElement of vodShortElements){
+        for (const vodShortElement of vodShortElements) {
             let vodShort = new VodShort()
             vodShort.vod_remarks = $($(vodShortElement).find("a")[1]).text()
             vodShort.vod_id = $(vodShortElement).find("a")[2].attribs["href"]
@@ -54,14 +54,18 @@ class SHTSpider extends Spider {
 
     async parseVodShortListFromDocByCategory($) {
         let vod_list = []
-        let vodElements = $($("[class=\"bm_c\"]")[0]).find("tbody").slice(6,-1)
-        for (const vodElement of vodElements){
-            let vodShort = new VodShort()
-            vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
-            vodShort.vod_remarks = $($(vodElement).find("a")[2]).text()
-            vodShort.vod_name = $($(vodElement).find("a")[3]).text()
-            vodShort.vod_pic = this.jsBaseDetail + Utils.base64Encode(vodShort.vod_id)
-            vod_list.push(vodShort)
+        let vodElements = $($("[class=\"bm_c\"]")[0]).find("tbody")
+        for (const vodElement of vodElements) {
+            let user_name = $($($(vodElement).find("cite")).find("a")[0]).text()
+            if (user_name !== "admin" && user_name !== undefined && !_.isEmpty(user_name)) {
+                let vodShort = new VodShort()
+                vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
+                vodShort.vod_remarks = $($(vodElement).find("a")[2]).text()
+                vodShort.vod_name = $($(vodElement).find("a")[3]).text()
+                vodShort.vod_pic = this.jsBaseDetail + Utils.base64Encode(vodShort.vod_id)
+                vod_list.push(vodShort)
+            }
+
         }
         return vod_list
     }
@@ -69,19 +73,19 @@ class SHTSpider extends Spider {
     async parseVodDetailFromDoc($) {
         let vodDetail = new VodDetail();
         let vodElement = $("[class=\"t_f\"]")[0]
-        let content = $(vodElement).text().replaceAll("：",":").replaceAll("【","").replaceAll("】","")
+        let content = $(vodElement).text().replaceAll("：", ":").replaceAll("【", "").replaceAll("】", "")
         vodDetail.vod_pic = $(vodElement).find("img")[0].attribs["file"]
-        vodDetail.vod_name = Utils.getStrByRegex(/影片名称(.*?)\n/,content).replaceAll(":","").replaceAll("\n","")
-        vodDetail.vod_actor = Utils.getStrByRegex(/出演女优(.*?)\n/,content).replaceAll(":","").replaceAll("\n","")
-        vodDetail.vod_remarks = Utils.getStrByRegex(/是否有码(.*?)\n/,content).replaceAll(":","").replaceAll("\n","")
+        vodDetail.vod_name = Utils.getStrByRegex(/影片名称(.*?)\n/, content).replaceAll(":", "").replaceAll("\n", "")
+        vodDetail.vod_actor = Utils.getStrByRegex(/出演女优(.*?)\n/, content).replaceAll(":", "").replaceAll("\n", "")
+        vodDetail.vod_remarks = Utils.getStrByRegex(/是否有码(.*?)\n/, content).replaceAll(":", "").replaceAll("\n", "")
         vodDetail.vod_play_from = "BT"
-        vodDetail.vod_play_url = vodDetail.vod_name + "$" + Utils.getStrByRegex(/磁力链接: (.*)复制代码/,content)
+        vodDetail.vod_play_url = vodDetail.vod_name + "$" + Utils.getStrByRegex(/磁力链接: (.*)复制代码/, content)
         return vodDetail
     }
 
     async setClasses() {
         let $ = await this.getHtml()
-        let tagElements = $("[id=\"category_1\"]").find("tr").slice(0,-1)
+        let tagElements = $("[id=\"category_1\"]").find("tr").slice(0, -1)
         for (const tagElement of tagElements) {
             let classElements = $($(tagElement).find("[class=\"fl_icn_g\"]")).find("a")
             for (const classElement of classElements) {
@@ -92,8 +96,36 @@ class SHTSpider extends Spider {
         }
     }
 
+    async getFilter($) {
+
+        let extend_list = []
+        let extend_dic1 = {"key": 1, "name": "类型", "value": []}
+        let typeElements = $("[id=\"thread_types\"]").find("a")
+        for (const typeElement of typeElements){
+            extend_dic1["value"].push({"n":$(typeElement).text(),"v":typeElement.attribs["href"]})
+        }
+        extend_list.push(extend_dic1)
+        let extend_dic2 = {"key": 1, "name": "主题", "value": []}
+        let themeElements = $("[class=\"tf\"]").find("a")
+        for (const themeElement of themeElements){
+            let type_name = $(themeElement).text()
+            if (type_name !== "更多" && type_name !== "显示置顶"){
+                extend_dic2["value"].push({"n":$(themeElement).text(),"v":themeElement.attribs["href"]})
+            }
+        }
+        extend_list.push(extend_dic2)
+        return extend_list
+    }
+
     async setFilterObj() {
-        super.setFilterObj();
+        for (const class_dic of this.classes){
+            let type_name = class_dic["type_name"]
+            let type_id = class_dic["type_id"]
+            if (type_name !== "最近更新"){
+                let $ = await this.getHtml(this.siteUrl + '/' + type_id)
+                this.filterObj[type_id] = await this.getFilter($)
+            }
+        }
     }
 
     async setHomeVod() {
@@ -104,7 +136,7 @@ class SHTSpider extends Spider {
     async setCategory(tid, pg, filter, extend) {
         let tid_list = tid.split(".")[0].split("-")
         tid_list[2] = pg
-        let cateUrl = this.siteUrl +"/" + tid_list.join("-") + ".html"
+        let cateUrl = this.siteUrl + "/" + tid_list.join("-") + ".html"
         let $ = await this.getHtml(cateUrl)
         this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
