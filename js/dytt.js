@@ -27,15 +27,15 @@ class DyttSpider extends Spider {
         return "|电影天堂|"
     }
 
-    // async getHtml(url = this.siteUrl, headers = this.getHeader()) {
-    //     let buffer = await this.fetch(url,null,headers,false,false,1)
-    //     let html = Utils.decode(buffer,"gb2312")
-    //     if (!_.isEmpty(html)) {
-    //         return load(html)
-    //     } else {
-    //         await this.jadeLog.error(`html获取失败`, true)
-    //     }
-    // }
+    async getHtml(url = this.siteUrl, headers = this.getHeader()) {
+        let buffer = await this.fetch(url,null,headers,false,false,1)
+        let html = Utils.decode(buffer,"gb2312")
+        if (!_.isEmpty(html)) {
+            return load(html)
+        } else {
+            await this.jadeLog.error(`html获取失败`, true)
+        }
+    }
 
 
     async setFilterObj() {
@@ -100,7 +100,6 @@ class DyttSpider extends Spider {
 
 
 }
-
 
 let spider = new DyttSpider()
 
