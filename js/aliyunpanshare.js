@@ -11,6 +11,7 @@ import {VodDetail, VodShort} from "../lib/vod.js"
 import {detailContent, initAli, playContent} from "../lib/ali.js";
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
+import {patternAli} from "../lib/utils.js";
 
 let remark_list = ["4k", "4K"]
 
@@ -22,7 +23,7 @@ class AliyunpanShare extends Spider {
 
     async init(cfg) {
         await super.init(cfg);
-        // await initAli(this.cfgObj["token"]);
+        await initAli(this.cfgObj["token"]);
     }
 
     getName() {
@@ -63,7 +64,11 @@ class AliyunpanShare extends Spider {
 
     async parseVodShortListFromDocByCategory($) {
         let vod_list = []
-        let vodElements = $( $("[class=\"main container\"]").find("[class=\"list\"]")).find("li")
+        let mainElement = $("[class=\"main container\"]")
+        let vodElements = $($( mainElement).find("[class=\"list\"]")).find("li")
+        if (vodElements.length === 0){
+            vodElements = $(mainElement).find("li")
+        }
         for (const vodElement of vodElements) {
             let name = $($(vodElement).find("a")[1]).text()
             if (name.indexOf("置顶") === -1) {
@@ -92,6 +97,15 @@ class AliyunpanShare extends Spider {
         for (const articleEle of articleElements){
             articleContent = articleContent + $(articleEle).text() + "\n"
         }
+        let share_ali_url_list = []
+        let share_url_list = Utils.getStrByRegex(Utils.patternAli,articleContent).split("\n")
+        for (const share_url of share_url_list){
+            let matches = share_url.match(Utils.patternAli);
+            if (!_.isEmpty(matches)) share_ali_url_list.push(matches[1])
+        }
+        let aliVodDetail = await detailContent(share_ali_url_list)
+        vodDetail.vod_play_url = aliVodDetail.vod_play_url
+        vodDetail.vod_play_from = aliVodDetail.vod_play_from
         vodDetail.type_name = Utils.getStrByRegex(/标签(.*?)\n/,articleContent).replaceAll("：","")
         vodDetail.vod_content = Utils.getStrByRegex(/描述(.*?)\n/,articleContent).replaceAll("：","")
         return vodDetail
