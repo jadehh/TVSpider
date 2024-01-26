@@ -26,6 +26,14 @@
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
             },
             {
+                "key": "aliyunpanshare",
+                "name": "🥏‍┃阿里云盘分享┃🥏‍",
+                "type": 3,
+                "api": "./js/aliyunpanshare.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
+            },
+            {
                 "key": "douban",
                 "name": "🍥┃豆瓣┃🍥",
                 "type": 3,
