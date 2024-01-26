@@ -186,12 +186,12 @@ class Spider {
         this.header = {}
     }
 
-    async reconnnect(reqUrl, params, headers, redirect_url) {
+    async reconnnect(reqUrl, params, headers, redirect_url,return_cookie,buffer) {
         await this.jadeLog.error("请求失败,请检查url:" + reqUrl + ",两秒后重试")
         Utils.sleep(2)
         if (this.reconnectTimes < this.maxReconnectTimes) {
             this.reconnectTimes = this.reconnectTimes + 1
-            return await this.fetch(reqUrl, params, headers, redirect_url)
+            return await this.fetch(reqUrl, params, headers, redirect_url,return_cookie,buffer)
         } else {
             await this.jadeLog.error("请求失败,重连失败")
             return null
@@ -262,7 +262,7 @@ class Spider {
                     await this.jadeLog.debug(`返回重定向连接:${response.headers["location"]}`)
                     return response.headers["location"]
                 } else {
-                    return this.fetch(response.headers["location"], params, headers, redirect_url)
+                    return this.fetch(response.headers["location"], params, headers, redirect_url,return_cookie,buffer)
                 }
             } else if (!_.isEmpty(response.content)) {
                 if (return_cookie) {
@@ -273,11 +273,11 @@ class Spider {
                 }
 
             } else {
-                return await this.reconnnect(reqUrl, params, headers, redirect_url)
+                return await this.reconnnect(reqUrl, params, headers, redirect_url,return_cookie,buffer)
             }
         } else {
             await this.jadeLog.error(`请求失败,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
-            return await this.reconnnect(reqUrl, params, headers, redirect_url)
+            return await this.reconnnect(reqUrl, params, headers, redirect_url,return_cookie,buffer)
         }
     }
 
