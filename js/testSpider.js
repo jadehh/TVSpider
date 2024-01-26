@@ -48,11 +48,11 @@ async function test() {
     // //
 
     // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("https://www.alypw.com/category-2.html", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("https://www.alypw.com/category-38.html", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
     //
     // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("thread-1823161-1-1.html"))
+    let detail1 = JSON.parse(await spider.detail("https://www.alypw.com/post/5482.html"))
     await testPlay(detail1)
 
 

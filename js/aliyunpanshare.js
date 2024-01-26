@@ -63,7 +63,7 @@ class AliyunpanShare extends Spider {
 
     async parseVodShortListFromDocByCategory($) {
         let vod_list = []
-        let vodElements = $("[class=\"main container\"]").find("li")
+        let vodElements = $( $("[class=\"main container\"]").find("[class=\"list\"]")).find("li")
         for (const vodElement of vodElements) {
             let name = $($(vodElement).find("a")[1]).text()
             if (name.indexOf("置顶") === -1) {
@@ -77,6 +77,24 @@ class AliyunpanShare extends Spider {
 
         }
         return vod_list
+    }
+
+    async parseVodDetailFromDoc($) {
+        let mainElements = $("[class=\"mainl\"]")
+        let name = $($(mainElements).find("[class=\"title\"]")[0]).text()
+        let vodDetail = new VodDetail();
+        vodDetail.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
+        vodDetail.vod_remarks = this.getRemarks(Utils.getStrByRegex(/【(.*?)】/, name),name)
+        let articleElement = $(mainElements).find("[class=\"article_content\"]")
+        vodDetail.vod_pic = $(articleElement).find("img")[0].attribs["src"]
+        let articleElements = $(articleElement).find("p")
+        let articleContent = ""
+        for (const articleEle of articleElements){
+            articleContent = articleContent + $(articleEle).text() + "\n"
+        }
+        vodDetail.type_name = Utils.getStrByRegex(/标签(.*?)\n/,articleContent).replaceAll("：","")
+        vodDetail.vod_content = Utils.getStrByRegex(/描述(.*?)\n/,articleContent).replaceAll("：","")
+        return vodDetail
     }
 
     async setClasses() {
@@ -108,6 +126,11 @@ class AliyunpanShare extends Spider {
         let cateUrl = tid.split(".html")[0] + "_" + pg + ".html"
         let $ = await this.getHtml(cateUrl)
         this.vodList = await this.parseVodShortListFromDocByCategory($)
+    }
+
+    async setDetail(id) {
+        let $ = await this.getHtml(id)
+        this.vodDetail = await this.parseVodDetailFromDoc($)
     }
 
     async play(flag, id, flags) {
