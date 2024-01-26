@@ -35,16 +35,33 @@ class AliyunpanShare extends Spider {
     async parseVodShortListFromDoc($) {
         let vod_list = []
         let vodElements = $($("[class=\"hometab\"]").find("[class=\"box\"]")).find("li")
-        for (const vodElement of vodElements){
-            await this.jadeLog.debug($(vodElement).html())
+        for (const vodElement of vodElements) {
             let ele = $(vodElement).find("[class=\"imgr\"]")[0]
             let vodShort = new VodShort();
             vodShort.vod_id = $(ele).find("a")[0].attribs["href"]
             let name = $(ele).find("a")[0].attribs["title"]
-            vodShort.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /,name)
+            vodShort.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
             vodShort.vod_pic = $(vodElement).find("img")[0].attribs["src"]
-            vodShort.vod_remarks = Utils.getStrByRegex(/【(.*?)】/,name)
+            vodShort.vod_remarks = Utils.getStrByRegex(/【(.*?)】/, name)
             vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
+    async parseVodShortListFromDocByCategory($) {
+        let vod_list = []
+        let vodElements = $("[class=\"main container\"]").find("li")
+        for (const vodElement of vodElements) {
+            let name = $($(vodElement).find("a")[1]).text()
+            if (name.indexOf("置顶") === -1) {
+                let vodShort = new VodShort();
+                vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
+                vodShort.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
+                vodShort.vod_pic = $(vodElement).find("img")[0].attribs["src"]
+                vodShort.vod_remarks = Utils.getStrByRegex(/【(.*?)】/, name)
+                vod_list.push(vodShort)
+            }
+
         }
         return vod_list
     }
@@ -53,26 +70,31 @@ class AliyunpanShare extends Spider {
         let $ = await this.getHtml()
         let typeElements = $("[id^='navbar-category']").find("a")
         let key_list = ["影", "剧", "4K", "视", "音", "演", "动漫"]
-        for (const typeElement of typeElements){
+        for (const typeElement of typeElements) {
             let type_name = $(typeElement).text()
             let type_id = typeElement.attribs["href"]
             let is_show = false
-            for (const key of key_list){
-                  if (type_name.indexOf(key) > -1) {
-                      is_show = true
-                  }
+            for (const key of key_list) {
+                if (type_name.indexOf(key) > -1) {
+                    is_show = true
+                }
             }
-            if (is_show){
-                this.classes.push(this.getTypeDic(type_name,type_id))
+            if (is_show) {
+                this.classes.push(this.getTypeDic(type_name, type_id))
             }
         }
     }
 
 
-
     async setHomeVod() {
         let $ = await this.getHtml()
         this.homeVodList = await this.parseVodShortListFromDoc($)
+    }
+
+    async setCategory(tid, pg, filter, extend) {
+        let cateUrl = tid.split(".html")[0] + "_" + pg + ".html"
+        let $ = await this.getHtml(cateUrl)
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
     async play(flag, id, flags) {

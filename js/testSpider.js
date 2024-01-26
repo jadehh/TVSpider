@@ -48,7 +48,7 @@ async function test() {
     // //
 
     // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("forum-2-1.html", "1", undefined,{"1":"forum.php?mod=forumdisplay&fid=2&filter=typeid&typeid=684"}));
+    let  catePage = JSON.parse(await spider.category("https://www.alypw.com/category-2.html", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
     //
     // // 测试详情
