@@ -12,6 +12,7 @@ import {detailContent, initAli, playContent} from "../lib/ali.js";
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 
+let remark_list = ["4k", "4K"]
 
 class AliyunpanShare extends Spider {
     constructor() {
@@ -32,6 +33,18 @@ class AliyunpanShare extends Spider {
         return "阿里云盘分享"
     }
 
+    getRemarks(name,title) {
+        if (_.isEmpty(name)) {
+            for (const remark of remark_list) {
+                if (title.indexOf(remark) > -1) {
+                    return remark
+                }
+            }
+        }else{
+            return name
+        }
+    }
+
     async parseVodShortListFromDoc($) {
         let vod_list = []
         let vodElements = $($("[class=\"hometab\"]").find("[class=\"box\"]")).find("li")
@@ -42,7 +55,7 @@ class AliyunpanShare extends Spider {
             let name = $(ele).find("a")[0].attribs["title"]
             vodShort.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
             vodShort.vod_pic = $(vodElement).find("img")[0].attribs["src"]
-            vodShort.vod_remarks = Utils.getStrByRegex(/【(.*?)】/, name)
+            vodShort.vod_remarks = this.getRemarks(Utils.getStrByRegex(/【(.*?)】/, name),name)
             vod_list.push(vodShort)
         }
         return vod_list
@@ -58,7 +71,7 @@ class AliyunpanShare extends Spider {
                 vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
                 vodShort.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
                 vodShort.vod_pic = $(vodElement).find("img")[0].attribs["src"]
-                vodShort.vod_remarks = Utils.getStrByRegex(/【(.*?)】/, name)
+                vodShort.vod_remarks = this.getRemarks(Utils.getStrByRegex(/【(.*?)】/, name),name)
                 vod_list.push(vodShort)
             }
 
