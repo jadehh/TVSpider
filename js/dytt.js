@@ -27,6 +27,12 @@ class DyttSpider extends Spider {
         return "|电影天堂|"
     }
 
+    getHeader() {
+        let headers  = super.getHeader();
+        headers["Content-Type"] = "text/html; charset=gb2312"
+        return headers
+    }
+
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
         let buffer = await this.fetch(url,null,headers,false,false,1)
 
