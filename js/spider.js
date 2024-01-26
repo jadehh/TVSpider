@@ -264,7 +264,12 @@ class Spider {
                 } else {
                     return this.fetch(response.headers["location"], params, headers, redirect_url,return_cookie,buffer)
                 }
-            } else if (!_.isEmpty(response.content)) {
+            }
+            else if (response.content.constructor === Buffer){
+                this.reconnectTimes = 0
+                return response.content
+            }
+            else if (!_.isEmpty(response.content)) {
                 if (return_cookie) {
                     return {"cookie":response.headers["set-cookie"],"content":response.content}
                 } else {
@@ -272,7 +277,7 @@ class Spider {
                     return response.content
                 }
 
-            } else {
+            }else {
                 await this.jadeLog.error(`请求失败,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
                 return await this.reconnnect(reqUrl, params, headers, redirect_url,return_cookie,buffer)
             }
