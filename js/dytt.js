@@ -30,6 +30,7 @@ class DyttSpider extends Spider {
 
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
         let buffer =  await req(url, {buffer: 1, headers: headers});
+        await this.jadeLog.debug(`html内容为:${JSON.parse(buffer)}`)
         let html = Utils.decode(buffer["content"],"gb2312")
         if (!_.isEmpty(html)) {
             return load(html)
