@@ -29,15 +29,20 @@ class DyttSpider extends Spider {
 
 
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
-        await this.jadeLog.debug(`准备获取html内容`,true)
-        let buffer =  await req(url, {buffer: 1, headers: headers});
-        await this.jadeLog.debug(`html内容为:${JSON.parse(buffer)}`)
-        let html = Utils.decode(buffer["content"],"gb2312")
-        if (!_.isEmpty(html)) {
-            return load(html)
-        } else {
-            await this.jadeLog.error(`html获取失败`, true)
+        await this.jadeLog.debug(`准备获取html内容`, true)
+        try {
+            let buffer = await req(url, {buffer: 1, headers: headers});
+            await this.jadeLog.debug(`html内容为:${JSON.parse(buffer)}`)
+            let html = Utils.decode(buffer["content"], "gb2312")
+            if (!_.isEmpty(html)) {
+                return load(html)
+            } else {
+                await this.jadeLog.error(`html获取失败`, true)
+            }
+        } catch (e) {
+            await this.jadeLog.error(`获取html出错,出错原因为${e}`)
         }
+
     }
 
 
@@ -48,38 +53,38 @@ class DyttSpider extends Spider {
     async setClasses() {
         let $ = await this.getHtml()
         let vodShortElements = $("[class=\"title_all\"]")
-        for (const vodShortElement of vodShortElements){
+        for (const vodShortElement of vodShortElements) {
             await this.jadeLog.debug(`${$(vodShortElement).html()}`)
             let spanElement = $(vodShortElement).find("span")[0]
             let aElement = $(vodShortElement).find("a")[0]
-            let type_name= $(spanElement).text()
+            let type_name = $(spanElement).text()
             let type_id = aElement.attribs["href"]
-            if (type_id.indexOf("https:") === -1 && type_id.indexOf("http:") === -1){
+            if (type_id.indexOf("https:") === -1 && type_id.indexOf("http:") === -1) {
                 type_id = this.siteUrl + type_id
             }
-            this.classes.push(this.getTypeDic(type_name,type_id))
+            this.classes.push(this.getTypeDic(type_name, type_id))
         }
-        let containElements = $($("[id=\"menu\"]").find("[class=\"contain\"]")).find("a").slice(0,-3)
-        for (const contaElement of containElements){
-            let type_name= $(contaElement).text()
+        let containElements = $($("[id=\"menu\"]").find("[class=\"contain\"]")).find("a").slice(0, -3)
+        for (const contaElement of containElements) {
+            let type_name = $(contaElement).text()
             let type_id = contaElement.attribs["href"]
-            if (type_id.indexOf("https:") === -1 && type_id.indexOf("http:") === -1){
+            if (type_id.indexOf("https:") === -1 && type_id.indexOf("http:") === -1) {
                 type_id = this.siteUrl + type_id
             }
-            this.classes.push(this.getTypeDic(type_name,type_id))
+            this.classes.push(this.getTypeDic(type_name, type_id))
         }
     }
 
     async parseVodShortListFromDoc($) {
         let vod_list = []
         let vodShortElements = $($("[class=\"co_area2\"]")[0]).find("li").slice(1)
-        for (const vodShortElement of vodShortElements){
+        for (const vodShortElement of vodShortElements) {
             await this.jadeLog.debug(`${$(vodShortElement).html()}`)
             let vodShort = new VodShort()
             let vodElement = $(vodShortElement).find("a")[0]
             vodShort.vod_id = vodElement.attribs["href"]
             vodShort.vod_name = vodElement.attribs["title"]
-            vodShort.vod_remarks = $($(vodShortElement).find("span")).text().replaceAll("","")
+            vodShort.vod_remarks = $($(vodShortElement).find("span")).text().replaceAll("", "")
             vodShort.vod_pic = ""
             vod_list.push(vodShort)
         }
