@@ -308,15 +308,13 @@
     ],
     "lives": [
         {
-            "group": "redirect",
-            "channels": [
-                {
-                    "name": "live",
-                    "urls": [
-                        "proxy://do=live&type=txt&ext=aHR0cDovL3R2Lmp0aG4uY24vbGl2ZXMvbGl2ZV9wbHVzLnR4dA=="
-                    ]
-                }
-            ]
+            "name": "live",
+            "type": 0,
+            "url": "https://agit.ai/fantaiying/0/raw/branch/main/tvlive.txt",
+            "playerType": 1,
+            "ua": "okhttp/3.15",
+            "epg": "http://epg.112114.xyz/?ch={name}&date={date}",
+            "logo": "https://epg.112114.xyz/logo/{name}.png"
         }
     ]
 }
