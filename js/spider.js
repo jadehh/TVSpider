@@ -273,6 +273,7 @@ class Spider {
                 }
 
             } else {
+                await this.jadeLog.error(`请求失败,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
                 return await this.reconnnect(reqUrl, params, headers, redirect_url,return_cookie,buffer)
             }
         } else {
