@@ -151,6 +151,13 @@ class AliyunpanShare extends Spider {
         return await playContent(flag, id, flags);
     }
 
+    async setSearch(wd, quick) {
+        let url = this.siteUrl + `/search.php?q=${wd}`
+        let $ = await this.getHtml(url)
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
+
+    }
+
 }
 
 let spider = new AliyunpanShare()

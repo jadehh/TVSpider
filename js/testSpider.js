@@ -51,9 +51,9 @@ async function test() {
     let  catePage = JSON.parse(await spider.category("https://www.alypw.com/category-38.html", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
     //
-    // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.alypw.com/post/4949.html"))
-    await testPlay(detail1)
+    // // // 测试详情
+    // let detail1 = JSON.parse(await spider.detail("https://www.alypw.com/post/4949.html"))
+    // await testPlay(detail1)
 
 
 
