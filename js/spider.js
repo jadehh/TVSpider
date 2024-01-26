@@ -265,7 +265,7 @@ class Spider {
                     return this.fetch(response.headers["location"], params, headers, redirect_url,return_cookie,buffer)
                 }
             }
-            else if (response.content.constructor === Buffer){
+            else if (response.content.length > 0){
                 this.reconnectTimes = 0
                 return response.content
             }
