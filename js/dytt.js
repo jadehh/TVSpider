@@ -27,14 +27,10 @@ class DyttSpider extends Spider {
         return "|电影天堂|"
     }
 
-    getHeader() {
-        return {"User-Agent":Utils.CHROME}
-    }
 
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
-        let buffer = await this.fetch(url,null,headers,false,false,1)
-
-        let html = Utils.decode(buffer,"gb2312")
+        let buffer =  await req(url, {buffer: 1, headers: headers});
+        let html = Utils.decode(buffer["content"],"gb2312")
         if (!_.isEmpty(html)) {
             return load(html)
         } else {
