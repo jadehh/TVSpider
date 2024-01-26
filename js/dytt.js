@@ -28,9 +28,7 @@ class DyttSpider extends Spider {
     }
 
     getHeader() {
-        let headers  = super.getHeader();
-        headers["Content-Type"] = "text/html; charset=gb2312"
-        return headers
+        return {"User-Agent":Utils.CHROME}
     }
 
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
