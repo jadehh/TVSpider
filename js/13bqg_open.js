@@ -51,7 +51,7 @@ class BQQSpider extends Spider {
             book_director: $('[property$=author]')[0].attribs.content,
             book_content: $('[property$=description]')[0].attribs.content,
         };
-        $ = this.getHtml(this.siteUrl + id + `list.html`);
+        $ = await this.getHtml(this.siteUrl + id + `list.html`);
         let urls = [];
         const links = $('dl>dd>a[href*="/html/"]');
         for (const l of links) {
