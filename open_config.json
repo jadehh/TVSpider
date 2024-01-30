@@ -147,14 +147,16 @@
             }
         ]
     },
-    "read": [
-        {
-            "key": "13bqg_open",
-            "name": "📚︎|笔趣阁|📚︎",
-            "type": 10,
-            "api": "./js/13bqg_open.js"
-        }
-    ],
+    "read": {
+        "sites": [
+            {
+                "key": "13bqg_open",
+                "name": "📚︎|笔趣阁|📚︎",
+                "type": 10,
+                "api": "./js/13bqg_open.js"
+            }
+        ]
+    },
     "pan": {
         "sites": []
     }

@@ -145,7 +145,7 @@ class Build(object):
             if "open_config.json" in file_name:
                 with open(file_name,"rb") as f:
                     dic = json.load(f)
-                dic["read"] = site_obj_list
+                dic["read"]["sites"] = site_obj_list
                 with open(file_name,"wb") as f:
                     f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
 
