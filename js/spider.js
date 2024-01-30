@@ -258,7 +258,11 @@ class Spider {
         }
         await this.jadeLog.debug(`Get请求,回复为:${JSON.stringify(response)}`)
         if (response.code === 200 || response.code === undefined || response.code === 302 || response.code === 301) {
-            if (response.headers["location"] !== undefined) {
+            if (buffer===1){
+                this.reconnectTimes = 0
+                return response.content
+            }
+            else if (response.headers["location"] !== undefined) {
                 if (redirect_url) {
                     await this.jadeLog.debug(`返回重定向连接:${response.headers["location"]}`)
                     return response.headers["location"]
