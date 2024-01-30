@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './aliyunpanshare.js';
+import {__jsEvalReturn} from './dytt.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -29,7 +29,7 @@ async function testPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'aliyunpanshare';
+    let siteKey = 'dytt';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -48,7 +48,7 @@ async function test() {
     // //
 
     // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("https://www.alypw.com/category-38.html", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("https://www.alypw.com/category-2.html", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
     //
     // // // 测试详情

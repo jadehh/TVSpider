@@ -18,6 +18,10 @@ class DyttSpider extends Spider {
         this.siteUrl = "https://www.dy2018.com"
 
     }
+    getHeader() {
+        let headers = super.getHeader();
+        headers["host"] = "www.dy2018.com"
+    }
 
     getName() {
         return "👼|电影天堂|👼"
