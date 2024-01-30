@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './dytt.js';
+import {__jsEvalReturn} from './13bqg_open.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -29,7 +29,7 @@ async function testPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'dytt';
+    let siteKey = '13bqg_open';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -48,12 +48,12 @@ async function test() {
     // //
 
     // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("https://www.dy2018.com/html/gndy/dyzz/index.html", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("xuanhuan", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
     //
     // // // 测试详情
-    // let detail1 = JSON.parse(await spider.detail("https://www.alypw.com/post/4949.html"))
-    // await testPlay(detail1)
+    let detail1 = JSON.parse(await spider.detail("https://www.alypw.com/post/4949.html"))
+    await testPlay(detail1)
 
 
 
