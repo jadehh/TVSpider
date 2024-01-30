@@ -19,9 +19,7 @@ class DyttSpider extends Spider {
 
     }
     getHeader() {
-        let headers = super.getHeader();
-        headers["host"] = "www.dy2018.com"
-        return headers
+        return {"host":"www.dy2018.com","User-Agent":Utils.CHROME}
     }
 
     getName() {
