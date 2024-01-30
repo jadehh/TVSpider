@@ -46,21 +46,24 @@ class Build(object):
         json_file_list = os.listdir(self.json_path)
         return json_file_list
 
-    def getJsFileList(self, is_18=True):
+    def getJsFileList(self, case=0):
         new_js_file_list = []
         js_file_list = os.listdir(self.js_path)
         for js_file in js_file_list:
             js_file_name = js_file.split(".")[0]
             jsMoudle = JSMoudle(os.path.join(self.js_path, js_file))
-            if is_18 == False:
+            if case == 0:
                 if jsMoudle.getName():
-                    if "🔞" not in jsMoudle.getName():
+                    if "🔞" not in jsMoudle.getName() and "📚︎" not in jsMoudle.getName():
                         new_js_file_list.append(js_file)
-            else:
+            elif case  == 1:
                 if jsMoudle.getName():
                     if "🔞" in jsMoudle.getName():
                         new_js_file_list.append(js_file)
-
+            elif case == 2:
+                if jsMoudle.getName():
+                    if "📚︎" in jsMoudle.getName():
+                        new_js_file_list.append(js_file)
         return new_js_file_list
 
     def readJsonFile(self, json_file):
@@ -123,12 +126,37 @@ class Build(object):
                         with open("open_config.json", "wb") as f:
                             f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
 
+    def write_book_config(self,book_file_list):
+        file_list = os.listdir(".")
+        site_obj = {"key": "", "name": "", "type": 10, "api": "" }
+        site_obj_list = []
+        for book_file in book_file_list:
+            js_file_name = book_file.split(".")[0]
+            jsMoudle = JSMoudle(os.path.join(self.js_path, book_file))
+            site_obj_copy = copy.copy(site_obj)
+            site_obj_copy["key"] = js_file_name
+            site_obj_copy["name"] = jsMoudle.getName()
+            site_obj_copy["api"] = "./{}/{}".format(self.js_path, book_file)
+            site_obj_list.append(site_obj_copy)
+
+
+
+        for file_name in file_list:
+            if "open_config.json" in file_name:
+                with open(file_name,"rb") as f:
+                    dic = json.load(f)
+                dic["read"] = site_obj_list
+                with open(file_name,"wb") as f:
+                    f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+
     def build(self):
         json_file_list = self.getJsonFileList()
-        no_18_js_file_list = self.getJsFileList(is_18=False)
-        y_js_file_list = self.getJsFileList(is_18=True)
+        no_18_js_file_list = self.getJsFileList(case=0)
+        y_js_file_list = self.getJsFileList(case=1)
+        book_file_list = self.getJsFileList(case=2)
         self.write_config(self.ali_name,json_file_list,no_18_js_file_list,is_18=False)
         self.write_config(self.ali_name,json_file_list,y_js_file_list,is_18=True)
+        self.write_book_config(book_file_list)
 
 
 
