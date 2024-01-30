@@ -41,8 +41,8 @@ async function test() {
     console.debug(JSON.stringify(classes));
     //
     //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
     // //
     //
     // //

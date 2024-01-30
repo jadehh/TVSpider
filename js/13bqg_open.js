@@ -9,6 +9,8 @@
 import {_} from '../lib/cat.js';
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
+import {VodShort} from "../lib/vod.js";
+import {BookShort} from "../lib/book.js";
 
 class BQQSpider extends Spider {
     constructor() {
@@ -28,18 +30,31 @@ class BQQSpider extends Spider {
         await super.init(cfg);
     }
 
+    async parseVodShortListFromDoc($) {
+        let books = []
+        let bookElements = $("[class=\"block\"]")
+        for (const bookElement of $(bookElements[0]).find("li")) {
+            let bookShort = new BookShort()
+            let bookShortElements = $(bookElement).find("span")
+            bookShort.book_remarks = $(bookShortElements[0]).text()
+            bookShort.book_name = $(bookShortElements[1]).text()
+            bookShort.book_id = $(bookShortElements[1]).find("a")[0].attribs.href
+            bookShort.book_pic = this.jsBase + Utils.base64Encode(bookShort.book_id)
+            books.push(bookShort)
+        }
+        return books
+    }
+
     async parseVodShortListFromDocByCategory($) {
         let books = [];
         for (const item of $('div.item')) {
-            const a = $(item).find('a:first')[0];
+            let bookShort = new BookShort()
+            bookShort.book_id = $(item).find('a:first')[0].attribs.href;
             const img = $(a).find('img:first')[0];
-            const span = $(item).find('span:first')[0];
-            books.push({
-                book_id: a.attribs.href,
-                book_name: img.attribs.alt,
-                book_pic: img.attribs.src,
-                book_remarks: span.children[0].data.trim(),
-            });
+            bookShort.book_name = img.attribs.alt
+            bookShort.book_pic = img.attribs.src
+            bookShort.book_remarks = $(item).find('span:first')[0].children[0].data.trim();
+            books.push(bookShort)
         }
         return books
     }
@@ -50,6 +65,7 @@ class BQQSpider extends Spider {
             book_year: $('[property$=update_time]')[0].attribs.content,
             book_director: $('[property$=author]')[0].attribs.content,
             book_content: $('[property$=description]')[0].attribs.content,
+            book_pic:$($("[class=\"cover\"]")).find("img")[0].attribs.src
         };
         $ = await this.getHtml(this.siteUrl + id + `list.html`);
         let urls = [];
@@ -71,6 +87,11 @@ class BQQSpider extends Spider {
                 type_id: a.attribs.href.replace(/\//g, ''), type_name: a.children[0].data.trim(), tline: 2,
             });
         }
+    }
+
+    async setHomeVod() {
+        let $ = await this.getHtml()
+        this.homeVodList = await this.parseVodShortListFromDoc($)
     }
 
 
@@ -109,7 +130,9 @@ class BQQSpider extends Spider {
     async search(wd, quick) {
         const cook = await req(`${this.siteUrl}/user/hm.html?q=${encodeURIComponent(wd)}`, {
             headers: {
-                accept: 'application/json', 'User-Agent': Utils.MOBILEUA, Referer: `${this.siteUrl}/s?q=${encodeURIComponent(wd)}`,
+                accept: 'application/json',
+                'User-Agent': Utils.MOBILEUA,
+                Referer: `${this.siteUrl}/s?q=${encodeURIComponent(wd)}`,
             },
         });
         const set_cookie = _.isArray(cook.headers['set-cookie']) ? cook.headers['set-cookie'].join(';;;') : cook.headers['set-cookie'];
@@ -133,12 +156,44 @@ class BQQSpider extends Spider {
         let books = [];
         for (const book of data) {
             books.push({
-                book_id: book["url_list"], book_name: book["articlename"], book_pic: book["url_img"], book_remarks: book["author"],
+                book_id: book["url_list"],
+                book_name: book["articlename"],
+                book_pic: book["url_img"],
+                book_remarks: book["author"],
             });
         }
         return {
             tline: 2, list: books,
         };
+    }
+
+    async proxy(segments, headers) {
+        await this.jadeLog.debug(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
+        let what = segments[0];
+        let url = Utils.base64Decode(segments[1]);
+        if (what === 'img') {
+            await this.jadeLog.debug(`反向代理ID为:${url}`)
+            let $ = await this.getHtml(this.siteUrl + url)
+            let bookDetail = await this.parseVodDetailFromDoc($, url)
+            let resp;
+            if (!_.isEmpty(headers)) {
+                resp = await req(bookDetail.book_pic, {
+                    buffer: 2, headers: headers
+                });
+            } else {
+                resp = await req(bookDetail.book_pic, {
+                    buffer: 2, headers: {
+                        Referer: url, 'User-Agent': Utils.CHROME,
+                    },
+                });
+            }
+            return JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            });
+        }
+        return JSON.stringify({
+            code: 500, content: '',
+        });
     }
 
 }
@@ -173,12 +228,20 @@ async function search(wd, quick) {
     return await spider.search(wd, quick)
 }
 
+async function proxy(segments, headers) {
+    return await spider.proxy(segments, headers)
+}
 
 export function __jsEvalReturn() {
     return {
-        init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
+        init: init,
+        home: home,
+        homeVod: homeVod,
+        category: category,
+        detail: detail,
+        play: play,
+        search: search,
+        proxy: proxy
     };
 }
-
-
 
