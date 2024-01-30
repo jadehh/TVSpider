@@ -243,12 +243,9 @@ class Spider {
         return {"User-Agent": Utils.CHROME, "Referer": this.siteUrl + "/"};
     }
 
-    async getResponse(reqUrl, params, headers, redirect_url =, return_cookie , buffer,response) {
+    async getResponse(reqUrl, params, headers, redirect_url =, return_cookie, buffer, response) {
         {
-            if (buffer === 1) {
-                this.reconnectTimes = 0
-                return response.content
-            } else if (response.headers["location"] !== undefined) {
+            if (response.headers["location"] !== undefined) {
                 if (redirect_url) {
                     await this.jadeLog.debug(`返回重定向连接:${response.headers["location"]}`)
                     return response.headers["location"]
@@ -265,7 +262,9 @@ class Spider {
                     this.reconnectTimes = 0
                     return response.content
                 }
-
+            } else if (buffer === 1) {
+                this.reconnectTimes = 0
+                return response.content
             } else {
                 await this.jadeLog.error(`请求失败,请求url为:${reqUrl},回复内容为:${JSON.stringify(response)}`)
                 return await this.reconnnect(reqUrl, params, headers, redirect_url, return_cookie, buffer)
@@ -291,14 +290,14 @@ class Spider {
         }
         if (this.catOpenStatus) {
             if (response.code === 200 || response.code === 302 || response.code === 301) {
-                return await this.getResponse(reqUrl, params, headers, redirect_url =, return_cookie , buffer,response)
+                return await this.getResponse(reqUrl, params, headers, redirect_url =, return_cookie, buffer, response)
             } else {
                 await this.jadeLog.error(`请求失败,失败原因为:状态码出错,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
                 return await this.reconnnect(reqUrl, params, headers, redirect_url, return_cookie, buffer)
             }
         } else {
             if (response.code === undefined) {
-                return await this.getResponse(reqUrl, params, headers, redirect_url =, return_cookie , buffer,response)
+                return await this.getResponse(reqUrl, params, headers, redirect_url =, return_cookie, buffer, response)
             } else {
                 await this.jadeLog.error(`请求失败,失败原因为:状态码存在,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
                 return await this.reconnnect(reqUrl, params, headers, redirect_url, return_cookie, buffer)
