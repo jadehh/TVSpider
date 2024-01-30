@@ -256,6 +256,7 @@ class Spider {
         } else {
             response = await req(uri.toString(), {method: "get", headers: headers, buffer:buffer,data: null});
         }
+        await this.jadeLog.debug(`Get请求,回复为:${JSON.stringify(response)}`)
         if (response.code === 200 || response.code === undefined || response.code === 302 || response.code === 301) {
             if (response.headers["location"] !== undefined) {
                 if (redirect_url) {
