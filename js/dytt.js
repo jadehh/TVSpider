@@ -18,8 +18,9 @@ class DyttSpider extends Spider {
         this.siteUrl = "https://www.dy2018.com"
 
     }
+
     getHeader() {
-        return {"host":"www.dy2018.com","User-Agent":Utils.CHROME}
+        return {"host": "www.dy2018.com", "User-Agent": Utils.CHROME}
     }
 
     getName() {
@@ -34,8 +35,7 @@ class DyttSpider extends Spider {
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
         await this.jadeLog.debug(`准备获取html内容`, true)
         try {
-            let buffer = await this.fetch(url,null,headers,false,false,1)
-            await this.jadeLog.debug(buffer)
+            let buffer = await this.fetch(url, null, headers, false, false, 1)
             let html = Utils.decode(buffer, "gb2312")
             if (!_.isEmpty(html)) {
                 return load(html)
@@ -78,11 +78,27 @@ class DyttSpider extends Spider {
         }
     }
 
+    async parseVodShortListFromDocByCategory($) {
+        let vod_list = []
+        let vodShortElements = $($("[class=\"co_content8\"]")[0]).find("tbody")
+        for (const vodShortElement of vodShortElements) {
+            await this.jadeLog.debug($(vodShortElement).html())
+            let vodShort = new VodShort()
+            let vodElements = $(vodShortElement).find("tr")
+            vodShort.vod_name =  Utils.getStrByRegex(/《(.*?)》/,$(vodElements[1]).text())
+
+            vodShort.vod_id = vodElements[1].attribs["href"]
+            vodShort.vod_remarks = $(vodElements[2]).text()
+            vodShort.vod_pic = ""
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
     async parseVodShortListFromDoc($) {
         let vod_list = []
         let vodShortElements = $($("[class=\"co_area2\"]")[0]).find("li").slice(1)
         for (const vodShortElement of vodShortElements) {
-            await this.jadeLog.debug(`${$(vodShortElement).html()}`)
             let vodShort = new VodShort()
             let vodElement = $(vodShortElement).find("a")[0]
             vodShort.vod_id = vodElement.attribs["href"]
@@ -100,7 +116,8 @@ class DyttSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-
+        let $ = await this.getHtml(tid)
+        this.homeVodList = await this.parseVodShortListFromDocByCategory($)
     }
 
 

@@ -41,14 +41,14 @@ async function test() {
     console.debug(JSON.stringify(classes));
     //
     //测试首页列表
-    let homeVod = JSON.parse(await spider.homeVod())
-    console.debug(JSON.stringify(homeVod));
+    // let homeVod = JSON.parse(await spider.homeVod())
+    // console.debug(JSON.stringify(homeVod));
     // //
     //
     // //
 
     // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("https://www.alypw.com/category-2.html", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("https://www.dy2018.com/html/gndy/dyzz/index.html", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
     //
     // // // 测试详情
