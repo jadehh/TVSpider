@@ -243,6 +243,36 @@ class Spider {
         return {"User-Agent": Utils.CHROME, "Referer": this.siteUrl + "/"};
     }
 
+    async getResponse(reqUrl, params, headers, redirect_url =, return_cookie , buffer,response) {
+        {
+            if (buffer === 1) {
+                this.reconnectTimes = 0
+                return response.content
+            } else if (response.headers["location"] !== undefined) {
+                if (redirect_url) {
+                    await this.jadeLog.debug(`返回重定向连接:${response.headers["location"]}`)
+                    return response.headers["location"]
+                } else {
+                    return this.fetch(response.headers["location"], params, headers, redirect_url, return_cookie, buffer)
+                }
+            } else if (response.content.length > 0) {
+                this.reconnectTimes = 0
+                return response.content
+            } else if (!_.isEmpty(response.content)) {
+                if (return_cookie) {
+                    return {"cookie": response.headers["set-cookie"], "content": response.content}
+                } else {
+                    this.reconnectTimes = 0
+                    return response.content
+                }
+
+            } else {
+                await this.jadeLog.error(`请求失败,请求url为:${reqUrl},回复内容为:${JSON.stringify(response)}`)
+                return await this.reconnnect(reqUrl, params, headers, redirect_url, return_cookie, buffer)
+            }
+        }
+    }
+
 
     async fetch(reqUrl, params, headers, redirect_url = false, return_cookie = false, buffer = 0) {
         let data = Utils.objectToStr(params)
@@ -254,75 +284,23 @@ class Spider {
         let response;
         if (redirect_url) {
             response = await req(uri.toString(), {
-                method: "get",
-                headers: headers,
-                buffer: buffer,
-                data: null,
-                redirect: 2
+                method: "get", headers: headers, buffer: buffer, data: null, redirect: 2
             })
         } else {
             response = await req(uri.toString(), {method: "get", headers: headers, buffer: buffer, data: null});
         }
         if (this.catOpenStatus) {
             if (response.code === 200 || response.code === 302 || response.code === 301) {
-                if (buffer === 1) {
-                    this.reconnectTimes = 0
-                    return response.content
-                } else if (response.headers["location"] !== undefined) {
-                    if (redirect_url) {
-                        await this.jadeLog.debug(`返回重定向连接:${response.headers["location"]}`)
-                        return response.headers["location"]
-                    } else {
-                        return this.fetch(response.headers["location"], params, headers, redirect_url, return_cookie, buffer)
-                    }
-                } else if (response.content.length > 0) {
-                    this.reconnectTimes = 0
-                    return response.content
-                } else if (!_.isEmpty(response.content)) {
-                    if (return_cookie) {
-                        return {"cookie": response.headers["set-cookie"], "content": response.content}
-                    } else {
-                        this.reconnectTimes = 0
-                        return response.content
-                    }
-
-                } else {
-                    await this.jadeLog.error(`请求失败,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
-                    return await this.reconnnect(reqUrl, params, headers, redirect_url, return_cookie, buffer)
-                }
+                return await this.getResponse(reqUrl, params, headers, redirect_url =, return_cookie , buffer,response)
             } else {
-                await this.jadeLog.error(`请求失败,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
+                await this.jadeLog.error(`请求失败,失败原因为:状态码出错,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
                 return await this.reconnnect(reqUrl, params, headers, redirect_url, return_cookie, buffer)
             }
         } else {
             if (response.code === undefined) {
-                if (buffer === 1) {
-                    this.reconnectTimes = 0
-                    return response.content
-                } else if (response.headers["location"] !== undefined) {
-                    if (redirect_url) {
-                        await this.jadeLog.debug(`返回重定向连接:${response.headers["location"]}`)
-                        return response.headers["location"]
-                    } else {
-                        return this.fetch(response.headers["location"], params, headers, redirect_url, return_cookie, buffer)
-                    }
-                } else if (response.content.length > 0) {
-                    this.reconnectTimes = 0
-                    return response.content
-                } else if (!_.isEmpty(response.content)) {
-                    if (return_cookie) {
-                        return {"cookie": response.headers["set-cookie"], "content": response.content}
-                    } else {
-                        this.reconnectTimes = 0
-                        return response.content
-                    }
-
-                } else {
-                    await this.jadeLog.error(`请求失败,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
-                    return await this.reconnnect(reqUrl, params, headers, redirect_url, return_cookie, buffer)
-                }
+                return await this.getResponse(reqUrl, params, headers, redirect_url =, return_cookie , buffer,response)
             } else {
-                await this.jadeLog.error(`请求失败,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
+                await this.jadeLog.error(`请求失败,失败原因为:状态码存在,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
                 return await this.reconnnect(reqUrl, params, headers, redirect_url, return_cookie, buffer)
             }
         }
