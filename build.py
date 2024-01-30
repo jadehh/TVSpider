@@ -128,7 +128,7 @@ class Build(object):
 
     def write_book_config(self,book_file_list):
         file_list = os.listdir(".")
-        site_obj = {"key": "", "name": "", "type": 10, "api": "" }
+        site_obj = {"key": "", "name": "", "type": 10, "api": "","ext": "{\"box\": \"CatVodOpen\"}"}
         site_obj_list = []
         for book_file in book_file_list:
             js_file_name = book_file.split(".")[0]
