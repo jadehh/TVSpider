@@ -47,7 +47,7 @@
             {
                 "key": "dj0898_book_open",
                 "name": "🎵┃世纪DJ音乐网┃🎵",
-                "type": 10,
+                "type": 3,
                 "api": "./js/dj0898_book_open.js",
                 "ext": "{\"box\": \"CatOpen\"}"
             }

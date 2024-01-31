@@ -134,7 +134,7 @@ class Build(object):
             if "📚︎" in jsMoudle.getName():
                 site_obj = {"key": "", "name": "", "type": 10, "api": "", "ext": "{\"box\": \"CatOpen\"}"}
             elif "🎵" in jsMoudle.getName():
-                site_obj = {"key": "", "name": "", "type": 10, "api": "", "ext": "{\"box\": \"CatOpen\"}"}
+                site_obj = {"key": "", "name": "", "type": 3, "api": "", "ext": "{\"box\": \"CatOpen\"}"}
             site_obj_copy = copy.copy(site_obj)
             site_obj_copy["key"] = js_file_name
             site_obj_copy["name"] = jsMoudle.getName()
