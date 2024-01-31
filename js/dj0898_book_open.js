@@ -34,7 +34,7 @@ class DJ0898Spider extends Spider {
             bookShort.book_pic = $(it).find("img:first")[0].attribs.src;
             const tt = $(it).find("strong:first")[0];
             bookShort.book_name = tt.children[0].data
-            bookShort.book_remarks =   "🎵" + $(it).find("font")[5].children[0].data || ""
+            bookShort.book_remarks = "🎵" + $(it).find("font")[5].children[0].data || ""
             books.push(bookShort)
         }
         return books
@@ -114,10 +114,14 @@ class DJ0898Spider extends Spider {
         this.vodDetail = await this.parseVodDetailFromDoc(id);
     }
 
-    async setPlay(flag, id, flags) {
+
+    async play(flag, id, flags) {
         let $ = await this.getHtml(id)
         const audio = $("body audio[src*=http]");
-        this.playUrl = audio[0].attribs.src;
+        let playUrl = audio[0].attribs.src;
+        return JSON.stringify({
+            parse: 0, url: playUrl,
+        });
     }
 
     async setSearch(wd, quick) {
