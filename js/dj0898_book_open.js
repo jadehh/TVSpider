@@ -8,6 +8,7 @@
 */
 import {_} from '../lib/cat.js';
 import {Spider} from "./spider.js";
+import {BookShort} from "../lib/book.js";
 
 class DJ0898Spider extends Spider {
     constructor() {
@@ -24,19 +25,19 @@ class DJ0898Spider extends Spider {
     }
 
     async parseVodShortListFromDoc($) {
+        let books = []
         const list = $("ul.djddv_djList > li");
-        return _.map(list, (it) => {
+        for (const it of list) {
+            let bookShort = new BookShort();
             const a = $(it).find("a")[1];
-            const img = $(it).find("img:first")[0];
+            bookShort.book_id = a.attribs.href
+            bookShort.book_pic = $(it).find("img:first")[0].attribs.src;
             const tt = $(it).find("strong:first")[0];
-            const remarks = $(it).find("font")[5];
-            return {
-                vod_id: a.attribs.href,
-                vod_name: tt.children[0].data,
-                vod_pic: img.attribs["src"],
-                vod_remarks: "🎵" + remarks.children[0].data || "",
-            };
-        })
+            bookShort.book_name = tt.children[0].data
+            bookShort.book_remarks =   "🎵" + $(it).find("font")[5].children[0].data || ""
+            books.push(bookShort)
+        }
+        return books
     }
 
     async parseVodShortListFromDocByCategory($) {
@@ -92,7 +93,6 @@ class DJ0898Spider extends Spider {
     }
 
     async setClasses() {
-
     }
 
     async setFilterObj() {

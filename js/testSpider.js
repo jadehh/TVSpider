@@ -53,7 +53,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = '13bqg_open';
+    let siteKey = 'dj0898_book_open';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
