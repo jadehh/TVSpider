@@ -78,6 +78,7 @@ class DJ0898Spider extends Spider {
     async parseVodDetailFromDoc(id) {
         const vod = {
             book_id: id,
+            audio: 1,
             type_name: '',
             book_year: '',
             book_area: '',
