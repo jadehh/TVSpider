@@ -45,6 +45,13 @@
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
+                "key": "bookan",
+                "name": "🎵┃看书┃🎵",
+                "type": 3,
+                "api": "./js/bookan.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "dj0898_book_open",
                 "name": "🎵┃世纪DJ音乐网┃🎵",
                 "type": 3,
