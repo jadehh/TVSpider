@@ -119,7 +119,7 @@ class DJ0898Spider extends Spider {
         await this.jadeLog.debug(`正在准备播放:${id}`)
         let $ = await this.getHtml(id)
         const audio = $("body audio[src*=http]");
-        let playUrl = audio[0].attribs.src;
+        let playUrl = "http://play.24-dj.kikadj.com//music-m4a/playloads_2024/2024-djddjs(v.1)/p/hldjcip_2/H%20L_20240128.2/%E5%85%AD%E9%9D%96DJ%E5%88%98%E6%B3%A2-%E5%85%A8%E7%B2%A4%E8%AF%ADElectro%E6%90%BA%E6%89%8B%E6%A8%AA%E6%A0%8FDJ%E5%AE%81%E5%B0%91%E6%89%93%E9%80%A0%E7%BB%8F%E5%85%B8%E5%8C%85%E6%88%BF%E4%B8%B2%E7%83%A7.m4a?9673/194296.m4a"
         await this.jadeLog.debug(`播放连接为:${playUrl}`)
         return JSON.stringify({
             parse: 0, url: playUrl,
