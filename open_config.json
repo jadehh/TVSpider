@@ -162,6 +162,13 @@
                 "type": 3,
                 "api": "./js/dj0898_book_open.js",
                 "ext": "{\"box\": \"CatOpen\"}"
+            },
+             {
+                "key": "bookan",
+                "name": "🎵┃看书┃🎵",
+                "type": 3,
+                "api": "./js/bookan.js",
+                "ext": "{\"box\": \"CatOpen\"}"
             }
         ]
     },
