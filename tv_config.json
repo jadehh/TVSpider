@@ -33,6 +33,14 @@
             "ext": "{\"box\": \"TVBox\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
         },
         {
+            "key": "audiomack_music",
+            "name": "use strict",
+            "type": 3,
+            "api": "./js/audiomack_music.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "douban",
             "name": "🍥┃豆瓣┃🍥",
             "type": 3,

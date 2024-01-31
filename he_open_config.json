@@ -34,6 +34,14 @@
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
             },
             {
+                "key": "audiomack_music",
+                "name": "use strict",
+                "type": 3,
+                "api": "./js/audiomack_music.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "douban",
                 "name": "🍥┃豆瓣┃🍥",
                 "type": 3,
@@ -154,6 +162,13 @@
                 "name": "📚︎|笔趣阁|📚︎",
                 "type": 10,
                 "api": "./js/13bqg_open.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "audiomack",
+                "name": "🎵┃音声┃🎵",
+                "type": 3,
+                "api": "./js/audiomack.js",
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
