@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './bookan.js';
+import {__jsEvalReturn} from './dj0898_book_open.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -53,7 +53,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'bookan';
+    let siteKey = 'dj0898_book_open';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -72,11 +72,11 @@ async function test() {
     // //
 
     // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("1305", "1", undefined,{}));
-    console.debug(JSON.stringify(catePage));
+    // let  catePage = JSON.parse(await spider.category("xuanhuan", "1", undefined,{}));
+    // console.debug(JSON.stringify(catePage));
     //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("3331822"))
+    let detail1 = JSON.parse(await spider.detail("http://m.dj0898.com/dance/play/id/194296"))
     await testMusicPlay(detail1)
 
 

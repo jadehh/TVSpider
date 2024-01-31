@@ -115,16 +115,10 @@ class DJ0898Spider extends Spider {
         this.vodDetail = await this.parseVodDetailFromDoc(id);
     }
 
-
-    async play(flag, id, flags) {
-        await this.jadeLog.debug(`正在准备播放:${id}`)
+    async setPlay(flag, id, flags) {
         let $ = await this.getHtml(id)
         const audio = $("body audio[src*=http]");
-        let playUrl = "http://audio.bookan.com.cn/video1/audio/2021061114/aache64_16bbe0ec.m4a"
-        await this.jadeLog.debug(`播放连接为:${playUrl}`)
-        return JSON.stringify({
-            parse: 0, url: playUrl,
-        });
+        this.playUrl = audio[0].attribs.src
     }
 
     async setSearch(wd, quick) {
