@@ -98,7 +98,6 @@ class Build(object):
                         site_obj_copy["ext"]["code"] = 1
                     site_obj_copy["ext"] = json.dumps(site_obj_copy["ext"])
                     site_obj_list.append(site_obj_copy)
-                    print(site_obj_list)
             if site_obj_copy_2 is not None:
                 site_obj_list.append(site_obj_copy_2)
             if json_file_name == "TVBox":
