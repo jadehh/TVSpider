@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './dj0898_book_open.js';
+import {__jsEvalReturn} from './lbgs_open.js';
 import * as Utils from "../lib/utils.js";
 
 
