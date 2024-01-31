@@ -116,9 +116,11 @@ class DJ0898Spider extends Spider {
 
 
     async play(flag, id, flags) {
+        await this.jadeLog.debug(`正在准备播放:${id}`)
         let $ = await this.getHtml(id)
         const audio = $("body audio[src*=http]");
         let playUrl = audio[0].attribs.src;
+        await this.jadeLog.debug(`播放连接为:${playUrl}`)
         return JSON.stringify({
             parse: 0, url: playUrl,
         });
