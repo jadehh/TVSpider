@@ -54,7 +54,7 @@ class Build(object):
             jsMoudle = JSMoudle(os.path.join(self.js_path, js_file))
             if case == 0:
                 if jsMoudle.getName():
-                    if "🔞" not in jsMoudle.getName() and "📚︎" not in jsMoudle.getName():
+                    if "🔞" not in jsMoudle.getName() and "📚︎" not in jsMoudle.getName() and "🎵" not in jsMoudle.getName():
                         new_js_file_list.append(js_file)
             elif case  == 1:
                 if jsMoudle.getName():
@@ -62,7 +62,7 @@ class Build(object):
                         new_js_file_list.append(js_file)
             elif case == 2:
                 if jsMoudle.getName():
-                    if "📚︎" in jsMoudle.getName():
+                    if "📚︎" in jsMoudle.getName() or "🎵" in jsMoudle.getName():
                         new_js_file_list.append(js_file)
         return new_js_file_list
 
@@ -128,11 +128,14 @@ class Build(object):
 
     def write_book_config(self,book_file_list):
         file_list = os.listdir(".")
-        site_obj = {"key": "", "name": "", "type": 10, "api": "","ext": "{\"box\": \"CatOpen\"}"}
         site_obj_list = []
         for book_file in book_file_list:
             js_file_name = book_file.split(".")[0]
             jsMoudle = JSMoudle(os.path.join(self.js_path, book_file))
+            if "📚︎" in jsMoudle.getName():
+                site_obj = {"key": "", "name": "", "type": 10, "api": "", "ext": "{\"box\": \"CatOpen\"}"}
+            elif "🎵" in jsMoudle.getName():
+                site_obj = {"key": "", "name": "", "type": 3, "api": "", "ext": "{\"box\": \"CatOpen\"}"}
             site_obj_copy = copy.copy(site_obj)
             site_obj_copy["key"] = js_file_name
             site_obj_copy["name"] = jsMoudle.getName()

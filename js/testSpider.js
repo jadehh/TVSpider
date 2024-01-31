@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './13bqg_open.js';
+import {__jsEvalReturn} from './dj0898_book_open.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -8,6 +8,30 @@ async function testPlay(vodDetail){
     if (vodDetail.list && vodDetail.list.length > 0) {
         const pFlag = vodDetail.list[0].vod_play_from.split('$$$');
         const pUrls = vodDetail.list[0].vod_play_url.split('$$$');
+        if (pFlag.length > 0 && pUrls.length > 0) {
+            for (const i in pFlag) {
+                // console.debug(i)
+                let flag = pFlag[i];
+                let urls = pUrls[i].split('#');
+                // console.debug(flag, urls)
+                for (const j in urls) {
+                    var name = urls[j].split('$')[0];
+                    var url = urls[j].split('$')[1];
+                    console.debug(flag + " | " + name + " | " + url);
+                    var playUrl = await spider.play(flag, url, []);
+                    console.debug('playURL: ' + playUrl);
+                    break
+                }
+                break
+            }
+        }
+    }
+}
+
+async function testMusicPlay(vodDetail){
+    if (vodDetail.list && vodDetail.list.length > 0) {
+        const pFlag = vodDetail.list[0].volumes.split('$$$');
+        const pUrls = vodDetail.list[0].urls.split('$$$');
         if (pFlag.length > 0 && pUrls.length > 0) {
             for (const i in pFlag) {
                 // console.debug(i)
@@ -52,8 +76,8 @@ async function test() {
     // console.debug(JSON.stringify(catePage));
     //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/html/4213/"))
-    await testPlay(detail1)
+    let detail1 = JSON.parse(await spider.detail("http://m.dj0898.com/dance/play/id/194296"))
+    await testMusicPlay(detail1)
 
 
 

@@ -100,7 +100,7 @@ class DJ0898Spider extends Spider {
 
     async setHomeVod() {
         let $ = await this.getHtml(this.siteUrl + "/dance/lists/id/10/1")
-        this.vodList = await this.parseVodShortListFromDoc($)
+        this.homeVodList = await this.parseVodShortListFromDoc($)
     }
 
     async setCategory(tid, pg, filter, extend) {
