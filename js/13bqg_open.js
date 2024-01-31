@@ -65,19 +65,22 @@ class BQQSpider extends Spider {
             book_year: $('[property$=update_time]')[0].attribs.content,
             book_director: $('[property$=author]')[0].attribs.content,
             book_content: $('[property$=description]')[0].attribs.content,
-            book_pic:$($("[class=\"cover\"]")).find("img")[0].attribs.src
+            book_pic: $($("[class=\"cover\"]")).find("img")[0].attribs.src
         };
-        $ = await this.getHtml(this.siteUrl + id + `list.html`);
-        let urls = [];
-        const links = $('dl>dd>a[href*="/html/"]');
-        for (const l of links) {
-            const name = $(l).text().trim();
-            const link = l.attribs.href;
-            urls.push(name + '$' + link);
+        if (id !== undefined) {
+            $ = await this.getHtml(this.siteUrl + id + `list.html`);
+            let urls = [];
+            const links = $('dl>dd>a[href*="/html/"]');
+            for (const l of links) {
+                const name = $(l).text().trim();
+                const link = l.attribs.href;
+                urls.push(name + '$' + link);
+            }
+            book.volumes = '全卷';
+            book.urls = urls.join('#');
         }
-        book.volumes = '全卷';
-        book.urls = urls.join('#');
         return book
+
     }
 
     async setClasses() {
@@ -174,7 +177,7 @@ class BQQSpider extends Spider {
         if (what === 'img') {
             await this.jadeLog.debug(`反向代理ID为:${url}`)
             let $ = await this.getHtml(this.siteUrl + url)
-            let bookDetail = await this.parseVodDetailFromDoc($, url)
+            let bookDetail = await this.parseVodDetailFromDoc($)
             let resp;
             if (!_.isEmpty(headers)) {
                 resp = await req(bookDetail.book_pic, {
