@@ -52,7 +52,6 @@ class DyttSpider extends Spider {
         let $ = await this.getHtml()
         let vodShortElements = $("[class=\"title_all\"]")
         for (const vodShortElement of vodShortElements) {
-            await this.jadeLog.debug(`${$(vodShortElement).html()}`)
             let spanElement = $(vodShortElement).find("span")[0]
             let aElement = $(vodShortElement).find("a")[0]
             let type_name = $(spanElement).text()
