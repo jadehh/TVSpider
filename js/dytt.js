@@ -19,16 +19,12 @@ class DyttSpider extends Spider {
 
     }
 
-    getHeader() {
-        return {"host": "www.dy2018.com", "User-Agent": Utils.CHROME}
-    }
-
     getName() {
         return "👼|电影天堂|👼"
     }
 
     getAppName() {
-        return "|电影天堂|"
+        return "电影天堂"
     }
 
 
@@ -82,13 +78,11 @@ class DyttSpider extends Spider {
         let vod_list = []
         let vodShortElements = $($("[class=\"co_content8\"]")[0]).find("tbody")
         for (const vodShortElement of vodShortElements) {
-            await this.jadeLog.debug($(vodShortElement).html())
             let vodShort = new VodShort()
             let vodElements = $(vodShortElement).find("tr")
             vodShort.vod_name =  Utils.getStrByRegex(/《(.*?)》/,$(vodElements[1]).text())
-
-            vodShort.vod_id = vodElements[1].attribs["href"]
-            vodShort.vod_remarks = $(vodElements[2]).text()
+            vodShort.vod_id = $(vodElements[1]).find("a")[0].attribs.href
+            vodShort.vod_remarks = "日期:"+Utils.getStrByRegex(/日期：(.*?) /,$(vodElements[2]).text()) + " 热度:" + Utils.getStrByRegex(/点击：(.*?) /,$(vodElements[2]).text())
             vodShort.vod_pic = ""
             vod_list.push(vodShort)
         }
@@ -110,6 +104,30 @@ class DyttSpider extends Spider {
         return vod_list
     }
 
+    async parseVodDetailFromDoc($) {
+        let html = $.html()
+        let vodDetail = new VodDetail()
+        vodDetail.vod_name = Utils.getStrByRegex(/《(.*?)》/, Utils.getStrByRegex(/<title>(.*?)<\/title>/,$.html()))
+        let zoomElement = $("[id=\"Zoom\"]")
+        vodDetail.vod_pic = $(zoomElement).find("img")[0].attribs.src
+        let content = $(zoomElement).text()
+        vodDetail.vod_year = Utils.getStrByRegex(/年　　代　(.*?)◎/,content)
+        vodDetail.type_name = Utils.getStrByRegex(/类　　别　(.*?)◎/,content)
+        vodDetail.vod_area = Utils.getStrByRegex(/产　　地　(.*?)◎/,content)
+        vodDetail.vod_director = Utils.getStrByRegex(/导　　演　(.*?)◎/,content)
+        vodDetail.vod_content = Utils.getStrByRegex(/简　　介　(.*?)◎/,content)
+        vodDetail.vod_actor = Utils.getStrByRegex(/主　　演(.*?)◎/,content).replaceAll("　　　　　　","*")
+        vodDetail.vod_remarks = Utils.getStrByRegex(/豆瓣评分　(.*?)\//,content)
+        vodDetail.vod_play_from = this.getAppName()
+        let playList = $(zoomElement).find("[class=\"player_list\"]").find("a")
+        let vodItems = []
+        for (const playEle of playList){
+               vodItems.push($(playEle).text() + "$" + playEle.attribs.href);
+        }
+        vodDetail.vod_play_url = [vodItems.join("#")].join("$$$")
+        return vodDetail
+    }
+
     async setHomeVod() {
         let $ = await this.getHtml()
         this.homeVodList = await this.parseVodShortListFromDoc($)
@@ -117,13 +135,13 @@ class DyttSpider extends Spider {
 
     async setCategory(tid, pg, filter, extend) {
         let $ = await this.getHtml(tid)
-        this.homeVodList = await this.parseVodShortListFromDocByCategory($)
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
 
     async detail(id) {
         let $ = await this.getHtml(this.siteUrl + id)
-
+        this.vodDetail = await this.parseVodDetailFromDoc($)
     }
 
 
