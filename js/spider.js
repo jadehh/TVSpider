@@ -296,7 +296,7 @@ class Spider {
                 return await this.reconnnect(reqUrl, params, headers, redirect_url, return_cookie, buffer)
             }
         } else {
-            if (response.code === undefined) {
+            if (response.code === undefined || response.code === 200) {
                 return await this.getResponse(reqUrl, params, headers, redirect_url, return_cookie, buffer, response)
             } else {
                 await this.jadeLog.error(`请求失败,失败原因为:状态码存在,请求url为:${uri},回复内容为:${JSON.stringify(response)}`)
