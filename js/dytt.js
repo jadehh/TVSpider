@@ -34,6 +34,7 @@ class DyttSpider extends Spider {
             let buffer = await this.fetch(url, null, headers, false, false, 1)
             let html = Utils.decode(buffer, "gb2312")
             if (!_.isEmpty(html)) {
+                await this.jadeLog.debug(html)
                 return load(html)
             } else {
                 await this.jadeLog.error(`html获取失败`, true)
