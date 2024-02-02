@@ -660,29 +660,34 @@ class Spider {
     }
 
     async doubanSearch(wd) {
-        let _api_url = "https://frodo.douban.com/api/v2"
-        let _api_key = "0dad551ec0f84ed02907ff5c42e8ec70"
-        let url = _api_url + "/search/movie"
-        let date = new Date()
-        let ts = date.getFullYear().toString() + (date.getMonth() + 1).toString() + date.getDate().toString()
-        let params = {
-            '_sig': this.sign(url, ts),
-            '_ts': ts,
-            'apiKey': _api_key,
-            'count': 20,
-            'os_rom': 'android',
-            'q': encodeURIComponent(wd),
-            'start': 0
-        }
-        let content = await this.fetch(url, params, this.getSearchHeader())
-        if (!_.isEmpty(content)) {
-            let content_json = JSON.parse(content)
-            await this.jadeLog.debug(`豆瓣搜索结果:${content}`)
-            return await this.parseDoubanVodShortListFromJson(content_json["items"])
-        }
-        return null
+        try {
+            let _api_url = "https://frodo.douban.com/api/v2"
+            let _api_key = "0dad551ec0f84ed02907ff5c42e8ec70"
+            let url = _api_url + "/search/movie"
+            let date = new Date()
+            let ts = date.getFullYear().toString() + (date.getMonth() + 1).toString() + date.getDate().toString()
+            let params = {
+                '_sig': this.sign(url, ts),
+                '_ts': ts,
+                'apiKey': _api_key,
+                'count': 20,
+                'os_rom': 'android',
+                'q': encodeURIComponent(wd),
+                'start': 0
+            }
+            let content = await this.fetch(url, params, this.getSearchHeader())
+            if (!_.isEmpty(content)) {
+                let content_json = JSON.parse(content)
+                await this.jadeLog.debug(`豆瓣搜索结果:${content}`)
+                return await this.parseDoubanVodShortListFromJson(content_json["items"])
+            }
+            return null
 
+        }catch (e) {
+            await this.jadeLog.error("反向代理出错,失败原因为:"+e)
+        }
     }
+
 }
 
 
