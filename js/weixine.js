@@ -66,8 +66,10 @@ class WeiXineSpider extends Spider {
         vodDetail.vod_director = $(video_items[0]).find("a")[0].children[0].data
         let vidoe_info_actor_list = $(video_items[1]).find("a")
         let actor_list = []
-        for (const vidoe_info_actor of vidoe_info_actor_list) {
-            actor_list.push(vidoe_info_actor.children[0].data)
+        for (const video_info_actor of vidoe_info_actor_list) {
+            if (video_info_actor.children.length > 0){
+                 actor_list.push(video_info_actor.children[0].data)
+            }
         }
         vodDetail.vod_actor = actor_list.join(" * ")
         vodDetail.vod_year = $(video_items[2]).find("a")[0].children[0].data
