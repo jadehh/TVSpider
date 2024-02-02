@@ -677,6 +677,7 @@ class Spider {
         let content = await this.fetch(url, params, this.getSearchHeader())
         if (!_.isEmpty(content)) {
             let content_json = JSON.parse(content)
+            await this.jadeLog.debug(`豆瓣搜索结果:${content}`)
             return await this.parseDoubanVodShortListFromJson(content_json["items"])
         }
         return null

@@ -104,7 +104,7 @@ class DyttSpider extends Spider {
             let vodShort = new VodShort()
             let vodElement = $(vodShortElement).find("a")[0]
             vodShort.vod_id = vodElement.attribs["href"]
-            vodShort.vod_name = vodElement.attribs["title"]
+            vodShort.vod_name = Utils.getStrByRegex(/《(.*?)》/, vodElement.attribs["title"])
             vodShort.vod_remarks = $($(vodShortElement).find("span")).text().replaceAll("", "")
             vodShort.vod_pic = this.douBanjsBase + Utils.base64Encode(vodShort.vod_name)
             vod_list.push(vodShort)
