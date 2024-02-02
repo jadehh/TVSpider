@@ -89,7 +89,7 @@ class DyttSpider extends Spider {
             let vodShort = new VodShort()
             let vodElements = $(vodShortElement).find("tr")
             vodShort.vod_name = Utils.getStrByRegex(/《(.*?)》/, $(vodElements[1]).text())
-            vodShort.vod_id = $(vodElements[1]).find("a")[0].attribs.href
+            vodShort.vod_id = $(vodElements[1]).find("a").slice(-1)[0].attribs.href
             vodShort.vod_remarks = "日期:" + Utils.getStrByRegex(/日期：(.*?) /, $(vodElements[2]).text()) + " 热度:" + Utils.getStrByRegex(/点击：(.*?) /, $(vodElements[2]).text())
             vodShort.vod_pic = ""
             vod_list.push(vodShort)
