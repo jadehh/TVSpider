@@ -91,7 +91,7 @@ class DyttSpider extends Spider {
             vodShort.vod_name = Utils.getStrByRegex(/《(.*?)》/, $(vodElements[1]).text())
             vodShort.vod_id = $(vodElements[1]).find("a").slice(-1)[0].attribs.href
             vodShort.vod_remarks = "日期:" + Utils.getStrByRegex(/日期：(.*?) /, $(vodElements[2]).text()) + " 热度:" + Utils.getStrByRegex(/点击：(.*?) /, $(vodElements[2]).text())
-            vodShort.vod_pic = this.douBanjsBase + Utils.base64Encode(vodShort.vod_name)
+            vodShort.vod_pic = Utils.RESOURCEURL + "/resources/dytt.jpg"
             vod_list.push(vodShort)
         }
         return vod_list
@@ -106,7 +106,7 @@ class DyttSpider extends Spider {
             vodShort.vod_id = vodElement.attribs["href"]
             vodShort.vod_name = Utils.getStrByRegex(/《(.*?)》/, vodElement.attribs["title"])
             vodShort.vod_remarks = $($(vodShortElement).find("span")).text().replaceAll("", "")
-            vodShort.vod_pic = this.douBanjsBase + Utils.base64Encode(vodShort.vod_name)
+            vodShort.vod_pic = Utils.RESOURCEURL + "/resources/dytt.jpg"
             vod_list.push(vodShort)
         }
         return vod_list
