@@ -434,7 +434,7 @@ class Spider {
             await this.jadeLog.error("读取缓存失败,失败原因为:" + e)
         }
         this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
-
+        this.douBanjsBase = await js2Proxy(true, this.siteType, this.siteKey, 'douban/', {});
     }
 
     async loadFilterAndClasses() {
@@ -574,8 +574,8 @@ class Spider {
         await this.jadeLog.debug(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
         let what = segments[0];
         let url = Utils.base64Decode(segments[1]);
+        await this.jadeLog.debug(`反向代理参数为:${url}`)
         if (what === 'img') {
-            await this.jadeLog.debug(`反向代理URL为:${url}`)
             let resp;
             if (!_.isEmpty(headers)) {
                 resp = await req(url, {
@@ -591,10 +591,96 @@ class Spider {
             return JSON.stringify({
                 code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
             });
+        } else if (what === "douban") {
+            let vod_list = await this.doubanSearch(url)
+            if (vod_list !== null) {
+                let vod_pic = vod_list[0].vod_pic
+                let resp;
+                if (!_.isEmpty(headers)) {
+                    resp = await req(vod_pic, {
+                        buffer: 2, headers: headers
+                    });
+                } else {
+                    resp = await req(vod_pic, {
+                        buffer: 2, headers: {
+                            Referer: vod_pic, 'User-Agent': Utils.CHROME,
+                        },
+                    });
+                }
+                return JSON.stringify({
+                    code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+                });
+            }
         }
         return JSON.stringify({
             code: 500, content: '',
         });
+    }
+
+
+    getSearchHeader() {
+        const UserAgents = ["api-client/1 com.douban.frodo/7.22.0.beta9(231) Android/23 product/Mate 40 vendor/HUAWEI model/Mate 40 brand/HUAWEI  rom/android  network/wifi  platform/AndroidPad", "api-client/1 com.douban.frodo/7.18.0(230) Android/22 product/MI 9 vendor/Xiaomi model/MI 9 brand/Android  rom/miui6  network/wifi  platform/mobile nd/1", "api-client/1 com.douban.frodo/7.1.0(205) Android/29 product/perseus vendor/Xiaomi model/Mi MIX 3  rom/miui6  network/wifi  platform/mobile nd/1", "api-client/1 com.douban.frodo/7.3.0(207) Android/22 product/MI 9 vendor/Xiaomi model/MI 9 brand/Android  rom/miui6  network/wifi platform/mobile nd/1"]
+        let randomNumber = Math.floor(Math.random() * UserAgents.length); // 生成一个介于0到9之间的随机整数
+        return {
+            'User-Agent': UserAgents[randomNumber]
+
+        }
+    }
+
+    async parseDoubanVodShortListFromJson(obj) {
+        let vod_list = []
+        for (const item of obj) {
+            let vod_short = new VodShort()
+            vod_short.vod_id = "msearch:" + item["id"]
+            if (item["title"] === undefined) {
+                vod_short.vod_name = item["target"]["title"]
+            } else {
+                vod_short.vod_name = item["title"]
+            }
+            if (item["pic"] === undefined) {
+                vod_short.vod_pic = item["target"]["cover_url"]
+            } else {
+                vod_short.vod_pic = item["pic"]["normal"]
+            }
+            if (item["rating"] === undefined) {
+                vod_short.vod_remarks = "评分:" + item["target"]["rating"]["value"].toString()
+            } else {
+                vod_short.vod_remarks = "评分:" + item["rating"]["value"].toString()
+            }
+            vod_list.push(vod_short);
+        }
+        return vod_list
+    }
+
+    sign(url, ts, method = 'GET') {
+        let _api_secret_key = "bf7dddc7c9cfe6f7"
+        let url_path = "%2F" + url.split("/").slice(3).join("%2F")
+        let raw_sign = [method.toLocaleUpperCase(), url_path, ts.toString()].join("&")
+        return CryptoJS.HmacSHA1(raw_sign, _api_secret_key).toString(CryptoJS.enc.Base64)
+    }
+
+    async doubanSearch(wd) {
+        let _api_url = "https://frodo.douban.com/api/v2"
+        let _api_key = "0dad551ec0f84ed02907ff5c42e8ec70"
+        let url = _api_url + "/search/movie"
+        let date = new Date()
+        let ts = date.getFullYear().toString() + (date.getMonth() + 1).toString() + date.getDate().toString()
+        let params = {
+            '_sig': this.sign(url, ts),
+            '_ts': ts,
+            'apiKey': _api_key,
+            'count': 20,
+            'os_rom': 'android',
+            'q': encodeURIComponent(wd),
+            'start': 0
+        }
+        let content = await this.fetch(url, params, this.getSearchHeader())
+        if (!_.isEmpty(content)) {
+            let content_json = JSON.parse(content)
+            return await this.parseDoubanVodShortListFromJson(content_json["items"])
+        }
+        return null
+
     }
 }
 
