@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './dytt.js';
+import {__jsEvalReturn} from './wogg.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -53,30 +53,30 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'dytt';
+    let siteKey = 'wogg';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
         stype: siteType,
-        ext: {"token": "a5bf471ef70d4069b55758839d8ef4d1", "box": "CatOpen", "code": "1"}
+        ext: {"token": "3d3c5c67581e4db188e753a56ea5829a", "box": "CatOpen", "code": "1"}
     });
 
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
     //
     //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
     // //
     //
     // //
 
     // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("https://www.dy2018.com/html/bikan/", "1", undefined,{}));
-    console.debug(JSON.stringify(catePage));
+    // let  catePage = JSON.parse(await spider.category("https://www.dy2018.com/html/bikan/", "1", undefined,{}));
+    // console.debug(JSON.stringify(catePage));
     //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/i/108337.html"))
+    let detail1 = JSON.parse(await spider.detail("/index.php/voddetail/82563.html"))
     await testPlay(detail1)
 
 
