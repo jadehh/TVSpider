@@ -12,6 +12,7 @@ import * as Utils from "../lib/utils.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import {_, load, Uri} from "../lib/cat.js";
 import {} from "../lib/crypto-js.js"
+
 class Result {
     constructor() {
         this.class = []
@@ -545,10 +546,15 @@ class Spider {
 
     async play(flag, id, flags) {
         await this.jadeLog.info("正在解析播放页面", true)
-        await this.setPlay(flag, id, flags)
-        await this.jadeLog.debug(`播放页面内容为:${this.result.play(this.playUrl)}`)
-        await this.jadeLog.info("播放页面解析完成", true)
-        return this.result.setHeader(this.header).play(this.playUrl)
+        try {
+            await this.setPlay(flag, id, flags)
+            await this.jadeLog.debug(`播放页面内容为:${this.result.play(this.playUrl)}`)
+            await this.jadeLog.info("播放页面解析完成", true)
+            return this.result.setHeader(this.header).play(this.playUrl)
+        } catch (e) {
+            await this.jadeLog.error("解析播放页面出错,失败原因为:" + e)
+        }
+
     }
 
     async setSearch(wd, quick) {
@@ -683,8 +689,8 @@ class Spider {
             }
             return null
 
-        }catch (e) {
-            await this.jadeLog.error("反向代理出错,失败原因为:"+e)
+        } catch (e) {
+            await this.jadeLog.error("反向代理出错,失败原因为:" + e)
         }
     }
 
