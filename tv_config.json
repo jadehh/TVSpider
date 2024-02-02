@@ -33,6 +33,14 @@
             "ext": "{\"box\": \"TVBox\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
         },
         {
+            "key": "changzhang",
+            "name": "🏭️┃厂长直连┃🏭️",
+            "type": 3,
+            "api": "./js/changzhang.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "douban",
             "name": "🍥┃豆瓣┃🍥",
             "type": 3,
@@ -119,6 +127,14 @@
             "api": "./js/pan_search.js",
             "timeout": 30,
             "ext": "{\"box\": \"TVBox\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
+        },
+        {
+            "key": "pipixia",
+            "name": "🦐┃皮皮虾影视┃🦐",
+            "type": 3,
+            "api": "./js/pipixia.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
         },
         {
             "key": "weixine",

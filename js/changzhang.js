@@ -25,21 +25,21 @@
  *    def homeContent(self,filter):
  *        result = {}
  *        cateManual = {
- * 			"豆瓣电影Top250": "dbtop250",
- * 			"最新电影": "zuixindianying",
- * 			"电视剧": "dsj",
- * 			"国产剧": "gcj",
- * 			"美剧": "meijutt",
- * 			"韩剧": "hanjutv",
- * 			"番剧": "fanju",
- * 			"动漫": "dm"
- * 		}
+ *            "豆瓣电影Top250": "dbtop250",
+ *            "最新电影": "zuixindianying",
+ *            "电视剧": "dsj",
+ *            "国产剧": "gcj",
+ *            "美剧": "meijutt",
+ *            "韩剧": "hanjutv",
+ *            "番剧": "fanju",
+ *            "动漫": "dm"
+ *        }
  *        classes = []
  *        for k in cateManual:
  *            classes.append({
- * 				'type_name':k,
- * 				'type_id':cateManual[k]
- * 			})
+ *                'type_name':k,
+ *                'type_id':cateManual[k]
+ *            })
  *        result['class'] = classes
  *        return result
  *    def homeVideoContent(self):
@@ -54,14 +54,14 @@
  *            sid = a.xpath("./a/@href")[0]
  *            sid = self.regStr(sid,"/movie/(\\S+).html")
  *            videos.append({
- * 				"vod_id":sid,
- * 				"vod_name":name,
- * 				"vod_pic":pic,
- * 				"vod_remarks":mark
- * 			})
+ *                "vod_id":sid,
+ *                "vod_name":name,
+ *                "vod_pic":pic,
+ *                "vod_remarks":mark
+ *            })
  *        result = {
- * 			'list':videos
- * 		}
+ *            'list':videos
+ *        }
  *        return result
  *    def categoryContent(self,tid,pg,filter,extend):
  *        result = {}
@@ -77,11 +77,11 @@
  *            sid = a.xpath("./a/@href")[0]
  *            sid = self.regStr(sid,"/movie/(\\S+).html")
  *            videos.append({
- * 				"vod_id":sid,
- * 				"vod_name":name,
- * 				"vod_pic":pic,
- * 				"vod_remarks":mark
- * 			})
+ *                "vod_id":sid,
+ *                "vod_name":name,
+ *                "vod_pic":pic,
+ *                "vod_remarks":mark
+ *            })
  *
  *        result['list'] = videos
  *        result['page'] = pg
@@ -101,17 +101,17 @@
  *        detail = root.xpath(".//div[@class='yp_context']//p/text()")[0]
  *
  *        vod = {
- * 			"vod_id":tid,
- * 			"vod_name":title,
- * 			"vod_pic":pic,
- * 			"type_name":"",
- * 			"vod_year":"",
- * 			"vod_area":"",
- * 			"vod_remarks":"",
- * 			"vod_actor":"",
- * 			"vod_director":"",
- * 			"vod_content":detail
- * 		}
+ *            "vod_id":tid,
+ *            "vod_name":title,
+ *            "vod_pic":pic,
+ *            "type_name":"",
+ *            "vod_year":"",
+ *            "vod_area":"",
+ *            "vod_remarks":"",
+ *            "vod_actor":"",
+ *            "vod_director":"",
+ *            "vod_content":detail
+ *        }
  *
  *        infoArray = node.xpath(".//ul[@class='moviedteail_list']/li")
  *        for info in infoArray:
@@ -155,10 +155,10 @@
  *        vod['vod_play_url'] = vod_play_url
  *
  *        result = {
- * 			'list':[
- * 				vod
- * 			]
- * 		}
+ *            'list':[
+ *                vod
+ *            ]
+ *        }
  *        return result
  *
  *    def searchContent(self,key,quick):
@@ -177,23 +177,23 @@
  *            tid = self.regStr(href,'movie/(\\S+).html')
  *            remark = ""
  *            videos.append({
- * 				"vod_id": tid,
- * 				"vod_name": name,
- * 				"vod_pic": pic,
- * 				"vod_remarks": remark
- * 			})
+ *                "vod_id": tid,
+ *                "vod_name": name,
+ *                "vod_pic": pic,
+ *                "vod_remarks": remark
+ *            })
  *        result = {
- * 			'list':videos
- * 		}
+ *            'list':videos
+ *        }
  *        return result
  *
  *    config = {
- * 		"player": { },
- * 		"filter": {	}
- * 	}
+ *        "player": { },
+ *        "filter": {	}
+ *    }
  *    header = {
- * 		"User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36"
- * 	}
+ *        "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36"
+ *    }
  *
  *    def parseCBC(self, enc, key, iv):
  *        keyBytes = key.encode("utf-8")
@@ -215,37 +215,37 @@
  *        decontent = self.parseCBC(base64.b64decode(content),key,iv).decode()
  *
  *        urlPat = 'video: \\{url: \\\"([^\\\"]+)\\\"'
- * 		vttPat = 'subtitle: \\{url:\\\"([^\\\"]+\\.vtt)\\\"'
+ *        vttPat = 'subtitle: \\{url:\\\"([^\\\"]+\\.vtt)\\\"'
  *
- * 		str3 = self.regStr(decontent,urlPat)
- * 		str4 = self.regStr(decontent,vttPat)
+ *        str3 = self.regStr(decontent,urlPat)
+ *        str4 = self.regStr(decontent,vttPat)
  *
- * 		self.loadVtt(str3)
+ *        self.loadVtt(str3)
  *
- * 		result = {
- * 			'parse':'0',
- * 			'playUrl':'',
- * 			'url':str3,
- * 			'header':''
- * 		}
- * 		if len(str4) > 0:
- * 			result['subf'] = '/vtt/utf-8'
- * 			# result['subt'] = Proxy.localProxyUrl() + "?do=czspp&url=" + URLEncoder.encode(str4)
- * 			result['subt'] = ''
- * 		return result
+ *        result = {
+ *            'parse':'0',
+ *            'playUrl':'',
+ *            'url':str3,
+ *            'header':''
+ *        }
+ *        if len(str4) > 0:
+ *            result['subf'] = '/vtt/utf-8'
+ *            # result['subt'] = Proxy.localProxyUrl() + "?do=czspp&url=" + URLEncoder.encode(str4)
+ *            result['subt'] = ''
+ *        return result
  *
- * 	def loadVtt(self,url):
- * 		print(url)
- * 	def isVideoFormat(self,url):
- * 		pass
- * 	def manualVideoCheck(self):
- * 		pass
- * 	def localProxy(self,param):
- * 		action = {}
- * 		return [200, "video/MP2T", action, ""]
+ *    def loadVtt(self,url):
+ *        print(url)
+ *    def isVideoFormat(self,url):
+ *        pass
+ *    def manualVideoCheck(self):
+ *        pass
+ *    def localProxy(self,param):
+ *        action = {}
+ *        return [200, "video/MP2T", action, ""]
  */
 import {Spider} from "./spider.js";
-import {_, Crypto, load} from "../lib/cat.js";
+import {_, Crypto} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
 
@@ -262,21 +262,22 @@ class ChangZhangSpider extends Spider {
     getAppName() {
         return "厂长资源"
     }
+
     parseVodShortFromElement($, element) {
         let vodShort = new VodShort()
-            let imgElement = $($(element).find("a")).find("img")[0]
-            vodShort.vod_name = imgElement.attribs.alt
-            vodShort.vod_pic = imgElement.attribs["data-original"]
-            vodShort.vod_remarks = $($($(element).find("[class='hdinfo']")).find("span")).text()
-            vodShort.vod_id = $(element).find("a")[0].attribs.href
+        let imgElement = $($(element).find("a")).find("img")[0]
+        vodShort.vod_name = imgElement.attribs.alt
+        vodShort.vod_pic = imgElement.attribs["data-original"]
+        vodShort.vod_remarks = $($($(element).find("[class='hdinfo']")).find("span")).text()
+        vodShort.vod_id = $(element).find("a")[0].attribs.href
         return vodShort
     }
 
     async parseVodShortListFromDoc($) {
         let vod_list = []
         let aList = $($("[class=\"mi_cont\"]").find("ul")).find("li")
-        for (const a of aList){
-            vod_list.push(this.parseVodShortFromElement($,a))
+        for (const a of aList) {
+            vod_list.push(this.parseVodShortFromElement($, a))
         }
         return vod_list
     }
@@ -284,8 +285,8 @@ class ChangZhangSpider extends Spider {
     async parseVodShortListFromDocByCategory($) {
         let vod_list = []
         let aList = $($("[class=\"mi_cont \"]").find("ul")).find("li")
-        for (const a of aList){
-            vod_list.push(this.parseVodShortFromElement($,a))
+        for (const a of aList) {
+            vod_list.push(this.parseVodShortFromElement($, a))
         }
         return vod_list
     }
@@ -295,50 +296,50 @@ class ChangZhangSpider extends Spider {
         let nodeElement = $("[class='dyxingq']")
         vodDetail.vod_pic = $(nodeElement).find("img")[0].attribs.src
         vodDetail.vod_name = $($(nodeElement).find("h1")[0]).text()
-        vodDetail.vod_content =$($( $("[class='yp_context']")).find("p")).text()
+        vodDetail.vod_content = $($($("[class='yp_context']")).find("p")).text()
         let infoArray = $(nodeElement).find("[class='moviedteail_list']").find("li")
         let x = $(infoArray).text()
-        for (const info of  infoArray){
+        for (const info of infoArray) {
             let content = $(info).text()
-            if (content.indexOf("类型") > -1){
-                vodDetail.type_name = content.replaceAll("类型","").replaceAll("：","")
-            }else if(content.indexOf("年份") > -1 ){
-                vodDetail.vod_year = content.replaceAll("年份","").replaceAll("：","")
-            }else if (content.indexOf("地区") > -1){
-                vodDetail.vod_area = content.replaceAll("地区","").replaceAll("：","")
-            }else if (content.indexOf("豆瓣") > -1){
-                vodDetail.vod_remarks = content.replaceAll("豆瓣","").replaceAll("：","")
-            }else if (content.indexOf("主演") > -1){
-                vodDetail.vod_actor = content.replaceAll("主演","").replaceAll("：","")
-            }else if (content.indexOf("导演") > -1){
-                vodDetail.vod_director = content.replaceAll("导演","").replaceAll("：","")
-            }else if (content.indexOf("剧情") > -1){
-                vodDetail.vod_content = content.replaceAll("剧情","").replaceAll("：","")
+            if (content.indexOf("类型") > -1) {
+                vodDetail.type_name = content.replaceAll("类型", "").replaceAll("：", "")
+            } else if (content.indexOf("年份") > -1) {
+                vodDetail.vod_year = content.replaceAll("年份", "").replaceAll("：", "")
+            } else if (content.indexOf("地区") > -1) {
+                vodDetail.vod_area = content.replaceAll("地区", "").replaceAll("：", "")
+            } else if (content.indexOf("豆瓣") > -1) {
+                vodDetail.vod_remarks = content.replaceAll("豆瓣", "").replaceAll("：", "")
+            } else if (content.indexOf("主演") > -1) {
+                vodDetail.vod_actor = content.replaceAll("主演", "").replaceAll("：", "")
+            } else if (content.indexOf("导演") > -1) {
+                vodDetail.vod_director = content.replaceAll("导演", "").replaceAll("：", "")
+            } else if (content.indexOf("剧情") > -1) {
+                vodDetail.vod_content = content.replaceAll("剧情", "").replaceAll("：", "")
             }
         }
         let vod_play_from_list = [this.getAppName()]
 
         let vodPlayList = $("[class='paly_list_btn']")
         let vod_play_list = []
-        for (const v1 of vodPlayList){
+        for (const v1 of vodPlayList) {
             let vodItems = []
             let aList = $(v1).find("a")
-            for (const tA of aList){
+            for (const tA of aList) {
                 let episodeUrl = tA.attribs.href
-                let episodeName = $(tA).text().replaceAll("立即播放  (","").replaceAll(")","")
+                let episodeName = $(tA).text().replaceAll("立即播放  (", "").replaceAll(")", "")
                 vodItems.push(episodeName + "$" + episodeUrl)
             }
             vod_play_list.push(vodItems.join("#"))
         }
         let ciliPlayList = $("[class=\"ypbt_down_list\"]").find("li")
         let index = 0
-        for (const ciliPlay of ciliPlayList){
+        for (const ciliPlay of ciliPlayList) {
             index = index + 1
-            vod_play_from_list.push("磁力线路"+index.toString())
+            vod_play_from_list.push("磁力线路" + index.toString())
             let vodItems = []
-            for (const ciliPlayUrl of $(ciliPlay).find("a")){
+            for (const ciliPlayUrl of $(ciliPlay).find("a")) {
                 let episodeUrl = ciliPlayUrl.attribs.href
-                let episodeName = Utils.getStrByRegex(/\[(.*?)]/,$(ciliPlayUrl).text())
+                let episodeName = Utils.getStrByRegex(/\[(.*?)]/, $(ciliPlayUrl).text())
                 vodItems.push(episodeName + "$" + episodeUrl)
             }
             vod_play_list.push(vodItems.join("#"))
@@ -349,16 +350,50 @@ class ChangZhangSpider extends Spider {
         return vodDetail
     }
 
+    async parseVodShortListFromDocBySearch($) {
+        const items = $('div.search_list > ul > li');
+        return _.map(items, (item) => {
+            const img = $(item).find('img:first')[0];
+            const a = $(item).find('a:first')[0];
+            const hdinfo = $($(item).find('div.hdinfo')[0]).text().trim();
+            const jidi = $($(item).find('div.jidi')[0]).text().trim();
+            return {
+                vod_id: a.attribs.href.replace(/.*?\/movie\/(.*).html/g, '$1'),
+                vod_name: img.attribs.alt,
+                vod_pic: img.attribs['data-original'],
+                vod_remarks: jidi || hdinfo || '',
+            };
+        })
+    }
+
     async setClasses() {
-        let $ = await this.getHtml()
-        let navElements = $("[class=\"navlist hidden-md-and-down\"]").find("a")
-        for (const navElement of navElements) {
-            let type_name = $(navElement).text()
-            let type_id = navElement.attribs.href
-            if (type_name !== "首页") {
-                this.classes.push(this.getTypeDic(type_name, type_id))
-            }
-        }
+        const $ = await this.getHtml(this.siteUrl + '/movie_bt');
+        const series = $('div#beautiful-taxonomy-filters-tax-movie_bt_series > a[cat-url*=movie_bt_series]');
+        const tags = $('div#beautiful-taxonomy-filters-tax-movie_bt_tags > a');
+        let tag = {
+            key: 'tag',
+            name: '类型',
+            value: _.map(tags, (n) => {
+                let v = n.attribs['cat-url'] || '';
+                v = v.substring(v.lastIndexOf('/') + 1);
+                return {n: n.children[0].data, v: v};
+            }),
+        };
+        tag['init'] = tag.value[0].v;
+        let classes = _.map(series, (s) => {
+            let typeId = s.attribs['cat-url'];
+            typeId = typeId.substring(typeId.lastIndexOf('/') + 1);
+            this.filterObj[typeId] = [tag];
+            return {
+                type_id: typeId,
+                type_name: s.children[0].data,
+            };
+        });
+        const sortName = ['电影', '电视剧', '国产剧', '美剧', '韩剧', '日剧', '海外剧（其他）', '华语电影', '印度电影', '日本电影', '欧美电影', '韩国电影', '动画', '俄罗斯电影', '加拿大电影'];
+        this.classes = _.sortBy(classes, (c) => {
+            const index = sortName.indexOf(c.type_name);
+            return index === -1 ? sortName.length : index;
+        });
     }
 
     async setHomeVod() {
@@ -367,8 +402,10 @@ class ChangZhangSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        let Url = this.siteUrl + tid + "/page/" + pg
-        let $ = await this.getHtml(Url)
+        if (pg <= 0) pg = 1;
+        const tag = extend.tag || '';
+        const link = this.siteUrl + '/movie_bt' + (tag.length > 0 ? `/movie_bt_tags/${tag}` : '') + '/movie_bt_series/' + tid + (pg > 1 ? `/page/${pg}` : '');
+        let $ = await this.getHtml(link)
         this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
@@ -378,18 +415,44 @@ class ChangZhangSpider extends Spider {
     }
 
     async setSearch(wd, quick) {
-        super.setSearch(wd, quick);
+        const $ = await this.getHtml(this.siteUrl + '/xssearch?q=' + wd);
+        this.vodList = await this.parseVodShortListFromDocBySearch($)
+
     }
 
     async setPlay(flag, id, flags) {
-       if (id.indexOf("magnet") > -1){
-           this.playUrl = id
-       }else{
-             let $ = await this.getHtml(id)
-           let html = $.html()
-           let x = 0
-
-       }
+        if (id.indexOf("magnet") > -1) {
+            this.playUrl = id
+        } else {
+            let $ = await this.getHtml(id)
+            const iframe = $('body iframe[src*=Cloud]');
+            if (iframe.length > 0) {
+                const iframeHtml = (
+                    await req(iframe[0].attribs.src, {
+                        headers: {
+                            Referer: id,
+                            'User-Agent': Utils.CHROME,
+                        },
+                    })
+                ).content;
+                let code = iframeHtml
+                    .match(/var url = '(.*?)'/)[1]
+                    .split('')
+                    .reverse()
+                    .join('');
+                let temp = '';
+                for (let i = 0x0; i < code.length; i = i + 0x2) {
+                    temp += String.fromCharCode(parseInt(code[i] + code[i + 0x1], 0x10));
+                }
+                this.playUrl = temp.substring(0x0, (temp.length - 0x7) / 0x2) + temp.substring((temp.length - 0x7) / 0x2 + 0x7);
+            } else {
+                const js = $('script:contains(window.wp_nonce)').html();
+                const group = js.match(/(var.*)eval\((\w*\(\w*\))\)/);
+                const md5 = Crypto;
+                const result = eval(group[1] + group[2]);
+                this.playUrl = result.match(/url:.*?['"](.*?)['"]/)[1];
+            }
+        }
     }
 }
 

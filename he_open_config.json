@@ -34,6 +34,14 @@
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
             },
             {
+                "key": "changzhang",
+                "name": "🏭️┃厂长直连┃🏭️",
+                "type": 3,
+                "api": "./js/changzhang.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "douban",
                 "name": "🍥┃豆瓣┃🍥",
                 "type": 3,
@@ -120,6 +128,14 @@
                 "api": "./js/pan_search.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
+            },
+            {
+                "key": "pipixia",
+                "name": "🦐┃皮皮虾影视┃🦐",
+                "type": 3,
+                "api": "./js/pipixia.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
             },
             {
                 "key": "weixine",

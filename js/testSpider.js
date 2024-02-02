@@ -65,18 +65,18 @@ async function test() {
     console.debug(JSON.stringify(classes));
     //
     // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
     // // //
     // // //
     // // // //
     // //
     // // // //测试分类列表
-    // let  catePage = JSON.parse(await spider.category("/dbtop250", "2", undefined,{}));
-    // console.debug(JSON.stringify(catePage));
+    let  catePage = JSON.parse(await spider.category("dyy", "2", undefined,{}));
+    console.debug(JSON.stringify(catePage));
     // //
     // // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.czzy55.com/movie/3751.html"))
+    let detail1 = JSON.parse(await spider.detail("https://www.czzy55.com/movie/8697.html"))
     await testPlay(detail1)
 
 
