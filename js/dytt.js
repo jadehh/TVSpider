@@ -16,6 +16,7 @@ class DyttSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = "https://www.dy2018.com"
+        this.dyttReconnectTimes = 0
 
     }
 
@@ -27,15 +28,24 @@ class DyttSpider extends Spider {
         return "电影天堂"
     }
 
+    getHeader() {
+         return {"User-Agent": Utils.CHROME, "Host":"www.dy2018.com"};
+    }
 
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
         try {
             let buffer = await this.fetch(url, null, headers, false, false, 1)
             let html = Utils.decode(buffer, "gb2312")
-            if (!_.isEmpty(html)) {
+            if (!_.isEmpty(html) && Utils.getStrByRegex(/<script src="(.*?)"><\/script>/, html) !== "/_guard/auto.js") {
                 return load(html)
             } else {
-                await this.jadeLog.error(`html获取失败`, true)
+                if (this.dyttReconnectTimes < this.maxReconnectTimes) {
+                    Utils.sleep(2)
+                    this.dyttReconnectTimes = this.dyttReconnectTimes + 1
+                    return await this.getHtml(url, headers)
+                } else {
+                    await this.jadeLog.error(`html获取失败`, true)
+                }
             }
         } catch (e) {
             await this.jadeLog.error(`获取html出错,出错原因为${e}`)

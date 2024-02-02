@@ -72,8 +72,8 @@ async function test() {
     // //
 
     // //测试分类列表
-    // let  catePage = JSON.parse(await spider.category("https://www.dy2018.com/html/gndy/dyzz/index.html", "1", undefined,{}));
-    // console.debug(JSON.stringify(catePage));
+    let  catePage = JSON.parse(await spider.category("https://www.dy2018.com/html/bikan/", "1", undefined,{}));
+    console.debug(JSON.stringify(catePage));
     //
     // // // 测试详情
     let detail1 = JSON.parse(await spider.detail("/i/108337.html"))
