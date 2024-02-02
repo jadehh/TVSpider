@@ -1,12 +1,13 @@
 // !!!!! Do not use in release mode. Just a native inject fake wrapper for test spider. !!!!!
 // !!!!! Do not use in release mode. Just a native inject fake wrapper for test spider. !!!!!
 // !!!!! Do not use in release mode. Just a native inject fake wrapper for test spider. !!!!!
-import axios, { toFormData } from 'axios';
+import axios, {toFormData} from 'axios';
 import crypto from 'crypto';
 import https from 'https';
 import fs from 'node:fs';
 import qs from 'qs';
-import { Uri, _ } from '../lib/cat.js';
+import {Uri, _} from '../lib/cat.js';
+import tunnel from "tunnel";
 
 const confs = {};
 
@@ -51,13 +52,19 @@ async function request(url, opt) {
             headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
             if (data != null) {
-                data = qs.stringify(data, { encode: false });
+                data = qs.stringify(data, {encode: false});
             }
         } else if (postType == 'form-data') {
             headers['Content-Type'] = 'multipart/form-data';
             data = toFormData(data);
         }
         let respType = returnBuffer == 1 || returnBuffer == 2 ? 'arraybuffer' : undefined;
+        // const agent = tunnel.httpsOverHttp({
+        //     proxy: {
+        //         host: '127.0.0.1', port: 7890,
+        //     }
+        // });
+
         var resp = await axios(url, {
             responseType: respType,
             method: opt ? opt.method || 'get' : 'get',
@@ -68,6 +75,8 @@ async function request(url, opt) {
             httpsAgent: https.Agent({
                 rejectUnauthorized: false,
             }),
+            // httpsAgent: agent,
+
         });
         var data = resp.data;
 
@@ -82,12 +91,12 @@ async function request(url, opt) {
                 data = JSON.stringify(data);
             }
         } else if (returnBuffer == 1) {
-            return { code: resp.status, headers: resHeader, content: data };
+            return {code: resp.status, headers: resHeader, content: data};
         } else if (returnBuffer == 2) {
-            return { code: resp.status, headers: resHeader, content: data.toString('base64') };
+            return {code: resp.status, headers: resHeader, content: data.toString('base64')};
         } else if (returnBuffer == 3) {
             var stream = opt.stream;
-            if (stream['onResp']) await stream['onResp']({ code: resp.status, headers: resHeader });
+            if (stream['onResp']) await stream['onResp']({code: resp.status, headers: resHeader});
             if (stream['onData']) {
                 data.on('data', async (data) => {
                     await stream['onData'](data);
@@ -100,7 +109,7 @@ async function request(url, opt) {
             }
             return 'stream...';
         }
-        return { code: resp.status, headers: resHeader, content: data };
+        return {code: resp.status, headers: resHeader, content: data};
     } catch (error) {
         resp = error.response
         try {
@@ -109,7 +118,7 @@ async function request(url, opt) {
             return {headers: {}, content: ''};
         }
     }
-    return { headers: {}, content: '' };
+    return {headers: {}, content: ''};
 }
 
 function base64EncodeBuf(buff, urlsafe = false) {
@@ -231,9 +240,13 @@ function rsa(mode, pub, encrypt, input, inBase64, key, outBase64) {
             }
             let tmpBuf;
             if (pub) {
-                tmpBuf = encrypt ? crypto.publicEncrypt({ key: keyObj, padding: pd }, tmpInBuf) : crypto.publicDecrypt({ key: keyObj, padding: pd }, tmpInBuf);
+                tmpBuf = encrypt ? crypto.publicEncrypt({
+                    key: keyObj, padding: pd
+                }, tmpInBuf) : crypto.publicDecrypt({key: keyObj, padding: pd}, tmpInBuf);
             } else {
-                tmpBuf = encrypt ? crypto.privateEncrypt({ key: keyObj, padding: pd }, tmpInBuf) : crypto.privateDecrypt({ key: keyObj, padding: pd }, tmpInBuf);
+                tmpBuf = encrypt ? crypto.privateEncrypt({
+                    key: keyObj, padding: pd
+                }, tmpInBuf) : crypto.privateDecrypt({key: keyObj, padding: pd}, tmpInBuf);
             }
             bufIdx = bufEndIdx;
             outBuf = Buffer.concat([outBuf, tmpBuf]);
@@ -260,8 +273,7 @@ function randStr(len, withNum) {
 globalThis.local = {
     get: async function (storage, key) {
         return localGet(storage, key);
-    },
-    set: async function (storage, key, val) {
+    }, set: async function (storage, key, val) {
         localSet(storage, key, val);
     },
 };
@@ -286,7 +298,8 @@ globalThis.JSProxyStream = function () {
      * @param {Number} code - http status code
      * @param {Map} headers - http response headers
      */
-    this.head = async function (code, headers) {};
+    this.head = async function (code, headers) {
+    };
     /**
      * Writes the given buffer.
      *
@@ -299,11 +312,13 @@ globalThis.JSProxyStream = function () {
     /**
      * Stream will be closed.
      */
-    this.done = async function () {};
+    this.done = async function () {
+    };
     /**
      * Stream will be closed cause by error happened.
      */
-    this.error = async function (err) {};
+    this.error = async function (err) {
+    };
 };
 
 
@@ -336,13 +351,12 @@ globalThis.JSFile = function (path) {
             if (mode == 'w' || mode == 'a') {
                 const directoryPath = dirname(file._path);
                 if (!fs.existsSync(directoryPath)) {
-                    fs.mkdirSync(directoryPath, { recursive: true });
+                    fs.mkdirSync(directoryPath, {recursive: true});
                 }
             }
             fs.open(file._path, mode, null, (e, f) => {
                 if (!e) file.fd = f;
-                if (file.fd) resolve(true);
-                else resolve(false);
+                if (file.fd) resolve(true); else resolve(false);
             });
         });
     };
@@ -379,8 +393,7 @@ globalThis.JSFile = function (path) {
         const file = this;
         return await new Promise((resolve, reject) => {
             fs.write(file.fd, new Int8Array(arraybuffer), 0, arraybuffer.byteLength, position, (err, written, buffer) => {
-                if (!err) resolve(true);
-                else resolve(false);
+                if (!err) resolve(true); else resolve(false);
             });
         });
     };
@@ -416,8 +429,7 @@ globalThis.JSFile = function (path) {
         const file = this;
         return await new Promise((resolve, reject) => {
             fs.rename(file._path, newPath, (err) => {
-                if (!err) resolve(true);
-                else resolve(false);
+                if (!err) resolve(true); else resolve(false);
             });
         });
     };
@@ -432,8 +444,7 @@ globalThis.JSFile = function (path) {
         const file = this;
         return await new Promise((resolve, reject) => {
             fs.copyFile(file._path, newPath, (err) => {
-                if (!err) resolve(true);
-                else resolve(false);
+                if (!err) resolve(true); else resolve(false);
             });
         });
     };
