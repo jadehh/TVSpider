@@ -11,7 +11,7 @@ import {JadeLogging} from "../lib/log.js";
 import * as Utils from "../lib/utils.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import {_, load, Uri} from "../lib/cat.js";
-
+import {} from "../lib/crypto-js.js"
 class Result {
     constructor() {
         this.class = []
