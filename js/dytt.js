@@ -28,9 +28,9 @@ class DyttSpider extends Spider {
         return "电影天堂"
     }
 
-    getHeader() {
-         return {"User-Agent": Utils.CHROME, "Host":"www.dy2018.com"};
-    }
+    // getHeader() {
+    //      return {"User-Agent": Utils.CHROME, "Host":"www.dy2018.com"};
+    // }
 
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
         try {
