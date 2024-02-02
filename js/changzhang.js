@@ -415,8 +415,8 @@ class ChangZhangSpider extends Spider {
     }
 
     async setSearch(wd, quick) {
-        const $ = await this.getHtml(this.siteUrl + '/xssearch?q=' + wd);
-        this.vodList = await this.parseVodShortListFromDocBySearch($)
+        // const $ = await this.getHtml(this.siteUrl + '/xssearch?q=' + wd);
+        // this.vodList = await this.parseVodShortListFromDocBySearch($)
 
     }
 
@@ -425,7 +425,7 @@ class ChangZhangSpider extends Spider {
             this.playUrl = id
         } else {
             let $ = await this.getHtml(id)
-            const iframe = $('body iframe[src*=Cloud]');
+            const iframe = $('body iframe[src*=https]');
             if (iframe.length > 0) {
                 const iframeHtml = (
                     await req(iframe[0].attribs.src, {
@@ -436,15 +436,10 @@ class ChangZhangSpider extends Spider {
                     })
                 ).content;
                 let code = iframeHtml
-                    .match(/var url = '(.*?)'/)[1]
+                    .match(/var player = "(.*?)"/)[1]
                     .split('')
                     .reverse()
                     .join('');
-                let temp = '';
-                for (let i = 0x0; i < code.length; i = i + 0x2) {
-                    temp += String.fromCharCode(parseInt(code[i] + code[i + 0x1], 0x10));
-                }
-                this.playUrl = temp.substring(0x0, (temp.length - 0x7) / 0x2) + temp.substring((temp.length - 0x7) / 0x2 + 0x7);
             } else {
                 const js = $('script:contains(window.wp_nonce)').html();
                 const group = js.match(/(var.*)eval\((\w*\(\w*\))\)/);
