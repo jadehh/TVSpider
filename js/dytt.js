@@ -141,7 +141,11 @@ class DyttSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        let $ = await this.getHtml(tid)
+        let cateUrl = tid
+        if (tid.indexOf("index") > -1){
+            cateUrl = tid.split(".html")[0] + "_" + pg + ".html"
+        }
+        let $ = await this.getHtml(cateUrl)
         this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
