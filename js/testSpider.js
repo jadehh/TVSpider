@@ -20,9 +20,7 @@ async function testPlay(vodDetail){
                     console.debug(flag + " | " + name + " | " + url);
                     var playUrl = await spider.play(flag, url, []);
                     console.debug('playURL: ' + playUrl);
-                    break
                 }
-                break
             }
         }
     }
@@ -76,7 +74,7 @@ async function test() {
     // console.debug(JSON.stringify(catePage));
     // //
     // // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.czzy55.com/movie/597.html"))
+    let detail1 = JSON.parse(await spider.detail("https://www.czzy55.com/movie/8851.html"))
     await testPlay(detail1)
 
 

@@ -248,17 +248,18 @@ import {Spider} from "./spider.js";
 import {_, Crypto} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
+import {initAli, detailContent, playContent} from "../lib/ali.js";
 
 function cryptJs(text, key, iv, type) {
     let key_value = CryptoJS.enc.Utf8.parse(key || 'PBfAUnTdMjNDe6pL');
     let iv_value = CryptoJS.enc.Utf8.parse(iv || 'sENS6bVbwSfvnXrj');
     let content
     if (type) {
-         content = CryptoJS.AES.encrypt(text, key_value, {
+        content = CryptoJS.AES.encrypt(text, key_value, {
             iv: iv_value, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7
         })
     } else {
-         content = CryptoJS.AES.decrypt(text, key_value, {
+        content = CryptoJS.AES.decrypt(text, key_value, {
             iv: iv_value, padding: CryptoJS.pad.Pkcs7
         }).toString(CryptoJS.enc.Utf8)
     }
@@ -271,6 +272,12 @@ class ChangZhangSpider extends Spider {
         super();
         this.siteUrl = "https://www.czzy55.com"
     }
+
+    async init(cfg) {
+        await super.init(cfg);
+        await initAli(this.cfgObj["token"]);
+    }
+
 
     getName() {
         return "🏭️┃厂长直连┃🏭️"
@@ -348,18 +355,47 @@ class ChangZhangSpider extends Spider {
             }
             vod_play_list.push(vodItems.join("#"))
         }
-        let ciliPlayList = $("[class=\"ypbt_down_list\"]").find("li")
-        let index = 0
-        for (const ciliPlay of ciliPlayList) {
-            index = index + 1
-            vod_play_from_list.push("磁力线路" + index.toString())
-            let vodItems = []
-            for (const ciliPlayUrl of $(ciliPlay).find("a")) {
-                let episodeUrl = ciliPlayUrl.attribs.href
-                let episodeName = Utils.getStrByRegex(/\[(.*?)]/, $(ciliPlayUrl).text())
-                vodItems.push(episodeName + "$" + episodeUrl)
+        let valify_formt_list = ["磁力链接", "阿里网盘"]
+        let otherPlayList = $("[class=\"ypbt_down_list\"]").find("li")
+        for (const otherPlay of otherPlayList) {
+            let form_name = $(otherPlay).text()
+            let is_valify = false
+            for (const valify_format_name of valify_formt_list) {
+                if (form_name.indexOf(valify_format_name) > -1) {
+                    is_valify = true
+                    if (form_name.indexOf("阿里网盘") === -1) {
+                        vod_play_from_list.push(valify_format_name)
+                    }
+                }
             }
-            vod_play_list.push(vodItems.join("#"))
+            if (is_valify) {
+                let vodItems = []
+                for (const ciliPlayUrl of $(otherPlay).find("a")) {
+                    let episodeUrl = ciliPlayUrl.attribs.href
+                    if ($(otherPlay).text().indexOf("阿里网盘")) {
+                        let aliVodDetail = await detailContent([episodeUrl])
+                        let aliPlayUrlList = aliVodDetail.vod_play_url.split("$$$")
+                        let is_exists = false
+                        for (const aliPlayUrl of aliPlayUrlList) {
+                            if (!_.isEmpty(aliPlayUrl)) {
+                                is_exists = true
+                                vod_play_list.push(aliPlayUrl)
+                            }
+                        }
+                        if (is_exists) {
+                            for (const aliFormatName of aliVodDetail.vod_play_from.split("$$$")) {
+                                vod_play_from_list.push("阿里云盘-" + aliFormatName)
+                            }
+                        }
+
+                    } else {
+                        let episodeName = Utils.getStrByRegex(/\[(.*?)]/, $(ciliPlayUrl).text())
+                        vodItems.push(episodeName + "$" + episodeUrl)
+                        vod_play_list.push(vodItems.join("#"))
+                    }
+
+                }
+            }
         }
 
         vodDetail.vod_play_url = vod_play_list.join("$$$")
@@ -388,9 +424,7 @@ class ChangZhangSpider extends Spider {
         const series = $('div#beautiful-taxonomy-filters-tax-movie_bt_series > a[cat-url*=movie_bt_series]');
         const tags = $('div#beautiful-taxonomy-filters-tax-movie_bt_tags > a');
         let tag = {
-            key: 'tag',
-            name: '类型',
-            value: _.map(tags, (n) => {
+            key: 'tag', name: '类型', value: _.map(tags, (n) => {
                 let v = n.attribs['cat-url'] || '';
                 v = v.substring(v.lastIndexOf('/') + 1);
                 return {n: n.children[0].data, v: v};
@@ -402,8 +436,7 @@ class ChangZhangSpider extends Spider {
             typeId = typeId.substring(typeId.lastIndexOf('/') + 1);
             this.filterObj[typeId] = [tag];
             return {
-                type_id: typeId,
-                type_name: s.children[0].data,
+                type_id: typeId, type_name: s.children[0].data,
             };
         });
         const sortName = ['电影', '电视剧', '国产剧', '美剧', '韩剧', '日剧', '海外剧（其他）', '华语电影', '印度电影', '日本电影', '欧美电影', '韩国电影', '动画', '俄罗斯电影', '加拿大电影'];
@@ -438,30 +471,32 @@ class ChangZhangSpider extends Spider {
     }
 
     async setPlay(flag, id, flags) {
-        if (id.indexOf("magnet") > -1) {
-            this.playUrl = id
+        if (flag.indexOf("阿里云盘") > -1) {
+            flag = flag.replaceAll("阿里云盘-","")
+            this.playUrl = JSON.parse(await playContent(flag, id, flags))["url"];
         } else {
-            let $ = await this.getHtml(id)
-            const iframe = $('body iframe[src*=https]');
-            if (iframe.length > 0) {
-                const iframeHtml = (
-                    await req(iframe[0].attribs.src, {
-                        headers: {
-                            Referer: id,
-                            'User-Agent': Utils.CHROME,
-                        },
-                    })
-                ).content;
-                let player = Utils.getStrByRegex(/var player = "(.*?)"/,iframeHtml)
-                let rand = Utils.getStrByRegex(/var rand = "(.*?)"/,iframeHtml)
-                let content = JSON.parse(cryptJs(player,"VFBTzdujpR9FWBhe",rand))
-                this.playUrl = content["url"]
+            if (id.indexOf("magnet") > -1) {
+                this.playUrl = id
             } else {
-                const js = $('script:contains(window.wp_nonce)').html();
-                const group = js.match(/(var.*)eval\((\w*\(\w*\))\)/);
-                const md5 = Crypto;
-                const result = eval(group[1] + group[2]);
-                this.playUrl = result.match(/url:.*?['"](.*?)['"]/)[1];
+                let $ = await this.getHtml(id)
+                const iframe = $('body iframe[src*=https]');
+                if (iframe.length > 0) {
+                    const iframeHtml = (await req(iframe[0].attribs.src, {
+                        headers: {
+                            Referer: id, 'User-Agent': Utils.CHROME,
+                        },
+                    })).content;
+                    let player = Utils.getStrByRegex(/var player = "(.*?)"/, iframeHtml)
+                    let rand = Utils.getStrByRegex(/var rand = "(.*?)"/, iframeHtml)
+                    let content = JSON.parse(cryptJs(player, "VFBTzdujpR9FWBhe", rand))
+                    this.playUrl = content["url"]
+                } else {
+                    const js = $('script:contains(window.wp_nonce)').html();
+                    const group = js.match(/(var.*)eval\((\w*\(\w*\))\)/);
+                    const md5 = Crypto;
+                    const result = eval(group[1] + group[2]);
+                    this.playUrl = result.match(/url:.*?['"](.*?)['"]/)[1];
+                }
             }
         }
     }
