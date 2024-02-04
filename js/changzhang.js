@@ -248,7 +248,7 @@ import {Spider} from "./spider.js";
 import {_, Crypto} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
-import {initAli, detailContent, playContent} from "../lib/ali.js";
+import {detailContent, initAli, playContent} from "../lib/ali.js";
 
 function cryptJs(text, key, iv, type) {
     let key_value = CryptoJS.enc.Utf8.parse(key || 'PBfAUnTdMjNDe6pL');
@@ -285,6 +285,14 @@ class ChangZhangSpider extends Spider {
 
     getAppName() {
         return "厂长直连"
+    }
+
+    getSearchHeader() {
+        return {
+            "Cookie": "cf_clearance=otYZbHg1safCIxkCtZfy9DPKbf1Gs_zUskkVDc0MVKM-1707026063-1-ATOpKnTLv9+pv171YE/rzxN/nmvGN9Mucx7vpwp0kW2vZb/cbtz5e2md2/ym7EE+9dT7pPBV+kQOg9vJx2v8cks=;myannoun=1;PHPSESSID=k4fh1d8426q9q6rspi1s7eo2p4",
+            "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/100.0.4896.77 Mobile/15E148 Safari/604.1",
+            "Connection":"keep-alive"
+        }
     }
 
     parseVodShortFromElement($, element) {
@@ -411,7 +419,7 @@ class ChangZhangSpider extends Spider {
             const hdinfo = $($(item).find('div.hdinfo')[0]).text().trim();
             const jidi = $($(item).find('div.jidi')[0]).text().trim();
             return {
-                vod_id: a.attribs.href.replace(/.*?\/movie\/(.*).html/g, '$1'),
+                vod_id: a.attribs.href,
                 vod_name: img.attribs.alt,
                 vod_pic: img.attribs['data-original'],
                 vod_remarks: jidi || hdinfo || '',
@@ -471,7 +479,7 @@ class ChangZhangSpider extends Spider {
     }
 
     async setSearch(wd, quick) {
-        const $ = await this.getHtml(this.siteUrl + '/xssearch?q=' + wd);
+        const $ = await this.getHtml(this.siteUrl + '/xssearch?q=' + wd,this.getSearchHeader());
         this.vodList = await this.parseVodShortListFromDocBySearch($)
 
     }
