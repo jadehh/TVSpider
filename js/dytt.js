@@ -125,7 +125,7 @@ class DyttSpider extends Spider {
         vodDetail.vod_content = Utils.getStrByRegex(/简　　介　(.*?)◎/, content)
         vodDetail.vod_actor = Utils.getStrByRegex(/主　　演(.*?)◎/, content).replaceAll("　　　　　　", "*")
         vodDetail.vod_remarks = Utils.getStrByRegex(/豆瓣评分　(.*?)\//, content)
-        vodDetail.vod_play_from = this.getAppName()
+        vodDetail.vod_play_from = "磁力链接"
         let playList = $(zoomElement).find("[class=\"player_list\"]").find("a")
         let vodItems = []
         for (const playEle of playList) {
