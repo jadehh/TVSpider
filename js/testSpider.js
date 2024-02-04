@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './aliyunpanshare.js';
+import {__jsEvalReturn} from './changzhang.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -51,7 +51,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'wogg';
+    let siteKey = 'pipixia';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -63,18 +63,18 @@ async function test() {
     console.debug(JSON.stringify(classes));
     //
     // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
-    // // // //
-    // // // //
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
     // // // // //
-    // // //
-    // // // // //测试分类列表
-    // let  catePage = JSON.parse(await spider.category("dyy", "1", undefined,{}));
+    // // // // //
+    // // // // // //
+    // // // //
+    // // // // // //测试分类列表
+    // let  catePage = JSON.parse(await spider.category("1", "1", undefined,{}));
     // console.debug(JSON.stringify(catePage));
-    // //
+    // // //
     // // // // 测试详情
-    // let detail1 = JSON.parse(await spider.detail("https://www.czzy55.com/movie/8851.html"))
+    // let detail1 = JSON.parse(await spider.detail("116697"))
     // await testPlay(detail1)
 
 

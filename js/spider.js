@@ -255,12 +255,9 @@ class Spider {
                 }
             } else if (response.content.length > 0) {
                 this.reconnectTimes = 0
-                return response.content
-            } else if (!_.isEmpty(response.content)) {
                 if (return_cookie) {
                     return {"cookie": response.headers["set-cookie"], "content": response.content}
                 } else {
-                    this.reconnectTimes = 0
                     return response.content
                 }
             } else if (buffer === 1) {

@@ -10,6 +10,7 @@ import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
+import {pipixiaMd5} from "../lib/pipiXiaObject.js"
 
 class PiPiXiaSpider extends Spider {
     constructor() {
@@ -31,6 +32,19 @@ class PiPiXiaSpider extends Spider {
 
     getAppName() {
         return "皮皮虾影视"
+    }
+
+    async parseVodShortListFromJson(obj) {
+        let vod_list = []
+        for (const vod_json of obj["list"]){
+            let vodShort = new VodShort();
+            vodShort.vod_name = vod_json["vod_name"]
+            vodShort.vod_id = vod_json["vod_id"]
+            vodShort.vod_pic = vod_json["vod_pic"]
+            vodShort.vod_remarks = vod_json["vod_remarks"]
+            vod_list.push(vodShort)
+        }
+        return vod_list
     }
 
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
@@ -85,25 +99,22 @@ class PiPiXiaSpider extends Spider {
         if (Utils.isNumeric(tid)){
             let url = this.siteUrl + "/index.php/api/vod"
             let time_1 = Math.floor(new Date().getTime() / 1000)
-            let time_2 = 1706856100
-            let key_1 = md5X(time_1.toString())
-            let key_2 = "d9e479698f70323b1851547765213124"
+            let key_1 = pipixiaMd5(time_1)
             let params = {
                 "type":tid,
                 "page":pg,
                 "time":time_1.toString(),
                 "key":key_1
             }
-            let headers =
-                {"Cookie":
-                        "__51vcke__K1MmKCEOU7KLHcBw=8bfec04e-6983-541a-952d-fdef4aa9c2ec; __51vuft__K1MmKCEOU7KLHcBw=1706853681185; __vtins__K1MmKCEOU7KLHcBw=%7B%22sid%22%3A%20%2229270c92-6eb3-5bb6-addc-978031f716db%22%2C%20%22vd%22%3A%2013%2C%20%22stt%22%3A%202418365%2C%20%22dr%22%3A%209291%2C%20%22expires%22%3A%201706857899544%2C%20%22ct%22%3A%201706856099544%7D; __51uvsct__K1MmKCEOU7KLHcBw=1; ecPopup=1; ec_sq=ok",
-                 "Content-Type":"application/x-www-form-urlencoded; charset=UTF-8",
-                "Host":"pipixia.vip",
-                "Origin":"http://pipixia.vip"}
-            let content = await this.post(url,params,headers)
-            let x = 0
-
+            let content_json = JSON.parse(await this.post(url,params))
+            if (content_json["code"] === 1){
+                this.vodList = await this.parseVodShortListFromJson(JSON.parse(await this.post(url,params)))
+            }
         }
+    }
+
+    async setDetail(id) {
+        let $
     }
 
 }
