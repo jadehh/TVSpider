@@ -341,7 +341,7 @@ class ChangZhangSpider extends Spider {
                 vodDetail.vod_content = content.replaceAll("剧情", "").replaceAll("：", "")
             }
         }
-        let vod_play_from_list = "厂长资源"
+        let vod_play_from_list = ["厂长资源"]
 
         let vodPlayList = $("[class='paly_list_btn']")
         let vod_play_list = []
@@ -465,8 +465,8 @@ class ChangZhangSpider extends Spider {
     }
 
     async setSearch(wd, quick) {
-        // const $ = await this.getHtml(this.siteUrl + '/xssearch?q=' + wd);
-        // this.vodList = await this.parseVodShortListFromDocBySearch($)
+        const $ = await this.getHtml(this.siteUrl + '/xssearch?q=' + wd);
+        this.vodList = await this.parseVodShortListFromDocBySearch($)
 
     }
 

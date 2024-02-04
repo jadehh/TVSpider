@@ -533,11 +533,16 @@ class Spider {
     async detail(id) {
         this.vodDetail = new VodDetail();
         await this.jadeLog.info(`正在获取详情页面,id为:${id}`)
-        await this.setDetail(id)
-        await this.jadeLog.debug(`详情页面内容为:${this.result.detail(this.vodDetail)}`)
-        await this.jadeLog.info("详情页面解析完成", true)
-        this.vodDetail.vod_id = id
-        return this.result.detail(this.vodDetail)
+        try {
+            await this.setDetail(id)
+            await this.jadeLog.debug(`详情页面内容为:${this.result.detail(this.vodDetail)}`)
+            await this.jadeLog.info("详情页面解析完成", true)
+            this.vodDetail.vod_id = id
+            return this.result.detail(this.vodDetail)
+        } catch (e) {
+            await this.jadeLog.error("详情界面获取失败,失败原因为:" + e)
+        }
+
     }
 
     async setPlay(flag, id, flags) {
