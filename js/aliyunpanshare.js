@@ -75,6 +75,9 @@ class AliyunpanShare extends Spider {
                 let vodShort = new VodShort();
                 vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
                 vodShort.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
+                if (_.isEmpty(vodShort.vod_name)){
+                    vodShort.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?)（/, name)
+                }
                 vodShort.vod_pic = $(vodElement).find("img")[0].attribs["src"]
                 vodShort.vod_remarks = this.getRemarks(Utils.getStrByRegex(/【(.*?)】/, name),name)
                 vod_list.push(vodShort)
@@ -155,7 +158,6 @@ class AliyunpanShare extends Spider {
         let url = this.siteUrl + `/search.php?q=${wd}`
         let $ = await this.getHtml(url)
         this.vodList = await this.parseVodShortListFromDocByCategory($)
-
     }
 
 }
