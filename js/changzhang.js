@@ -249,6 +249,23 @@ import {_, Crypto} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
 
+function cryptJs(text, key, iv, type) {
+    let key_value = CryptoJS.enc.Utf8.parse(key || 'PBfAUnTdMjNDe6pL');
+    let iv_value = CryptoJS.enc.Utf8.parse(iv || 'sENS6bVbwSfvnXrj');
+    let content
+    if (type) {
+         content = CryptoJS.AES.encrypt(text, key_value, {
+            iv: iv_value, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7
+        })
+    } else {
+         content = CryptoJS.AES.decrypt(text, key_value, {
+            iv: iv_value, padding: CryptoJS.pad.Pkcs7
+        }).toString(CryptoJS.enc.Utf8)
+    }
+    return content
+}
+
+
 class ChangZhangSpider extends Spider {
     constructor() {
         super();
@@ -435,11 +452,10 @@ class ChangZhangSpider extends Spider {
                         },
                     })
                 ).content;
-                let code = iframeHtml
-                    .match(/var player = "(.*?)"/)[1]
-                    .split('')
-                    .reverse()
-                    .join('');
+                let player = Utils.getStrByRegex(/var player = "(.*?)"/,iframeHtml)
+                let rand = Utils.getStrByRegex(/var rand = "(.*?)"/,iframeHtml)
+                let content = JSON.parse(cryptJs(player,"VFBTzdujpR9FWBhe",rand))
+                this.playUrl = content["url"]
             } else {
                 const js = $('script:contains(window.wp_nonce)').html();
                 const group = js.match(/(var.*)eval\((\w*\(\w*\))\)/);
