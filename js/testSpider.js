@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './changzhang.js';
+import {__jsEvalReturn} from './wogg.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -51,7 +51,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'changzhang';
+    let siteKey = 'wogg';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -74,8 +74,8 @@ async function test() {
     // console.debug(JSON.stringify(catePage));
     // //
     // // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.czzy55.com/movie/8851.html"))
-    await testPlay(detail1)
+    // let detail1 = JSON.parse(await spider.detail("https://www.czzy55.com/movie/8851.html"))
+    // await testPlay(detail1)
 
 
 
@@ -86,7 +86,7 @@ async function test() {
 
     // 测试搜索
 
-    let search_page = JSON.parse(await spider.search("侦查英雄"))
+    let search_page = JSON.parse(await spider.search("乡村爱情16"))
     console.debug(JSON.stringify(search_page));
 
 
