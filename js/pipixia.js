@@ -4,7 +4,7 @@
 * @Date     : 2024/2/2 13:33
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     :
+* @Desc     : 完成所有的功能开发
 */
 import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
