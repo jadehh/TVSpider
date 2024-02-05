@@ -68,7 +68,7 @@ class PiPiXiaSpider extends Spider {
             let vodShort = new VodShort();
             vodShort.vod_name = vod_json["vod_name"]
             vodShort.vod_id = vod_json["vod_id"]
-            vodShort.vod_pic = vod_json["vod_pic"]
+            vodShort.vod_pic = this.siteUrl + vod_json["vod_pic"]
             vodShort.vod_remarks = vod_json["vod_remarks"]
             vod_list.push(vodShort)
         }
@@ -180,6 +180,38 @@ class PiPiXiaSpider extends Spider {
         this.homeVodList = await this.parseVodShortListFromDoc($)
     }
 
+    getExtend(extend, key) {
+        if (extend[key] !== undefined && extend[key] !== "全部") {
+            return extend[key]
+        } else {
+            return null
+        }
+    }
+
+    getExtendDic(params, extend) {
+        let class_value = this.getExtend(extend, "2")
+        if (class_value !== null) {
+            params["class"] = class_value
+        }
+        let area_value = this.getExtend(extend, "3")
+        if (area_value !== null) {
+            params["area"] = area_value
+        }
+        let year_value = this.getExtend(extend, "4")
+        if (year_value !== null) {
+            params["year"] = year_value
+        }
+        let lang_value = this.getExtend(extend, "5")
+        if (lang_value !== null) {
+            params["lang"] = lang_value
+        }
+        let letter_value = this.getExtend(extend, "6")
+        if (letter_value !== null) {
+            params["letter"] = letter_value
+        }
+        return params
+    }
+
     async setCategory(tid, pg, filter, extend) {
         if (Utils.isNumeric(tid)) {
             let url = this.siteUrl + "/index.php/api/vod"
@@ -188,6 +220,7 @@ class PiPiXiaSpider extends Spider {
             let params = {
                 "type": tid, "page": pg, "time": time_1.toString(), "key": key_1
             }
+            params = this.getExtendDic(params,extend)
             let content = await this.post(url, params, this.getHeader())
             if (!_.isEmpty(content)) {
                 let content_json = JSON.parse(content)
