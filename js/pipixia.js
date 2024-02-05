@@ -41,7 +41,7 @@ class PiPiXiaSpider extends Spider {
             let vodShort = new VodShort()
             vodShort.vod_id = Utils.getStrByRegex(/v\/(.*?).html/, $(vodElement).find("a")[0].attribs.href)
             vodShort.vod_name = $(vodElement).find("a")[0].attribs.title
-            vodShort.vod_pic = this.baseProxy + Utils.base64Encode(this.siteUrl + $(vodElement).find("[class=\"lazy gen-movie-img mask-1\"]")[0].attribs["data-original"])
+            vodShort.vod_pic = this.baseProxy + Utils.base64Encode(this.siteUrl + "/" + $(vodElement).find("[class=\"lazy gen-movie-img mask-1\"]")[0].attribs["data-original"])
             vod_list.push(vodShort)
         }
         return vod_list
@@ -52,7 +52,7 @@ class PiPiXiaSpider extends Spider {
         let vodElements = $("[class=\"row-right hide\"]").find("[class=\"search-box flex rel\"]")
         for (const vodElement of vodElements) {
             let vodShort = new VodShort();
-            vodShort.vod_pic = this.baseProxy + Utils.base64Encode(this.siteUrl + Utils.getStrByRegex(/url\((.*?)\);/, $(vodElement).find("[class=\"cover\"]")[0].attribs.style))
+            vodShort.vod_pic = this.baseProxy + Utils.base64Encode(this.siteUrl + "/" + Utils.getStrByRegex(/url\((.*?)\);/, $(vodElement).find("[class=\"cover\"]")[0].attribs.style))
             vodShort.vod_remarks = $($(vodElement).find("[class=\"public-list-prb hide ft2\"]")).html()
             vodShort.vod_name = $($(vodElement).find("[class=\"thumb-txt cor4 hide\"]")).html()
             vodShort.vod_id = Utils.getStrByRegex(/v\/(.*?).html/, $(vodElement).find("[class=\"button\"]")[0].attribs.href)
@@ -68,7 +68,7 @@ class PiPiXiaSpider extends Spider {
             let vodShort = new VodShort();
             vodShort.vod_name = vod_json["vod_name"]
             vodShort.vod_id = vod_json["vod_id"]
-            vodShort.vod_pic = this.baseProxy + Utils.base64Encode(this.siteUrl + vod_json["vod_pic"])
+            vodShort.vod_pic = this.baseProxy + Utils.base64Encode(this.siteUrl + "/" + vod_json["vod_pic"])
             vodShort.vod_remarks = vod_json["vod_remarks"]
             vod_list.push(vodShort)
         }
