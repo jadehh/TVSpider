@@ -374,9 +374,7 @@ class PiPiXiaSpider extends Spider {
         let jiexi$ = await this.getHtml(jiexiUrl, {"User-Agent": Utils.CHROME})
         let ConFig = JSON.parse(Utils.getStrByRegex(/let ConFig = (.*?),box = /, jiexi$.html()))
         let playUrl = this.uic(ConFig["url"], ConFig.config.uid)
-        if (flag.indexOf("QQ虾线") > -1) {
-            this.playUrl = this.videoProxy + Utils.base64Encode(playUrl)
-        }
+        this.playUrl = this.videoProxy + Utils.base64Encode(playUrl)
     }
 
     async setSearch(wd, quick) {
