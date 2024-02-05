@@ -28,7 +28,7 @@ class PiPiXiaSpider extends Spider {
 
     async init(cfg) {
         await super.init(cfg);
-        this.videoProxy = await js2Proxy(true, this.siteType, this.siteKey, 'm3u8/', this.getHeader());
+        this.videoProxy = await js2Proxy(true, this.siteType, this.siteKey, 'm3u8/', {});
     }
 
     getName() {
