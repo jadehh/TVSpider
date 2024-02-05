@@ -377,8 +377,6 @@ class PiPiXiaSpider extends Spider {
         if (flag.indexOf("QQ虾线") > -1) {
             this.playUrl = this.videoProxy + Utils.base64Encode(playUrl)
         }
-
-
     }
 
     async setSearch(wd, quick) {
@@ -430,27 +428,29 @@ class PiPiXiaSpider extends Spider {
                 });
             }
         } else if (what === "m3u8") {
-            let resp;
+            let content;
 
             if (!_.isEmpty(headers)) {
-                resp = await req(url, {
-                    buffer: 2, headers: headers
+                content = await this.fetch(url, null, headers, false, false, 2)
+            } else {
+                content = await this.fetch(url, null, {"Referer": url, 'User-Agent': Utils.CHROME}, false, false, 2)
+            }
+            if (!_.isEmpty(content)) {
+                return JSON.stringify({
+                    code: 200, buffer: 2, content: content, headers: {},
                 });
             } else {
-                resp = await req(url, {
-                    buffer: 2, headers: {
-                        Referer: url, 'User-Agent': Utils.CHROME,
-                    },
-                });
-            }
-            return JSON.stringify({
-                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
-            });
+                return JSON.stringify({
+                    code: 500, buffer: 2, content: content, headers: {},
+                })
 
+            }
+
+        } else {
+            return JSON.stringify({
+                code: 500, content: '',
+            });
         }
-        return JSON.stringify({
-            code: 500, content: '',
-        });
     }
 
 }
