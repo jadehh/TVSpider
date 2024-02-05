@@ -434,6 +434,7 @@ class Spider {
         this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
         this.douBanjsBase = await js2Proxy(true, this.siteType, this.siteKey, 'douban/', {});
         this.baseProxy = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
+        this.videoProxy = await js2Proxy(true, this.siteType, this.siteKey, 'm3u8/', {});
     }
 
     async loadFilterAndClasses() {
@@ -584,7 +585,7 @@ class Spider {
         return this.result.search(this.vodList)
     }
 
-    async proxy(segments, headers) {
+     async proxy(segments, headers) {
         await this.jadeLog.debug(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
         let what = segments[0];
         let url = Utils.base64Decode(segments[1]);
@@ -625,11 +626,32 @@ class Spider {
                     code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
                 });
             }
+        } else if (what === "m3u8") {
+            let content;
+
+            if (!_.isEmpty(headers)) {
+                content = await this.fetch(url, null, headers, false, false, 2)
+            } else {
+                content = await this.fetch(url, null, {"Referer": url, 'User-Agent': Utils.CHROME}, false, false, 2)
+            }
+            if (!_.isEmpty(content)) {
+                return JSON.stringify({
+                    code: 200, buffer: 2, content: content, headers: {},
+                });
+            } else {
+                return JSON.stringify({
+                    code: 500, buffer: 2, content: content, headers: {},
+                })
+
+            }
+
+        } else {
+            return JSON.stringify({
+                code: 500, content: '',
+            });
         }
-        return JSON.stringify({
-            code: 500, content: '',
-        });
     }
+
 
 
     getSearchHeader() {
