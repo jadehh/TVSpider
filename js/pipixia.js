@@ -104,7 +104,7 @@ class PiPiXiaSpider extends Spider {
         let vod_play_list = []
         for (let i = 0; i < playFormatElemets.length; i++) {
             let playFormatElement = playFormatElemets[i]
-            vod_play_from_list.push($(playFormatElement).text().replaceAll(" ", ""))
+            vod_play_from_list.push(playFormatElement.children[1].data)
             let vodItems = []
             for (const playUrlElement of $(playUrlElements[i]).find("a")) {
                 let episodeName = $(playUrlElement).text()
@@ -374,6 +374,7 @@ class PiPiXiaSpider extends Spider {
         let jiexi$ = await this.getHtml(jiexiUrl, {"User-Agent": Utils.CHROME})
         let ConFig = JSON.parse(Utils.getStrByRegex(/let ConFig = (.*?),box = /, jiexi$.html()))
         let playUrl = this.uic(ConFig["url"], ConFig.config.uid)
+        await this.jadeLog.debug(`播放链接为:${playUrl}`)
         this.playUrl = this.videoProxy + Utils.base64Encode(playUrl)
     }
 
