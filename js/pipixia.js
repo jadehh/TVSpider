@@ -188,6 +188,7 @@ class PiPiXiaSpider extends Spider {
             let params = {
                 "type": tid, "page": pg, "time": time_1.toString(), "key": key_1
             }
+            await this.jadeLog.debug(`请求URL:${url},请求参数:${JSON.stringify(params)},请求头:${JSON.stringify(this.getHeader())}`)
             let content_json = JSON.parse(await this.post(url, params,this.getHeader()))
             if (content_json["code"] === 1) {
                 this.vodList = await this.parseVodShortListFromJson(JSON.parse(await this.post(url, params)))
