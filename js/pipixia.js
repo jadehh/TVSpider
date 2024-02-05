@@ -194,7 +194,7 @@ class PiPiXiaSpider extends Spider {
             if (!_.isEmpty(content)) {
                 let content_json = JSON.parse(content)
                 if (content_json["code"] === 1) {
-                    this.vodList = await this.parseVodShortListFromJson(JSON.parse(await this.post(url, params)))
+                    this.vodList = await this.parseVodShortListFromJson(content_json)
                 }
             }
 
