@@ -140,10 +140,10 @@ class PiPiXiaSpider extends Spider {
         this.classes = [this.getTypeDic("首页", "最近更新")]
         let $2 = await this.getHtml(this.siteUrl + "/s/1.html")
         let classElemets = $2("[class=\"nav-swiper rel\"]")[0]
-        for (const classElement of $(classElemets).find("a")){
-            let type_id  = Utils.getStrByRegex(/\/s\/(.*?).html/, classElement.attribs.href)
+        for (const classElement of $(classElemets).find("a")) {
+            let type_id = Utils.getStrByRegex(/\/s\/(.*?).html/, classElement.attribs.href)
             let type_name = $(classElement).text()
-            this.classes.push(this.getTypeDic(type_name,type_id))
+            this.classes.push(this.getTypeDic(type_name, type_id))
         }
     }
 
@@ -189,10 +189,15 @@ class PiPiXiaSpider extends Spider {
                 "type": tid, "page": pg, "time": time_1.toString(), "key": key_1
             }
             await this.jadeLog.debug(`请求URL:${url},请求参数:${JSON.stringify(params)},请求头:${JSON.stringify(this.getHeader())}`)
-            let content_json = JSON.parse(await this.post(url, params,this.getHeader()))
-            if (content_json["code"] === 1) {
-                this.vodList = await this.parseVodShortListFromJson(JSON.parse(await this.post(url, params)))
+            let content = await this.post(url, params, this.getHeader())
+            await this.jadeLog.debug(`输出:${content}`)
+            if (!_.isEmpty(content)) {
+                let content_json = JSON.parse(content)
+                if (content_json["code"] === 1) {
+                    this.vodList = await this.parseVodShortListFromJson(JSON.parse(await this.post(url, params)))
+                }
             }
+
         }
     }
 
