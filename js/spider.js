@@ -514,11 +514,16 @@ class Spider {
             this.page = 0
             return await this.homeVod()
         } else {
-            this.vodList = []
-            await this.setCategory(tid, pg, filter, extend)
-            await this.jadeLog.debug(`分类页面内容为:${this.result.category(this.vodList, this.page, this.count, this.limit, this.total)}`)
-            await this.jadeLog.info("分类页面解析完成", true)
-            return this.result.category(this.vodList, this.page, this.count, this.limit, this.total)
+            try {
+                this.vodList = []
+                await this.setCategory(tid, pg, filter, extend)
+                await this.jadeLog.debug(`分类页面内容为:${this.result.category(this.vodList, this.page, this.count, this.limit, this.total)}`)
+                await this.jadeLog.info("分类页面解析完成", true)
+                return this.result.category(this.vodList, this.page, this.count, this.limit, this.total)
+            } catch (e) {
+                await this.jadeLog.error(`分类页解析失败,失败原因为:${e}`)
+            }
+
         }
 
     }
