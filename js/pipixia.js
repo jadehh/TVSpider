@@ -99,7 +99,7 @@ class PiPiXiaSpider extends Spider {
         let vod_play_list = []
         for (let i = 0; i < playFormatElemets.length; i++) {
             let playFormatElement = playFormatElemets[i]
-            vod_play_from_list.push($(playFormatElement).text())
+            vod_play_from_list.push($(playFormatElement).text().replaceAll(" ",""))
             let vodItems = []
             for (const playUrlElement of $(playUrlElements[i]).find("a")) {
                 let episodeName = $(playUrlElement).text()
