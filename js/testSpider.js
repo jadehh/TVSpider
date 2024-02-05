@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './changzhang.js';
+import {__jsEvalReturn} from './pipixia.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -70,11 +70,11 @@ async function test() {
     // // // // // //
     // // // //
     // // // // // //测试分类列表
-    // let  catePage = JSON.parse(await spider.category("1", "1", undefined,{}));
-    // console.debug(JSON.stringify(catePage));
-    // // //
-    // // // // 测试详情
-    // let detail1 = JSON.parse(await spider.detail("116697"))
+    let  catePage = JSON.parse(await spider.category("/topic.html", "1", undefined,{}));
+    console.debug(JSON.stringify(catePage));
+    // //
+    // // // 测试详情
+    // let detail1 = JSON.parse(await spider.detail("106763"))
     // await testPlay(detail1)
 
 
@@ -86,7 +86,7 @@ async function test() {
 
     // 测试搜索
 
-    let search_page = JSON.parse(await spider.search("乡村爱情16"))
+    let search_page = JSON.parse(await spider.search("乡村爱情"))
     console.debug(JSON.stringify(search_page));
 
 

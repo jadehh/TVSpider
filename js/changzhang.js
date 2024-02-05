@@ -175,7 +175,6 @@ class ChangZhangSpider extends Spider {
                         vodItems.push(episodeName + "$" + episodeUrl)
                         vod_play_list.push(vodItems.join("#"))
                     }
-
                 }
             }
         }

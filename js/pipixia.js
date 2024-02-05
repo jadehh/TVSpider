@@ -34,9 +34,37 @@ class PiPiXiaSpider extends Spider {
         return "皮皮虾影视"
     }
 
+    async parseVodShortListFromDoc($) {
+        let vod_list = []
+        let vodElements = $($("[class=\"wow fadeInUp animated\"]")).find("[class=\"public-list-box public-pic-b\"]")
+        for (const vodElement of vodElements) {
+            let vodShort = new VodShort()
+            vodShort.vod_id = Utils.getStrByRegex(/v\/(.*?).html/, $(vodElement).find("a")[0].attribs.href)
+            vodShort.vod_name = $(vodElement).find("a")[0].attribs.title
+            vodShort.vod_pic = this.siteUrl + $(vodElement).find("[class=\"lazy gen-movie-img mask-1\"]")[0].attribs["data-original"]
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
+    async parseVodShortListFromDocBySearch($) {
+        let vod_list = []
+        let vodElements = $("[class=\"row-right hide\"]").find("[class=\"search-box flex rel\"]")
+        for (const vodElement of vodElements) {
+            let vodShort = new VodShort();
+            vodShort.vod_pic = this.siteUrl + Utils.getStrByRegex(/url\((.*?)\);/, $(vodElement).find("[class=\"cover\"]")[0].attribs.style)
+            vodShort.vod_remarks = $($(vodElement).find("[class=\"public-list-prb hide ft2\"]")).html()
+            vodShort.vod_name = $($(vodElement).find("[class=\"thumb-txt cor4 hide\"]")).html()
+            vodShort.vod_id = Utils.getStrByRegex(/v\/(.*?).html/, $(vodElement).find("[class=\"button\"]")[0].attribs.href)
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
+
     async parseVodShortListFromJson(obj) {
         let vod_list = []
-        for (const vod_json of obj["list"]){
+        for (const vod_json of obj["list"]) {
             let vodShort = new VodShort();
             vodShort.vod_name = vod_json["vod_name"]
             vodShort.vod_id = vod_json["vod_id"]
@@ -46,6 +74,45 @@ class PiPiXiaSpider extends Spider {
         }
         return vod_list
     }
+
+    async parseVodDetailFromDoc($) {
+        let vodDetail = new VodDetail();
+        let detailElement = $("[class=\"vod-detail style-detail rel box cor1\"]")
+        vodDetail.vod_name = $($(detailElement).find("[class=\"slide-info-title hide\"]")).text()
+        vodDetail.vod_pic = this.siteUrl + $(detailElement).find("[class=\"detail-pic lazy mask-1\"]")[0].attribs["data-original"]
+        vodDetail.vod_remarks = $($($(detailElement).find("[class=\"slide-info hide\"]")[0]).find("[class=\"slide-info-remarks\"]")[0]).text()
+        vodDetail.vod_year = $($($(detailElement).find("[class=\"slide-info hide\"]")[0]).find("[class=\"slide-info-remarks\"]")[1]).text()
+        vodDetail.vod_area = $($($(detailElement).find("[class=\"slide-info hide\"]")[0]).find("[class=\"slide-info-remarks\"]")[2]).text()
+
+        vodDetail.vod_director = $($($(detailElement).find("[class=\"slide-info hide\"]")[1]).find("a")).text()
+        vodDetail.vod_actor = $($($(detailElement).find("[class=\"slide-info hide\"]")[2]).find("a")).text()
+        let type_list = []
+        for (const typeEle of $($(detailElement).find("[class=\"slide-info hide\"]")[3]).find("a")) {
+            type_list.push($(typeEle).text())
+        }
+        vodDetail.type_name = type_list.join("/")
+        vodDetail.vod_content = $($("[class=\"check text selected cor3\"]")).text()
+        let playElemet = $("[class=\"anthology wow fadeInUp animated\"]")
+        let playFormatElemets = $(playElemet).find("[class=\"swiper-slide\"]")
+        let playUrlElements = $(playElemet).find("[class=\"anthology-list-play size\"]")
+        let vod_play_from_list = []
+        let vod_play_list = []
+        for (let i = 0; i < playFormatElemets.length; i++) {
+            let playFormatElement = playFormatElemets[i]
+            vod_play_from_list.push($(playFormatElement).text())
+            let vodItems = []
+            for (const playUrlElement of $(playUrlElements[i]).find("a")) {
+                let episodeName = $(playUrlElement).text()
+                let episodeUrl = playUrlElement.attribs.href
+                vodItems.push(episodeName + "$" + episodeUrl)
+            }
+            vod_play_list.push(vodItems.join("#"))
+        }
+        vodDetail.vod_play_from = vod_play_from_list.join("$$$")
+        vodDetail.vod_play_url = vod_play_list.join("$$$")
+        return vodDetail
+    }
+
 
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
         try {
@@ -71,50 +138,207 @@ class PiPiXiaSpider extends Spider {
     async setClasses() {
         let $ = await this.getHtml()
         this.classes = [this.getTypeDic("首页", "最近更新")]
-        let navElemets = $("[class=\"head-more none box size\"]").find("a")
-        for (const navElement of navElemets) {
-            let type_name = $(navElement).text()
-            let type_id = navElement.attribs.href
-            if (type_name !== "留言板") {
-                if (type_id.indexOf("/s/") > -1) {
-                    type_id = Utils.getStrByRegex(/\/s\/(.*?).html/, type_id)
-                    this.classes.push(this.getTypeDic($(navElement).text(), type_id))
-                } else {
-                    this.classes.push(this.getTypeDic($(navElement).text(), type_id))
+        let $2 = await this.getHtml(this.siteUrl + "/s/1.html")
+        let classElemets = $2("[class=\"nav-swiper rel\"]")[0]
+        for (const classElement of $(classElemets).find("a")){
+            let type_id  = Utils.getStrByRegex(/\/s\/(.*?).html/, classElement.attribs.href)
+            let type_name = $(classElement).text()
+            this.classes.push(this.getTypeDic(type_name,type_id))
+        }
+    }
 
+    async getFilter($) {
+        let elements = $("[class=\"nav-swiper rel\"]")
+        let extend_list = []
+        for (let i = 0; i < elements.length; i++) {
+            let element = elements[i]
+            let name = $($($(element).find("[class=\"filter-text bj cor5\"]")).find("span")).html()
+            if (name !== "频道") {
+                let extend_dic = {"key": (i + 1).toString(), "name": name, "value": []}
+                for (const ele of $(element).find("a")) {
+                    extend_dic["value"].push({"n": $(ele).text(), "v": $(ele).text()})
                 }
+                extend_list.push(extend_dic)
+            }
+        }
+        return extend_list
+    }
+
+    async setFilterObj() {
+        for (const type_dic of this.classes) {
+            let type_id = type_dic["type_id"]
+            if (Utils.isNumeric(type_id)) {
+                let url = this.siteUrl + `/s/${type_id}.html`
+                let $ = await this.getHtml(url)
+                this.filterObj[type_id] = await this.getFilter($)
             }
         }
     }
 
-    async setFilterObj() {
-        super.setFilterObj();
-    }
-
     async setHomeVod() {
-        super.setHomeVod();
+        let $ = await this.getHtml(this.siteUrl + "/map.html")
+        this.homeVodList = await this.parseVodShortListFromDoc($)
     }
 
     async setCategory(tid, pg, filter, extend) {
-        if (Utils.isNumeric(tid)){
+        if (Utils.isNumeric(tid)) {
             let url = this.siteUrl + "/index.php/api/vod"
             let time_1 = Math.floor(new Date().getTime() / 1000)
             let key_1 = pipixiaMd5(time_1)
             let params = {
-                "type":tid,
-                "page":pg,
-                "time":time_1.toString(),
-                "key":key_1
+                "type": tid, "page": pg, "time": time_1.toString(), "key": key_1
             }
-            let content_json = JSON.parse(await this.post(url,params))
-            if (content_json["code"] === 1){
-                this.vodList = await this.parseVodShortListFromJson(JSON.parse(await this.post(url,params)))
+            let content_json = JSON.parse(await this.post(url, params))
+            if (content_json["code"] === 1) {
+                this.vodList = await this.parseVodShortListFromJson(JSON.parse(await this.post(url, params)))
             }
         }
     }
 
     async setDetail(id) {
-        let $
+        let $ = await this.getHtml(this.siteUrl + `/v/${id}.html`)
+        this.vodDetail = await this.parseVodDetailFromDoc($)
+    }
+
+    async getPlayConfig(element) {
+        // let playJSUrl = this.siteUrl + element.attribs.src
+        // let jsContent = await this.fetch(playJSUrl,null,null)
+        // let playListConfig = JSON.parse(Utils.getStrByRegex(/MacPlayerConfig.player_list=(.*?),MacPlayerConfig/,jsContent))
+        //
+        let playListConfig = {
+            "qq": {
+                "show": "QQ虾线",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "qiyi": {
+                "show": "QY虾线",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qiyi&if=1&url="
+            }, "youku": {
+                "show": "YK虾线",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=youku&if=1&url="
+            }, "mgtv": {
+                "show": "MG虾线",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=mgtv&if=1&url="
+            }, "NBY": {
+                "show": "极速线路",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "SLNB": {
+                "show": "三路极速",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "FYNB": {
+                "show": "APP专享线路",
+                "des": "",
+                "ps": "0",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "SPA": {
+                "show": "极速A",
+                "des": "",
+                "ps": "0",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "SPB": {
+                "show": "极速B",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "kyB": {
+                "show": "极速直连",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "JMZN": {
+                "show": "极速直连",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "ZNJSON": {
+                "show": "极速直连",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "znkan": {
+                "show": "极速直连",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "bilibili": {
+                "show": "BLBL虾线",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "pptv": {
+                "show": "PP虾线", "des": "", "ps": "1", "parse": "http://play.shijie.chat/player/?url="
+            }, "letv": {
+                "show": "LE虾线", "des": "", "ps": "1", "parse": "http://play.shijie.chat/player/?url="
+            }, "sohu": {
+                "show": "SH虾线", "des": "", "ps": "1", "parse": "http://play.shijie.chat/player/?url="
+            }, "DJMP4": {
+                "show": "短剧专用",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "CLDJ": {
+                "show": "短剧①",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "ChenXi": {
+                "show": "短剧专用2",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "HT-": {
+                "show": "自营线",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }, "htys": {
+                "show": "解说线路", "des": "", "ps": "1", "parse": "http://play.shijie.chat/player/?url="
+            }, "sgdj": {
+                "show": "短剧③",
+                "des": "",
+                "ps": "1",
+                "parse": "http://play.shijie.chat/player/ec.php?code=qq&if=1&url="
+            }
+        }
+        return playListConfig
+    }
+
+    uic(url, uid) {
+        let ut = CryptoJS.enc.Utf8.parse('2890' + uid + 'tB959C');
+        let mm = CryptoJS.enc.Utf8.parse("2F131BE91247866E");
+        let decrypted = CryptoJS.AES.decrypt(url, ut, {iv: mm, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
+        return CryptoJS.enc.Utf8.stringify(decrypted);
+    }
+
+    async setPlay(flag, id, flags) {
+        let $ = await this.getHtml(this.siteUrl + id)
+        let playElements = $("[class=\"player-left\"]")
+        let scriptElements = $(playElements).find("script")
+        await this.jadeLog.debug($(scriptElements[0]).html())
+        let playConfig = JSON.parse($(scriptElements[0]).html().replaceAll("var player_aaaa=", ""))
+        let playListConfig = await this.getPlayConfig(scriptElements[1])
+        let jiexiUrl = playListConfig[playConfig["from"]]["parse"] + playConfig["url"]
+        let jiexi$ = await this.getHtml(jiexiUrl, {"User-Agent": Utils.CHROME})
+        let ConFig = JSON.parse(Utils.getStrByRegex(/let ConFig = (.*?),box = /, jiexi$.html()))
+        this.playUrl = this.uic(ConFig["url"], ConFig.config.uid)
+    }
+
+    async setSearch(wd, quick) {
+
+        let $ = await this.getHtml(this.siteUrl + `/vodsearch.html?wd=${decodeURI(wd)}`)
+        this.vodList = await this.parseVodShortListFromDocBySearch($)
+
     }
 
 }
