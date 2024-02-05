@@ -433,6 +433,7 @@ class Spider {
         }
         this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
         this.douBanjsBase = await js2Proxy(true, this.siteType, this.siteKey, 'douban/', {});
+        this.baseProxy = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
     }
 
     async loadFilterAndClasses() {
