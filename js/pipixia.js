@@ -382,11 +382,9 @@ class PiPiXiaSpider extends Spider {
         }
     }
 
-    async setSearch(wd, quick) {+
-
+    async setSearch(wd, quick) {
         let $ = await this.getHtml(this.siteUrl + `/vodsearch.html?wd=${decodeURI(wd)}`)
         this.vodList = await this.parseVodShortListFromDocBySearch($)
-
     }
 
     async proxy(segments, headers) {
