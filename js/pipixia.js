@@ -26,6 +26,11 @@ class PiPiXiaSpider extends Spider {
         return headers
     }
 
+    async init(cfg) {
+        await super.init(cfg);
+        this.videoProxy = await js2Proxy(true, this.siteType, this.siteKey, 'm3u8/', this.getHeader());
+    }
+
     getName() {
         return "🦐┃皮皮虾影视┃🦐"
     }
@@ -99,7 +104,7 @@ class PiPiXiaSpider extends Spider {
         let vod_play_list = []
         for (let i = 0; i < playFormatElemets.length; i++) {
             let playFormatElement = playFormatElemets[i]
-            vod_play_from_list.push($(playFormatElement).text().replaceAll(" ",""))
+            vod_play_from_list.push($(playFormatElement).text().replaceAll(" ", ""))
             let vodItems = []
             for (const playUrlElement of $(playUrlElements[i]).find("a")) {
                 let episodeName = $(playUrlElement).text()
@@ -220,7 +225,7 @@ class PiPiXiaSpider extends Spider {
             let params = {
                 "type": tid, "page": pg, "time": time_1.toString(), "key": key_1
             }
-            params = this.getExtendDic(params,extend)
+            params = this.getExtendDic(params, extend)
             let content = await this.post(url, params, this.getHeader())
             if (!_.isEmpty(content)) {
                 let content_json = JSON.parse(content)
@@ -369,11 +374,11 @@ class PiPiXiaSpider extends Spider {
         let jiexi$ = await this.getHtml(jiexiUrl, {"User-Agent": Utils.CHROME})
         let ConFig = JSON.parse(Utils.getStrByRegex(/let ConFig = (.*?),box = /, jiexi$.html()))
         let playUrl = this.uic(ConFig["url"], ConFig.config.uid)
-        if (flag.indexOf("QQ虾线") > -1){
-            let response = await this.fetch(playUrl,null,{"User-Agent":Utils.CHROME},false)
-            this.playUrl = response
+        if (flag.indexOf("QQ虾线") > -1) {
+            this.playUrl = this.videoProxy + Utils.base64Encode(playUrl)
         }
-        let ax = 0
+
+
     }
 
     async setSearch(wd, quick) {
@@ -381,6 +386,71 @@ class PiPiXiaSpider extends Spider {
         let $ = await this.getHtml(this.siteUrl + `/vodsearch.html?wd=${decodeURI(wd)}`)
         this.vodList = await this.parseVodShortListFromDocBySearch($)
 
+    }
+
+    async proxy(segments, headers) {
+        await this.jadeLog.debug(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
+        let what = segments[0];
+        let url = Utils.base64Decode(segments[1]);
+        await this.jadeLog.debug(`反向代理参数为:${url}`)
+        if (what === 'img') {
+            let resp;
+            if (!_.isEmpty(headers)) {
+                resp = await req(url, {
+                    buffer: 2, headers: headers
+                });
+            } else {
+                resp = await req(url, {
+                    buffer: 2, headers: {
+                        Referer: url, 'User-Agent': Utils.CHROME,
+                    },
+                });
+            }
+            return JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            });
+        } else if (what === "douban") {
+            let vod_list = await this.doubanSearch(url)
+            if (vod_list !== null) {
+                let vod_pic = vod_list[0].vod_pic
+                let resp;
+                if (!_.isEmpty(headers)) {
+                    resp = await req(vod_pic, {
+                        buffer: 2, headers: headers
+                    });
+                } else {
+                    resp = await req(vod_pic, {
+                        buffer: 2, headers: {
+                            Referer: vod_pic, 'User-Agent': Utils.CHROME,
+                        },
+                    });
+                }
+                return JSON.stringify({
+                    code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+                });
+            }
+        } else if (what === "m3u8") {
+            let resp;
+
+            if (!_.isEmpty(headers)) {
+                resp = await req(url, {
+                    buffer: 2, headers: headers
+                });
+            } else {
+                resp = await req(url, {
+                    buffer: 2, headers: {
+                        Referer: url, 'User-Agent': Utils.CHROME,
+                    },
+                });
+            }
+            return JSON.stringify({
+                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
+            });
+
+        }
+        return JSON.stringify({
+            code: 500, content: '',
+        });
     }
 
 }
