@@ -74,8 +74,8 @@ async function test() {
     console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("58846"))
-    await testPlay(detail1)
+    // let detail1 = JSON.parse(await spider.detail("58846"))
+    // await testPlay(detail1)
 
 
 
@@ -86,7 +86,7 @@ async function test() {
 
     // 测试搜索
 
-    let search_page = JSON.parse(await spider.search("乡村爱情"))
+    let search_page = JSON.parse(await spider.search("王牌对王牌第八季"))
     console.debug(JSON.stringify(search_page));
 
 

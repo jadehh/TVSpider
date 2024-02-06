@@ -64,7 +64,6 @@ class JiaFeiMaoSpider extends Spider {
 
     async parseVodDetailFromDoc($) {
         let vodDetail = new VodDetail()
-        let html = $.html()
         vodDetail.vod_name = $($("[class=\"iptit\"]").find("h3")).html().split(" ")[0]
         vodDetail.vod_content = $($("[class=\"idetail container\"]").find("[class=\"infor_intro\"]")).text()
         let vodPlayElements = $("[class=\"fjcon\"]")
@@ -118,17 +117,16 @@ class JiaFeiMaoSpider extends Spider {
         return vodDetail
     }
 
-    async parseVodShortListFromJson(obj) {
+    async parseVodShortListFromDocBySearch($) {
         let vod_list = []
-        for (const vod_data of obj["list"]) {
-            let vodShort = new VodShort();
-            if (vod_data["type_id"] !== 34) {
-                vodShort.vod_pic = this.getPic(vod_data["vod_pic"])
-                vodShort.vod_id = vod_data["vod_id"]
-                vodShort.vod_name = vod_data["vod_name"]
-                vodShort.vod_remarks = vod_data["vod_remarks"]
-                vod_list.push(vodShort)
-            }
+        let vodElements = $("[class=\"tv-bd search-list\"]").find("[class=\"item clearfix\"]")
+        for (const vodElement of vodElements){
+            let vodShort = new VodShort()
+            vodShort.vod_id = Utils.getStrByRegex(/id\/(.*?).html/, $($(vodElement).find("[class=\"s_tit\"]")).find("a")[0].attribs.href)
+            vodShort.vod_name = $($($(vodElement).find("[class=\"s_tit\"]")).find("a")).text()
+            vodShort.vod_pic = this.getPic($(vodElement).find("img")[0].attribs.src)
+            vodShort.vod_remarks = $($(vodElement).find("[class=\"s_score\"]")).text()
+            vod_list.push(vodShort)
         }
         return vod_list
     }
@@ -235,12 +233,8 @@ class JiaFeiMaoSpider extends Spider {
     }
 
     async setSearch(wd, quick) {
-        let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {
-            "ac": "detail",
-            "wd": wd,
-            "pg": "1"
-        }, this.getHeader())
-        this.vodList = await this.parseVodShortListFromJson(JSON.parse(content))
+        let $ = await this.getHtml(this.siteUrl + "/index.php/vod/search.html?wd="+wd)
+        this.vodList = await this.parseVodShortListFromDocBySearch($)
     }
 }
 
