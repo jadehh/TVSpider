@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './feifan.js';
+import {__jsEvalReturn} from './liangzi.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -71,8 +71,8 @@ async function test() {
     console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    // let detail1 = JSON.parse(await spider.detail("9464"))
-    // await testPlay(detail1)
+    let detail1 = JSON.parse(await spider.detail("82393"))
+    await testPlay(detail1)
 
 
 
