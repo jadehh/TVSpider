@@ -221,7 +221,9 @@ class JiaFeiMaoSpider extends Spider {
 
     async setSearch(wd, quick) {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {
-            "ac": "detail", "wd": wd, "pg": "1"
+            "ac": "detail",
+            "wd": wd,
+            "pg": "1"
         }, this.getHeader())
         this.vodList = await this.parseVodShortListFromJson(JSON.parse(content))
     }
