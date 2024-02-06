@@ -26,11 +26,18 @@ class JiaFeiMaoSpider extends Spider {
         return "🐈|加菲猫|🐈"
     }
 
+    getPic(url){
+        if (url.indexOf("http:") > -1 || url.indexOf("https:") > -1){
+            return url
+        }else{
+            return this.siteUrl + url
+        }
+    }
     parseVodShortFromElement($, element) {
         let vodShort = new VodShort()
         vodShort.vod_id = $(element).find("a")[0].attribs.href
         vodShort.vod_name = $(element).find("a")[0].attribs.title
-        vodShort.vod_pic = this.siteUrl + $(element).find("img")[0].attribs["data-src"]
+        vodShort.vod_pic = this.getPic($(element).find("img")[0].attribs["data-src"])
         vodShort.vod_remarks = $($(element).find("[class=\"v-tips\"]")).html()
         return vodShort
     }
