@@ -15,7 +15,13 @@ class FeiFanSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = "http://cj.ffzyapi.com"
+    }
 
+    async init(cfg) {
+        this.remove18 = true
+        this.type_id_18 = 0
+        this.type_name_18 = "伦理片"
+        await super.init(cfg);
     }
 
     getAppName() {
@@ -26,18 +32,24 @@ class FeiFanSpider extends Spider {
         return "🥗|非凡资源|🥗"
     }
 
+
     async parseVodShortListFromJson(obj, isSearch = false) {
         let vod_list = []
+        let vodShort;
         for (const vod_data of obj["list"]) {
             if (!isSearch) {
-                let vodDetail = this.parseVodDetail(vod_data)
-                vod_list.push(vodDetail.to_short())
+                vodShort = this.parseVodDetail(vod_data)
             } else {
-                let vodShort = new VodShort();
+                vodShort = new VodShort();
                 vodShort.vod_pic = this.detailProxy + Utils.base64Encode(vod_data["vod_id"])
                 vodShort.vod_id = vod_data["vod_id"]
                 vodShort.vod_name = vod_data["vod_name"]
                 vodShort.vod_remarks = vod_data["vod_remarks"]
+            }
+            if (this.remove18 && vod_data["type_id"] !== this.type_id_18) {
+                vod_list.push(vodShort)
+            }
+            if (!this.remove18 && vod_data["type_id"] === this.type_id_18) {
                 vod_list.push(vodShort)
             }
 
@@ -90,17 +102,35 @@ class FeiFanSpider extends Spider {
             if (type_id !== "最近更新") {
                 let extend_dic = {"key": "1", "name": "分类", "value": [{"n": "全部", "v": type_id}]}
                 for (const class_dic of content_json["class"]) {
-                    if (class_dic["type_pid"] === root_class_dic["type_id"]) {
-                        extend_dic["value"].push({"n": class_dic["type_name"], "v": class_dic["type_id"].toString()})
+                    let type_name = class_dic["type_name"]
+                    if (type_name === this.type_name_18) {
+                        this.type_id_18 = class_dic["type_id"].toString()
                     }
+                    if (this.remove18) {
+                        if (class_dic["type_pid"] === root_class_dic["type_id"] && type_name !== this.type_name_18) {
+                            extend_dic["value"].push({"n": type_name, "v": class_dic["type_id"].toString()})
+                        }
+                    } else {
+                        if (class_dic["type_pid"] === root_class_dic["type_id"] && type_name === this.type_name_18) {
+                            extend_dic["value"].push({"n": type_name, "v": class_dic["type_id"].toString()})
+                        }
+                    }
+
                 }
-                this.filterObj[type_id] = [extend_dic]
+                if (!this.remove18) {
+                    this.classes = [this.getTypeDic(this.type_name_18, this.type_id_18)]
+                } else {
+                    this.filterObj[type_id] = [extend_dic]
+                }
             }
         }
+        let x = 0
     }
 
     async setHomeVod() {
-        let content = await this.fetch(this.siteUrl + "/index.php/ajax/data", {"mid": "1","pg":"1","limit":20}, this.getHeader())
+        let content = await this.fetch(this.siteUrl + "/index.php/ajax/data", {
+            "mid": "1", "pg": "1", "limit": 20
+        }, this.getHeader())
         this.homeVodList = await this.parseVodShortListFromJson(JSON.parse(content))
     }
 
@@ -120,7 +150,7 @@ class FeiFanSpider extends Spider {
 
     async setSearch(wd, quick) {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod/", {"wd": wd}, this.getHeader())
-        this.vodList = await this.parseVodShortListFromJson(JSON.parse(content),true)
+        this.vodList = await this.parseVodShortListFromJson(JSON.parse(content), true)
     }
 
     async proxy(segments, headers) {
@@ -133,15 +163,15 @@ class FeiFanSpider extends Spider {
                 "ac": "detail", "ids": url
             }, this.getHeader())
             let vod_detail = await this.parseVodDetailfromJson(JSON.parse(content))
-            let pic_content = await this.fetch(vod_detail.vod_pic,null,this.getHeader(),false,false,2)
-            if (!_.isEmpty(pic_content)){
+            let pic_content = await this.fetch(vod_detail.vod_pic, null, this.getHeader(), false, false, 2)
+            if (!_.isEmpty(pic_content)) {
                 return JSON.stringify({
-                code: 200, buffer: 2, content: pic_content, headers: {},
-            });
-            }else{
+                    code: 200, buffer: 2, content: pic_content, headers: {},
+                });
+            } else {
                 return JSON.stringify({
-                code: 500, buffer: 2, content: "", headers: {},
-            });
+                    code: 500, buffer: 2, content: "", headers: {},
+                });
             }
         }
     }
