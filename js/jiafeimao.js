@@ -45,6 +45,42 @@ class JiaFeiMaoSpider extends Spider {
         return vod_list
     }
 
+    async parseVodShortListFromDocByCategory($) {
+        let vod_list = []
+        let vodElements = $("[class=\"tv-list clearfix\"]").find("li")
+        for (const vodElement of vodElements) {
+            let vodShort = this.parseVodShortFromElement($, vodElement)
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
+    async parseVodDetailFromDoc($) {
+        let vodDetail = new VodDetail()
+        let html = $.html()
+        vodDetail.vod_name = $($("[class=\"iptit\"]").find("h3")).html().split(" ")[0]
+        vodDetail.vod_content = $($("[class=\"idetail container\"]").find("[class=\"infor_intro\"]")).text()
+        let vodPlayElements = $("[class=\"fjcon\"]")
+        let vod_play_from_list = []
+        let vod_play_list = []
+        let playFormatElemets = $($(vodPlayElements).find("[class=\"fjtop clearfix\"]")).find("a")
+        let playUrlElements = $(vodPlayElements).find("[class=\"xjn_ul play-list\"]")
+        for (let i = 0; i < playFormatElemets.length; i++) {
+            let playFormatElement = playFormatElemets[i]
+            vod_play_from_list.push($(playFormatElement).text())
+            let vodItems = []
+            for (const playUrlElement of $(playUrlElements[i]).find("a")) {
+                let episodeName = $(playUrlElement).text()
+                let episodeUrl = playUrlElement.attribs.href
+                vodItems.push(episodeName + "$" + episodeUrl)
+            }
+            vod_play_list.push(vodItems.join("#"))
+        }
+        vodDetail.vod_play_from = vod_play_from_list.join("$$$")
+        vodDetail.vod_play_url = vod_play_list.join("$$$")
+        return vodDetail
+    }
+
     async setClasses() {
         let $ = await this.getHtml()
         let content = $($("[class=\"container\"]").find("script")).html()
@@ -93,7 +129,7 @@ class JiaFeiMaoSpider extends Spider {
             if (_.isEmpty(type_id)) {
                 type_id = "/"
             }
-            extend_dic["value"].push({"n": $(ele).text(), "v":type_id})
+            extend_dic["value"].push({"n": $(ele).text(), "v": type_id})
         }
         extend_list.push(extend_dic)
 
@@ -115,45 +151,40 @@ class JiaFeiMaoSpider extends Spider {
         let $ = await this.getHtml()
         this.homeVodList = await this.parseVodShortListFromDoc($)
     }
-    getExtend(extend,key,value){
-        if (extend[key] !== undefined && extend[key] !== "/"){
+
+    getExtend(extend, key, value) {
+        if (extend[key] !== undefined && extend[key] !== "/") {
             return value + "/" + extend[key] + "/"
-        }else{
+        } else {
             return ""
         }
     }
 
     async setCategory(tid, pg, filter, extend) {
-        //https://jfmys.app/index.php/vod/show/area/大陆/by/hits/id/6/letter/C/year/2024.html
-        //https://jfmys.app/index.php/vod/show/id/6/letter/C/page/2.html
-        let area = this.getExtend(extend,"3","area")
-        let sort = this.getExtend(extend,"6","by")
-        let id = this.getExtend(extend,"2","id")
-        let letter = this.getExtend(extend,"5","letter")
-        let year = this.getExtend(extend,"4","year")
-        if (_.isEmpty(id)){
+        let area = this.getExtend(extend, "3", "area")
+        let sort = this.getExtend(extend, "6", "by")
+        let id = this.getExtend(extend, "2", "id")
+        let letter = this.getExtend(extend, "5", "letter")
+        let year = this.getExtend(extend, "4", "year")
+        if (_.isEmpty(id)) {
             id = "id/" + tid + "/"
         }
         let url = this.siteUrl + `/index.php/vod/show/${area}${sort}${id}${letter}${year}page/${pg}.html`
-        await this.jadeLog.debug(url)
+        let $ = await this.getHtml(url)
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
 
     async setDetail(id) {
-        let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {
-            "ac": "detail", "ids": id
-        }, this.getHeader())
-        this.vodDetail = await this.parseVodDetailfromJson(JSON.parse(content))
+        let $ = await this.getHtml(this.siteUrl + id)
+        this.vodDetail = await this.parseVodDetailFromDoc($)
     }
 
     async setPlay(flag, id, flags) {
-        if (flag === "liangzi") {
-            let $ = await this.getHtml(id)
-            this.playUrl = id.split("/")[0] + "//" + id.split("/")[2] + Utils.getStrByRegex(/var main = "(.*?)";/, $.html())
-        } else {
-            this.playUrl = id
-        }
-
+        let $ = await this.getHtml(this.siteUrl + id)
+        let html = $.html()
+        let playConfig = JSON.parse( Utils.getStrByRegex(/var player_aaaa=(.*?)<\/script>/,html))
+        this.playUrl = playConfig["url"]
     }
 
     async setSearch(wd, quick) {

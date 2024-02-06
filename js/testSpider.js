@@ -63,18 +63,18 @@ async function test() {
     console.debug(JSON.stringify(classes));
     //
     // //测试首页列表
-    let homeVod = JSON.parse(await spider.homeVod())
-    console.debug(JSON.stringify(homeVod));
-    // // // // //
-    // // // // //
+    // let homeVod = JSON.parse(await spider.homeVod())
+    // console.debug(JSON.stringify(homeVod));
     // // // // // //
-    // // // //
-    // // // // // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("2", "1", undefined,{"2":"13","3":"内地","4":"2024","5":"A","6":"time"}));
-    console.debug(JSON.stringify(catePage));
+    // // // // // //
+    // // // // // // //
+    // // // // //
+    // // // // // // //测试分类列表
+    // let  catePage = JSON.parse(await spider.category("2", "1", undefined,{}));
+    // console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("116669"))
+    let detail1 = JSON.parse(await spider.detail("/index.php/vod/play/id/59247/sid/1/nid/1.html"))
     await testPlay(detail1)
 
 
