@@ -185,7 +185,7 @@ class JiaFeiMaoSpider extends Spider {
         let html = $.html()
         let playConfig = JSON.parse( Utils.getStrByRegex(/var player_aaaa=(.*?)<\/script>/,html))
         await this.jadeLog.debug(`视频链接为:${playConfig["url"]}`)
-        this.playUrl = this.videoProxy + Utils.base64Encode(playConfig["url"])
+        this.playUrl = playConfig["url"]
 
     }
 
