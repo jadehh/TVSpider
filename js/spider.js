@@ -185,6 +185,9 @@ class Spider {
         this.vodDetail = new VodDetail()
         this.playUrl = ""
         this.header = {}
+        this.remove18 = false
+        this.type_id_18 = 0
+        this.type_name_18 = "伦理片"
     }
 
     async reconnnect(reqUrl, params, headers, redirect_url, return_cookie, buffer) {

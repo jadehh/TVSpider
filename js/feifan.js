@@ -15,12 +15,10 @@ class FeiFanSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = "http://cj.ffzyapi.com"
+        this.remove18 = true
     }
 
     async init(cfg) {
-        this.remove18 = false
-        this.type_id_18 = 0
-        this.type_name_18 = "伦理片"
         await super.init(cfg);
     }
 
@@ -124,7 +122,6 @@ class FeiFanSpider extends Spider {
                 }
             }
         }
-        let x = 0
     }
 
     async setHomeVod() {
