@@ -26,10 +26,10 @@ class FeiFanSpider extends Spider {
         return "🥗|非凡资源|🥗"
     }
 
-    async parseVodShortListFromJson(obj, isHome = true) {
+    async parseVodShortListFromJson(obj, isSearch = false) {
         let vod_list = []
         for (const vod_data of obj["list"]) {
-            if (!isHome) {
+            if (!isSearch) {
                 let vodDetail = this.parseVodDetail(vod_data)
                 vod_list.push(vodDetail.to_short())
             } else {
@@ -100,7 +100,7 @@ class FeiFanSpider extends Spider {
     }
 
     async setHomeVod() {
-        let content = await this.fetch(this.siteUrl + "/api.php/provide/vod/from", {"ac": "list"}, this.getHeader())
+        let content = await this.fetch(this.siteUrl + "/index.php/ajax/data", {"mid": "1","pg":"1","limit":20}, this.getHeader())
         this.homeVodList = await this.parseVodShortListFromJson(JSON.parse(content))
     }
 
@@ -115,12 +115,12 @@ class FeiFanSpider extends Spider {
         tid = extend["1"] ?? tid
         let url = this.siteUrl + `/index.php/ajax/data?mid=1&tid=${tid}&page=${pg}&limit=20`
         let content = await this.fetch(url, null, this.getHeader())
-        this.vodList = await this.parseVodShortListFromJson(JSON.parse(content), false)
+        this.vodList = await this.parseVodShortListFromJson(JSON.parse(content))
     }
 
     async setSearch(wd, quick) {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod/", {"wd": wd}, this.getHeader())
-        this.vodList = await this.parseVodShortListFromJson(JSON.parse(content))
+        this.vodList = await this.parseVodShortListFromJson(JSON.parse(content),true)
     }
 
     async proxy(segments, headers) {
