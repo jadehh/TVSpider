@@ -184,7 +184,7 @@ class JiaFeiMaoSpider extends Spider {
         let $ = await this.getHtml(this.siteUrl + id)
         let html = $.html()
         let playConfig = JSON.parse( Utils.getStrByRegex(/var player_aaaa=(.*?)<\/script>/,html))
-        this.playUrl = playConfig["url"]
+        this.playUrl = this.videoProxy + Utils.base64Encode(playConfig["url"])
     }
 
     async setSearch(wd, quick) {
