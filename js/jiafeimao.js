@@ -215,15 +215,6 @@ class JiaFeiMaoSpider extends Spider {
         this.vodDetail = await this.parseVodDetailfromJson(JSON.parse(content))
     }
 
-    async setPlay(flag, id, flags) {
-        let $ = await this.getHtml(this.siteUrl + id)
-        let html = $.html()
-        let playConfig = JSON.parse( Utils.getStrByRegex(/var player_aaaa=(.*?)<\/script>/,html))
-        await this.jadeLog.debug(`视频链接为:${playConfig["url"]}`)
-        this.playUrl = playConfig["url"]
-
-    }
-
     async setSearch(wd, quick) {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {
             "ac": "detail", "wd": wd, "pg": "1"
