@@ -86,12 +86,12 @@ class FeiFanSpider extends Spider {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod/from", {"ac": "list"}, this.getHeader())
         let content_json = JSON.parse(content)
         for (const root_class_dic of this.classes) {
-            let type_id = root_class_dic["type_id"]
+            let type_id = root_class_dic["type_id"].toString()
             if (type_id !== "最近更新") {
                 let extend_dic = {"key": "1", "name": "分类", "value": [{"n": "全部", "v": type_id}]}
                 for (const class_dic of content_json["class"]) {
                     if (class_dic["type_pid"] === root_class_dic["type_id"]) {
-                        extend_dic["value"].push({"n": class_dic["type_name"], "v": class_dic["type_id"]})
+                        extend_dic["value"].push({"n": class_dic["type_name"], "v": class_dic["type_id"].toString()})
                     }
                 }
                 this.filterObj[type_id] = [extend_dic]
