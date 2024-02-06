@@ -112,7 +112,7 @@ class VodSpider extends Spider {
 
                 }
                 if (!this.remove18) {
-                    this.classes = [this.getTypeDic(this.type_name_18, this.type_id_18)]
+                    this.classes = [this.getTypeDic("最近更新","最近更新"),this.getTypeDic(this.type_name_18, this.type_id_18)]
                 } else {
                     this.filterObj[type_id] = [extend_dic]
                 }
