@@ -18,7 +18,7 @@ class FeiFanSpider extends Spider {
     }
 
     async init(cfg) {
-        this.remove18 = true
+        this.remove18 = false
         this.type_id_18 = 0
         this.type_name_18 = "伦理片"
         await super.init(cfg);
