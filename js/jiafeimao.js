@@ -98,7 +98,11 @@ class JiaFeiMaoSpider extends Spider {
         vodDetail.vod_actor = vod_data["vod_actor"]
         vodDetail.vod_director = vod_data["vod_director"]
         vodDetail.vod_content = vod_data["vod_content"].replaceAll("<p>","").replaceAll("</p>","")
-        vodDetail.vod_play_from = vod_data["vod_play_from"]
+        let vod_play_from = []
+        for (let i = 0; i < vod_data["vod_play_from"].split("$$$"); i++) {
+            vod_play_from.push("线路"+(i+1).toString())
+        }
+        vodDetail.vod_play_from = vod_play_from.join("$$$")
         vodDetail.vod_play_url = vod_data["vod_play_url"]
         vodDetail.type_name = vod_data["type_name"]
         return vodDetail
