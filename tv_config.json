@@ -81,6 +81,14 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
+            "key": "jiafeimao",
+            "name": "🐈|加菲猫|🐈",
+            "type": 3,
+            "api": "./js/jiafeimao.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "jianpian",
             "name": "🌼|荐片|🌼",
             "type": 3,

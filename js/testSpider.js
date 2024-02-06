@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './pipixia.js';
+import {__jsEvalReturn} from './jiafeimao.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -51,7 +51,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'pipixia';
+    let siteKey = 'jiafeimao';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -70,7 +70,7 @@ async function test() {
     // // // // // //
     // // // //
     // // // // // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("1", "1", undefined,{"2":"全部","3":"全部","4":"全部","5":"全部","6":"全部"}));
+    let  catePage = JSON.parse(await spider.category("2", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
