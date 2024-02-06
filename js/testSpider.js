@@ -70,7 +70,7 @@ async function test() {
     // // // // // //
     // // // //
     // // // // // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("2", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("2", "1", undefined,{"2":"13","3":"内地","4":"2024","5":"A","6":"time"}));
     console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情

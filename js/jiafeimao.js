@@ -126,11 +126,11 @@ class JiaFeiMaoSpider extends Spider {
     async setCategory(tid, pg, filter, extend) {
         //https://jfmys.app/index.php/vod/show/area/大陆/by/hits/id/6/letter/C/year/2024.html
         //https://jfmys.app/index.php/vod/show/id/6/letter/C/page/2.html
-        let area = this.getExtend(extend,"","area")
-        let sort = this.getExtend(extend,"","by")
-        let id = this.getExtend(extend,"","id")
-        let letter = this.getExtend(extend,"","letter")
-        let year = this.getExtend(extend,"","year")
+        let area = this.getExtend(extend,"3","area")
+        let sort = this.getExtend(extend,"6","by")
+        let id = this.getExtend(extend,"2","id")
+        let letter = this.getExtend(extend,"5","letter")
+        let year = this.getExtend(extend,"4","year")
         if (_.isEmpty(id)){
             id = "id/" + tid + "/"
         }
