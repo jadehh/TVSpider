@@ -118,6 +118,21 @@ class JiaFeiMaoSpider extends Spider {
         return vodDetail
     }
 
+    async parseVodShortListFromJson(obj) {
+        let vod_list = []
+        for (const vod_data of obj["list"]) {
+            let vodShort = new VodShort();
+            if (vod_data["type_id"] !== 34) {
+                vodShort.vod_pic = this.getPic(vod_data["vod_pic"])
+                vodShort.vod_id = vod_data["vod_id"]
+                vodShort.vod_name = vod_data["vod_name"]
+                vodShort.vod_remarks = vod_data["vod_remarks"]
+                vod_list.push(vodShort)
+            }
+        }
+        return vod_list
+    }
+
     async setClasses() {
         let $ = await this.getHtml()
         let content = $($("[class=\"container\"]").find("script")).html()
