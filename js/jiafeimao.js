@@ -35,7 +35,7 @@ class JiaFeiMaoSpider extends Spider {
     }
     parseVodShortFromElement($, element) {
         let vodShort = new VodShort()
-        vodShort.vod_id = $(element).find("a")[0].attribs.href
+        vodShort.vod_id = Utils.getStrByRegex(/id\/(.*?)\//,$(element).find("a")[0].attribs.href)
         vodShort.vod_name = $(element).find("a")[0].attribs.title
         vodShort.vod_pic = this.getPic($(element).find("img")[0].attribs["data-src"])
         vodShort.vod_remarks = $($(element).find("[class=\"v-tips\"]")).html()
@@ -85,6 +85,32 @@ class JiaFeiMaoSpider extends Spider {
         }
         vodDetail.vod_play_from = vod_play_from_list.join("$$$")
         vodDetail.vod_play_url = vod_play_list.join("$$$")
+        return vodDetail
+    }
+
+    parseVodDetail(vod_data) {
+        let vodDetail = new VodDetail()
+        vodDetail.vod_name = vod_data["vod_name"]
+        vodDetail.vod_pic = this.getPic(vod_data["vod_pic"])
+        vodDetail.vod_remarks = vod_data["vod_remarks"]
+        vodDetail.vod_area = vod_data["vod_area"]
+        vodDetail.vod_year = vod_data["vod_year"]
+        vodDetail.vod_actor = vod_data["vod_actor"]
+        vodDetail.vod_director = vod_data["vod_director"]
+        vodDetail.vod_content = vod_data["vod_content"].replaceAll("<p>","").replaceAll("</p>","")
+        vodDetail.vod_play_from = vod_data["vod_play_from"]
+        vodDetail.vod_play_url = vod_data["vod_play_url"]
+        vodDetail.type_name = vod_data["type_name"]
+        return vodDetail
+    }
+
+    async parseVodDetailfromJson(obj) {
+        let vodDetail;
+        let vod_data_list = obj["list"]
+        if (vod_data_list.length > 0) {
+            let vod_data = vod_data_list[0]
+            vodDetail = this.parseVodDetail(vod_data)
+        }
         return vodDetail
     }
 
@@ -183,8 +209,10 @@ class JiaFeiMaoSpider extends Spider {
 
 
     async setDetail(id) {
-        let $ = await this.getHtml(this.siteUrl + id)
-        this.vodDetail = await this.parseVodDetailFromDoc($)
+        let content = await this.fetch(this.siteUrl + "/api.php/provide/vod", {
+            "ac": "detail", "ids": id
+        }, this.getHeader())
+        this.vodDetail = await this.parseVodDetailfromJson(JSON.parse(content))
     }
 
     async setPlay(flag, id, flags) {
