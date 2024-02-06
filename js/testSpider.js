@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './jiafeimao.js';
+import {__jsEvalReturn} from './feifan.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -51,7 +51,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'jiafeimao';
+    let siteKey = 'feifan';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -65,16 +65,13 @@ async function test() {
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
-    // // // // // //
-    // // // // // //
-    // // // // // // //
-    // // // // //
-    // // // // // // //测试分类列表
+
+     //测试分类列表
     let  catePage = JSON.parse(await spider.category("2", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    // let detail1 = JSON.parse(await spider.detail("58846"))
+    // let detail1 = JSON.parse(await spider.detail("9464"))
     // await testPlay(detail1)
 
 

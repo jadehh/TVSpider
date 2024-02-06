@@ -58,6 +58,14 @@
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
+                "key": "feifan",
+                "name": "🥗|非凡资源|🥗",
+                "type": 3,
+                "api": "./js/feifan.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "freeok",
                 "name": "🆗|OK资源网|🆗",
                 "type": 3,
