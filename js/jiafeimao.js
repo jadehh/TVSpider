@@ -67,7 +67,7 @@ class JiaFeiMaoSpider extends Spider {
         let playUrlElements = $(vodPlayElements).find("[class=\"xjn_ul play-list\"]")
         for (let i = 0; i < playFormatElemets.length; i++) {
             let playFormatElement = playFormatElemets[i]
-            vod_play_from_list.push($(playFormatElement).text())
+            vod_play_from_list.push("线路" +( i+1).toString())
             let vodItems = []
             for (const playUrlElement of $(playUrlElements[i]).find("a")) {
                 let episodeName = $(playUrlElement).text()

@@ -74,7 +74,7 @@ async function test() {
     // console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/index.php/vod/play/id/59247/sid/1/nid/1.html"))
+    let detail1 = JSON.parse(await spider.detail("/index.php/vod/play/id/58846/sid/1/nid/1.html"))
     await testPlay(detail1)
 
 
