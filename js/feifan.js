@@ -13,7 +13,7 @@ class FeiFanSpider extends VodSpider {
     constructor() {
         super();
         this.siteUrl = "http://cj.ffzyapi.com"
-        this.remove18 = true
+        this.remove18 = false
         this.type_id_18 = 34
     }
 

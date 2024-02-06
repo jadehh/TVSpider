@@ -11,7 +11,7 @@ class LiangziSpider extends VodSpider {
     constructor() {
         super();
         this.siteUrl = "https://cj.lzcaiji.com"
-        this.remove18 = true
+        this.remove18 = false
     }
 
     getAppName() {
