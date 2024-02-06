@@ -634,7 +634,7 @@ class Spider {
             } else {
                 content = await this.fetch(url, null, {"Referer": url, 'User-Agent': Utils.CHROME}, false, false, 2)
             }
-            await this.jadeLog.debug(`m3u8返回内容为:${Utils.decode(content,"utf-8")}`)
+            await this.jadeLog.debug(`m3u8返回内容为:${Utils.base64Decode(content)}`)
             if (!_.isEmpty(content)) {
                 return JSON.stringify({
                     code: 200, buffer: 2, content: content, headers: {},
