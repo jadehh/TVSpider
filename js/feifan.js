@@ -18,10 +18,6 @@ class FeiFanSpider extends Spider {
         this.remove18 = true
     }
 
-    async init(cfg) {
-        await super.init(cfg);
-    }
-
     getAppName() {
         return "非凡资源"
     }
