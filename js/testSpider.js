@@ -67,7 +67,7 @@ async function test() {
     console.debug(JSON.stringify(homeVod));
 
      //测试分类列表
-    let  catePage = JSON.parse(await spider.category("2", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("1", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情

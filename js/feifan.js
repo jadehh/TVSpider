@@ -16,6 +16,7 @@ class FeiFanSpider extends Spider {
         super();
         this.siteUrl = "http://cj.ffzyapi.com"
         this.remove18 = true
+        this.type_id_18 = 34
     }
 
     getAppName() {
