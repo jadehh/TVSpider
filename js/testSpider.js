@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './haoxi.js';
+import {__jsEvalReturn} from './jianpian.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -51,7 +51,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'haoxi';
+    let siteKey = 'jianpian';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -63,15 +63,18 @@ async function test() {
     console.debug(JSON.stringify(classes));
     //
     // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
-
-     //测试分类列表
-    // let  catePage = JSON.parse(await spider.category(1, "1", undefined,{"3":"Netflix","4":"大陆","5":"2023","6":"英语","7":"4K","8":"正片","9":"A","10":"全部"}));
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
+    // // // // //
+    // // // // //
+    // // // // // //
+    // // // //
+    // // // // // //测试分类列表
+    // let  catePage = JSON.parse(await spider.category("1", "1", undefined,{"2":"全部","3":"全部","4":"全部","5":"全部","6":"全部"}));
     // console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/voddetail/324526/"))
+    let detail1 = JSON.parse(await spider.detail("562946"))
     await testPlay(detail1)
 
 

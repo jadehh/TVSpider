@@ -86,7 +86,7 @@ class JianPianSpider extends Spider {
         let vodDetail = new VodDetail();
         vodDetail.vod_id = obj["id"]
         vodDetail.vod_year = obj["year"]["title"]
-        vodDetail.vod_pic = obj["thumbnail"]
+        // vodDetail.vod_pic = obj["thumbnail"]
         vodDetail.type_name = this.objToList(obj["types"], "name")
         vodDetail.vod_name = obj["title"]
         vodDetail.vod_content = obj["description"]
