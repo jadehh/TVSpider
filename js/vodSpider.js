@@ -6,14 +6,6 @@
 * @Software : Samples
 * @Desc     :
 */
-/*
-* @File     : feifan.js
-* @Author   : jade
-* @Date     : 2024/02/06 14:58
-* @Email    : jadehh@1ive.com
-* @Software : Samples
-* @Desc     : 非凡资源
-*/
 import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
@@ -140,6 +132,7 @@ class VodSpider extends Spider {
         let url = this.siteUrl + `/index.php/ajax/data?mid=1&tid=${tid}&page=${pg}&limit=20`
         await this.jadeLog.debug(`分类URL:${url}`)
         let content = await this.fetch(url, null, this.getHeader())
+        await this.jadeLog.debug(`分类内容为:${content}`)
         this.vodList = await this.parseVodShortListFromJson(JSON.parse(content))
     }
 
