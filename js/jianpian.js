@@ -28,14 +28,16 @@ class JianPianSpider extends Spider {
     }
 
     getHeader() {
-        return {"User-Agent": "jianpian-android/360", "JPAUTH": "y261ow7kF2dtzlxh1GS9EB8nbTxNmaK/QQIAjctlKiEv"}
+        return {
+            "User-Agent": "jianpian-android/360",
+            "JPAUTH": "y261ow7kF2dtzlxh1GS9EB8nbTxNmaK/QQIAjctlKiEv",
+            "Referer": "www.jianpianapp.com"
+        }
     }
 
     async init(cfg) {
         await super.init(cfg);
-        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {
-            "Referer": "www.jianpianapp.com", "User-Agent": "jianpian-version353","JPAUTH":"y261ow7kF2dtzlxh1GS9EB8nbTxNmaK/QQIAjctlKiEv"
-        });
+        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
     }
 
 
@@ -46,13 +48,13 @@ class JianPianSpider extends Spider {
             vodShort.vod_id = data["id"]
             if (data["path"] !== undefined) {
                 if (!this.catOpenStatus) {
-                    vodShort.vod_pic = data["path"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353"
+                    vodShort.vod_pic = data["path"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353@JPAUTH=y261ow7kF2dtzlxh1GS9EB8nbTxNmaK/QQIAjctlKiEv"
                 } else {
                     vodShort.vod_pic = this.jsBase + Utils.base64Encode(data["path"])
                 }
             } else {
                 if (!this.catOpenStatus) {
-                    vodShort.vod_pic = data["thumbnail"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353"
+                    vodShort.vod_pic = data["thumbnail"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353@JPAUTH=y261ow7kF2dtzlxh1GS9EB8nbTxNmaK/QQIAjctlKiE"
 
                 } else {
                     vodShort.vod_pic = this.jsBase + Utils.base64Encode(data["thumbnail"])
