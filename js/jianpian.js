@@ -34,7 +34,7 @@ class JianPianSpider extends Spider {
     async init(cfg) {
         await super.init(cfg);
         this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {
-            "Referer": "www.jianpianapp.com", "User-Agent": "jianpian-version353"
+            "Referer": "www.jianpianapp.com", "User-Agent": "jianpian-version353","JPAUTH":"y261ow7kF2dtzlxh1GS9EB8nbTxNmaK/QQIAjctlKiEv"
         });
     }
 
@@ -86,7 +86,7 @@ class JianPianSpider extends Spider {
         let vodDetail = new VodDetail();
         vodDetail.vod_id = obj["id"]
         vodDetail.vod_year = obj["year"]["title"]
-        // vodDetail.vod_pic = obj["thumbnail"]
+        vodDetail.vod_pic = this.jsBase + Utils.base64Encode( obj["thumbnail"])
         vodDetail.type_name = this.objToList(obj["types"], "name")
         vodDetail.vod_name = obj["title"]
         vodDetail.vod_content = obj["description"]
