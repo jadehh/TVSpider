@@ -1,33 +1,29 @@
 /*
-* @File     : feifan.js
+* @File     : liangzi18.js
 * @Author   : jade
-* @Date     : 2024/02/06 14:58
+* @Date     : 2024/1/24 9:15
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     : 非凡资源
+* @Desc     : 量子资源18
 */
-
 import {VodSpider} from "./vodSpider.js";
-
-class FeiFanSpider extends VodSpider {
+class Liangzi18Spider extends VodSpider {
     constructor() {
         super();
-        this.siteUrl = "http://cj.ffzyapi.com"
-        this.remove18 = true
-        this.type_id_18 = 34
+        this.siteUrl = "https://cj.lzcaiji.com"
+        this.remove18 = false
     }
 
     getAppName() {
-        return "非凡资源"
+        return "量子资源18+"
     }
 
     getName() {
-        return "🥗|非凡资源|🥗"
+        return "🔞|量子资源18+|🔞"
     }
-
 }
 
-let spider = new FeiFanSpider()
+let spider = new Liangzi18Spider()
 
 async function init(cfg) {
     await spider.init(cfg)

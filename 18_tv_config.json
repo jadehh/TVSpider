@@ -17,10 +17,26 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
+            "key": "feifan18",
+            "name": "🔞|非凡资源18+|🔞",
+            "type": 3,
+            "api": "./js/feifan18.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "hscangku",
             "name": "🔞┃黄色仓库┃🔞",
             "type": 3,
             "api": "./js/hscangku.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
+            "key": "liangzi18",
+            "name": "🔞|量子资源18+|🔞",
+            "type": 3,
+            "api": "./js/liangzi18.js",
             "timeout": 30,
             "ext": "{\"box\": \"TVBox\"}"
         },

@@ -9,20 +9,20 @@
 
 import {VodSpider} from "./vodSpider.js";
 
-class FeiFanSpider extends VodSpider {
+class FeiFan18Spider extends VodSpider {
     constructor() {
         super();
         this.siteUrl = "http://cj.ffzyapi.com"
-        this.remove18 = true
+        this.remove18 = false
         this.type_id_18 = 34
     }
 
     getAppName() {
-        return "非凡资源"
+        return "非凡资源18+"
     }
 
     getName() {
-        return "🥗|非凡资源|🥗"
+        return "🔞|非凡资源18+|🔞"
     }
 
 }
