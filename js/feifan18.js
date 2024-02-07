@@ -27,7 +27,7 @@ class FeiFan18Spider extends VodSpider {
 
 }
 
-let spider = new FeiFanSpider()
+let spider = new FeiFan18Spider()
 
 async function init(cfg) {
     await spider.init(cfg)
