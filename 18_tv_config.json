@@ -41,6 +41,14 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
+            "key": "nivod_18",
+            "name": "🔞┃泥视频18+┃🔞",
+            "type": 3,
+            "api": "./js/nivod_18.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "sehuatang",
             "name": "🔞|色花堂BT|🔞",
             "type": 3,
