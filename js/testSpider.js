@@ -63,11 +63,11 @@ async function test() {
     console.debug(JSON.stringify(classes));
     //
     // //测试首页列表
-    let homeVod = JSON.parse(await spider.homeVod())
-    console.debug(JSON.stringify(homeVod));
+    // let homeVod = JSON.parse(await spider.homeVod())
+    // console.debug(JSON.stringify(homeVod));
 
      //测试分类列表
-    let  catePage = JSON.parse(await spider.category(1, "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category(1, "1", undefined,{"3":"Netflix","4":"大陆","5":"2023","6":"英语","7":"4K","8":"正片","9":"A","10":"全部"}));
     console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情

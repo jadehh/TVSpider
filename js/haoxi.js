@@ -38,7 +38,7 @@ class HaoXiSpider extends Spider {
         let vod_list = []
         let vodElements = $("[class=\"flex bottom4\"]").find("[class=\"public-list-box public-pic-a [swiper]\"]")
         for (const vodElement of vodElements) {
-            let vodShort = this.parseVodShortFromElement($,vodElement)
+            let vodShort = this.parseVodShortFromElement($, vodElement)
             vod_list.push(vodShort)
         }
         return vod_list
@@ -47,8 +47,8 @@ class HaoXiSpider extends Spider {
     async parseVodShortListFromDocByCategory($) {
         let vod_list = []
         let vodElements = $("[class=\"public-list-box public-pic-b [swiper]\"]")
-        for (const vodElement of vodElements){
-            let vodShort = this.parseVodShortFromElement($,vodElement)
+        for (const vodElement of vodElements) {
+            let vodShort = this.parseVodShortFromElement($, vodElement)
             vod_list.push(vodShort)
         }
         return vod_list
@@ -110,71 +110,28 @@ class HaoXiSpider extends Spider {
     }
 
     get_extend_sort_dic(tid) {
-        /***
-         tid为1,2,3的时候,电影,剧情,动漫
-         urlParams#0表示类别,1表示全部地区,2表示人气评分,3表示全部剧情,4表示全部语言,5表示字母查找,6表示页数,11表示时间
-         #key为1,代表全部剧情
-         #key为2,代表全部地区
-         #key为3,代表全部语言
-         #key为4,代表全部时间
-         #key为5,字幕查找
-         #key为6,时间排序
-         https://www.wogg.xyz/index.php/vodshow/1-全部地区-时间排序-全部剧情-全部语言-字幕查找------全部时间.html
-
-         tid为4,综艺
-         #key为1,代表全部地区
-         #key为2,代表全部时间
-         #key为3,字幕查找
-         #key为4,时间排序
-         https://tvfan.xxooo.cf/index.php/vodshow/4-全部地区-时间排序---字母查找------全部时间.html
-
-         tid为5:音乐
-         #key为1,字幕查找
-         #key为2,时间排序
-         https://tvfan.xxooo.cf/index.php/vodshow/5--时间排序---字幕查找------.html
-
-         tid为6,短剧
-         #key为1,代表全部剧情
-         #key为2,代表全部地区
-         #key为3,代表全部时间
-         #key为4,字幕查找
-         #key为5,时间排序
-         https://tvfan.xxooo.cf/index.php/vodshow/6-全部地区-时间排序-全部剧情--字母查找------全部时间.html
-         */
-        let extend_dic = {}
-        if (tid < 4) {
-            extend_dic = {
-                "1": 3, "2": 1, "3": 4, "4": 11, "5": 5, "6": 2
-            }
-        } else if (tid === 4) {
-            extend_dic = {
-                "1": 1, "2": 11, "3": 5, "4": 2,
-            }
-        } else if (tid === 6) {
-            extend_dic = {
-                "1": 3, "2": 1, "3": 11, "4": 5, "5": 2,
-            }
-        } else if (tid === 5) {
-            extend_dic = {
-                "1": 5, "2": 2,
-            }
+        return {
+            "3": 3, "4": 1, "5": 11, "6": 4, "9": 5, "10": 2,
         }
-
-        return extend_dic
     }
 
     async setCategory(tid, pg, filter, extend) {
-        // https://haoxi.vip/vodshow/2-大陆-hits-Netflix-国语-A----正片--2023/
+        // "1-大陆-hits-Netflix-英语-A----正片--2023/version/4K/"
         let urlParams = [tid.toString(), "", "", "", "", "", "", "", pg.toString(), "", "", ""]
         let extend_dic = this.get_extend_sort_dic(parseInt(tid))
         for (const key of Object.keys(extend_dic)) {
             if (extend[key] === "0") {
                 urlParams[extend_dic[key]] = ""
             } else {
-                urlParams[extend_dic[key]] = extend[key]
+                if (extend[key] !== "全部") {
+                    urlParams[extend_dic[key]] = extend[key]
+                }
             }
         }
         let reqUrl = this.siteUrl + '/vodshow/' + urlParams.join("-");
+        if (extend[7] !== undefined && extend[7] !== "全部") {
+            reqUrl = reqUrl + `/version/${extend[7]}/`
+        }
         await this.jadeLog.debug(`分类URL:${reqUrl}`)
         let $ = await this.getHtml(reqUrl)
         this.vodList = await this.parseVodShortListFromDocByCategory($)
