@@ -137,6 +137,7 @@ class VodSpider extends Spider {
     async setCategory(tid, pg, filter, extend) {
         tid = extend["1"] ?? tid
         let url = this.siteUrl + `/index.php/ajax/data?mid=1&tid=${tid}&page=${pg}&limit=20`
+        await this.jadeLog.debug(`分类URL:${url}`)
         let content = await this.fetch(url, null, this.getHeader())
         this.vodList = await this.parseVodShortListFromJson(JSON.parse(content))
     }
