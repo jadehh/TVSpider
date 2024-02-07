@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './nivod_18.js';
+import {__jsEvalReturn} from './haoxi.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -51,7 +51,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'nivod18+';
+    let siteKey = 'haoxi';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -67,7 +67,7 @@ async function test() {
     console.debug(JSON.stringify(homeVod));
 
      //测试分类列表
-    let  catePage = JSON.parse(await spider.category(34, "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category(1, "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情

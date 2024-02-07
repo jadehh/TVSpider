@@ -82,6 +82,14 @@
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
             },
             {
+                "key": "haoxi",
+                "name": "🌿|好戏追剧|🌿",
+                "type": 3,
+                "api": "./js/haoxi.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "ikanbot",
                 "name": "🤖|爱看机器人|🤖",
                 "type": 3,
