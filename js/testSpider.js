@@ -67,11 +67,11 @@ async function test() {
     // console.debug(JSON.stringify(homeVod));
 
      //测试分类列表
-    let  catePage = JSON.parse(await spider.category(1, "1", undefined,{"3":"Netflix","4":"大陆","5":"2023","6":"英语","7":"4K","8":"正片","9":"A","10":"全部"}));
-    console.debug(JSON.stringify(catePage));
+    // let  catePage = JSON.parse(await spider.category(1, "1", undefined,{"3":"Netflix","4":"大陆","5":"2023","6":"英语","7":"4K","8":"正片","9":"A","10":"全部"}));
+    // console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("82393"))
+    let detail1 = JSON.parse(await spider.detail("/voddetail/324526/"))
     await testPlay(detail1)
 
 
@@ -83,7 +83,7 @@ async function test() {
 
     // 测试搜索
 
-    let search_page = JSON.parse(await spider.search("王牌对王牌第八季"))
+    let search_page = JSON.parse(await spider.search("乡村爱情"))
     console.debug(JSON.stringify(search_page));
 
 

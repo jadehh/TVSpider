@@ -29,6 +29,9 @@ class HaoXiSpider extends Spider {
         let vodShort = new VodShort();
         vodShort.vod_id = $(element).find("a")[0].attribs.href
         vodShort.vod_name = $(element).find("a")[0].attribs.title
+        if (vodShort.vod_name === undefined){
+            vodShort.vod_name = $( $($(element).find("[class=\"thumb-txt cor4 hide\"]")).find("a")).html()
+        }
         vodShort.vod_pic = $(element).find("img")[0].attribs["data-src"]
         vodShort.vod_remarks = $($(element).find("[class=\"public-list-prb hide ft2\"]")).html()
         return vodShort
@@ -52,6 +55,50 @@ class HaoXiSpider extends Spider {
             vod_list.push(vodShort)
         }
         return vod_list
+    }
+
+    async parseVodShortListFromDocBySearch($) {
+        let vod_list = []
+        let vodElements = $("[class=\"public-list-box search-box flex rel\"]")
+        for (const vodElement of vodElements){
+            let vodShort = this.parseVodShortFromElement($,vodElement)
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
+    async parseVodDetailFromDoc($) {
+        let vodDetailElement = $("[class=\"vod-detail style-detail rel cor1 hader0\"]")
+        let vodDetail = new VodDetail();
+        vodDetail.vod_pic = $(vodDetailElement).find("img")[0].attribs.src
+        vodDetail.vod_name = $($(vodDetailElement).find("[class=\"slide-info-title hide\"]")).html()
+        let elements = $(vodDetailElement).find("[class=\"slide-info hide\"]")
+        vodDetail.vod_year =  $($($(elements[0]).find("[class=\"slide-info-remarks\"]")[0]).find("a")[0]).html()
+        vodDetail.vod_area =  $($($(elements[0]).find("[class=\"slide-info-remarks\"]")[1]).find("a")[0]).html()
+        vodDetail.type_name = $($($(elements[0]).find("[class=\"slide-info-remarks\"]")[2]).find("a")[0]).html()
+        vodDetail.vod_remarks = $(elements[1]).text().replaceAll("备注 :","")
+        vodDetail.vod_director = $(elements[2]).text().replaceAll("导演 :","")
+        vodDetail.vod_actor = $(elements[3]).text().replaceAll("演员 :","")
+        vodDetail.vod_content = $($("[class=\"text cor3\"]")).text()
+        let playElements = $("[class=\"box-width cor5\"]")
+        let playFormatElements = playElements.find("[class=\"swiper-slide\"]")
+        let playUrlElements = playElements.find("li")
+        let vod_play_from_list = []
+        let vod_play_list = []
+        for (let i = 0; i < playFormatElements.length; i++) {
+            let playFormatElement = playFormatElements[i]
+            vod_play_from_list.push(playFormatElement.children[1].data)
+            let vodItems = []
+            for (const playUrlElement of $(playUrlElements[i]).find("a")) {
+                let episodeName = $(playUrlElement).text()
+                let episodeUrl = playUrlElement.attribs.href
+                vodItems.push(episodeName + "$" + episodeUrl)
+            }
+            vod_play_list.push(vodItems.join("#"))
+        }
+        vodDetail.vod_play_from = vod_play_from_list.join("$$$")
+        vodDetail.vod_play_url = vod_play_list.join("$$$")
+        return vodDetail
     }
 
     async setClasses() {
@@ -135,6 +182,22 @@ class HaoXiSpider extends Spider {
         await this.jadeLog.debug(`分类URL:${reqUrl}`)
         let $ = await this.getHtml(reqUrl)
         this.vodList = await this.parseVodShortListFromDocByCategory($)
+    }
+
+    async setDetail(id) {
+        let $ = await this.getHtml(this.siteUrl + id)
+        this.vodDetail = await this.parseVodDetailFromDoc($)
+    }
+
+    async setSearch(wd, quick) {
+        let $ = await this.getHtml(this.siteUrl + `/vodsearch/-------------/?wd=${wd}`)
+        this.vodList = await this.parseVodShortListFromDocBySearch($)
+    }
+
+    async setPlay(flag, id, flags) {
+        let $ =  await this.getHtml(this.siteUrl + id)
+        let playConfig = JSON.parse(Utils.getStrByRegex(/var player_aaaa=(.*?)<\/script>/,$.html()))
+        this.playUrl = playConfig['url']
     }
 
 }
