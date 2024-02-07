@@ -14,7 +14,7 @@
 * @Software : Samples
 * @Desc     : 非凡资源
 */
-import {_} from '../lib/cat.js';
+import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
@@ -61,7 +61,8 @@ class VodSpider extends Spider {
         vodDetail.vod_year = vod_data["vod_year"]
         vodDetail.vod_actor = vod_data["vod_actor"]
         vodDetail.vod_director = vod_data["vod_director"]
-        vodDetail.vod_content = vod_data["vod_content"]
+        let $ = load(vod_data['vod_content'])
+        vodDetail.vod_content = $.text()
         vodDetail.vod_play_from = vod_data["vod_play_from"]
         vodDetail.vod_play_url = vod_data["vod_play_url"]
         vodDetail.type_name = vod_data["type_name"]
