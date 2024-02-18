@@ -590,25 +590,30 @@ class Spider {
         return this.result.search(this.vodList)
     }
 
-     async proxy(segments, headers) {
+    async getImg(url, headers) {
+        let resp;
+        if (!_.isEmpty(headers)) {
+            resp = await req(url, {
+                buffer: 2, headers: headers
+            });
+        } else {
+            resp = await req(url, {
+                buffer: 2, headers: {
+                    Referer: url, 'User-Agent': Utils.CHROME,
+                },
+            });
+        }
+        await this.jadeLog.debug(`代理图片返回结果为:${JSON.stringify(resp)}`)
+        return resp
+    }
+
+    async proxy(segments, headers) {
         await this.jadeLog.debug(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
         let what = segments[0];
         let url = Utils.base64Decode(segments[1]);
         await this.jadeLog.debug(`反向代理参数为:${url}`)
         if (what === 'img') {
-            let resp;
-            if (!_.isEmpty(headers)) {
-                resp = await req(url, {
-                    buffer: 2, headers: headers
-                });
-            } else {
-                resp = await req(url, {
-                    buffer: 2, headers: {
-                        Referer: url, 'User-Agent': Utils.CHROME,
-                    },
-                });
-            }
-            await this.jadeLog.debug(`代理图片返回结果为:${JSON.stringify(resp)}`)
+            let resp = await this.getImg(url,headers)
             return JSON.stringify({
                 code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
             });
@@ -658,7 +663,6 @@ class Spider {
             });
         }
     }
-
 
 
     getSearchHeader() {
