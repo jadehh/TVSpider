@@ -597,19 +597,13 @@ class Spider {
         }
         resp = await req(url, {buffer: 2, headers: headers});
         try {
-            let content = Utils.base64Decode(resp.content)
-            if (content.indexOf("江苏反诈公益宣传") === -1) {
-                if (this.reconnectTimes < this.maxReconnectTimes) {
-                    Utils.sleep(2)
-                    this.reconnectTimes = this.reconnectTimes + 1
-                    return await this.getImg(url, headers)
-                } else {
-                    await this.jadeLog.error(`图片代理获取失败,重试失败`, true)
-                    this.reconnectTimes = 0
-                    return resp
-                }
+            Utils.base64Decode(resp.content)
+            if (this.reconnectTimes < this.maxReconnectTimes) {
+                Utils.sleep(2)
+                this.reconnectTimes = this.reconnectTimes + 1
+                return await this.getImg(url, headers)
             } else {
-                await this.jadeLog.error(`图片代理获取失败,失败原因:不存在图片,获取内容为:${content}`, true)
+                await this.jadeLog.error(`图片代理获取失败,重试失败`, true)
                 this.reconnectTimes = 0
                 return resp
             }
