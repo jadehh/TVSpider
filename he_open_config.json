@@ -2,14 +2,6 @@
     "video": {
         "sites": [
             {
-                "key": "4kysxz",
-                "name": "🚄|4K高清网|🚄",
-                "type": 3,
-                "api": "./js/4kysxz.js",
-                "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\"}"
-            },
-            {
                 "key": "aiyingshi",
                 "name": "🚀‍┃爱影视┃🚀",
                 "type": 3,
@@ -50,10 +42,10 @@
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
-                "key": "dytt",
-                "name": "👼|电影天堂|👼",
+                "key": "dyttbt",
+                "name": "👼|电影天堂BT|👼",
                 "type": 3,
-                "api": "./js/dytt.js",
+                "api": "./js/dyttbt.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\"}"
             },
@@ -110,14 +102,6 @@
                 "name": "🌼|荐片|🌼",
                 "type": 3,
                 "api": "./js/jianpian.js",
-                "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\"}"
-            },
-            {
-                "key": "jiujiuliu",
-                "name": "🥃┃九九六影视┃🥃",
-                "type": 3,
-                "api": "./js/jiujiuliu.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\"}"
             },

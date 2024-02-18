@@ -18,11 +18,11 @@ class YSXZSpider extends Spider {
     }
 
     getAppName() {
-        return "4K高清网"
+        return `4K高清网`
     }
 
     getName() {
-        return "🚄|4K高清网|🚄"
+        return `🚄|4K高清网|🚄`
     }
 
     async init(cfg) {

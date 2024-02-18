@@ -2,10 +2,170 @@
     "video": {
         "sites": [
             {
+                "key": "aiyingshi",
+                "name": "🚀‍┃爱影视┃🚀",
+                "type": 3,
+                "api": "./js/aiyingshi.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "alipansou",
+                "name": "😸┃阿里猫狸┃😸",
+                "type": 3,
+                "api": "./js/alipansou.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
+            },
+            {
+                "key": "aliyunpanshare",
+                "name": "🥏‍┃阿里云盘分享┃🥏‍",
+                "type": 3,
+                "api": "./js/aliyunpanshare.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
+            },
+            {
+                "key": "changzhang",
+                "name": "🏭️┃厂长直连┃🏭️",
+                "type": 3,
+                "api": "./js/changzhang.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
+            },
+            {
+                "key": "douban",
+                "name": "🍥┃豆瓣┃🍥",
+                "type": 3,
+                "api": "./js/douban.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "dyttbt",
+                "name": "👼|电影天堂BT|👼",
+                "type": 3,
+                "api": "./js/dyttbt.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "feifan",
+                "name": "🥗|非凡资源|🥗",
+                "type": 3,
+                "api": "./js/feifan.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "freeok",
+                "name": "🆗|OK资源网|🆗",
+                "type": 3,
+                "api": "./js/freeok.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "gitcafe",
+                "name": "🦊┃阿里纸条┃🦊",
+                "type": 3,
+                "api": "./js/gitcafe.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
+            },
+            {
+                "key": "haoxi",
+                "name": "🌿|好戏追剧|🌿",
+                "type": 3,
+                "api": "./js/haoxi.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "ikanbot",
+                "name": "🤖|爱看机器人|🤖",
+                "type": 3,
+                "api": "./js/ikanbot.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "jiafeimao",
+                "name": "🐈|加菲猫|🐈",
+                "type": 3,
+                "api": "./js/jiafeimao.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "jianpian",
                 "name": "🌼|荐片|🌼",
                 "type": 3,
                 "api": "./js/jianpian.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "kankan70",
+                "name": "📺┃70看看┃📺",
+                "type": 3,
+                "api": "./js/kankan70.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "liangzi",
+                "name": "🐝|量子资源|🐝",
+                "type": 3,
+                "api": "./js/liangzi.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"code\": 1}"
+            },
+            {
+                "key": "nivod",
+                "name": "👑‍┃泥视频┃👑",
+                "type": 3,
+                "api": "./js/nivod.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"code\": 1}"
+            },
+            {
+                "key": "pan_search",
+                "name": "🗂️┃阿里盘搜┃🗂️",
+                "type": 3,
+                "api": "./js/pan_search.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
+            },
+            {
+                "key": "pipixia",
+                "name": "🦐┃皮皮虾影视┃🦐",
+                "type": 3,
+                "api": "./js/pipixia.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "weixine",
+                "name": "💂‍┃阿里影视┃💂",
+                "type": 3,
+                "api": "./js/weixine.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
+            },
+            {
+                "key": "wogg",
+                "name": "💂‍┃阿里玩偶┃💂",
+                "type": 3,
+                "api": "./js/wogg.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"58950fc2475f49fc8788355c83594177\"}"
+            },
+            {
+                "key": "xb6v",
+                "name": "🧲|磁力新6V|🧲",
+                "type": 3,
+                "api": "./js/xb6v.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\"}"
             }

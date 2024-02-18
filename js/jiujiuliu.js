@@ -19,11 +19,11 @@ class JiuJiuLiuSpider extends Spider {
     }
 
     getName() {
-        return "🥃┃九九六影视┃🥃"
+        return `🥃┃九九六影视┃🥃`
     }
 
     getAppName() {
-        return "九九六影视"
+        return `九九六影视`
     }
 
     async parseVodShortListFromDoc($) {
