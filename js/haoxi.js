@@ -24,6 +24,7 @@ class HaoXiSpider extends Spider {
     getName() {
         return "🌿|好戏追剧|🌿"
     }
+
     parseVodShortFromElement($, element) {
         let vodShort = new VodShort();
         vodShort.vod_id = $(element).find("a")[0].attribs.href
@@ -207,9 +208,13 @@ class HaoXiSpider extends Spider {
     }
 
     async setPlay(flag, id, flags) {
-        let $ = await this.getHtml(this.siteUrl + id)
-        let playConfig = JSON.parse(Utils.getStrByRegex(/var player_aaaa=(.*?)<\/script>/, $.html()))
-        this.playUrl = playConfig['url']
+        if (flag !== "http下载") {
+            let $ = await this.getHtml(this.siteUrl + id)
+            let playConfig = JSON.parse(Utils.getStrByRegex(/var player_aaaa=(.*?)<\/script>/, $.html()))
+            this.playUrl = playConfig['url']
+        } else {
+            this.playUrl = id
+        }
     }
 
 }
