@@ -123,7 +123,7 @@ class PiPiXiaSpider extends Spider {
             } else {
                 if (this.pipixiaReconnectTimes < this.maxReconnectTimes) {
                     Utils.sleep(2)
-                    this.dyttReconnectTimes = this.dyttReconnectTimes + 1
+                    this.pipixiaReconnectTimes = this.pipixiaReconnectTimes + 1
                     return await this.getHtml(url, headers)
                 } else {
                     await this.jadeLog.error(`html获取失败`, true)

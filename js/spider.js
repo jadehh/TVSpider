@@ -592,25 +592,30 @@ class Spider {
 
     async getImg(url, headers) {
         let resp;
-        if (!_.isEmpty(headers)) {
-            resp = await req(url, {
-                buffer: 2, headers: headers
-            });
-        } else {
-            resp = await req(url, {
-                buffer: 2, headers: {
-                    Referer: url, 'User-Agent': Utils.CHROME,
-                },
-            });
+        if (_.isEmpty(headers)) {
+            headers = {Referer: url, 'User-Agent': Utils.CHROME}
         }
+        resp = await req(url, {buffer: 2, headers: headers});
         try {
-           let content = Utils.base64Decode(resp.content)
-        await this.jadeLog.debug(`代理图片返回结果为:${JSON.stringify(content)}`)  
-        }catch (e) {
-            
+            let content = Utils.base64Decode(resp.content)
+            if (content.indexOf("江苏反诈公益宣传") === -1) {
+                if (this.reconnectTimes < this.maxReconnectTimes) {
+                    Utils.sleep(2)
+                    this.reconnectTimes = this.reconnectTimes + 1
+                    return await this.getImg(url, headers)
+                } else {
+                    await this.jadeLog.error(`图片代理获取失败`, true)
+                    return resp
+                }
+            } else {
+                await this.jadeLog.error(`图片代理获取失败`, true)
+                return resp
+            }
+        } catch (e) {
+            return resp
         }
-       
-        return resp
+
+
     }
 
     async proxy(segments, headers) {
@@ -619,7 +624,7 @@ class Spider {
         let url = Utils.base64Decode(segments[1]);
         await this.jadeLog.debug(`反向代理参数为:${url}`)
         if (what === 'img') {
-            let resp = await this.getImg(url,headers)
+            let resp = await this.getImg(url, headers)
             return JSON.stringify({
                 code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
             });
