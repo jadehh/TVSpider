@@ -34,16 +34,30 @@ class AliyunpanShare extends Spider {
         return "阿里云盘分享"
     }
 
-    getRemarks(name,title) {
+    getRemarks(name, title) {
         if (_.isEmpty(name)) {
             for (const remark of remark_list) {
                 if (title.indexOf(remark) > -1) {
                     return remark
                 }
             }
-        }else{
+        } else {
             return name
         }
+    }
+
+    parseVodName(name) {
+        let vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
+        if (_.isEmpty(vod_name)) {
+            vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?)（/, name)
+        }
+        if (vod_name.indexOf("[") > -1) {
+            vod_name = vod_name.split("[")[0]
+        }
+        if (vod_name.indexOf("【") > -1) {
+            vod_name = vod_name.split("【")[0]
+        }
+        return vod_name
     }
 
     async parseVodShortListFromDoc($) {
@@ -54,9 +68,9 @@ class AliyunpanShare extends Spider {
             let vodShort = new VodShort();
             vodShort.vod_id = $(ele).find("a")[0].attribs["href"]
             let name = $(ele).find("a")[0].attribs["title"]
-            vodShort.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
+            vodShort.vod_name = this.parseVodName(name)
             vodShort.vod_pic = $(vodElement).find("img")[0].attribs["src"]
-            vodShort.vod_remarks = this.getRemarks(Utils.getStrByRegex(/【(.*?)】/, name),name)
+            vodShort.vod_remarks = this.getRemarks(Utils.getStrByRegex(/【(.*?)】/, name), name)
             vod_list.push(vodShort)
         }
         return vod_list
@@ -65,24 +79,20 @@ class AliyunpanShare extends Spider {
     async parseVodShortListFromDocByCategory($) {
         let vod_list = []
         let mainElement = $("[class=\"main container\"]")
-        let vodElements = $($( mainElement).find("[class=\"list\"]")).find("li")
-        if (vodElements.length === 0){
+        let vodElements = $($(mainElement).find("[class=\"list\"]")).find("li")
+        if (vodElements.length === 0) {
             vodElements = $(mainElement).find("li")
         }
         for (const vodElement of vodElements) {
-            let name = $($(vodElement).find("a")[1]).text()
-            if (name.indexOf("置顶") === -1) {
-                let vodShort = new VodShort();
-                vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
-                vodShort.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
-                if (_.isEmpty(vodShort.vod_name)){
-                    vodShort.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?)（/, name)
-                }
-                vodShort.vod_pic = $(vodElement).find("img")[0].attribs["src"]
-                vodShort.vod_remarks = this.getRemarks(Utils.getStrByRegex(/【(.*?)】/, name),name)
+            let name = $($(vodElement).find("a")[0].attribs["title"]).text()
+            let vodShort = new VodShort();
+            vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
+            vodShort.vod_name = this.parseVodName(name)
+            vodShort.vod_pic = $(vodElement).find("img")[0].attribs["src"]
+            vodShort.vod_remarks = this.getRemarks(Utils.getStrByRegex(/【(.*?)】/, name), name)
+            if (!_.isEmpty(vodShort.vod_name)) {
                 vod_list.push(vodShort)
             }
-
         }
         return vod_list
     }
@@ -92,25 +102,25 @@ class AliyunpanShare extends Spider {
         let name = $($(mainElements).find("[class=\"title\"]")[0]).text()
         let vodDetail = new VodDetail();
         vodDetail.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
-        vodDetail.vod_remarks = this.getRemarks(Utils.getStrByRegex(/【(.*?)】/, name),name)
+        vodDetail.vod_remarks = this.getRemarks(Utils.getStrByRegex(/【(.*?)】/, name), name)
         let articleElement = $(mainElements).find("[class=\"article_content\"]")
         vodDetail.vod_pic = $(articleElement).find("img")[0].attribs["src"]
         let articleElements = $(articleElement).find("p")
         let articleContent = ""
-        for (const articleEle of articleElements){
+        for (const articleEle of articleElements) {
             articleContent = articleContent + $(articleEle).text() + "\n"
         }
         let share_ali_url_list = []
-        let share_url_list = Utils.getStrByRegex(Utils.patternAli,articleContent).split("\n")
-        for (const share_url of share_url_list){
+        let share_url_list = Utils.getStrByRegex(Utils.patternAli, articleContent).split("\n")
+        for (const share_url of share_url_list) {
             let matches = share_url.match(Utils.patternAli);
             if (!_.isEmpty(matches)) share_ali_url_list.push(matches[1])
         }
         let aliVodDetail = await detailContent(share_ali_url_list)
         vodDetail.vod_play_url = aliVodDetail.vod_play_url
         vodDetail.vod_play_from = aliVodDetail.vod_play_from
-        vodDetail.type_name = Utils.getStrByRegex(/标签(.*?)\n/,articleContent).replaceAll("：","")
-        vodDetail.vod_content = Utils.getStrByRegex(/描述(.*?)\n/,articleContent).replaceAll("：","")
+        vodDetail.type_name = Utils.getStrByRegex(/标签(.*?)\n/, articleContent).replaceAll("：", "")
+        vodDetail.vod_content = Utils.getStrByRegex(/描述(.*?)\n/, articleContent).replaceAll("：", "")
         return vodDetail
     }
 

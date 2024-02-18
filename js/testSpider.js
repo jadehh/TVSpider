@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './dytt.js';
+import {__jsEvalReturn} from './haoxi.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -56,22 +56,22 @@ async function test() {
     await spider.init({
         skey: siteKey,
         stype: siteType,
-        ext: {"token": "3d3c5c67581e4db188e753a56ea5829a", "box": "CatOpen", "code": "1"}
+        ext: {"token": "58950fc2475f49fc8788355c83594177", "box": "CatOpen", "code": "1"}
     });
 
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
     //
-    // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
+    //测试首页列表
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
 
      //测试分类列表
     // let  catePage = JSON.parse(await spider.category(1, "1", undefined,{"3":"Netflix","4":"大陆","5":"2023","6":"英语","7":"4K","8":"正片","9":"A","10":"全部"}));
     // console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/voddetail/324526/"))
+    let detail1 = JSON.parse(await spider.detail("/voddetail/323805/"))
     await testPlay(detail1)
 
 
@@ -83,7 +83,7 @@ async function test() {
 
     // 测试搜索
 
-    let search_page = JSON.parse(await spider.search("乡村爱情"))
+    let search_page = JSON.parse(await spider.search("乡村爱情16"))
     console.debug(JSON.stringify(search_page));
 
 
