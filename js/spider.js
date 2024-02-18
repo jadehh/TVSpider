@@ -12,8 +12,6 @@ import * as Utils from "../lib/utils.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import {_, load, Uri} from "../lib/cat.js";
 import {} from "../lib/crypto-js.js"
-import {hlsCache, tsCache} from "./ffm3u8_open.js";
-import * as HLS from "../lib/hls.js";
 
 class Result {
     constructor() {
