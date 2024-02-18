@@ -371,11 +371,7 @@ class PiPiXiaSpider extends Spider {
         let ConFig = JSON.parse(Utils.getStrByRegex(/let ConFig = (.*?),box = /, jiexi$.html()))
         let playUrl = this.uic(ConFig["url"], ConFig.config.uid)
         await this.jadeLog.debug(`播放链接为:${playUrl}`)
-        if (flag.indexOf("极速") > -1) {
-            this.playUrl = playUrl
-        } else {
-            this.playUrl = this.videoProxy + Utils.base64Encode(playUrl)
-        }
+        this.playUrl = playUrl
     }
 
     async setSearch(wd, quick) {
