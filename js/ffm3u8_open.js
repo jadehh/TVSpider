@@ -477,16 +477,4 @@ function relative2Absolute(base, relative) {
     }
     return stack.join('/');
 }
-
-export function __jsEvalReturn() {
-    return {
-        init: init,
-        home: home,
-        homeVod: homeVod,
-        category: category,
-        detail: detail,
-        play: play,
-        proxy: proxy,
-        search: search,
-    };
-}
+export {hls2Urls,hlsCache,tsCache}
