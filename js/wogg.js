@@ -16,7 +16,7 @@ import {Spider} from "./spider.js";
 class WoggSpider extends Spider {
     constructor() {
         super();
-        this.siteUrl = 'https://www.wogg.xyz';
+        this.siteUrl = 'https://tvfan.xxooo.cf';
     }
 
     async init(cfg) {
