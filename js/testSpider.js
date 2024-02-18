@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './jianpian.js';
+import {__jsEvalReturn} from './pipixia.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -74,8 +74,8 @@ async function test() {
     // console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    // let detail1 = JSON.parse(await spider.detail("/voddetail/325405/"))
-    // await testPlay(detail1)
+    let detail1 = JSON.parse(await spider.detail("34967"))
+    await testPlay(detail1)
 
 
 
@@ -86,7 +86,7 @@ async function test() {
 
     // 测试搜索
 
-    let search_page = JSON.parse(await spider.search("第二十条"))
+    let search_page = JSON.parse(await spider.search("寄生"))
     console.debug(JSON.stringify(search_page));
 
 
