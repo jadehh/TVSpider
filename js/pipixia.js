@@ -11,8 +11,7 @@ import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 import {pipixiaMd5} from "../lib/pipiXiaObject.js"
-import {hls2Urls, hlsCache, tsCache} from "./ffm3u8_open.js";
-import * as HLS from "../lib/hls.js";
+import {hls2Urls} from "./ffm3u8_open.js";
 
 class PiPiXiaSpider extends Spider {
     constructor() {
@@ -361,13 +360,6 @@ class PiPiXiaSpider extends Spider {
         return CryptoJS.enc.Utf8.stringify(decrypted);
     }
 
-    async setVideoProxy(playUrl) {
-        const pUrls = await hls2Urls(playUrl, {});
-        for (let index = 1; index < pUrls.length; index += 2) {
-            pUrls[index] = js2Proxy(false, this.siteType, this.siteKey, 'hls/' + encodeURIComponent(pUrls[index]), {});
-        }
-    }
-
     async setPlay(flag, id, flags) {
         let $ = await this.getHtml(this.siteUrl + id)
         let playElements = $("[class=\"player-left\"]")
@@ -384,7 +376,7 @@ class PiPiXiaSpider extends Spider {
             this.playUrl = playUrl
         } else {
             if (this.catOpenStatus) {
-                this.playUrl = await this.setVideoProxy(playUrl)
+                this.playUrl = this.videoProxy + Utils.base64Encode(playUrl)
             } else {
                 this.playUrl = playUrl
             }
@@ -396,47 +388,6 @@ class PiPiXiaSpider extends Spider {
         this.vodList = await this.parseVodShortListFromDocBySearch($)
     }
 
-    async proxy(segments, headers) {
-        let what = segments[0];
-        let segs = decodeURIComponent(segments[1]);
-        if (what == 'hls') {
-            function hlsHeader(data, hls) {
-                let hlsHeaders = {};
-                if (data.headers['content-length']) {
-                    Object.assign(hlsHeaders, data.headers, {'content-length': hls.length.toString()});
-                } else {
-                    Object.assign(hlsHeaders, data.headers);
-                }
-                delete hlsHeaders['transfer-encoding'];
-                if (hlsHeaders['content-encoding'] == 'gzip') {
-                    delete hlsHeaders['content-encoding'];
-                }
-                return hlsHeaders;
-            }
-
-            const hlsData = await hlsCache(segs, headers);
-            if (hlsData.variants) {
-                // variants -> variants -> .... ignore
-                const hls = HLS.stringify(hlsData.plist);
-                return {
-                    code: hlsData.code, content: hls, headers: hlsHeader(hlsData, hls),
-                };
-            } else {
-                const hls = HLS.stringify(hlsData.plist, (segment) => {
-                    return js2Proxy(false, this.siteType, this.siteKey, 'ts/' + encodeURIComponent(hlsData.key + '/' + segment.mediaSequenceNumber.toString()), headers);
-                });
-                return {
-                    code: hlsData.code, content: hls, headers: hlsHeader(hlsData, hls),
-                };
-            }
-        } else if (what == 'ts') {
-            const info = segs.split('/');
-            const hlsKey = info[0];
-            const segIdx = parseInt(info[1]);
-            return await tsCache(hlsKey, segIdx, headers);
-        }
-        return '{}';
-    }
 }
 
 let spider = new PiPiXiaSpider()
