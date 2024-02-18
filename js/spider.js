@@ -608,6 +608,7 @@ class Spider {
                     },
                 });
             }
+            await this.jadeLog.debug(`代理图片返回结果为:${JSON.stringify(resp)}`)
             return JSON.stringify({
                 code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
             });

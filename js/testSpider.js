@@ -74,8 +74,8 @@ async function test() {
     // console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("562946"))
-    await testPlay(detail1)
+    // let detail1 = JSON.parse(await spider.detail("/voddetail/325405/"))
+    // await testPlay(detail1)
 
 
 
@@ -86,7 +86,7 @@ async function test() {
 
     // 测试搜索
 
-    let search_page = JSON.parse(await spider.search("乡村爱情"))
+    let search_page = JSON.parse(await spider.search("第二十条"))
     console.debug(JSON.stringify(search_page));
 
 
