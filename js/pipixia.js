@@ -12,6 +12,7 @@ import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 import {pipixiaMd5} from "../lib/pipiXiaObject.js"
 import {hls2Urls} from "./ffm3u8_open.js";
+import * as HLS from "../lib/hls.js";
 
 class PiPiXiaSpider extends Spider {
     constructor() {
@@ -360,6 +361,19 @@ class PiPiXiaSpider extends Spider {
         return CryptoJS.enc.Utf8.stringify(decrypted);
     }
 
+    async setVideoProxy(playUrl){
+        let urls = []
+        urls.push('proxy');
+        urls.push(playUrl);
+        const pUrls = urls
+        for (let index = 1; index < pUrls.length; index += 2) {
+            pUrls[index] = js2Proxy(false, this.siteType, this.siteKey, 'hls/' + encodeURIComponent(pUrls[index]), {});
+        }
+        pUrls.push('original');
+        pUrls.push(playUrl);
+        return pUrls
+    }
+
     async setPlay(flag, id, flags) {
         let $ = await this.getHtml(this.siteUrl + id)
         let playElements = $("[class=\"player-left\"]")
@@ -376,7 +390,7 @@ class PiPiXiaSpider extends Spider {
             this.playUrl = playUrl
         } else {
             if (this.catOpenStatus) {
-                this.playUrl = this.videoProxy + Utils.base64Encode(playUrl)
+                this.playUrl = await this.setVideoProxy(playUrl)
             } else {
                 this.playUrl = playUrl
             }
