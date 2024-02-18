@@ -50,9 +50,7 @@ class JianPianSpider extends Spider {
                 if (!this.catOpenStatus) {
                     vodShort.vod_pic = data["path"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353@JPAUTH=y261ow7kF2dtzlxh1GS9EB8nbTxNmaK/QQIAjctlKiEv"
                 } else {
-                    vodShort.vod_pic = data["path"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353@JPAUTH=y261ow7kF2dtzlxh1GS9EB8nbTxNmaK/QQIAjctlKiEv"
-
-                    // vodShort.vod_pic = this.jsBase + Utils.base64Encode(data["path"])
+                    vodShort.vod_pic = this.jsBase + Utils.base64Encode(data["path"])
                 }
             } else {
                 if (!this.catOpenStatus) {
