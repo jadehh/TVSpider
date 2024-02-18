@@ -374,10 +374,7 @@ class PiPiXiaSpider extends Spider {
         if (flag.indexOf("极速") > -1) {
             this.playUrl = playUrl
         } else {
-            this.playUrl = await this.fetch(playUrl, null, {
-                "Referer": playUrl,
-                'User-Agent': Utils.CHROME
-            }, false, false, 2)
+            this.playUrl = this.videoProxy + Utils.base64Encode(playUrl)
         }
     }
 
