@@ -11,8 +11,6 @@ import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 import {pipixiaMd5} from "../lib/pipiXiaObject.js"
-import {hls2Urls} from "./ffm3u8_open.js";
-import * as HLS from "../lib/hls.js";
 
 class PiPiXiaSpider extends Spider {
     constructor() {
