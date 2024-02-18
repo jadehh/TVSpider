@@ -12,6 +12,8 @@ import * as Utils from "../lib/utils.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import {_, load, Uri} from "../lib/cat.js";
 import {} from "../lib/crypto-js.js"
+import * as HLS from "../lib/hls.js";
+import {hlsCache, tsCache} from "./ffm3u8_open.js";
 
 class Result {
     constructor() {
@@ -663,6 +665,41 @@ class Spider {
 
             }
 
+        } else if (what === 'hls') {
+            function hlsHeader(data, hls) {
+                let hlsHeaders = {};
+                if (data.headers['content-length']) {
+                    Object.assign(hlsHeaders, data.headers, {'content-length': hls.length.toString()});
+                } else {
+                    Object.assign(hlsHeaders, data.headers);
+                }
+                delete hlsHeaders['transfer-encoding'];
+                if (hlsHeaders['content-encoding'] == 'gzip') {
+                    delete hlsHeaders['content-encoding'];
+                }
+                return hlsHeaders;
+            }
+
+            const hlsData = await hlsCache(url, headers);
+            if (hlsData.variants) {
+                // variants -> variants -> .... ignore
+                const hls = HLS.stringify(hlsData.plist);
+                return {
+                    code: hlsData.code, content: hls, headers: hlsHeader(hlsData, hls),
+                };
+            } else {
+                const hls = HLS.stringify(hlsData.plist, (segment) => {
+                    return js2Proxy(false, this.siteType, this.siteKey, 'ts/' + encodeURIComponent(hlsData.key + '/' + segment.mediaSequenceNumber.toString()), headers);
+                });
+                return {
+                    code: hlsData.code, content: hls, headers: hlsHeader(hlsData, hls),
+                };
+            }
+        } else if (what === 'ts') {
+            const info = url.split('/');
+            const hlsKey = info[0];
+            const segIdx = parseInt(info[1]);
+            return await tsCache(hlsKey, segIdx, headers);
         } else {
             return JSON.stringify({
                 code: 500, content: '',
