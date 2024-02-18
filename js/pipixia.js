@@ -372,8 +372,12 @@ class PiPiXiaSpider extends Spider {
         let playUrl = this.uic(ConFig["url"], ConFig.config.uid)
         await this.jadeLog.debug(`播放链接为:${playUrl}`)
         if (flag.indexOf("极速") > -1) {
+            this.playUrl = playUrl
         } else {
-            this.playUrl = this.videoProxy + Utils.base64Encode(playUrl)
+            this.playUrl = await this.fetch(playUrl, null, {
+                "Referer": playUrl,
+                'User-Agent': Utils.CHROME
+            }, false, false, 2)
         }
     }
 
