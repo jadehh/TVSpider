@@ -4,7 +4,7 @@
 * @Date     : 2024/1/15 10:32
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     :
+* @Desc     : 完成荐片所有功能
 */
 
 import {Spider} from "./spider.js";
@@ -17,6 +17,7 @@ class JianPianSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = "http://api2.rinhome.com"
+        // this.siteUrl = "https://ownjpykxttjzuhy.jiesiwa.com"
     }
 
     getName() {

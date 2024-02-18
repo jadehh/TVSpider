@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './pipixia.js';
+import {__jsEvalReturn} from './jianpian.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -74,7 +74,7 @@ async function test() {
     // console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("34967"))
+    let detail1 = JSON.parse(await spider.detail("562946"))
     await testPlay(detail1)
 
 
