@@ -603,7 +603,13 @@ class Spider {
                 },
             });
         }
-        await this.jadeLog.debug(`代理图片返回结果为:${JSON.stringify(resp)}`)
+        try {
+           let content = Utils.base64Decode(resp.content)
+        await this.jadeLog.debug(`代理图片返回结果为:${JSON.stringify(content)}`)  
+        }catch (e) {
+            
+        }
+       
         return resp
     }
 
