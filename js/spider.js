@@ -605,13 +605,16 @@ class Spider {
                     return await this.getImg(url, headers)
                 } else {
                     await this.jadeLog.error(`图片代理获取失败,重试失败`, true)
+                    this.reconnectTimes = 0
                     return resp
                 }
             } else {
                 await this.jadeLog.error(`图片代理获取失败,失败原因:不存在图片,获取内容为:${content}`, true)
+                this.reconnectTimes = 0
                 return resp
             }
         } catch (e) {
+            this.reconnectTimes = 0
             return resp
         }
     }
