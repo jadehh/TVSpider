@@ -16,6 +16,7 @@ class DyttSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = "https://www.mp4us.com"
+        this.apiUrl = "https://m.mp4us.com"
         this.dyttReconnectTimes = 0
 
     }
@@ -27,6 +28,10 @@ class DyttSpider extends Spider {
     getAppName() {
         return "Mp4电影"
     }
+
+    // getHeader() {
+    //     return {"User-Agent": Utils.CHROME, "Referer": this.siteUrl + "/","Connection":"keep-alive"};
+    // }
 
     async getFilter() {
         let extend_list = []
@@ -124,6 +129,22 @@ class DyttSpider extends Spider {
         return vodDetail
     }
 
+
+    async parseVodShortListFromJson(obj) {
+        let vod_list = []
+        let $ = load(obj["ajaxtxt"])
+        let vodElements = $($("ul")).find("li");
+        for (const vodElement of vodElements){
+            let vodShort = new VodShort()
+            vodShort.vod_pic = $(vodElement).find("img")[0].attribs["data-original"]
+            vodShort.vod_name = Utils.getStrByRegex(/《(.*?)》/,$(vodElement).find("img")[0].attribs.alt)
+            vodShort.vod_id = $(vodElement).find("a")[0].attribs.href
+            vodShort.vod_remarks = "评分:"+ $($(vodElement).find("[class=\"rate badge\"]")).text()
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
     async setHomeVod() {
        let $ = await this.getHtml();
        this.homeVodList = await this.parseVodShortListFromDoc($)
@@ -133,6 +154,27 @@ class DyttSpider extends Spider {
         let $ = await this.getHtml(this.siteUrl + id)
         this.vodDetail = await this.parseVodDetailFromDoc($)
         return this.vodDetail
+    }
+
+    async setCategory(tid, pg, filter, extend) {
+        let url = this.apiUrl + `/list-index-id-${tid}`
+        let area = extend["地区"] ?? ""
+        let year = extend["年代"] ?? ""
+        let tag = extend["标签"] ?? ""
+        if (parseInt(pg) > 1){
+            url = url + `-p-${pg}`
+        }
+        if (!_.isEmpty(area)){
+            url = url + `-area-${area}`
+        }
+        if (!_.isEmpty(year)){
+            url = url + `-year-${year}`
+        }
+        if (!_.isEmpty(tag)){
+            url = url + `-wd-${tag}`
+        }
+        let resp = await this.fetch(url + ".html",null,this.getHeader())
+        this.vodList = await this.parseVodShortListFromJson(JSON.parse(resp))
     }
 
 }

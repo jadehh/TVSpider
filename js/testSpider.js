@@ -62,15 +62,15 @@ async function test() {
     console.debug(JSON.stringify(classes));
     //
     // //测试首页列表
-    let homeVod = JSON.parse(await spider.homeVod())
-    console.debug(JSON.stringify(homeVod));
+    // let homeVod = JSON.parse(await spider.homeVod())
+    // console.debug(JSON.stringify(homeVod));
     // // // // //
     // // // // //
     // // // // // //
     // // // //
     // // // // // //测试分类列表
-    // let  catePage = JSON.parse(await spider.category("1", "1", undefined,{"2":"全部","3":"全部","4":"全部","5":"全部","6":"全部"}));
-    // console.debug(JSON.stringify(catePage));
+    let  catePage = JSON.parse(await spider.category("1", "1", undefined,{"标签":"经典","地区":"大陆","年代":"2024"}));
+    console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
     let detail1 = JSON.parse(await spider.detail("/html/Z0MuJaBBBBBa.html"))
