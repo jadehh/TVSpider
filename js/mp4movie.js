@@ -51,14 +51,14 @@ class DyttSpider extends Spider {
         return extend_list
     }
 
-    async setFilterObj() {
-        for (const type_dic of this.classes) {
-            let type_id = type_dic["type_id"]
-            if (type_id !== "最近更新") {
-                this.filterObj[type_id] = await this.getFilter()
-            }
-        }
-    }
+    // async setFilterObj() {
+    //     for (const type_dic of this.classes) {
+    //         let type_id = type_dic["type_id"]
+    //         if (type_id !== "最近更新") {
+    //             this.filterObj[type_id] = await this.getFilter()
+    //         }
+    //     }
+    // }
 
     async setClasses() {
         let $ = await this.getHtml()
@@ -87,6 +87,12 @@ class DyttSpider extends Spider {
             vod_list.push(vodShort)
         }
         return vod_list
+    }
+
+    getSearchHeader() {
+        let headers = this.getHeader()
+        headers["Cookie"]  = "Hm_lvt_d8c8eecfb13fe991855f511a6e30c3d2=1708243467,1708325624,1708326536;Hm_lpvt_d8c8eecfb13fe991855f511a6e30c3d2;1708326536"
+        return headers
     }
 
     async parseVodDetailFromDoc($) {
@@ -145,6 +151,20 @@ class DyttSpider extends Spider {
         return vod_list
     }
 
+    async parseVodShortListFromDocByCategory($) {
+        let vod_list = []
+        let vodElements = $($("[id=\"list_all\"]").find("ul")).find("li")
+        for (const vodElement of vodElements){
+            let vodShort = new VodShort()
+            vodShort.vod_id = $(vodElement).find("a")[0].attribs.href
+            vodShort.vod_name = Utils.getStrByRegex(/《(.*?)》/,$($($(vodElement).find("[class=\"text_info\"]")).find("a")[0]).text())
+            vodShort.vod_pic = $(vodElement).find("img")[0].attribs["data-original"]
+            vodShort.vod_remarks = $($(vodElement).find("[class=\"update_time\"]")).text()
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
     async setHomeVod() {
        let $ = await this.getHtml();
        this.homeVodList = await this.parseVodShortListFromDoc($)
@@ -156,32 +176,37 @@ class DyttSpider extends Spider {
         return this.vodDetail
     }
 
-    // getCategoryHeaders(){
-    //     return {
-    //         "referer":"https://m.mp4us.com/sort.html",
-    //         "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/100 Version/11.1.1 Safari/605.1.15",
-    //         "Cookie":"__51uvsct__1xl9dbXapjKhx0YP=2;__51vcke__1xl9dbXapjKhx0YP=da4a03cb-4665-52e8-81de-c84888e1dbd3;__51vuft__1xl9dbXapjKhx0YP=1708311891666;__vtins__1xl9dbXapjKhx0YP=%7B%22sid%22%3A%20%2235366c92-2e3a-5298-a169-649d3579ede2%22%2C%20%22vd%22%3A%201%2C%20%22stt%22%3A%200%2C%20%22dr%22%3A%200%2C%20%22expires%22%3A%201708321986921%2C%20%22ct%22%3A%201708320186921%7D"}
-    // }
 
     async setCategory(tid, pg, filter, extend) {
-        let url = this.apiUrl + `/list-index-id-${tid}`
-        let area = extend["地区"] ?? ""
-        let year = extend["年代"] ?? ""
-        let tag = extend["标签"] ?? ""
-        if (parseInt(pg) > 1){
-            url = url + `-p-${pg}`
-        }
-        if (!_.isEmpty(area) && area !== "0"){
-            url = url + `-area-${area}`
-        }
-        if (!_.isEmpty(year) && year !== "0"){
-            url = url + `-year-${year}`
-        }
-        if (!_.isEmpty(tag) && tag !== "0"){
-            url = url + `-wd-${tag}`
-        }
-        let resp = await this.fetch(url + ".html",null,this.getHeader())
-        this.vodList = await this.parseVodShortListFromJson(JSON.parse(resp))
+        // let url = this.apiUrl + `/list-index-id-${tid}`
+        // let area = extend["地区"] ?? ""
+        // let year = extend["年代"] ?? ""
+        // let tag = extend["标签"] ?? ""
+        // if (parseInt(pg) > 1){
+        //     url = url + `-p-${pg}`
+        // }
+        // if (!_.isEmpty(area) && area !== "0"){
+        //     url = url + `-area-${area}`
+        // }
+        // if (!_.isEmpty(year) && year !== "0"){
+        //     url = url + `-year-${year}`
+        // }
+        // if (!_.isEmpty(tag) && tag !== "0"){
+        //     url = url + `-wd-${tag}`
+        // }
+        // let resp = await this.fetch(url + ".html",null,this.getHeader())
+        // this.vodList = await this.parseVodShortListFromJson(JSON.parse(resp))
+        let url = this.siteUrl + `/list/${tid}-${pg}.html`
+        let $ = await this.getHtml(url)
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
+    }
+
+    async setSearch(wd, quick) {
+        let url = this.siteUrl + "/search/"
+        let params = {"wd":wd,"p":"1","t":"j/tNgwBS2e8O4x9TuIkYuQ=="}
+        let html = await this.post(url,params,this.getSearchHeader())
+        let $ = load(html)
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
 }

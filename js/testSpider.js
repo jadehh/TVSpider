@@ -58,23 +58,23 @@ async function test() {
         ext: {"token": "58950fc2475f49fc8788355c83594177", "box": "CatOpen", "code": "1"}
     });
 
-    let classes = JSON.parse(await spider.home(true));
-    console.debug(JSON.stringify(classes));
-    //
-    // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
-    // // // // //
-    // // // // //
-    // // // // // //
-    // // // //
-    // // // // // //测试分类列表
-    let  catePage = JSON.parse(await spider.category("2", "1", undefined,{"标签":"0","地区":"0","年代":"0"}));
-    console.debug(JSON.stringify(catePage));
+    // let classes = JSON.parse(await spider.home(true));
+    // console.debug(JSON.stringify(classes));
     // //
-    // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/html/Z0MuJaBBBBBa.html"))
-    await testPlay(detail1)
+    // // //测试首页列表
+    // // let homeVod = JSON.parse(await spider.homeVod())
+    // // console.debug(JSON.stringify(homeVod));
+    // // // // // //
+    // // // // // //
+    // // // // // // //
+    // // // // //
+    // // // // // // //测试分类列表
+    // let  catePage = JSON.parse(await spider.category("2", "1", undefined,{"标签":"0","地区":"0","年代":"0"}));
+    // console.debug(JSON.stringify(catePage));
+    // // //
+    // // // // 测试详情
+    // let detail1 = JSON.parse(await spider.detail("/html/Z0MuJaBBBBBa.html"))
+    // await testPlay(detail1)
 
 
 
@@ -85,7 +85,7 @@ async function test() {
 
     // 测试搜索
 
-    let search_page = JSON.parse(await spider.search("寄生"))
+    let search_page = JSON.parse(await spider.search("乡村爱情16"))
     console.debug(JSON.stringify(search_page));
 
 
