@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './wogg.js';
+import {__jsEvalReturn} from './mp4movie.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -42,7 +42,6 @@ async function testMusicPlay(vodDetail){
                     console.debug(flag + " | " + name + " | " + url);
                     var playUrl = await spider.play(flag, url, []);
                     console.debug('playURL: ' + playUrl);
-                    break
                 }
                 break
             }
@@ -51,12 +50,12 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'wogg';
+    let siteKey = 'mp4movie';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
         stype: siteType,
-        ext: {"token": "3d3c5c67581e4db188e753a56ea5829a", "box": "CatOpen", "code": "1"}
+        ext: {"token": "58950fc2475f49fc8788355c83594177", "box": "CatOpen", "code": "1"}
     });
 
     let classes = JSON.parse(await spider.home(true));
@@ -74,7 +73,7 @@ async function test() {
     // console.debug(JSON.stringify(catePage));
     // //
     // // // 测试详情
-    let detail1 = JSON.parse(await spider.detail("562946"))
+    let detail1 = JSON.parse(await spider.detail("/html/Z0MuJaBBBBBa.html"))
     await testPlay(detail1)
 
 
