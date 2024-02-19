@@ -156,6 +156,13 @@ class DyttSpider extends Spider {
         return this.vodDetail
     }
 
+    // getCategoryHeaders(){
+    //     return {
+    //         "referer":"https://m.mp4us.com/sort.html",
+    //         "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/100 Version/11.1.1 Safari/605.1.15",
+    //         "Cookie":"__51uvsct__1xl9dbXapjKhx0YP=2;__51vcke__1xl9dbXapjKhx0YP=da4a03cb-4665-52e8-81de-c84888e1dbd3;__51vuft__1xl9dbXapjKhx0YP=1708311891666;__vtins__1xl9dbXapjKhx0YP=%7B%22sid%22%3A%20%2235366c92-2e3a-5298-a169-649d3579ede2%22%2C%20%22vd%22%3A%201%2C%20%22stt%22%3A%200%2C%20%22dr%22%3A%200%2C%20%22expires%22%3A%201708321986921%2C%20%22ct%22%3A%201708320186921%7D"}
+    // }
+
     async setCategory(tid, pg, filter, extend) {
         let url = this.apiUrl + `/list-index-id-${tid}`
         let area = extend["地区"] ?? ""
@@ -164,13 +171,13 @@ class DyttSpider extends Spider {
         if (parseInt(pg) > 1){
             url = url + `-p-${pg}`
         }
-        if (!_.isEmpty(area)){
+        if (!_.isEmpty(area) && area !== "0"){
             url = url + `-area-${area}`
         }
-        if (!_.isEmpty(year)){
+        if (!_.isEmpty(year) && year !== "0"){
             url = url + `-year-${year}`
         }
-        if (!_.isEmpty(tag)){
+        if (!_.isEmpty(tag) && tag !== "0"){
             url = url + `-wd-${tag}`
         }
         let resp = await this.fetch(url + ".html",null,this.getHeader())
