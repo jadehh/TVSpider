@@ -109,10 +109,10 @@ class DyttSpider extends Spider {
         for (let i = 0; i < downloadElements.length; i++) {
             let playFormatElement = downloadElements[i]
             let format_name = $($(playFormatElement).find("h2")).text().replaceAll(vodDetail.vod_name,"")
-            vod_play_from_list.push(format_name)
+            vod_play_from_list.push(format_name.replaceAll("下载","播放"))
             let vodItems = []
             for (const playUrlElement of $(downloadElements[i]).find("a")) {
-                    let episodeName = $(playUrlElement).text()
+                    let episodeName = $(playUrlElement).text().replaceAll("磁力链下载","").replaceAll(".mp4","")
                     let episodeUrl = playUrlElement.attribs.href
                     vodItems.push(episodeName + "$" + episodeUrl)
                 }
