@@ -122,6 +122,14 @@
                 "ext": "{\"box\": \"CatOpen\", \"code\": 1}"
             },
             {
+                "key": "mp4movie",
+                "name": "🍚|Mp4电影|🍚",
+                "type": 3,
+                "api": "./js/mp4movie.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "nivod",
                 "name": "👑‍┃泥视频┃👑",
                 "type": 3,
