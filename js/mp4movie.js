@@ -178,27 +178,27 @@ class DyttSpider extends Spider {
 
 
     async setCategory(tid, pg, filter, extend) {
-        let url = this.apiUrl + `/list-index-id-${tid}`
-        let area = extend["地区"] ?? ""
-        let year = extend["年代"] ?? ""
-        let tag = extend["标签"] ?? ""
-        if (parseInt(pg) > 1){
-            url = url + `-p-${pg}`
-        }
-        if (!_.isEmpty(area) && area !== "0"){
-            url = url + `-area-${area}`
-        }
-        if (!_.isEmpty(year) && year !== "0"){
-            url = url + `-year-${year}`
-        }
-        if (!_.isEmpty(tag) && tag !== "0"){
-            url = url + `-wd-${tag}`
-        }
-        let resp = await this.fetch(url + ".html",null,this.getHeader())
-        this.vodList = await this.parseVodShortListFromJson(JSON.parse(resp))
-        // let url = this.siteUrl + `/list/${tid}-${pg}.html`
-        // let $ = await this.getHtml(url)
-        // this.vodList = await this.parseVodShortListFromDocByCategory($)
+        // let url = this.apiUrl + `/list-index-id-${tid}`
+        // let area = extend["地区"] ?? ""
+        // let year = extend["年代"] ?? ""
+        // let tag = extend["标签"] ?? ""
+        // if (parseInt(pg) > 1){
+        //     url = url + `-p-${pg}`
+        // }
+        // if (!_.isEmpty(area) && area !== "0"){
+        //     url = url + `-area-${area}`
+        // }
+        // if (!_.isEmpty(year) && year !== "0"){
+        //     url = url + `-year-${year}`
+        // }
+        // if (!_.isEmpty(tag) && tag !== "0"){
+        //     url = url + `-wd-${tag}`
+        // }
+        // let resp = await this.fetch(url + ".html",null,this.getHeader())
+        // this.vodList = await this.parseVodShortListFromJson(JSON.parse(resp))
+        let url = this.siteUrl + `/list/${tid}-${pg}.html`
+        let $ = await this.getHtml(url)
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
     async setSearch(wd, quick) {
