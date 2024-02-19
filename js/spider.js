@@ -701,8 +701,8 @@ class Spider {
             const segIdx = parseInt(info[1]);
             return await tsCache(hlsKey, segIdx, headers);
         } else if (what === "detail"){
-             await this.setDetail(url)
-            let resp = await this.getImg(this.vodDetail.vod_pic, headers)
+            let vodDetail = await this.setDetail(url)
+            let resp = await this.getImg(vodDetail.vod_pic, headers)
             return JSON.stringify({
                 code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
             });

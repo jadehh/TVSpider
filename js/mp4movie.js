@@ -132,6 +132,7 @@ class DyttSpider extends Spider {
     async setDetail(id) {
         let $ = await this.getHtml(this.siteUrl + id)
         this.vodDetail = await this.parseVodDetailFromDoc($)
+        return this.vodDetail
     }
 
 }
