@@ -40,7 +40,7 @@ class NewVisionSpider extends Spider {
     async getFilter($) {
         let elements = $("[class='scroll-content']").slice(1)
         let extend_list = []
-        let type_key_list = [3,1,11,2]
+        let type_key_list = [3, 1, 11, 2]
         for (let i = 0; i < elements.length; i++) {
             let name = $($(elements[i]).find("a")[0]).text()
             let extend_dic = {"key": name, "name": name, "value": []}
@@ -92,8 +92,20 @@ class NewVisionSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        let type_key_list = [3,1,11,2]
         let urlParams = [tid.toString(), "", "", "", "", "", "", "", pg.toString(), "", "", ""]
+        let type_key_list = [3, 11, 1, 2]
+        if (extend["全部剧情"] !== undefined && extend["全部剧情"] !== "0") {
+            urlParams[type_key_list[0]] = extend["全部剧情"]
+        }
+        if (extend["全部时间"] !== undefined && extend["全部时间"] !== "0") {
+            urlParams[type_key_list[1]] = extend["全部时间"]
+        }
+        if (extend["全部地区"] !== undefined && extend["全部地区"] !== "0") {
+            urlParams[type_key_list[2]] = extend["全部地区"]
+        }
+        if (extend["时间排序"] !== undefined && extend["时间排序"] !== "0") {
+            urlParams[type_key_list[3]] = extend["时间排序"]
+        }
         let reqUrl = this.siteUrl + '/index.php/vodshow/' + urlParams.join("-") + '.html';
         let $ = await this.getHtml(reqUrl)
         this.vodList = await this.parseVodShortListFromDoc($)
