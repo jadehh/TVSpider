@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './mp4movie.js';
+import {__jsEvalReturn} from './6080.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'mp4movie';
+    let siteKey = '6080';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -62,8 +62,8 @@ async function test() {
     console.debug(JSON.stringify(classes));
     //
     // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
     // // // // //
     // // // // //
     // // // // // //

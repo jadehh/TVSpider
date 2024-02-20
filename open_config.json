@@ -2,6 +2,14 @@
     "video": {
         "sites": [
             {
+                "key": "6080",
+                "name": "🐼|新视觉影院|🐼",
+                "type": 3,
+                "api": "./js/6080.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "aiyingshi",
                 "name": "🚀‍┃爱影视┃🚀",
                 "type": 3,
