@@ -10,6 +10,7 @@ import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 import {_, load} from "../lib/cat.js";
+import {detailContent} from "../lib/ali.js";
 
 class NewVisionSpider extends Spider {
     constructor() {
@@ -86,6 +87,53 @@ class NewVisionSpider extends Spider {
         return vod_list
     }
 
+    async parseVodDetailFromDoc($) {
+        let html = $.html()
+        let vodDetail = new VodDetail()
+        let vodDetailElement = $("[class=\"box view-heading\"]")
+        vodDetail.vod_name = $($(vodDetailElement).find("[class=\"page-title\"]")).text()
+        let typeElements = $($(vodDetailElement).find("[class=\"tag-link\"]").find("a"))
+        vodDetail.vod_area = $($(vodDetailElement).find("[class=\"tag-link\"]").slice(-1)[0]).text()
+        let type_list = []
+        for (const typeElement of typeElements) {
+            type_list.push($(typeElement).text())
+        }
+        vodDetail.type_name = type_list.join("/")
+        let itemElements = $(vodDetailElement).find("[class=\"video-info-items\"]")
+        vodDetail.vod_director = $($(itemElements[0]).find("a")).text()
+        let actor_list = []
+        for (const actorElement of $(itemElements[1]).find("a")) {
+            actor_list.push($(actorElement).text())
+        }
+        vodDetail.vod_pic = $($(vodDetailElement).find("[class=\"module-item-pic\"]")).find("img")[0].attribs["data-src"]
+        vodDetail.vod_actor = actor_list.join("/")
+        vodDetail.vod_year = $($(itemElements[2]).find("[class=\"video-info-item\"]")).text()
+        vodDetail.vod_remarks = $($(itemElements[3]).find("[class=\"video-info-item\"]")).text()
+        vodDetail.vod_content = $($(itemElements[5]).find("[class=\"video-info-item video-info-content vod_content\"]")).text().replaceAll("\n", "\t").replaceAll("\t收起", "")
+        let playerformatElements = $("[class=\"module-tab-item tab-item\"]")
+        let playUrlElements = $("[class=\"scroll-content\"]")
+        let vod_play_from_list = []
+        let vod_play_list = []
+        for (let i = 0; i < playerformatElements.length; i++) {
+            let playFormatElement = playerformatElements[i]
+            let format_name = playFormatElement.attribs["data-dropdown-value"]
+            if (format_name.indexOf("夸克") === -1) {
+                vod_play_from_list.push(format_name)
+                let vodItems = []
+                for (const playUrlElement of $(playUrlElements[i]).find("a")) {
+                    let episodeName = $(playUrlElement).text()
+                    let episodeUrl = playUrlElement.attribs.href
+                    vodItems.push(episodeName + "$" + episodeUrl)
+                }
+                vod_play_list.push(vodItems.join("#"))
+
+            }
+        }
+        vodDetail.vod_play_from = vod_play_from_list.join("$$$")
+        vodDetail.vod_play_url = vod_play_list.join("$$$")
+        return vodDetail
+    }
+
     async setHomeVod() {
         let $ = await this.getHtml()
         this.homeVodList = await this.parseVodShortListFromDoc($)
@@ -109,6 +157,21 @@ class NewVisionSpider extends Spider {
         let reqUrl = this.siteUrl + '/index.php/vodshow/' + urlParams.join("-") + '.html';
         let $ = await this.getHtml(reqUrl)
         this.vodList = await this.parseVodShortListFromDoc($)
+    }
+
+    async setDetail(id) {
+        let $ = await this.getHtml(this.siteUrl + id)
+        this.vodDetail = await this.parseVodDetailFromDoc($)
+    }
+
+    async setPlay(flag, id, flags) {
+        let $ = await this.getHtml(this.siteUrl + id)
+        let playUrl = $("[id=\"bfurl\"]")[0].attribs.href
+        if (playUrl.indexOf("http") > -1){
+            this.playUrl = playUrl
+        }else{
+            //需要解析URL
+        }
     }
 }
 
