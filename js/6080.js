@@ -87,6 +87,18 @@ class NewVisionSpider extends Spider {
         return vod_list
     }
 
+    async parseVodShortListFromJson(obj) {
+        let vod_list = []
+        for (const result of obj["Data"]["result"]){
+            let vodShort = new VodShort()
+            vodShort.vod_id = result["vod_url"].replaceAll(this.siteUrl,"")
+            vodShort.vod_pic = result["vod_pic"]
+            vodShort.vod_name = result["vod_name"]
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
     async parseVodDetailFromDoc($) {
         let html = $.html()
         let vodDetail = new VodDetail()
@@ -173,6 +185,13 @@ class NewVisionSpider extends Spider {
             //需要解析URL
         }
     }
+
+    async setSearch(wd, quick) {
+        let url = `http://123.207.150.253/zxapi/public/?service=App.F.Fetch&req_p=${wd}&type=6080`
+        let content = await this.fetch(url,null,this.getHeader())
+        this.vodList = await this.parseVodShortListFromJson(JSON.parse(content))
+    }
+
 }
 
 let spider = new NewVisionSpider()

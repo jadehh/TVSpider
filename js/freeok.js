@@ -60,6 +60,17 @@ class OkSpider extends Spider {
         }
         return vod_list
     }
+      async parseVodShortListFromJson(obj) {
+        let vod_list = []
+        for (const result of obj["Data"]["result"]){
+            let vodShort = new VodShort()
+            vodShort.vod_id = result["vod_url"].replaceAll(this.siteUrl,"")
+            vodShort.vod_pic = result["vod_pic"]
+            vodShort.vod_name = result["vod_name"]
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
 
     async parseVodShortListFromDocByHot($) {
         let vod_list = []
@@ -210,16 +221,10 @@ class OkSpider extends Spider {
     }
 
     async setSearch(wd, quick) {
+        let url = `http://123.207.150.253/zxapi/public/?service=App.F.Fetch&req_p=${wd}&type=okys`
+        let content = await this.fetch(url,null,this.getHeader())
+        this.vodList = await this.parseVodShortListFromJson(JSON.parse(content))
 
-        // let url =  this.siteUrl + "/so1so/-------------.html?wd=" + wd
-        // let headers = this.getHeader()
-        // headers["cookie"] = this.cookie
-        // let html =await this.fetch(url,null,headers)
-        // if (html.indexOf("安全验证") > -1){
-        //     await this.refreshCookie()
-        //     await this.setSearch(wd,quick)
-        // }
-        // let x = 0
     }
 
     async refreshCookie() {
