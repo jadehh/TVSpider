@@ -42,8 +42,9 @@ class NewVisionSpider extends Spider {
         let extend_list = []
         let type_key_list = [3,1,11,2]
         for (let i = 0; i < elements.length; i++) {
-            let extend_dic = {"key": (i + 1).toString(), "name": "", "value": []}
-            extend_dic["name"] = $($(elements[i]).find("a")[0]).text()
+            let name = $($(elements[i]).find("a")[0]).text()
+            let extend_dic = {"key": (i + 1).toString(), "name": name, "value": []}
+            extend_dic["name"] = name
             extend_dic["value"].push({"n": "全部", "v": "0"})
             for (const ele of $(elements[i]).find("a").slice(1)) {
                 let type_id_list = Utils.getStrByRegex(/\/vodshow\/(.*?).html/, ele.attribs.href).split("-")
