@@ -4,7 +4,7 @@
 * @Date     : 2024/1/4 14:15
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     : 996影视
+* @Desc     : 996影视 已失效
 */
 
 import {Spider} from "./spider.js";
