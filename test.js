@@ -6,8 +6,6 @@ import {test} from "./js/testSpider.js";
 import {Crypto} from "./lib/cat.js";
 
 
-
-
 (async function () {
     await test();
     debugger;

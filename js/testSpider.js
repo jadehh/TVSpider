@@ -66,8 +66,8 @@ async function test() {
     // console.debug(JSON.stringify(homeVod));
 
     // 测试详情
-    // let detail1 = JSON.parse(await spider.detail("/video/155717.html"))
-    // await testPlay(detail1)
+    let detail1 = JSON.parse(await spider.detail("/video/155717.html"))
+    await testPlay(detail1)
 
     //测试分类列表
     // let  catePage = JSON.parse(await spider.category("1", "1", undefined,{"全部剧情":"0","全部时间":"2024","全部地区":"中国大陆"}));

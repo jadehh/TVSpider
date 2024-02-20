@@ -176,13 +176,25 @@ class NewVisionSpider extends Spider {
         this.vodDetail = await this.parseVodDetailFromDoc($)
     }
 
+     uic(url,uid){
+        let ut = CryptoJS.enc.Utf8.parse('2890'+uid+'tB959C')
+        let mm = CryptoJS.enc.Utf8.parse("2F131BE91247866E")
+        let decrypted = CryptoJS.AES.decrypt(url, ut, {iv: mm, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
+        return CryptoJS.enc.Utf8.stringify(decrypted);
+}
+
     async setPlay(flag, id, flags) {
         let $ = await this.getHtml(this.siteUrl + id)
         let playUrl = $("[id=\"bfurl\"]")[0].attribs.href
         if (playUrl.indexOf("http") > -1){
             this.playUrl = playUrl
         }else{
-            //需要解析URL
+            //需要解析URL,支持弹幕
+            let newUrl = "https://jiexi.xn--1lq90i13mxk5bolhm8k.xn--fiqs8s/player/ec.php?code=ak&if=1&url=" + playUrl
+            let play$ = await this.getHtml(newUrl)
+            let playHtml = play$.html()
+            let playConfig = JSON.parse(Utils.getStrByRegex(/let ConFig = (.*?),box = /,playHtml))
+            this.playUrl = this.uic(playConfig["url"],playConfig["config"]["uid"])
         }
     }
 
