@@ -43,7 +43,7 @@ class NewVisionSpider extends Spider {
         let type_key_list = [3,1,11,2]
         for (let i = 0; i < elements.length; i++) {
             let name = $($(elements[i]).find("a")[0]).text()
-            let extend_dic = {"key": (i + 1).toString(), "name": name, "value": []}
+            let extend_dic = {"key": name, "name": name, "value": []}
             extend_dic["name"] = name
             extend_dic["value"].push({"n": "全部", "v": "0"})
             for (const ele of $(elements[i]).find("a").slice(1)) {
