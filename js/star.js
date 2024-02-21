@@ -135,6 +135,14 @@ class StarSpider extends Spider {
         return vod_list
     }
 
+    getObjectValues(objList,key){
+        let value_list = []
+        for (const result  of objList){
+            value_list.push(result[key])
+        }
+        return value_list
+    }
+
     async parseVodDetailfromJson(obj) {
         const vObj = obj["collectionInfo"];
         let vodDetail = new VodDetail();
@@ -143,8 +151,8 @@ class StarSpider extends Spider {
         vodDetail.vod_pic = vObj["picurl"]
         vodDetail.vod_area = vObj["country"]
         vodDetail.vod_remarks = vObj["countStr"]
-        vodDetail.vod_actor = vObj["actor"].join("/")
-        vodDetail.vod_director = vObj["director"].join("/")
+        vodDetail.vod_actor =  this.getObjectValues(vObj["actor"],"name").join("/")
+        vodDetail.vod_director = this.getObjectValues(vObj["director"],"name").join("/")
         vodDetail.vod_content = vObj["desc"]
         const playInfo = vObj["videosGroup"];
         const playVod = {};
@@ -207,8 +215,10 @@ class StarSpider extends Spider {
     }
 
     async setDetail(id) {
-        let json = await this.fetch(this.siteUrl + `/_next/data/tjZc0u8zsE2Ojxa66Luze/vod/detail/${id}.json?id=${id}`, null, this.getHeader())
-        const obj = JSON.parse(json)["pageProps"];
+
+        const $ = await this.getHtml(this.siteUrl + '/vod/detail/' + id);
+        const json = $('#__NEXT_DATA__')[0].children[0].data;
+        const obj = JSON.parse(json).props["pageProps"];
         this.vodDetail = await this.parseVodDetailfromJson(obj)
     }
 
