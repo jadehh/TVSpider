@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './star.js';
+import {__jsEvalReturn} from './dygangs.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'star';
+    let siteKey = 'dygangs';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
