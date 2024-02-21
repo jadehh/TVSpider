@@ -12,7 +12,7 @@ import {Spider} from "./spider.js";
 import {_} from "../lib/cat.js";
 
 
-class NewVisionSpider extends Spider {
+class StarSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = "https://www.histar.tv"
@@ -224,7 +224,7 @@ class NewVisionSpider extends Spider {
 
 }
 
-let spider = new NewVisionSpider()
+let spider = new StarSpider()
 
 async function init(cfg) {
     await spider.init(cfg)
