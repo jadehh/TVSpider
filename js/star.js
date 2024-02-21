@@ -26,22 +26,22 @@ class NewVisionSpider extends Spider {
     getName() {
         return "☄️|星视界|☄️"
     }
-    getApiHeader(){
-       return {'User-Agent': Utils.MOBILEUA, "Content-Type": 'application/json'}
+
+    getApiHeader() {
+        return {'User-Agent': Utils.MOBILEUA, "Content-Type": 'application/json'}
     }
+
     async setClasses() {
         let $ = await this.getHtml()
         let navElements = $($("[class=\"nav_nav__zgz60\"]")[0]).find("a")
         for (const navElement of navElements) {
             let type_id = navElement.attribs.href
             let type_name = $(navElement).text()
-            if (type_id !== "/") {
+            if (type_id !== "/" && type_name !== "电视直播") {
                 this.classes.push(this.getTypeDic(type_name, type_id))
             }
         }
     }
-
-    function
 
     convertTypeData(typeData, key, name) {
         if (!typeData || !typeData[key] || typeData[key].length <= 2) {
@@ -101,7 +101,7 @@ class NewVisionSpider extends Spider {
         vodShort.vod_id = obj["id"]
         vodShort.vod_name = obj["name"]
         vodShort.vod_pic = obj["img"]
-        if (_.isEmpty(vodShort.vod_pic)){
+        if (_.isEmpty(vodShort.vod_pic)) {
             vodShort.vod_pic = obj["picurl"]
         }
         vodShort.vod_remarks = obj["countStr"]
@@ -114,10 +114,13 @@ class NewVisionSpider extends Spider {
     async parseVodShortListFromJson(obj) {
         let vod_list = []
         for (const results of obj) {
-            let cards = results["cards"]
-            for (const result of cards) {
-                let vodShort = this.parseVodShortFromtJson(result)
-                vod_list.push(vodShort)
+            let name = results["name"]
+            if (name !== "电视直播") {
+                let cards = results["cards"]
+                for (const result of cards) {
+                    let vodShort = this.parseVodShortFromtJson(result)
+                    vod_list.push(vodShort)
+                }
             }
         }
         return vod_list
@@ -164,7 +167,7 @@ class NewVisionSpider extends Spider {
     }
 
     async setHomeVod() {
-        let json = await this.fetch(this.apiUrl + "/v3/web/api/home?chName=首页",null,this.getApiHeader())
+        let json = await this.fetch(this.apiUrl + "/v3/web/api/home?chName=首页", null, this.getApiHeader())
         const obj = JSON.parse(json)["data"]["cardsGroup"];
         this.homeVodList = await this.parseVodShortListFromJson(obj)
     }
@@ -202,7 +205,7 @@ class NewVisionSpider extends Spider {
     }
 
     async setDetail(id) {
-        let json = await this.fetch(this.siteUrl + `/_next/data/tjZc0u8zsE2Ojxa66Luze/vod/detail/${id}.json?id=${id}`,null,this.getHeader())
+        let json = await this.fetch(this.siteUrl + `/_next/data/tjZc0u8zsE2Ojxa66Luze/vod/detail/${id}.json?id=${id}`, null, this.getHeader())
         const obj = JSON.parse(json)["pageProps"];
         this.vodDetail = await this.parseVodDetailfromJson(obj)
     }
@@ -212,7 +215,7 @@ class NewVisionSpider extends Spider {
         const param = {
             word: wd, page: 1, pageSize: limit,
         };
-        const json = await this.post(this.apiUrl + '/v3/web/api/search', JSON.stringify(param),this.getApiHeader(),"");
+        const json = await this.post(this.apiUrl + '/v3/web/api/search', JSON.stringify(param), this.getApiHeader(), "");
         const data = JSON.parse(json).data;
         this.vodList = await this.parseVodShortListFromJsonByCategory(data)
     }
