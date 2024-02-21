@@ -102,7 +102,7 @@ class NewVisionSpider extends Spider {
         vodShort.vod_name = obj["name"]
         vodShort.vod_pic = obj["img"]
         if (_.isEmpty(vodShort.vod_pic)) {
-            vodShort.vod_pic = obj["picurl"]
+            vodShort.vod_pic = obj["picurl"] ?? ""
         }
         vodShort.vod_remarks = obj["countStr"]
         if (_.isEmpty(vodShort.vod_remarks)) {
@@ -201,6 +201,8 @@ class NewVisionSpider extends Spider {
         }, "")
         const data = JSON.parse(json).data;
         this.vodList = await this.parseVodShortListFromJsonByCategory(data)
+        this.count = Math.floor(data["total"] / this.limit);
+        this.total = data.total
 
     }
 
