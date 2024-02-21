@@ -26,7 +26,9 @@ class NewVisionSpider extends Spider {
     getName() {
         return "☄️|星视界|☄️"
     }
-
+    getApiHeader(){
+       return {'User-Agent': Utils.MOBILEUA, "Content-Type": 'application/json'}
+    }
     async setClasses() {
         let $ = await this.getHtml()
         let navElements = $($("[class=\"nav_nav__zgz60\"]")[0]).find("a")
@@ -162,9 +164,8 @@ class NewVisionSpider extends Spider {
     }
 
     async setHomeVod() {
-        let $ = await this.getHtml()
-        const json = $('#__NEXT_DATA__')[0].children[0].data;
-        const obj = JSON.parse(json).props["pageProps"]["cards"];
+        let json = await this.fetch(this.apiUrl + "/v3/web/api/home?chName=首页",null,this.getApiHeader())
+        const obj = JSON.parse(json)["data"]["cardsGroup"];
         this.homeVodList = await this.parseVodShortListFromJson(obj)
     }
 
@@ -201,15 +202,9 @@ class NewVisionSpider extends Spider {
     }
 
     async setDetail(id) {
-        const $ = await this.getHtml(this.siteUrl + '/vod/detail/' + id);
-        const json = $('#__NEXT_DATA__')[0].children[0].data;
-        const obj = JSON.parse(json).props["pageProps"];
+        let json = await this.fetch(this.siteUrl + `/_next/data/tjZc0u8zsE2Ojxa66Luze/vod/detail/${id}.json?id=${id}`,null,this.getHeader())
+        const obj = JSON.parse(json)["pageProps"];
         this.vodDetail = await this.parseVodDetailfromJson(obj)
-    }
-
-
-    async setPlay(flag, id, flags) {
-
     }
 
     async setSearch(wd, quick) {
@@ -217,9 +212,7 @@ class NewVisionSpider extends Spider {
         const param = {
             word: wd, page: 1, pageSize: limit,
         };
-        const json = await this.post(this.apiUrl + '/v3/web/api/search', JSON.stringify(param),{
-            'User-Agent': Utils.MOBILEUA, "Content-Type": 'application/json'
-        },"");
+        const json = await this.post(this.apiUrl + '/v3/web/api/search', JSON.stringify(param),this.getApiHeader(),"");
         const data = JSON.parse(json).data;
         this.vodList = await this.parseVodShortListFromJsonByCategory(data)
     }
