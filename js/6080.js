@@ -9,8 +9,7 @@
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
-import {_, load} from "../lib/cat.js";
-import {detailContent} from "../lib/ali.js";
+
 
 class NewVisionSpider extends Spider {
     constructor() {

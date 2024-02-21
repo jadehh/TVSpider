@@ -314,10 +314,10 @@ class Spider {
     }
 
 
-    async post(reqUrl, params, headers) {
+    async post(reqUrl, params, headers,postType="form") {
         let uri = new Uri(reqUrl);
         let response = await req(uri.toString(), {
-            method: "post", headers: headers, data: params, postType: "form"
+            method: "post", headers: headers, data: params, postType: postType
         });
         if (response.code === 200 || response.code === undefined || response.code === 302) {
             // 重定向

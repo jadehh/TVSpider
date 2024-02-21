@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './6080.js';
+import {__jsEvalReturn} from './star.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = '6080';
+    let siteKey = 'star';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -61,17 +61,19 @@ async function test() {
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
 
-    //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
+    // //测试首页列表
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
+
+        //测试分类列表
+    let  catePage = JSON.parse(await spider.category("/movie", "1", undefined,{}));
+    console.debug(JSON.stringify(catePage));
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/video/155717.html"))
-    await testPlay(detail1)
+    // let detail1 = JSON.parse(await spider.detail("779949461"))
+    // await testPlay(detail1)
 
-    //测试分类列表
-    // let  catePage = JSON.parse(await spider.category("1", "1", undefined,{"全部剧情":"0","全部时间":"2024","全部地区":"中国大陆"}));
-    // console.debug(JSON.stringify(catePage));
+
 
 
 

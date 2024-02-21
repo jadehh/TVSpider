@@ -161,6 +161,14 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
+            "key": "star",
+            "name": "☄️|星视界|☄️",
+            "type": 3,
+            "api": "./js/star.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
             "key": "weixine",
             "name": "💂‍┃阿里影视┃💂",
             "type": 3,
