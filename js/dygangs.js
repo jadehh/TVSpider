@@ -78,7 +78,7 @@ class MoviePortSpider extends Spider {
             let vodShort = new VodShort();
             vodShort.vod_id = vodShortElement.attribs.href
             vodShort.vod_name = vodShortElement.attribs.title
-            vodShort.vod_pic = $(vodShortElement).find("img")[0].attribs["src"]
+            vodShort.vod_pic = $(vodShortElement).find("img")[0].attribs["data-original"]
             vodShort.vod_remarks = $($(vodShortElement).find("i")[0]).text().replaceAll(" ","").replaceAll("\n","")
             vod_list.push(vodShort)
         }
