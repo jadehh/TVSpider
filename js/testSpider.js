@@ -66,7 +66,7 @@ async function test() {
     console.debug(JSON.stringify(homeVod));
 
         //测试分类列表
-    let  catePage = JSON.parse(await spider.category("/drama", "1", undefined,{"country":"中国大陆","time":"","label":""}));
+    let  catePage = JSON.parse(await spider.category("/dy/", "1", undefined,{"按类型":"动作片","按年份":"2017","按地区":"大陆"}));
     console.debug(JSON.stringify(catePage));
 
     // 测试详情

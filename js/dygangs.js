@@ -32,7 +32,7 @@ class MoviePortSpider extends Spider {
         let $ = await this.getHtml()
         let navElements = $($("[class=\"top-nav\"]")[0]).find("a")
         for (const navElement of navElements) {
-            let type_id = navElement.attribs.href.replaceAll(this.siteUrl,"")
+            let type_id = navElement.attribs.href.replaceAll(this.siteUrl, "")
             let type_name = $(navElement).text()
             if (type_id !== "/") {
                 this.classes.push(this.getTypeDic(type_name, type_id))
@@ -41,18 +41,18 @@ class MoviePortSpider extends Spider {
     }
 
 
-    async getFilter($) {
-        let elements = $("[class=\"sy clearfix\"]").find("[class=\"clearfix\"]")
+    async getFilter($, index) {
+        let element = $("[class=\"nav-down-2 clearfix\"]")[index]
         let extend_list = []
-        for (let i = 0; i < elements.length; i++) {
-            let name = $($(elements[i]).find("dt")).text()
+        if (element !== undefined) {
+            let name = "按类型"
             let extend_dic = {"key": name, "name": name, "value": []}
             extend_dic["name"] = name
             extend_dic["value"].push({"n": "全部", "v": "0"})
-            for (const ele of $(elements[i]).find("dd").slice(1)) {
-                let typeElement = $(ele).find("a")[0]
-                let type_id_list = typeElement.attribs.href.split("=")
-                extend_dic["value"].push({"n": $(typeElement).text(), "v": decodeURIComponent(type_id_list[3])})
+            for (const ele of $(element).find("a")) {
+                let type_name = $(ele).html()
+                let type_id = ele.attribs.href.split("/").slice(-2)[0]
+                extend_dic["value"].push({"n": type_name, "v": type_id})
             }
             extend_list.push(extend_dic)
         }
@@ -60,26 +60,28 @@ class MoviePortSpider extends Spider {
     }
 
     async setFilterObj() {
+        let index = 0
         for (const type_dic of this.classes.slice(1, 5)) {
             let type_id = type_dic["type_id"]
             if (type_id !== "最近更新") {
                 let url = this.siteUrl + `${type_id}`
                 let $ = await this.getHtml(url)
-                this.filterObj[type_id] = await this.getFilter($)
+                this.filterObj[type_id] = await this.getFilter($, index)
             }
+            index = index + 1
         }
     }
 
     async parseVodShortListFromDoc($) {
         let vod_list = []
         let vodElements = $("[class=\"index-tj-l\"]").find("li")
-        for (const vodElement of  vodElements){
+        for (const vodElement of vodElements) {
             let vodShortElement = $(vodElement).find("a")[0]
             let vodShort = new VodShort();
             vodShort.vod_id = vodShortElement.attribs.href
             vodShort.vod_name = vodShortElement.attribs.title
             vodShort.vod_pic = $(vodShortElement).find("img")[0].attribs["data-original"]
-            vodShort.vod_remarks = $($(vodShortElement).find("i")[0]).text().replaceAll(" ","").replaceAll("\n","")
+            vodShort.vod_remarks = $($(vodShortElement).find("i")[0]).text().replaceAll(" ", "").replaceAll("\n", "")
             vod_list.push(vodShort)
         }
         return vod_list
@@ -100,8 +102,8 @@ class MoviePortSpider extends Spider {
 
     async setSearch(wd, quick) {
         let url = this.siteUrl + "/e/search/index.php"
-        let params =  {"keyboard":wd,"submit":"搜 索","show":"title,zhuyan","tempid":"1"}
-        let resp = await this.post(url,params,this.getHeader())
+        let params = {"keyboard": wd, "submit": "搜 索", "show": "title,zhuyan", "tempid": "1"}
+        let resp = await this.post(url, params, this.getHeader())
         let $ = load(resp)
         this.vodList = this.parseVodShortListFromDocBySearch($)
 
