@@ -72,20 +72,95 @@ class MoviePortSpider extends Spider {
         }
     }
 
+    parseVodShortFromElement($, element) {
+        let vodShort = new VodShort();
+        vodShort.vod_id = element.attribs.href
+        vodShort.vod_name = element.attribs.title
+        vodShort.vod_pic = $(element).find("img")[0].attribs["data-original"]
+        vodShort.vod_remarks = $($(element).find("i")[0]).text().replaceAll(" ", "").replaceAll("\n", "")
+        return vodShort
+    }
+
     async parseVodShortListFromDoc($) {
         let vod_list = []
         let vodElements = $("[class=\"index-tj-l\"]").find("li")
         for (const vodElement of vodElements) {
             let vodShortElement = $(vodElement).find("a")[0]
-            let vodShort = new VodShort();
-            vodShort.vod_id = vodShortElement.attribs.href
-            vodShort.vod_name = vodShortElement.attribs.title
-            vodShort.vod_pic = $(vodShortElement).find("img")[0].attribs["data-original"]
-            vodShort.vod_remarks = $($(vodShortElement).find("i")[0]).text().replaceAll(" ", "").replaceAll("\n", "")
+            let vodShort = this.parseVodShortFromElement($, vodShortElement)
             vod_list.push(vodShort)
         }
         return vod_list
     }
+
+    async parseVodShortListFromDocByCategory($) {
+        let vod_list = []
+        let vodElements = $("[class=\"index-area clearfix\"]").find("li")
+        for (const vodElement of vodElements) {
+            let vodShortElement = $(vodElement).find("a")[0]
+            let vodShort = this.parseVodShortFromElement($, vodShortElement)
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
+    async parseVodDetailFromDoc($) {
+        let vodDetail = new VodDetail();
+        let vodDetailElement = $("[ class=\"ct mb clearfix\"]")
+        vodDetail.vod_pic = $(vodDetailElement).find("img")[0].attribs["src"]
+        vodDetail.vod_name = Utils.getStrByRegex(/◎片　　名　(.*?)<br>/, $(vodDetailElement).html())
+        vodDetail.vod_area = Utils.getStrByRegex(/◎产　　地　(.*?)<br>/, $(vodDetailElement).html())
+        vodDetail.vod_year = Utils.getStrByRegex(/◎年　　代　(.*?)<br>/, $(vodDetailElement).html())
+        vodDetail.type_name = Utils.getStrByRegex(/◎类　　别　(.*?)<br>/, $(vodDetailElement).html())
+        vodDetail.vod_remarks = Utils.getStrByRegex(/◎集　　数　(.*?)<br>/, $(vodDetailElement).html())
+        let content = Utils.getStrByRegex(/◎主　　演　(.*?)<\/p>/s, $(vodDetailElement).html())
+        if (_.isEmpty(content)) {
+            content = Utils.getStrByRegex(/◎演　　员　(.*?)<\/p>/s, $(vodDetailElement).html())
+        }
+        let actor_list = []
+        for (const actor of content.split("\n")) {
+            actor_list.push(actor.replaceAll("　　　　&nbsp; 　", "").replaceAll("<br>", ""))
+        }
+        vodDetail.vod_actor = actor_list.join("/")
+        vodDetail.vod_director = Utils.getStrByRegex(/◎导　　演　(.*?)<br>/, $(vodDetailElement).html())
+        vodDetail.vod_content = Utils.getStrByRegex(/◎简　　介<\/p>(.*?)<br>/s, $(vodDetailElement).html()).replaceAll("<p>", "").replaceAll("\n", "")
+        if (_.isEmpty(vodDetail.vod_content)) {
+            vodDetail.vod_content = Utils.getStrByRegex(/◎简　　介<br>(.*?)<\/p>/s, $(vodDetailElement).html()).replaceAll("<p>", "").replaceAll("\n", "")
+
+        }
+        let vod_play_from_list = []
+        let vod_play_list = []
+
+
+        let playFormatElements = $("[class=\"playfrom tab8 clearfix\"]")
+        let playUrlElements = $("[class=\"videourl clearfix\"]")
+        for (let i = 0; i < playFormatElements.length; i++) {
+            let playFormatElement = playFormatElements[i]
+            let format_name =  $($(playFormatElement).find("li")).html()
+            vod_play_from_list.push(format_name.replaceAll("<i class=\"playerico ico-Azhan\"></i> ", ""))
+            let vodItems = []
+            for (const playUrlElement of $(playUrlElements[i]).find("a")) {
+                let episodeName = playUrlElement.attribs.title
+                let episodeUrl = playUrlElement.attribs.href
+                vodItems.push(episodeName + "$" + episodeUrl)
+            }
+            vod_play_list.push(vodItems.join("#"))
+
+        }
+        let playFormatElement = $($(vodDetailElement).find("span")[0]).find("span")
+        let format_name = $(playFormatElement).html()
+        vod_play_from_list.push(Utils.getStrByRegex(/【(.*?)】/, format_name.replaceAll("下载地址", "磁力链接")))
+        let vodItems = []
+        for (const playUrlElement of $($($(vodDetailElement).find("tbody")).find("tr")).find("a")) {
+            let episodeName = $(playUrlElement).html().replaceAll(".mp4", "")
+            let episodeUrl = playUrlElement.attribs.href
+            vodItems.push(episodeName + "$" + episodeUrl)
+        }
+        vod_play_list.push(vodItems.join("#"))
+        vodDetail.vod_play_from = vod_play_from_list.join("$$$")
+        vodDetail.vod_play_url = vod_play_list.join("$$$")
+        return vodDetail
+    }
+
 
     async setHomeVod() {
         let $ = await this.getHtml()
@@ -94,10 +169,20 @@ class MoviePortSpider extends Spider {
 
 
     async setCategory(tid, pg, filter, extend) {
-
+        let url = this.siteUrl + tid
+        if (extend["按类型"] !== undefined && extend["按类型"] !== "0") {
+            url = url + `${extend["按类型"]}/`
+        }
+        if (parseInt(pg) > 1) {
+            url = url + `index_${pg}.html`
+        }
+        let $ = await this.getHtml(url)
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
     async setDetail(id) {
+        let $ = await this.getHtml(id)
+        this.vodDetail = await this.parseVodDetailFromDoc($)
     }
 
     async setSearch(wd, quick) {
@@ -105,8 +190,19 @@ class MoviePortSpider extends Spider {
         let params = {"keyboard": wd, "submit": "搜 索", "show": "title,zhuyan", "tempid": "1"}
         let resp = await this.post(url, params, this.getHeader())
         let $ = load(resp)
-        this.vodList = this.parseVodShortListFromDocBySearch($)
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
 
+    }
+
+    async setPlay(flag, id, flags) {
+        if (id.indexOf("http") > -1){
+            let $ = await this.getHtml(id)
+            let videoUrl = $($("[class=\"video\"]")[0]).find("iframe")[0].attribs["src"]
+            let html = await this.fetch(videoUrl,null,{"User-Agent":Utils.CHROME})
+            this.playUrl = Utils.getStrByRegex(/url: '(.*?)',/,html)
+        }else{
+            this.playUrl = id
+        }
     }
 
 }
