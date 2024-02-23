@@ -60,6 +60,9 @@ async function test() {
 
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("https://www.dygangs.xyz/dsj/dlj/18399.html"))
+    await testPlay(detail1)
 
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
@@ -69,9 +72,7 @@ async function test() {
     let  catePage = JSON.parse(await spider.category("/dy/", "1", undefined,{"按类型":"0"}));
     console.debug(JSON.stringify(catePage));
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.dygangs.xyz/dsj/dlj/18399.html"))
-    await testPlay(detail1)
+
 
 
 

@@ -118,7 +118,7 @@ class MoviePortSpider extends Spider {
         }
         let actor_list = []
         for (const actor of content.split("\n")) {
-            actor_list.push(actor.replaceAll("　　　　&nbsp; 　", "").replaceAll("<br>", ""))
+            actor_list.push(actor.replaceAll("　　　　&nbsp; 　", "").replaceAll("<br>", "").replaceAll("　　　　　", ""))
         }
         vodDetail.vod_actor = actor_list.join("/")
         vodDetail.vod_director = Utils.getStrByRegex(/◎导　　演　(.*?)<br>/, $(vodDetailElement).html())
@@ -197,12 +197,18 @@ class MoviePortSpider extends Spider {
     async setPlay(flag, id, flags) {
         if (id.indexOf("http") > -1){
             let $ = await this.getHtml(id)
-            let videoUrl = $($("[class=\"video\"]")[0]).find("iframe")[0].attribs["src"]
-            let html = await this.fetch(videoUrl,null,{"User-Agent":Utils.CHROME})
-            this.playUrl = Utils.getStrByRegex(/url: '(.*?)',/,html)
+            let url = Utils.getStrByRegex(/url: '(.*?)',/,$.html())
+            if (_.isEmpty(url)){
+                let videoUrl = $($("[class=\"video\"]")[0]).find("iframe")[0].attribs["src"]
+                let html = await this.fetch(videoUrl,null,{"User-Agent":Utils.CHROME})
+                this.playUrl = Utils.getStrByRegex(/url: '(.*?)',/,html)
+            }else{
+                this.playUrl = url
+            }
         }else{
             this.playUrl = id
         }
+        let x = 0
     }
 
 }
