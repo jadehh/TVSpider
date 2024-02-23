@@ -50,6 +50,14 @@
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
+                "key": "dygangs",
+                "name": "🏖️|电影港|🏖️",
+                "type": 3,
+                "api": "./js/dygangs.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "dyttbt",
                 "name": "👼|电影天堂BT|👼",
                 "type": 3,

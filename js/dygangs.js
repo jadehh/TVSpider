@@ -10,7 +10,7 @@
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
-import {_} from "../lib/cat.js";
+import {_, load} from "../lib/cat.js";
 
 
 class MoviePortSpider extends Spider {
@@ -68,14 +68,26 @@ class MoviePortSpider extends Spider {
                 this.filterObj[type_id] = await this.getFilter($)
             }
         }
-        let x = 0
     }
 
-
-
-
+    async parseVodShortListFromDoc($) {
+        let vod_list = []
+        let vodElements = $("[class=\"index-tj-l\"]").find("li")
+        for (const vodElement of  vodElements){
+            let vodShortElement = $(vodElement).find("a")[0]
+            let vodShort = new VodShort();
+            vodShort.vod_id = vodShortElement.attribs.href
+            vodShort.vod_name = vodShortElement.attribs.title
+            vodShort.vod_pic = $(vodShortElement).find("img")[0].attribs["src"]
+            vodShort.vod_remarks = $($(vodShortElement).find("i")[0]).text().replaceAll(" ","").replaceAll("\n","")
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
 
     async setHomeVod() {
+        let $ = await this.getHtml()
+        this.homeVodList = await this.parseVodShortListFromDoc($)
     }
 
 
@@ -87,6 +99,12 @@ class MoviePortSpider extends Spider {
     }
 
     async setSearch(wd, quick) {
+        let url = this.siteUrl + "/e/search/index.php"
+        let params =  {"keyboard":wd,"submit":"搜 索","show":"title,zhuyan","tempid":"1"}
+        let resp = await this.post(url,params,this.getHeader())
+        let $ = load(resp)
+        this.vodList = this.parseVodShortListFromDocBySearch($)
+
     }
 
 }
