@@ -61,7 +61,7 @@ async function test() {
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.dygangs.xyz/dsj/dlj/18399.html"))
+    let detail1 = JSON.parse(await spider.detail("https://www.dygangs.xyz/dy/jqp/18480.html"))
     await testPlay(detail1)
 
     // //测试首页列表

@@ -135,7 +135,7 @@ class MoviePortSpider extends Spider {
         let playUrlElements = $("[class=\"videourl clearfix\"]")
         for (let i = 0; i < playFormatElements.length; i++) {
             let playFormatElement = playFormatElements[i]
-            let format_name =  $($(playFormatElement).find("li")).html()
+            let format_name = $($(playFormatElement).find("li")).html()
             vod_play_from_list.push(format_name.replaceAll("<i class=\"playerico ico-Azhan\"></i> ", ""))
             let vodItems = []
             for (const playUrlElement of $(playUrlElements[i]).find("a")) {
@@ -147,18 +147,22 @@ class MoviePortSpider extends Spider {
 
         }
         let playFormatElement = $($(vodDetailElement).find("span")[0]).find("span")
-        let format_name = $(playFormatElement).html()
-        vod_play_from_list.push(Utils.getStrByRegex(/【(.*?)】/, format_name.replaceAll("下载地址", "磁力链接")))
-        let vodItems = []
-        for (const playUrlElement of $($($(vodDetailElement).find("tbody")).find("tr")).find("a")) {
-            let episodeName = $(playUrlElement).html().replaceAll(".mp4", "")
-            let episodeUrl = playUrlElement.attribs.href
-            vodItems.push(episodeName + "$" + episodeUrl)
+        if (playFormatElement.length > 0) {
+            let format_name = $(playFormatElement).html()
+            vod_play_from_list.push(Utils.getStrByRegex(/【(.*?)】/, format_name.replaceAll("下载地址", "磁力链接")))
+            let vodItems = []
+            for (const playUrlElement of $($($(vodDetailElement).find("tbody")).find("tr")).find("a")) {
+                let episodeName = $(playUrlElement).html().replaceAll(".mp4", "")
+                let episodeUrl = playUrlElement.attribs.href
+                vodItems.push(episodeName + "$" + episodeUrl)
+            }
+            vod_play_list.push(vodItems.join("#"))
+
         }
-        vod_play_list.push(vodItems.join("#"))
         vodDetail.vod_play_from = vod_play_from_list.join("$$$")
         vodDetail.vod_play_url = vod_play_list.join("$$$")
         return vodDetail
+
     }
 
 
@@ -195,17 +199,17 @@ class MoviePortSpider extends Spider {
     }
 
     async setPlay(flag, id, flags) {
-        if (id.indexOf("http") > -1){
+        if (id.indexOf("http") > -1) {
             let $ = await this.getHtml(id)
-            let url = Utils.getStrByRegex(/url: '(.*?)',/,$.html())
-            if (_.isEmpty(url)){
+            let url = Utils.getStrByRegex(/url: '(.*?)',/, $.html())
+            if (_.isEmpty(url)) {
                 let videoUrl = $($("[class=\"video\"]")[0]).find("iframe")[0].attribs["src"]
-                let html = await this.fetch(videoUrl,null,{"User-Agent":Utils.CHROME})
-                this.playUrl = Utils.getStrByRegex(/url: '(.*?)',/,html)
-            }else{
+                let html = await this.fetch(videoUrl, null, {"User-Agent": Utils.CHROME})
+                this.playUrl = Utils.getStrByRegex(/url: '(.*?)',/, html)
+            } else {
                 this.playUrl = url
             }
-        }else{
+        } else {
             this.playUrl = id
         }
         let x = 0
