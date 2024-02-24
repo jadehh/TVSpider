@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './dygangs.js';
+import {__jsEvalReturn} from './wogg.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,24 +50,24 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'dygangs';
+    let siteKey = 'wogg';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
         stype: siteType,
-        ext: {"token": "58950fc2475f49fc8788355c83594177", "box": "CatOpen", "code": "1"}
+        ext: {"token": "302ef8e4b4d7430db6d82de284978359", "box": "CatOpen", "code": "1"}
     });
 
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.dygangs.xyz/dy/jqp/18480.html"))
-    await testPlay(detail1)
+
 
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
-
+        // 测试详情
+    let detail1 = JSON.parse(await spider.detail("/index.php/voddetail/77392.html"))
+    await testPlay(detail1)
         //测试分类列表
     let  catePage = JSON.parse(await spider.category("/dy/", "1", undefined,{"按类型":"0"}));
     console.debug(JSON.stringify(catePage));

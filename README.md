@@ -53,3 +53,7 @@ https://50e510596ebc5356ec22b3f8aeb19371@gitee.com/jadehh_743/TV/raw/js/open_con
 
 
 * m3u8遇到跨域的问题可以尝试使用代理来进行加载,如果没有跨域使用代理会引起死循环
+
+### 阿里Token获取
+
+[https://alist.nn.ci/zh/guide/drivers/aliyundrive.html](https://alist.nn.ci/zh/guide/drivers/aliyundrive.html)

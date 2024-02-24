@@ -167,5 +167,5 @@ class Build(object):
 if __name__ == '__main__':
     build = Build("js", "json",token_name="he",aliToken="3d3c5c67581e4db188e753a56ea5829a")
     build.build()
-    build = Build("js", "json",token_name="",aliToken="58950fc2475f49fc8788355c83594177")
+    build = Build("js", "json",token_name="",aliToken="302ef8e4b4d7430db6d82de284978359")
     build.build()
