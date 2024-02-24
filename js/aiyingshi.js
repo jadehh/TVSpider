@@ -53,7 +53,7 @@ class AiYingShiSpider extends Spider {
     async parseVodDetailFromDoc($) {
         let vodDetail = new VodDetail()
         vodDetail.vod_name = $('.page-title')[0].children[0].data
-        vodDetail.vod_pic = this.jsBase + $($("[class=\"video-cover\"]")).find(".lazyload")[0].attribs["data-src"]
+        vodDetail.vod_pic =  $($("[class=\"video-cover\"]")).find(".lazyload")[0].attribs["data-src"]
         let video_info_list = $($(".video-info-aux")).text().replaceAll("\t","").split("\n")
         let type_list = []
         for (const video_info of video_info_list){
@@ -106,7 +106,7 @@ class AiYingShiSpider extends Spider {
             let vodShort = new VodShort()
             vodShort.vod_id = $(item).find(".video-serial")[0].attribs.href;
             vodShort.vod_name = $(item).find(".video-serial")[0].attribs.title;
-            vodShort.vod_pic = this.jsBase + Utils.base64Encode($(item).find(".module-item-pic > img")[0].attribs['data-src']);
+            vodShort.vod_pic = $(item).find(".module-item-pic > img")[0].attribs['data-src']
             vodShort.vod_remarks = '';
             vod_list.push(vodShort);
         }
