@@ -206,13 +206,16 @@ class MoviePortSpider extends Spider {
                 let videoUrl = $($("[class=\"video\"]")[0]).find("iframe")[0].attribs["src"]
                 let html = await this.fetch(videoUrl, null, {"User-Agent": Utils.CHROME})
                 this.playUrl = Utils.getStrByRegex(/url: '(.*?)',/, html)
+                if (_.isEmpty(this.playUrl)){
+                    let urlHost = Utils.getHost(videoUrl)
+                    this.playUrl = urlHost + Utils.getStrByRegex(/var main = "(.*?)";/, html)
+                }
             } else {
                 this.playUrl = url
             }
         } else {
             this.playUrl = id
         }
-        let x = 0
     }
 
 }
