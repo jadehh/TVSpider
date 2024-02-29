@@ -16,7 +16,7 @@ import {Spider} from "./spider.js";
 class WeiXineSpider extends Spider {
     constructor() {
         super();
-        this.siteUrl = 'https://www.weixine.net';
+        this.siteUrl = 'https://www.weixine.link';
     }
 
     async init(cfg) {
