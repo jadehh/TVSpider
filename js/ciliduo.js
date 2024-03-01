@@ -29,7 +29,7 @@ class CiliDuoSpider extends Spider {
     }
 
     getProxy(src) {
-        return atob(src)
+        return Utils.base64Decode(src)
     }
 
     async home(filter) {
