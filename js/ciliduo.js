@@ -32,7 +32,7 @@ class CiliDuoSpider extends Spider {
         return atob(src)
     }
 
-    async setHome(filter) {
+    async home(filter) {
         let $ = await this.getHtml()
         let proxy_src = Utils.getStrByRegex(/var proxy = atob\('(.*?)'\)/, $.html())
         let proxy = this.getProxy(proxy_src)
