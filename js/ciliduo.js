@@ -33,6 +33,7 @@ class CiliDuoSpider extends Spider {
     }
 
     async home(filter) {
+        await this.jadeLog.info("正在解析首页类别", true)
         let $ = await this.getHtml()
         let proxy_src = Utils.getStrByRegex(/var proxy = atob\('(.*?)'\)/, $.html())
         let proxy = this.getProxy(proxy_src)
