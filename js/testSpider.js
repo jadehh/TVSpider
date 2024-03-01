@@ -67,11 +67,15 @@ async function test() {
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
+    // 测试搜索
+    let search_page = JSON.parse(await spider.search("繁花"))
+    console.debug(JSON.stringify(search_page));
+
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.dygangs.xyz/dsj/dlj/18356.html"))
+    let detail1 = JSON.parse(await spider.detail("/search?word=明星"))
     await testPlay(detail1)
 
-        //测试分类列表
+    //测试分类列表
     let  catePage = JSON.parse(await spider.category("/dy/", "1", undefined,{"按类型":"0"}));
     console.debug(JSON.stringify(catePage));
 
@@ -87,10 +91,7 @@ async function test() {
 
 
 
-    // 测试搜索
 
-    let search_page = JSON.parse(await spider.search("繁花"))
-    console.debug(JSON.stringify(search_page));
 
 
 
