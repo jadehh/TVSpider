@@ -39,7 +39,7 @@ class CiliDuoSpider extends Spider {
         let proxy = this.getProxy(proxy_src)
         let params = `/?host=${Utils.getHost(this.siteUrl).split("://").slice(-1)[0]}&v=1`
         let homeContent = await this.fetch(proxy, params, this.getHeader())
-        await this.parseVodShortListFromDoc(load(homeContent))
+        return await this.parseVodShortListFromDoc(load(homeContent))
     }
 
     async parseVodShortListFromDoc($) {
@@ -66,6 +66,7 @@ class CiliDuoSpider extends Spider {
                 this.vodShortObj[type_name] = vod_list
             }
         }
+        return this.result.home(this.classes, [], this.filterObj)
     }
 
 
