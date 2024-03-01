@@ -32,6 +32,15 @@ class CiliDuoSpider extends Spider {
         return atob(src)
     }
 
+    async setHome(filter) {
+        let $ = await this.getHtml()
+        let proxy_src = Utils.getStrByRegex(/var proxy = atob\('(.*?)'\)/, $.html())
+        let proxy = this.getProxy(proxy_src)
+        let params = `/?host=${Utils.getHost(this.siteUrl).split("://").slice(-1)[0]}&v=1`
+        let homeContent = await this.fetch(proxy, params, this.getHeader())
+        await this.parseVodShortListFromDoc(load(homeContent))
+    }
+
     async parseVodShortListFromDoc($) {
         let rootElemet = $("[class=\"htab\"]")
         let navElements = rootElemet.find("a")
@@ -56,17 +65,11 @@ class CiliDuoSpider extends Spider {
                 this.vodShortObj[type_name] = vod_list
             }
         }
-        return this.vodShortObj["最近更新"]
     }
 
 
     async setHomeVod() {
-        let $ = await this.getHtml()
-        let proxy_src = Utils.getStrByRegex(/var proxy = atob\('(.*?)'\)/, $.html())
-        let proxy = this.getProxy(proxy_src)
-        let params = `/?host=${Utils.getHost(this.siteUrl).split("://").slice(-1)[0]}&v=1`
-        let homeContent = await this.fetch(proxy, params, this.getHeader())
-        this.homeVodList = await this.parseVodShortListFromDoc(load(homeContent))
+        this.homeVodList = this.vodShortObj["最近更新"]
     }
 
     async setCategory(tid, pg, filter, extend) {
