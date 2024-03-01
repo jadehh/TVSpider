@@ -33,13 +33,18 @@ class CiliDuoSpider extends Spider {
     }
 
     async home(filter) {
-        await this.jadeLog.info("正在解析首页类别", true)
-        let $ = await this.getHtml()
-        let proxy_src = Utils.getStrByRegex(/var proxy = atob\('(.*?)'\)/, $.html())
-        let proxy = this.getProxy(proxy_src)
-        let params = `/?host=${Utils.getHost(this.siteUrl).split("://").slice(-1)[0]}&v=1`
-        let homeContent = await this.fetch(proxy, params, this.getHeader())
-        return await this.parseVodShortListFromDoc(load(homeContent))
+        try {
+            await this.jadeLog.info("正在解析首页类别", true)
+            let $ = await this.getHtml()
+            let proxy_src = Utils.getStrByRegex(/var proxy = atob\('(.*?)'\)/, $.html())
+            let proxy = this.getProxy(proxy_src)
+            let params = `/?host=${Utils.getHost(this.siteUrl).split("://").slice(-1)[0]}&v=1`
+            let homeContent = await this.fetch(proxy, params, this.getHeader())
+            return await this.parseVodShortListFromDoc(load(homeContent))
+        } catch (e) {
+            await this.jadeLog.error(`首页解析失败,失败原因为:${e}`)
+        }
+
     }
 
     async parseVodShortListFromDoc($) {
@@ -56,7 +61,7 @@ class CiliDuoSpider extends Spider {
                 this.classes.push(this.getTypeDic(type_name, type_name))
                 let vodElement = vodElements[i]
                 let vod_list = []
-                for (const vodShorElement of $(vodElement).find("a")){
+                for (const vodShorElement of $(vodElement).find("a")) {
                     let vodShort = new VodShort()
                     vodShort.vod_id = vodShorElement.attribs.href
                     vodShort.vod_name = $(vodShorElement).html()
