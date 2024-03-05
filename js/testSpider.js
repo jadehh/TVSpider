@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './jable.js';
+import {__jsEvalReturn} from './aliyunpanshare.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'jable';
+    let siteKey = 'aliyunpanshare';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -65,12 +65,15 @@ async function test() {
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
-        // 测试详情
+
+
+    //测试分类列表
+    let  catePage = JSON.parse(await spider.category("https://www.alypw.com/category-2.html", "1", undefined,{"按类型":"0"}));
+    console.debug(JSON.stringify(catePage));
+
+    // 测试详情
     let detail1 = JSON.parse(await spider.detail("/search?k=%e5%8d%97%e6%9d%a5%e5%8c%97%e5%be%80"))
     await testPlay(detail1)
-        //测试分类列表
-    let  catePage = JSON.parse(await spider.category("/dy/", "1", undefined,{"按类型":"0"}));
-    console.debug(JSON.stringify(catePage));
 
 
 

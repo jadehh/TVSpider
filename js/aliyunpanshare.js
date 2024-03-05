@@ -48,6 +48,9 @@ class AliyunpanShare extends Spider {
 
     parseVodName(name) {
         let vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
+        if (name.indexOf("合集") > -1){
+            return ""
+        }
         if (_.isEmpty(vod_name)) {
             vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?)（/, name)
         }
@@ -56,6 +59,9 @@ class AliyunpanShare extends Spider {
         }
         if (vod_name.indexOf("【") > -1) {
             vod_name = vod_name.split("【")[0]
+        }
+        if (vod_name === "4K"){
+            return ""
         }
         return vod_name
     }
@@ -84,7 +90,7 @@ class AliyunpanShare extends Spider {
             vodElements = $(mainElement).find("li")
         }
         for (const vodElement of vodElements) {
-            let name = $($(vodElement).find("a")[0].attribs["title"]).text()
+            let name = $(vodElement).find("img")[0].attribs["alt"]
             let vodShort = new VodShort();
             vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
             vodShort.vod_name = this.parseVodName(name)
