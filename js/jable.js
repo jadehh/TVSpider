@@ -26,17 +26,40 @@ class JableTVSpider extends Spider {
         return "🐈|Jable|🐈"
     }
     getHeader() {
-         return {"User-Agent": "PostmanRuntime/7.36.3"};
+        // let header = super.getHeader()
+        let header = {}
+        header["User-Agent"] = "PostmanRuntime/7.36.3"
+        header["Host"] = "jable.tv"
+        // header["Postman-Token"] = "33290483-3c8d-413f-a160-0d3aea9e6f95"
+        return header
     }
 
     async setClasses() {
-        let $ = await this.fetch(this.siteUrl + "/categories/",null,this.getHeader())
+        let $ = await this.getHtml(this.siteUrl + "/categories/")
         for (const element of $("div.img-box > a")) {
             let  typeId = element.attribs.href.split("/")[4];
             let  typeName = $(element).find("div.absolute-center > h4").text();
             this.classes.push(this.getTypeDic(typeId, typeName));
         }
-        await this.jadeLog.debug(JSON.stringify(this.classes))
+    }
+
+    async parseVodShortListFromDoc($) {
+        let vod_list = []
+        for (const element of $("div.video-img-box")) {
+            let vodShort = new VodShort();
+            vodShort.vod_pic = $(element).find("img")[0].attribs["data-src"];
+            let  url = $(element).find("a")[0].attribs["href"];
+            vodShort.vod_name = $($(element).find("div.detail > h6")).text()
+            if (vodShort.vod_pic.endsWith(".gif") || _.isEmpty(vodShort.vod_name)) continue;
+            vodShort.vod_id = url.split("/")[4];
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
+    async setHomeVod() {
+        let $ = await this.getHtml(this.siteUrl)
+        this.homeVodList = await this.parseVodShortListFromDoc($)
         let x = 0
     }
 }
