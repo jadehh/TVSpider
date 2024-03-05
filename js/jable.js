@@ -36,6 +36,7 @@ class JableTVSpider extends Spider {
             let  typeName = $(element).find("div.absolute-center > h4").text();
             this.classes.push(this.getTypeDic(typeId, typeName));
         }
+        await this.jadeLog.debug(JSON.stringify(this.classes))
         let x = 0
     }
 }
