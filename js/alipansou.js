@@ -18,10 +18,11 @@ class GitCafeSpider extends Spider {
         this.siteUrl = "https://alipansou.com"
     }
 
-    getHeader() {
+    getHeader(url) {
         let headers = super.getHeader()
         headers["Connection"] = "keep-alive"
-        headers["Cookie"] = "_ga=GA1.1.1647939453.1701612530; cf_clearance=9uoGAVglm4FmzyBQ6lAQHtqsgQfxAL9_mKiDvoG9IG4-1701689787-0-1-d796e2dc.b6a4f5f.8097bd3c-0.2.1701689787; no_show_donate=1; mysession=MTcwOTU1MDg5NXxEdi1CQkFFQ180SUFBUkFCRUFBQU1QLUNBQUVHYzNSeWFXNW5EQXdBQ25ObFlYSmphRjlyWlhrR2MzUnlhVzVuREE0QURPV05sLWFkcGVXTWwtVy1nQT09fKLZ-Nt7ZRL9imGWBfdOmNlteN2dzRl3SemquoSIyBzr; _bid=23ce30384338b02900cbeadd67ac614f; Hm_lvt_02f69e0ba673e328ef49b5fb98dd4601=1708761367,1709550896; cto_bundle=Xw_ss194N016R1FoTHM1RFFSNUJnZyUyQmFnUGN5c2czTnRRSjVrcFNUUlJ4TkI1YzZxcXVOTiUyRk82WmIlMkZncEJKUzhTb2d3UGhPdk5SMzRzazVCcVRVYmxURW40TFRiTzdHWGRlbk1uZnE4VWNrN3Z1d2FGS0MxMDVhWXpRMjJlc21VSnIlMkIyRjhSJTJCcll5SVFhZU52R1gxYmtIMUNiciUyQjdaZ25sdkNpJTJCTUN3c00ySjdxUjdlRnZhSjFHWkglMkJNcFp6Zkd6YiUyQno5Z3FzdUM4Qkh5enklMkZadXJPMFp0YnclM0QlM0Q; Hm_lpvt_02f69e0ba673e328ef49b5fb98dd4601=1709550950; _ga_NYNC791BP2=GS1.1.1709550896.4.1.1709550950.0.0.0; _ga_0B2NFC7Z09=GS1.1.1709550896.4.1.1709550950.6.0.0; _egg=bfe7e29486b54e5b919cb9b8a16471eae"
+        headers["_bid"] = "6d14a5dd6c07980d9dc089a693805ad8";
+        headers["Referer"] = url
         return headers
     }
 
@@ -34,7 +35,7 @@ class GitCafeSpider extends Spider {
     }
 
     async getContentHtml() {
-        let html = await this.fetch(this.siteUrl, null, this.getHeader())
+        let html = await this.fetch(this.siteUrl, null, this.getHeader(this.siteUrl))
         if (!_.isEmpty(html)) {
             return load(html)
         }
@@ -71,9 +72,7 @@ class GitCafeSpider extends Spider {
     }
 
     async getAliUrl(url) {
-        let headers = this.getHeader()
-        headers["Referer"] = url
-        headers["_bid"] = "6d14a5dd6c07980d9dc089a693805ad8";
+        let headers = this.getHeader(url)
         await this.jadeLog.debug(`获取阿里链接url:${url.replace("/s/", "/cv/")},headers:${JSON.stringify(headers)}`)
         return await this.fetch(url.replace("/s/", "/cv/"), null, headers, true)
     }
@@ -131,7 +130,7 @@ class GitCafeSpider extends Spider {
         if (id.indexOf("search") > -1) {
             let url = this.siteUrl + "/search"
             let params = {"k":decodeURIComponent(id.split("search?k=").slice(-1)[0]) }
-            let html = await this.fetch(url, params, this.getHeader())
+            let html = await this.fetch(url, params, this.getHeader(url))
             if (!_.isEmpty(html)) {
                 let $ = load(html)
                 let vod_list = await this.parseVodShortListFromDocBySearch($)
@@ -157,7 +156,7 @@ class GitCafeSpider extends Spider {
     async setSearch(wd, quick) {
         let url = this.siteUrl + "/search"
         let params = {"k": wd}
-        let html = await this.fetch(url, params, this.getHeader())
+        let html = await this.fetch(url, params, this.getHeader(url))
         if (!_.isEmpty(html)) {
             let $ = load(html)
             this.vodList = await this.parseVodShortListFromDocBySearch($)

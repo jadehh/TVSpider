@@ -90,7 +90,7 @@ class AliyunpanShare extends Spider {
             vodElements = $(mainElement).find("li")
         }
         for (const vodElement of vodElements) {
-            let name = $(vodElement).find("img")[0].attribs["alt"]
+            let name = $(vodElement).find("img")[0].attribs["alt"].replaceAll("<strong>","").replaceAll("</strong>","")
             let vodShort = new VodShort();
             vodShort.vod_id = $(vodElement).find("a")[0].attribs["href"]
             vodShort.vod_name = this.parseVodName(name)

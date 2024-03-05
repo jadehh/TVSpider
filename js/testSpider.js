@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './aliyunpanshare.js';
+import {__jsEvalReturn} from './alipansou.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'aliyunpanshare';
+    let siteKey = 'alipansou';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -66,31 +66,38 @@ async function test() {
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
-
-    //测试分类列表
-    let  catePage = JSON.parse(await spider.category("https://www.alypw.com/category-2.html", "1", undefined,{"按类型":"0"}));
-    console.debug(JSON.stringify(catePage));
-
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/search?k=%e5%8d%97%e6%9d%a5%e5%8c%97%e5%be%80"))
+    let detail1 = JSON.parse(await spider.detail("/search?k=%e5%91%a8%e5%a4%84%e9%99%a4%e4%b8%89%e5%ae%b3"))
     await testPlay(detail1)
 
-
-
-
-
-
-
-
-
-
+    //测试分类列表
+    let  catePage = JSON.parse(await spider.category("1", "1", undefined));
+    console.debug(JSON.stringify(catePage));
 
 
 
     // 测试搜索
-
-    let search_page = JSON.parse(await spider.search("繁花"))
+    let search_page = JSON.parse(await spider.search("乡村爱情"))
     console.debug(JSON.stringify(search_page));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
