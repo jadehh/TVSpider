@@ -36,7 +36,7 @@ class Doll extends Spider {
             let videoInfoElements = $($(vodElement).find("[class=\"video-info\"]")).find("a")
             vodShort.vod_name = videoInfoElements[0].attribs["title"]
             vodShort.vod_remarks = $(videoInfoElements[1]).text()
-            vodShort.vod_pic = this.siteUrl + $(vodElement).find("img")[0].attribs["data-src"]
+            vodShort.vod_pic = $(vodElement).find("img")[0].attribs["data-src"]
             vod_list.push(vodShort)
         }
         return vod_list
@@ -47,7 +47,7 @@ class Doll extends Spider {
         let vodElement = $("[class=\"container-fluid\"]")
         vodDetail.vod_name = $($(vodElement).find("[class=\"page-title\"]")[0]).text()
         vodDetail.vod_remarks = $(vodElement).find("[class=\"tag my-1 text-center\"]")[0].attribs["href"].replaceAll("/", "")
-        vodDetail.vod_pic = this.siteUrl + $(vodElement).find("video")[0].attribs["poster"]
+        vodDetail.vod_pic = $(vodElement).find("video")[0].attribs["poster"]
         let html = $.html()
         let voteTag = Utils.getStrByRegex(/var voteTag="(.*?)";/g, html)
         let videoInfo = JSON.parse(Utils.getStrByRegex(/<script type="application\/ld\+json">(.*?)<\/script>/g, html))
