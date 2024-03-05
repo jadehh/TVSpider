@@ -25,6 +25,7 @@ class JableTVSpider extends Spider {
     getName() {
         return "🐈|Jable|🐈"
     }
+
     getHeader() {
         // let header = super.getHeader()
         let header = {}
@@ -37,8 +38,8 @@ class JableTVSpider extends Spider {
     async setClasses() {
         let $ = await this.getHtml(this.siteUrl + "/categories/")
         for (const element of $("div.img-box > a")) {
-            let  typeId = element.attribs.href.split("/")[4];
-            let  typeName = $(element).find("div.absolute-center > h4").text();
+            let typeId = element.attribs.href.split("/")[4];
+            let typeName = $(element).find("div.absolute-center > h4").text();
             this.classes.push(this.getTypeDic(typeId, typeName));
         }
     }
@@ -47,12 +48,17 @@ class JableTVSpider extends Spider {
         let vod_list = []
         for (const element of $("div.video-img-box")) {
             let vodShort = new VodShort();
-            vodShort.vod_pic = $(element).find("img")[0].attribs["data-src"];
-            let  url = $(element).find("a")[0].attribs["href"];
-            vodShort.vod_name = $($(element).find("div.detail > h6")).text()
-            if (vodShort.vod_pic.endsWith(".gif") || _.isEmpty(vodShort.vod_name)) continue;
-            vodShort.vod_id = url.split("/")[4];
-            vod_list.push(vodShort)
+            let picElement = $(element).find("img")
+            if (picElement.length > 0) {
+                vodShort.vod_pic = $(element).find("img")[0].attribs["data-src"];
+                vodShort.vod_remarks = $($(element).find("div")[1]).text()
+                let url = $(element).find("a")[0].attribs["href"];
+                vodShort.vod_name = $($(element).find("div.detail > h6")).text()
+
+                if (vodShort.vod_pic.endsWith(".gif") || _.isEmpty(vodShort.vod_name)) continue;
+                vodShort.vod_id = url.split("/")[4];
+                vod_list.push(vodShort)
+            }
         }
         return vod_list
     }
@@ -60,7 +66,6 @@ class JableTVSpider extends Spider {
     async setHomeVod() {
         let $ = await this.getHtml(this.siteUrl)
         this.homeVodList = await this.parseVodShortListFromDoc($)
-        let x = 0
     }
 }
 
