@@ -36,40 +36,78 @@ class JableTVSpider extends Spider {
     }
 
     async setClasses() {
-        let $ = await this.getHtml(this.siteUrl + "/categories/")
-        for (const element of $("div.img-box > a")) {
-            let typeId = element.attribs.href.split("/")[4];
-            let typeName = $(element).find("div.absolute-center > h4").text();
-            this.classes.push(this.getTypeDic(typeId, typeName));
+        let $ = await this.getHtml(this.siteUrl)
+        let navElements = $("[class=\"title-box\"]").slice(0,8)
+        let defaultTypeIdElements = $("div.row").slice(0,8)
+        for (let i = 0; i < navElements.length; i++) {
+            let typeName = $(navElements[i]).text().replaceAll("\n","")
+            let typeId = $(defaultTypeIdElements[i]).find("a")[0].attribs["href"]
+            this.classes.push(this.getTypeDic(typeName,typeId));
+        }
+    }
+
+    async setFilterObj() {
+        let $ = await this.getHtml(this.siteUrl)
+        let navElements = $("[class=\"row gutter-20 pb-5\"]").find("div.col-6 > a")
+        for (const element of navElements) {
+            let typeId = element.attribs.href
+            let typeName = $(element).text()
+            if (typeId.indexOf(this.siteUrl) > -1){
+               this.classes.push(this.getTypeDic(typeName,typeId));
+            }
         }
     }
 
     async parseVodShortListFromDoc($) {
         let vod_list = []
-        for (const element of $("div.video-img-box")) {
+        let vodElements =  $("[class=\"video-img-box mb-e-20\"]")
+        for (const element of vodElements) {
             let vodShort = new VodShort();
             let picElement = $(element).find("img")
             if (picElement.length > 0) {
                 vodShort.vod_pic = $(element).find("img")[0].attribs["data-src"];
                 vodShort.vod_remarks = $($(element).find("div")[1]).text()
                 let url = $(element).find("a")[0].attribs["href"];
-                vodShort.vod_name = $($(element).find("div.detail > h6")).text()
-
-                if (vodShort.vod_pic.endsWith(".gif") || _.isEmpty(vodShort.vod_name)) continue;
+                vodShort.vod_name = url.split("/")[4]
                 vodShort.vod_id = url.split("/")[4];
+                vodShort.vod_remarks = $($(element).find("[class=\"sub-title\"]")).text().split("\n")[1].replaceAll(" ","")
                 vod_list.push(vodShort)
             }
         }
         return vod_list
     }
 
+    async parseVodShortListFromDocByCategory($) {
+        let vod_list = []
+        let vodElements = $("div.video-img-box")
+        for (const element of vodElements ) {
+            let vodShort = new VodShort()
+            vodShort.vod_pic  = $(element).find("img").attr("data-src");
+            let url = $(element).find("a").attr("href");
+            vodShort.vod_id= url.split("/")[4];
+            vodShort.vod_name = url.split("/")[4];
+            vodShort.vod_remarks = $($(element).find("[class=\"sub-title\"]")).text().split("\n")[1].replaceAll(" ","").replaceAll("\t","")
+            vod_list.push(vodShort);
+        }
+        return vod_list
+    }
+
     async parseVodDetailFromDoc($) {
         let vodDetail = new VodDetail();
-        vodDetail.vod_name = $.find("meta[property=og:title]").attr("content");
-        vodDetail.vod_pic = $.find("meta[property=og:image]").attr("content");
-        vodDetail.vod_year  = $.select("span.inactive-color").get(0).text();
-        vodDetail.vod_play_from = "Jable"
-
+        let leftElement = $("[class=\"header-left\"]")
+        vodDetail.vod_name = $($(leftElement).find("h4")).text();
+        vodDetail.vod_pic = Utils.getStrByRegex(/<video poster="(.*?)" id=/,$.html())
+        vodDetail.vod_year = $($("[class=\"inactive-color\"]")).text()
+        let episodeName = Utils.getStrByRegex(/<span class="text-danger fs-1 mr-2"(.*?)\n/,$.html()).replaceAll(">","").replaceAll("</span","")
+        let vodItems = []
+        let episodeUrl = Utils.getStrByRegex(/var hlsUrl = '(.*?)';/,$.html())
+        vodItems.push(episodeName + "$" + episodeUrl)
+        let vod_play_list = []
+        vod_play_list.push(vodItems.join("#"))
+        let vod_play_from_list = ["Jable"]
+        vodDetail.vod_play_from = vod_play_from_list.join("$$$")
+        vodDetail.vod_play_url = vod_play_list.join("$$$")
+        return vodDetail
     }
 
     async setHomeVod() {
@@ -78,8 +116,21 @@ class JableTVSpider extends Spider {
     }
 
     async setDetail(id) {
-        let $ = await this.getHtml(this.siteUrl + "/videos/" + id)
+        let $ = await this.getHtml(this.siteUrl + "/videos/" + id + "/")
+        this.vodDetail = await this.parseVodDetailFromDoc($)
+    }
 
+    async setCategory(tid, pg, filter, extend) {
+        let extend_type = extend["a"] ?? "video_viewed"
+        let cateUrl = this.siteUrl + `/categories/bdsm/${pg}/?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=${extend_type}&_=${new Date().getTime()}`
+        let $ = await this.getHtml(cateUrl);
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
+    }
+
+    async setSearch(wd, quick) {
+        let searchUrl = this.siteUrl + `/search/${wd}/`
+        let $ = await this.getHtml(searchUrl)
+        this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 }
 
