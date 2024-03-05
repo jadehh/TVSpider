@@ -1,6 +1,7 @@
 # CatVodOpen和TvBox
 
 ## TVBox互联网发布地址
+[TV发布地址](https://github.com/FongMi/Release/tree/main/apk/release)
 
 ```bash
 https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/js/tv_config.json
@@ -17,8 +18,8 @@ gitee://Token@gitee.com/jadehh_743/TV/js/open_config.json
 > 使用Gitee导入,并设置为私有仓库,仅支持私有仓库
 
 ## 遇到的问题
-* 1. 玩偶姐姐播放不了,需要切换VPN节点
-* 2. m3u8遇到跨域的问题可以尝试使用代理来进行加载,如果没有跨域使用代理会引起死循环
+* 玩偶姐姐播放不了,需要切换VPN节点
+* m3u8遇到跨域的问题可以尝试使用代理来进行加载,如果没有跨域使用代理会引起死循环
 
 
 
