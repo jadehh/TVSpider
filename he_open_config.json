@@ -114,6 +114,14 @@
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
+                "key": "jable",
+                "name": "🐈|Jable|🐈",
+                "type": 3,
+                "api": "./js/jable.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
                 "key": "jiafeimao",
                 "name": "🐈|加菲猫|🐈",
                 "type": 3,
