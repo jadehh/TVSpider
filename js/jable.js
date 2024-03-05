@@ -26,11 +26,11 @@ class JableTVSpider extends Spider {
         return "🐈|Jable|🐈"
     }
     getHeader() {
-         return {"User-Agent": "PostmanRuntime/7.29.0","Referer":this.siteUrl};
+         return {"User-Agent": "PostmanRuntime/7.36.3"};
     }
 
     async setClasses() {
-        let $ = await this.getHtml(this.siteUrl + "/categories/")
+        let $ = await this.fetch(this.siteUrl + "/categories/",null,this.getHeader())
         for (const element of $("div.img-box > a")) {
             let  typeId = element.attribs.href.split("/")[4];
             let  typeName = $(element).find("div.absolute-center > h4").text();

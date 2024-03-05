@@ -73,6 +73,7 @@ class GitCafeSpider extends Spider {
     async getAliUrl(url) {
         let headers = this.getHeader()
         headers["Referer"] = url
+        headers["_bid"] = "6d14a5dd6c07980d9dc089a693805ad8";
         await this.jadeLog.debug(`获取阿里链接url:${url.replace("/s/", "/cv/")},headers:${JSON.stringify(headers)}`)
         return await this.fetch(url.replace("/s/", "/cv/"), null, headers, true)
     }
