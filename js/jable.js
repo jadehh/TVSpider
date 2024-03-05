@@ -63,9 +63,23 @@ class JableTVSpider extends Spider {
         return vod_list
     }
 
+    async parseVodDetailFromDoc($) {
+        let vodDetail = new VodDetail();
+        vodDetail.vod_name = $.find("meta[property=og:title]").attr("content");
+        vodDetail.vod_pic = $.find("meta[property=og:image]").attr("content");
+        vodDetail.vod_year  = $.select("span.inactive-color").get(0).text();
+        vodDetail.vod_play_from = "Jable"
+
+    }
+
     async setHomeVod() {
         let $ = await this.getHtml(this.siteUrl)
         this.homeVodList = await this.parseVodShortListFromDoc($)
+    }
+
+    async setDetail(id) {
+        let $ = await this.getHtml(this.siteUrl + "/videos/" + id)
+
     }
 }
 
