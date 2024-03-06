@@ -36,7 +36,7 @@ class PushSpider extends Spider {
 
     async parseVodDetailfromJson(id) {
         let vodDetail = new VodDetail()
-        vodDetail.vod_pic = "https://pic.rmb.bdstatic.com/bjh/1d0b02d0f57f0a42201f92caba5107ed.jpeg"
+        vodDetail.vod_pic = Utils.RESOURCEURL + "/resources/push.jpg"
         let mather = Utils.patternAli.exec(id)
         if (mather.length > 0) {
             let aliVodDetail = await detailContent([id])
