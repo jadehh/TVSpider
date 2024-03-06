@@ -36,8 +36,8 @@ class PushSpider extends Spider {
 
     async check(args){
         // CatVodOpen目前支持http链接和https链接
+        await spider.jadeLog.debug(`剪切板输入内容为:${args}`)
         if (this.catOpenStatus){
-            await spider.jadeLog.debug(`剪切板输入内容为:${args}`)
             return !!args.startsWith("http");
         }else{
             // TV目前支持http链接和https链接和Ftp和magnet等格式
