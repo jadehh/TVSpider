@@ -66,13 +66,15 @@ async function test() {
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.alypw.com/post/5836.html"))
-    await testPlay(detail1)
+
 
     //测试分类列表
     let  catePage = JSON.parse(await spider.category("bdsm", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
+
+     // 测试详情
+    let detail1 = JSON.parse(await spider.detail("https://www.alypw.com/post/5836.html"))
+    await testPlay(detail1)
 
     // 测试搜索
     let search_page = JSON.parse(await spider.search("SSNI"))

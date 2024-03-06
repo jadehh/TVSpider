@@ -58,7 +58,7 @@ class JableTVSpider extends Spider {
 
     async getFilter($, index, type_id) {
         let extend_list = []
-        let extend_dic = {"name": "分类", "value": []}
+        let extend_dic = {"name": "类别", "value": []}
         let defaultTypeIdElements = $("div.row").slice(0, 8)[index]
         let type_seletc_list = ["div.img-box > a","[class=\"horizontal-img-box ml-3 mb-3\"] > a","","sort"]
         let type_id_select_list = ["div.absolute-center > h4","div.detail>h6"]
@@ -83,7 +83,6 @@ class JableTVSpider extends Spider {
             extend_list.push(extend_dic)
         }
         return extend_list
-
     }
 
     async setFilterObj() {
@@ -92,8 +91,6 @@ class JableTVSpider extends Spider {
             let type_id = this.classes[i].type_id
             this.filterObj[type_id] = await this.getFilter($, i, type_id)
         }
-
-        let x = 0
     }
 
     async parseVodShortListFromDoc($) {
