@@ -26,7 +26,7 @@ class PushSpider extends Spider {
 
     async init(cfg) {
         try {
-            await super.init(cfg);
+            await super.init(JSON.stringify(cfg));
             await initAli(this.cfgObj["token"]);
         } catch (e) {
             await this.jadeLog.error(`初始化失败,失败原因为:${e}`)
@@ -64,7 +64,7 @@ async function check(args) {
 
 async function init(cfg) {
     await spider.jadeLog.debug(`初始化Push Spider:${JSON.stringify(cfg)}`)
-    await spider.init(JSON.stringify(cfg))
+    await spider.init(cfg)
 }
 
 async function detail(id) {
