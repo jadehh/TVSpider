@@ -196,9 +196,9 @@ class JableTVSpider extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        let extend_type = extend["type"] ?? "video_viewed"
+        let extend_type = extend["type"] ?? tid
         let sort_by =  extend["type"] ?? "video_viewed"
-        let cateUrl = extend_type + `/${pg}/?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=${extend_type}&_=${new Date().getTime()}`
+        let cateUrl = extend_type + `/${pg}/?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=${sort_by}&_=${new Date().getTime()}`
         let $ = await this.getHtml(cateUrl);
         this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
