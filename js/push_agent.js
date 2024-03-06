@@ -27,6 +27,7 @@ class PushSpider extends Spider {
     async init(cfg) {
         try {
             this.cfgObj = await this.SpiderInit(cfg)
+             this.catOpenStatus = this.cfgObj.CatOpenStatus
             await initAli(this.cfgObj["token"]);
         } catch (e) {
             await this.jadeLog.error(`初始化失败,失败原因为:${e}`)

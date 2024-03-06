@@ -55,9 +55,8 @@ async function test() {
     await spider.init({
         skey: siteKey,
         stype: siteType,
-        ext: {"token": "302ef8e4b4d7430db6d82de284978359", "box": "TVBox", "code": "1"}
+        ext: {"token": "302ef8e4b4d7430db6d82de284978359", "box": "CatOpen", "code": "1"}
     });
-
     // 测试详情
     let detail1 = JSON.parse(await spider.detail("https://www.alipan.com/s/3fVjbneRe19"))
     await testPlay(detail1)
