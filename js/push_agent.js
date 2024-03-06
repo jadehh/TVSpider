@@ -62,6 +62,7 @@ async function check(args) {
 }
 
 async function init(cfg) {
+    await spider.jadeLog.debug(`初始化Push Spider:${cfg}`)
     await spider.init(cfg)
 }
 
