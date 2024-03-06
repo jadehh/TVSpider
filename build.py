@@ -54,7 +54,7 @@ class Build(object):
             jsMoudle = JSMoudle(os.path.join(self.js_path, js_file))
             if case == 0:
                 if jsMoudle.getName():
-                    if "🔞" not in jsMoudle.getName() and "📚︎" not in jsMoudle.getName() and "🎵" not in jsMoudle.getName():
+                    if "🔞" not in jsMoudle.getName() and "📚︎" not in jsMoudle.getName() and "🎵" not in jsMoudle.getName() and "推送" not in jsMoudle.getName():
                         new_js_file_list.append(js_file)
             elif case  == 1:
                 if jsMoudle.getName():
@@ -63,6 +63,10 @@ class Build(object):
             elif case == 2:
                 if jsMoudle.getName():
                     if "📚︎" in jsMoudle.getName() or "🎵" in jsMoudle.getName():
+                        new_js_file_list.append(js_file)
+            elif case == 3:
+                if jsMoudle.getName():
+                    if "推送" in jsMoudle.getName():
                         new_js_file_list.append(js_file)
         return new_js_file_list
 
@@ -152,14 +156,54 @@ class Build(object):
                 with open(file_name,"wb") as f:
                     f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
 
+
+    def get_site_obj(self,push_file_list,site_obj_list):
+        for book_file in push_file_list:
+            js_file_name = book_file.split(".")[0]
+            jsMoudle = JSMoudle(os.path.join(self.js_path, book_file))
+            site_obj = {"key": "", "name": "", "type": 3, "api": "", "ext": "{\"box\": \"CatOpen\"}"}
+            site_obj_copy = copy.copy(site_obj)
+            site_obj_copy["key"] = js_file_name
+            site_obj_copy["name"] = jsMoudle.getName()
+            site_obj_copy["api"] = "./{}/{}".format(self.js_path, book_file)
+            site_obj_list.append(site_obj_copy)
+        return site_obj_list
+
+
+    def write_push_config(self,push_file_list):
+        file_list = os.listdir(".")
+        for file_name in file_list:
+            site_obj_list = []
+            if "open_config.json" in file_name:
+                with open(file_name,"rb") as f:
+                    dic = json.load(f)
+                site_obj_list = dic["video"]["sites"]
+                self.get_site_obj(push_file_list,site_obj_list)
+                with open(file_name,"wb") as f:
+                    f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+            elif "tv_config.json" in file_name:
+                with open(file_name, "rb") as f:
+                    dic = json.load(f)
+                site_obj_list = dic["sites"]
+                self.get_site_obj(push_file_list, site_obj_list)
+                with open(file_name, "wb") as f:
+                    f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
+
+
+
+
+
     def build(self):
         json_file_list = self.getJsonFileList()
         no_18_js_file_list = self.getJsFileList(case=0)
         y_js_file_list = self.getJsFileList(case=1)
         book_file_list = self.getJsFileList(case=2)
+        push_file_list = self.getJsFileList(case=3)
+
         self.write_config(self.ali_name,json_file_list,no_18_js_file_list,is_18=False)
         self.write_config(self.ali_name,json_file_list,y_js_file_list,is_18=True)
         self.write_book_config(book_file_list)
+        self.write_push_config(push_file_list)
 
 
 

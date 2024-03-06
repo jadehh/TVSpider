@@ -55,6 +55,13 @@
             "api": "./js/sehuatang.js",
             "timeout": 30,
             "ext": "{\"box\": \"TVBox\"}"
+        },
+        {
+            "key": "push_agent",
+            "name": "┃推送┃",
+            "type": 3,
+            "api": "./js/push_agent.js",
+            "ext": "{\"box\": \"CatOpen\"}"
         }
     ],
     "ijk": [
