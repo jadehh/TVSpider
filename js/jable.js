@@ -214,9 +214,8 @@ class JableTVSpider extends Spider {
         this.vodList = await this.parseVodShortListFromDocByCategory($)
         let page = $($("[class=\"page-item\"]").slice(-1)[0]).text()
         if (page.indexOf("最後") > -1) {
-
         } else {
-            if (parseInt(page) === this.page) {
+            if (parseInt(page) === this.page || _.isEmpty(page)) {
                 await this.jadeLog.debug("分类页面到底了")
                 this.total = parseInt(this.pg)
                 this.count = 1

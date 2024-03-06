@@ -69,7 +69,7 @@ async function test() {
 
 
     //测试分类列表
-    let  catePage = JSON.parse(await spider.category("https://jable.tv/models/bfaca44240620be2f3092c294fb22fbe/", "3", undefined,{"type":"https://jable.tv/models/yua-mikami/"}));
+    let  catePage = JSON.parse(await spider.category("https://jable.tv/models/bfaca44240620be2f3092c294fb22fbe/", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
 
 
