@@ -18,6 +18,7 @@ class JableTVSpider extends Spider {
         this.cookie = ""
 
     }
+
     getAppName() {
         return "Jable"
     }
@@ -25,6 +26,7 @@ class JableTVSpider extends Spider {
     getName() {
         return "🐈|Jable|🐈"
     }
+
     getHeader() {
         // let header = super.getHeader()
         let header = {}
@@ -45,54 +47,90 @@ class JableTVSpider extends Spider {
                 this.classes.push(this.getTypeDic(type_name, type_id))
             }
         }
-        navElements = navElements.slice(1, 8)
-        defaultTypeIdElements = defaultTypeIdElements.slice(1, 8)
+        navElements = navElements.slice(1, 9)
+        defaultTypeIdElements = defaultTypeIdElements.slice(1, 9)
         for (let i = 0; i < navElements.length; i++) {
-            let typeName = $(navElements[i]).text().replaceAll("\n", "")
             let typeId = $(defaultTypeIdElements[i]).find("a")[0].attribs["href"]
-            this.classes.push(this.getTypeDic(typeName, typeId));
+            this.classes.push(this.getTypeDic("标签", typeId));
+            break
         }
-        let x = 0
     }
 
-    async getFilter($, index, type_id,type_name) {
+    async getSortFilter($) {
+        let sortElements = $("[class=\"sorting-nav\"]").find("a")
+        let extend_dic = {"name": "排序", "key": "排序", "value": []}
+        for (const sortElement of sortElements) {
+            let typeId = sortElement.attribs["data-parameters"]
+            let typeName = $(sortElement).text()
+            extend_dic["value"].push({"n": typeName, "v": typeId})
+        }
+        return extend_dic
+    }
+
+    async getFilter($, index, type_id, type_name) {
         let extend_list = []
-        let extend_dic = {"name": type_name,"key":type_name, "value": []}
-        let defaultTypeIdElements = $("div.row").slice(0, 8)[index]
-        let type_seletc_list = ["div.img-box > a","[class=\"horizontal-img-box ml-3 mb-3\"] > a","","sort"]
-        let type_id_select_list = ["div.absolute-center > h4","div.detail>h6"]
         if (index < 4) {
+            let extend_dic = {"name": type_name, "key": type_name, "value": []}
+            let type_seletc_list = ["div.img-box > a", "[class=\"horizontal-img-box ml-3 mb-3\"] > a", "", "sort"]
+            let type_id_select_list = ["div.absolute-center > h4", "div.detail>h6"]
             let default$ = await this.getHtml(type_id)
             for (const element of default$(type_seletc_list[index])) {
                 let typeId = element.attribs["href"]
                 let typeName = $($(element).find(type_id_select_list[index])).text();
                 extend_dic["value"].push({"n": typeName, "v": typeId})
             }
-            if (extend_dic.value.length > 0){
+            if (extend_dic.value.length > 0) {
                 extend_list.push(extend_dic)
-            }
-        } else {
-            let filterElements = $(defaultTypeIdElements).find("a")
-            for (const filterElement of filterElements) {
-                let filter_type_id = filterElement.attribs.href
-                if (filter_type_id.indexOf(this.siteUrl) > -1) {
-                    extend_dic["value"].push({"n": $(filterElement).text(), "v": filter_type_id})
+                //排序
+                let sortDetail$ = await this.getHtml(extend_dic["value"][0]["v"])
+                let sort_extend_dic = await this.getSortFilter(sortDetail$)
+                if (sort_extend_dic.value.length > 0) {
+                    extend_list.push(sort_extend_dic)
+                }
+            } else {
+                //排序
+                let sort_extend_dic = await this.getSortFilter(default$)
+                if (sort_extend_dic.value.length > 0) {
+                    extend_list.push(sort_extend_dic)
                 }
             }
-            extend_list.push(extend_dic)
+
+        } else {
+            let defaultTypeIdElements = $("div.row").slice(1, 9)
+            let navElements = $("[class=\"title-box\"]").slice(1, 9)
+            for (let i = 0; i < navElements.length; i++) {
+                let extend_dic = {"name": $($(navElements[i]).find("h2")).text(), "key": type_name, "value": []}
+                for (const filterElement of $(defaultTypeIdElements[i]).find("a")) {
+                    let filter_type_id = filterElement.attribs.href
+                    if (filter_type_id.indexOf(this.siteUrl) > -1) {
+                        extend_dic["value"].push({"n": $(filterElement).text(), "v": filter_type_id})
+                    }
+                }
+                extend_list.push(extend_dic)
+            }
+
+            let sortDetail$ = await this.getHtml(type_id)
+            let sort_extend_dic = await this.getSortFilter(sortDetail$)
+            if (sort_extend_dic.value.length > 0) {
+                extend_list.push(sort_extend_dic)
+            }
         }
         return extend_list
     }
 
     async setFilterObj() {
         let $ = await this.getHtml(this.siteUrl)
-        let classes = this.classes.slice(1, -1)
+        let classes = this.classes.slice(1)
         for (let i = 0; i < classes.length; i++) {
             let type_name = classes[i].type_name
             let type_id = classes[i].type_id
-            this.filterObj[type_id] = await this.getFilter($, i, type_id,type_name)
+            let extend_list = await this.getFilter($, i, type_id, type_name)
+            if (extend_list.length > 1 && i < 4) {
+                type_id = extend_list[0]["value"][0]["v"]
+                this.classes[i + 1] = this.getTypeDic(type_name, type_id)
+            }
+            this.filterObj[type_id] = extend_list
         }
-        let x = 0
     }
 
     async parseVodShortListFromDoc($) {
