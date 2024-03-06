@@ -6,12 +6,15 @@
 * @Software : Samples
 * @Desc     :
 */
+import {JadeLogging} from "../lib/log.js";
+let jadeLog = new JadeLogging(this.getAppName(), "DEBUG")
 async function init(_inReq, _outResp) {
     return {};
 }
 
 async function support(_inReq, _outResp) {
-    // const clip = inReq.body.clip;
+    await jadeLog.debug(`剪切板输入内容为:${_inReq}`)
+    const clip = _inReq.body.clip;
     return 'true';
 }
 function getName() {
