@@ -26,8 +26,7 @@ class PushSpider extends Spider {
 
     async init(cfg) {
         try {
-            await super.init(JSON.stringify(cfg));
-            await initAli(this.cfgObj["token"]);
+            await initAli(cfg["token"]);
         } catch (e) {
             await this.jadeLog.error(`初始化失败,失败原因为:${e}`)
         }
