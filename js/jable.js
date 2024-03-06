@@ -211,8 +211,11 @@ class JableTVSpider extends Spider {
         let $ = await this.getHtml(cateUrl);
         this.vodList = await this.parseVodShortListFromDocByCategory($)
         if (this.vodList.length < this.limit){
+            await this.jadeLog.debug("分类页面到底了")
             this.total = parseInt(this.pg)
             this.count = 1
+        }else{
+            let x = 0
         }
     }
 
