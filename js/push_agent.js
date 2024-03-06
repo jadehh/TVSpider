@@ -25,8 +25,8 @@ class PushSpider extends Spider {
     }
 
     async init(cfg) {
-        await initAli(this.cfgObj["token"]);
         await this.jadeLog.debug(`初始化参数为:${JSON.parse(cfg)}`)
+        await initAli(this.cfgObj["token"]);
         await super.init(cfg)
     }
 
