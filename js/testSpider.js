@@ -61,7 +61,9 @@ async function test() {
 
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
-
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("adn-535"))
+    await testPlay(detail1)
 
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
@@ -73,9 +75,7 @@ async function test() {
     console.debug(JSON.stringify(catePage));
 
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.alipan.com/s/3fVjbneRe19"))
-    await testPlay(detail1)
+
 
 
     // 测试搜索

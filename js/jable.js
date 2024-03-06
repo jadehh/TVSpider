@@ -164,7 +164,7 @@ class JableTVSpider extends Spider {
         vodDetail.vod_name = $($(leftElement).find("h4")).text();
         vodDetail.vod_pic = Utils.getStrByRegex(/<video poster="(.*?)" id=/, $.html())
         vodDetail.vod_year = $($("[class=\"inactive-color\"]")).text()
-        let episodeName = Utils.getStrByRegex(/<span class="text-danger fs-1 mr-2"(.*?)\n/, $.html()).replaceAll(">", "").replaceAll("</span", "")
+        let episodeName = $($("[class=\"header-right d-none d-md-block\"] > h6")).text().replaceAll("\n", "").replaceAll("●","")
         let vodItems = []
         let episodeUrl = Utils.getStrByRegex(/var hlsUrl = '(.*?)';/, $.html())
         vodItems.push(episodeName + "$" + episodeUrl)
