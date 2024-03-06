@@ -7,7 +7,9 @@
 * @Desc     :
 */
 import {Spider} from "./spider.js";
-class PushAgent extends Spider {
+import {VodDetail} from "../lib/vod.js";
+
+class PushSpider extends Spider {
     constructor() {
         super();
     }
@@ -21,22 +23,26 @@ class PushAgent extends Spider {
     }
 
     async init(cfg) {
-        // cfg["skey"] 必须为push_agent 才能再界面上显示点击按钮
         await this.jadeLog.debug(`初始化参数为:${JSON.parse(cfg)}`)
         await super.init(cfg)
     }
-    async setDetail(pushStr) {
+
+    async parseVodDetailfromJson(id) {
+        let vodDetail = new VodDetail()
+        vodDetail.vod_pic = "https://pic.rmb.bdstatic.com/bjh/1d0b02d0f57f0a42201f92caba5107ed.jpeg"
+        vodDetail.vod_play_from = '推送';
+        vodDetail.vod_play_url = '测试$' + id;
+        return vodDetail
     }
 
-
-
+    async setDetail(id) {
+      this.vodDetail = await this.parseVodDetailfromJson(id)
+    }
 }
-let spider = new PushAgent()
+
+let spider = new PushSpider()
+
 async function check(args) {
-    /**
-     * @params 字符串 -> 剪贴板|内容
-     * @return 布尔 -> 该是否支持通过CatVod播放
-    */
     await spider.jadeLog.debug(`剪切板输入内容为:${args}`)
     return true;
 }
@@ -55,9 +61,6 @@ async function play(flag, id, flags) {
 
 export function __jsEvalReturn() {
     return {
-        support: check,
-        init: init,
-        detail: detail,
-        play: play,
+        support: check, init: init, detail: detail, play: play,
     };
 }
