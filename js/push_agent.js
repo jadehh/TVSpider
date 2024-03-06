@@ -9,6 +9,7 @@
 import {JadeLogging} from "../lib/log.js";
 let jadeLog = new JadeLogging(this.getAppName(), "DEBUG")
 async function init(_inReq, _outResp) {
+    await jadeLog.debug("推送格式初始化")
     return {};
 }
 
