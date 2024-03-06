@@ -31,7 +31,7 @@ class PushSpider extends Spider {
         let vodDetail = new VodDetail()
         vodDetail.vod_pic = "https://pic.rmb.bdstatic.com/bjh/1d0b02d0f57f0a42201f92caba5107ed.jpeg"
         vodDetail.vod_play_from = '推送';
-        vodDetail.vod_play_url = '测试$' + id;
+        vodDetail.vod_play_url = '推送$' + id;
         return vodDetail
     }
 

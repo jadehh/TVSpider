@@ -110,7 +110,7 @@ class AliyunpanShare extends Spider {
         vodDetail.vod_name = Utils.getStrByRegex(/\[阿里云盘](.*?) /, name)
         vodDetail.vod_remarks = this.getRemarks(Utils.getStrByRegex(/【(.*?)】/, name), name)
         let articleElement = $(mainElements).find("[class=\"article_content\"]")
-        vodDetail.vod_pic = $(articleElement).find("img")[0].attribs["src"]
+        vodDetail.vod_pic = $(articleElement).find("p>img")[0].attribs["src"]
         let articleElements = $(articleElement).find("p")
         let articleContent = ""
         for (const articleEle of articleElements) {
