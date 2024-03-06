@@ -37,6 +37,7 @@ async function check(args) {
      * @params 字符串 -> 剪贴板|内容
      * @return 布尔 -> 该是否支持通过CatVod播放
     */
+    await spider.jadeLog.debug(`剪切板输入内容为:${args}`)
     return true;
 }
 
