@@ -23,6 +23,7 @@ class PushAgent extends Spider {
     async init(cfg) {
         // cfg["skey"] 必须为push_agent 才能再界面上显示点击按钮
         await this.jadeLog.debug(`初始化参数为:${JSON.parse(cfg)}`)
+        await super.init(cfg)
     }
     async setDetail(pushStr) {
     }
