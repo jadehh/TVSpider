@@ -58,7 +58,7 @@ class JableTVSpider extends Spider {
 
     async getSortFilter($) {
         let sortElements = $("[class=\"sorting-nav\"]").find("a")
-        let extend_dic = {"name": "排序", "key": "排序", "value": []}
+        let extend_dic = {"name": "排序", "key": "sort", "value": []}
         for (const sortElement of sortElements) {
             let typeId = sortElement.attribs["data-parameters"].split("sort_by:")[1]
             let typeName = $(sortElement).text()
@@ -197,7 +197,7 @@ class JableTVSpider extends Spider {
 
     async setCategory(tid, pg, filter, extend) {
         let extend_type = extend["type"] ?? tid
-        let sort_by =  extend["type"] ?? "video_viewed"
+        let sort_by =  extend["sort"] ?? "video_viewed"
         let cateUrl = extend_type + `/${pg}/?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=${sort_by}&_=${new Date().getTime()}`
         let $ = await this.getHtml(cateUrl);
         this.vodList = await this.parseVodShortListFromDocByCategory($)
