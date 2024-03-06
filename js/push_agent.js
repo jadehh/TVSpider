@@ -55,14 +55,11 @@ let spider = new PushSpider()
 async function check(args) {
     // 目前支持http链接和https链接
     await spider.jadeLog.debug(`剪切板输入内容为:${args}`)
-    if (args.startsWith("http")){
-        return true;
-    }
-
+    return !!args.startsWith("http");
 }
 
 async function init(cfg) {
-    await spider.jadeLog.debug(`初始化Push Spider:${JSON.parse(cfg)}`)
+    await spider.jadeLog.debug(`初始化Push Spider:${JSON.stringify(cfg)}`)
     await spider.init(cfg)
 }
 
