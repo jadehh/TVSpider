@@ -161,7 +161,7 @@ class Build(object):
         for book_file in push_file_list:
             js_file_name = book_file.split(".")[0]
             jsMoudle = JSMoudle(os.path.join(self.js_path, book_file))
-            site_obj = {"key": "", "name": "", "type": 3, "api": "", "ext": "{\"box\": \"CatOpen\"}"}
+            site_obj = {"key": "", "name": "", "type": 3, "api": "", "ext": ""}
             site_obj_copy = copy.copy(site_obj)
             site_obj_copy["key"] = js_file_name
             site_obj_copy["name"] = jsMoudle.getName()
