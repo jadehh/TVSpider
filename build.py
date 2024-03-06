@@ -186,7 +186,7 @@ class Build(object):
                 with open(file_name, "rb") as f:
                     dic = json.load(f)
                 site_obj_list = dic["sites"]
-                self.get_site_obj(push_file_list, site_obj_list,"TV")
+                self.get_site_obj(push_file_list, site_obj_list,"TVBox")
                 with open(file_name, "wb") as f:
                     f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
 
