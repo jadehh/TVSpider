@@ -67,15 +67,15 @@ async function test() {
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
-        // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.alipan.com/s/3fVjbneRe19"))
-    await testPlay(detail1)
 
     //测试分类列表
-    let  catePage = JSON.parse(await spider.category("bdsm", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("https://jable.tv/categories/bdsm/", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
 
 
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("https://www.alipan.com/s/3fVjbneRe19"))
+    await testPlay(detail1)
 
 
     // 测试搜索
