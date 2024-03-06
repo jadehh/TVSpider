@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './alipansou.js';
+import {__jsEvalReturn} from './jable.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'alipansou';
+    let siteKey = 'jable';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -67,39 +67,16 @@ async function test() {
     console.debug(JSON.stringify(homeVod));
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/search?k=%e5%91%a8%e5%a4%84%e9%99%a4%e4%b8%89%e5%ae%b3"))
-    await testPlay(detail1)
+    // let detail1 = JSON.parse(await spider.detail("miab-126"))
+    // await testPlay(detail1)
 
     //测试分类列表
-    let  catePage = JSON.parse(await spider.category("1", "1", undefined));
+    let  catePage = JSON.parse(await spider.category("bdsm", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
 
-
-
     // 测试搜索
-    let search_page = JSON.parse(await spider.search("乡村爱情"))
+    let search_page = JSON.parse(await spider.search("SSNI"))
     console.debug(JSON.stringify(search_page));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // 测试详情
     if (search_page.list && search_page.list.length > 0) {
