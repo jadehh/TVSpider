@@ -217,8 +217,8 @@ class JableTVSpider extends Spider {
         } else {
             if (parseInt(page) === this.page || _.isEmpty(page)) {
                 await this.jadeLog.debug("分类页面到底了")
-                this.total = parseInt(this.pg)
-                this.count = 1
+                this.total = this.page
+                this.count = this.page
             }
         }
     }
