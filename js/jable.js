@@ -86,9 +86,10 @@ class JableTVSpider extends Spider {
 
     async setFilterObj() {
         let $ = await this.getHtml(this.siteUrl)
-        for (let i = 0; i < this.classes.slice(1, -1).length; i++) {
-            let type_name = this.classes[i].type_name
-            let type_id = this.classes[i].type_id
+        let classes = this.classes.slice(1, -1)
+        for (let i = 0; i < classes.length; i++) {
+            let type_name =classes[i].type_name
+            let type_id = classes[i].type_id
             this.filterObj[type_id] = await this.getFilter($, i, type_id,type_name)
         }
     }
