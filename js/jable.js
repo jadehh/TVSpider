@@ -76,7 +76,7 @@ class JableTVSpider extends Spider {
             let default$ = await this.getHtml(type_id)
             for (const element of default$(type_seletc_list[index])) {
                 let typeId = element.attribs["href"]
-                let typeName = $($(element).find(type_id_select_list[index])).text().replaceAll("\t","").replaceAll("\n",'').replaceAll(" ","");
+                let typeName = $($(element).find(type_id_select_list[index])).text().replaceAll("\t", "").replaceAll("\n", '').replaceAll(" ", "");
                 extend_dic["value"].push({"n": typeName, "v": typeId})
             }
             if (extend_dic.value.length > 0) {
@@ -205,19 +205,22 @@ class JableTVSpider extends Spider {
         let cateUrl;
         this.total = 0
         this.count = 0
-        if (tid.indexOf("latest-updates") > 1){
+        if (tid.indexOf("latest-updates") > 1) {
             cateUrl = `https://jable.tv/latest-updates/?mode=async&function=get_block&block_id=list_videos_latest_videos_list&sort_by=post_date&from=${pg}&_=1709730132217`
-        }else{
+        } else {
             cateUrl = extend_type + `/${pg}/?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=${sort_by}&_=${new Date().getTime()}`
         }
         let $ = await this.getHtml(cateUrl);
         this.vodList = await this.parseVodShortListFromDocByCategory($)
-        if (this.vodList.length < this.limit){
-            await this.jadeLog.debug("分类页面到底了")
-            this.total = parseInt(this.pg)
-            this.count = 1
-        }else{
-            let x = 0
+        let page = $($("[class=\"page-item\"]").slice(-1)[0]).text()
+        if (page.indexOf("最後") > -1) {
+
+        } else {
+            if (parseInt(page) === this.page) {
+                await this.jadeLog.debug("分类页面到底了")
+                this.total = parseInt(this.pg)
+                this.count = 1
+            }
         }
     }
 
