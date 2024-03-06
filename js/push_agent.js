@@ -9,7 +9,7 @@
 import {Spider} from "./spider.js";
 import {VodDetail} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
-import {detailContent, initAli} from "../lib/ali.js";
+import {detailContent, initAli, playContent} from "../lib/ali.js";
 
 class PushSpider extends Spider {
     constructor() {
@@ -50,6 +50,14 @@ class PushSpider extends Spider {
 
     async setDetail(id) {
         this.vodDetail = await this.parseVodDetailfromJson(id)
+    }
+
+    async setPlay(flag, id, flags) {
+        if (flag === "推送"){
+            this.playUrl = id
+        }else{
+           this.playUrl = JSON.parse(await playContent(flag, id, flags))["url"];
+        }
     }
 }
 
