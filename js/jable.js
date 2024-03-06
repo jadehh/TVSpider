@@ -70,7 +70,7 @@ class JableTVSpider extends Spider {
     async getFilter($, index, type_id, type_name) {
         let extend_list = []
         if (index < 4) {
-            let extend_dic = {"name": type_name, "key": type_name, "value": []}
+            let extend_dic = {"name": type_name, "key": "type", "value": []}
             let type_seletc_list = ["div.img-box > a", "[class=\"horizontal-img-box ml-3 mb-3\"] > a", "", "sort"]
             let type_id_select_list = ["div.absolute-center > h4", "div.detail>h6"]
             let default$ = await this.getHtml(type_id)
@@ -99,7 +99,7 @@ class JableTVSpider extends Spider {
             let defaultTypeIdElements = $("div.row").slice(1, 9)
             let navElements = $("[class=\"title-box\"]").slice(1, 9)
             for (let i = 0; i < navElements.length; i++) {
-                let extend_dic = {"name": $($(navElements[i]).find("h2")).text(), "key": type_name, "value": []}
+                let extend_dic = {"name": $($(navElements[i]).find("h2")).text(), "key": "type", "value": []}
                 for (const filterElement of $(defaultTypeIdElements[i]).find("a")) {
                     let filter_type_id = filterElement.attribs.href
                     if (filter_type_id.indexOf(this.siteUrl) > -1) {
