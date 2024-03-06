@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './jable.js';
+import {__jsEvalReturn} from './push_agent.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,13 +50,17 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'jable';
+    let siteKey = 'push_agent';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
         stype: siteType,
         ext: {"token": "302ef8e4b4d7430db6d82de284978359", "box": "TVBox", "code": "1"}
     });
+
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("https://www.alipan.com/s/3fVjbneRe19"))
+    await testPlay(detail1)
 
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
@@ -72,9 +76,8 @@ async function test() {
     let  catePage = JSON.parse(await spider.category("bdsm", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
 
-     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://www.alypw.com/post/5836.html"))
-    await testPlay(detail1)
+
+
 
     // 测试搜索
     let search_page = JSON.parse(await spider.search("SSNI"))

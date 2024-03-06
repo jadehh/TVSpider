@@ -26,7 +26,7 @@ class PushSpider extends Spider {
 
     async init(cfg) {
         try {
-            await initAli(cfg["token"]);
+            await initAli(cfg["ext"]["token"]);
         } catch (e) {
             await this.jadeLog.error(`初始化失败,失败原因为:${e}`)
         }
@@ -38,7 +38,7 @@ class PushSpider extends Spider {
         vodDetail.vod_pic = "https://pic.rmb.bdstatic.com/bjh/1d0b02d0f57f0a42201f92caba5107ed.jpeg"
         let mather = Utils.patternAli.exec(id)
         if (mather.length > 0) {
-            let aliVodDetail = await detailContent(id)
+            let aliVodDetail = await detailContent([id])
             vodDetail.vod_play_url = aliVodDetail.vod_play_url
             vodDetail.vod_play_from = aliVodDetail.vod_play_from
         } else {
@@ -62,7 +62,6 @@ async function check(args) {
 }
 
 async function init(cfg) {
-    await spider.jadeLog.debug(`初始化Push Spider:${JSON.stringify(cfg)}`)
     await spider.init(cfg)
 }
 
