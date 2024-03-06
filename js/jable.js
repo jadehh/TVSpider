@@ -138,25 +138,6 @@ class JableTVSpider extends Spider {
 
     async parseVodShortListFromDoc($) {
         let vod_list = []
-        let vodElements = $("[class=\"video-img-box mb-e-20\"]")
-        for (const element of vodElements) {
-            let vodShort = new VodShort();
-            let picElement = $(element).find("img")
-            if (picElement.length > 0) {
-                vodShort.vod_pic = $(element).find("img")[0].attribs["data-src"];
-                vodShort.vod_remarks = $($(element).find("div")[1]).text()
-                let url = $(element).find("a")[0].attribs["href"];
-                vodShort.vod_name = url.split("/")[4]
-                vodShort.vod_id = url.split("/")[4];
-                vodShort.vod_remarks = $($(element).find("[class=\"sub-title\"]")).text().split("\n")[1].replaceAll(" ", "")
-                vod_list.push(vodShort)
-            }
-        }
-        return vod_list
-    }
-
-    async parseVodShortListFromDocByCategory($) {
-        let vod_list = []
         let vodElements = $("div.video-img-box")
         for (const element of vodElements) {
             let vodShort = new VodShort()
@@ -164,8 +145,15 @@ class JableTVSpider extends Spider {
             let url = $(element).find("a").attr("href");
             vodShort.vod_id = url.split("/")[4];
             vodShort.vod_name = url.split("/")[4];
-            vodShort.vod_remarks = $($(element).find("[class=\"sub-title\"]")).text().split("\n")[1].replaceAll(" ", "").replaceAll("\t", "")
-            vod_list.push(vodShort);
+            let remarks_list = $($(element).find("[class=\"sub-title\"]")).text().split("\n")
+            if (remarks_list.length > 1){
+                vodShort.vod_remarks = remarks_list[1].replaceAll(" ", "").replaceAll("\t", "")
+            }else{
+                vodShort.vod_remarks = "精选"
+            }
+            if (!_.isEmpty(vodShort.vod_pic) && vodShort.vod_remarks !== "[限時優惠]只需1元即可無限下載"){
+                vod_list.push(vodShort);
+            }
         }
         return vod_list
     }
