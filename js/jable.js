@@ -72,11 +72,11 @@ class JableTVSpider extends Spider {
         if (index < 4) {
             let extend_dic = {"name": type_name, "key": "type", "value": []}
             let type_seletc_list = ["div.img-box > a", "[class=\"horizontal-img-box ml-3 mb-3\"] > a", "", "sort"]
-            let type_id_select_list = ["div.absolute-center > h4", "div.detail>h6"]
+            let type_id_select_list = ["div.absolute-center > h4", "div.detail"]
             let default$ = await this.getHtml(type_id)
             for (const element of default$(type_seletc_list[index])) {
                 let typeId = element.attribs["href"]
-                let typeName = $($(element).find(type_id_select_list[index])).text();
+                let typeName = $($(element).find(type_id_select_list[index])).text().replaceAll("\t","").replaceAll("\n",'').replaceAll(" ","");
                 extend_dic["value"].push({"n": typeName, "v": typeId})
             }
             if (extend_dic.value.length > 0) {
@@ -124,6 +124,9 @@ class JableTVSpider extends Spider {
         for (let i = 0; i < classes.length; i++) {
             let type_name = classes[i].type_name
             let type_id = classes[i].type_id
+            // if (type_id.indexOf("models") > 1) {
+            //     type_id = `https://jable.tv/models/?mode=async&function=get_block&block_id=list_models_models_list&sort_by=total_videos&_=${new Date().getTime()}`
+            // }
             let extend_list = await this.getFilter($, i, type_id, type_name)
             if (extend_list.length > 1 && i < 4) {
                 type_id = extend_list[0]["value"][0]["v"]
@@ -131,6 +134,7 @@ class JableTVSpider extends Spider {
             }
             this.filterObj[type_id] = extend_list
         }
+        let x = 0
     }
 
     async parseVodShortListFromDoc($) {
@@ -197,8 +201,13 @@ class JableTVSpider extends Spider {
 
     async setCategory(tid, pg, filter, extend) {
         let extend_type = extend["type"] ?? tid
-        let sort_by =  extend["sort"] ?? "video_viewed"
-        let cateUrl = extend_type + `/${pg}/?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=${sort_by}&_=${new Date().getTime()}`
+        let sort_by = extend["sort"] ?? "video_viewed"
+        let cateUrl;
+        if (tid.indexOf("latest-updates") > 1){
+            cateUrl = tid
+        }else{
+            cateUrl = extend_type + `/${pg}/?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=${sort_by}&_=${new Date().getTime()}`
+        }
         let $ = await this.getHtml(cateUrl);
         this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
