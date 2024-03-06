@@ -199,7 +199,7 @@ class JableTVSpider extends Spider {
             cateUrl = extend_type + `/${pg}/?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=${sort_by}&_=${new Date().getTime()}`
         }
         let $ = await this.getHtml(cateUrl);
-        this.vodList = await this.parseVodShortListFromDocByCategory($)
+        this.vodList = await this.parseVodShortListFromDoc($)
         let page = $($("[class=\"page-item\"]").slice(-1)[0]).text()
         if (page.indexOf("最後") > -1) {
         } else {
