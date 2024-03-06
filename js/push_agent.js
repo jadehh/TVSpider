@@ -25,19 +25,24 @@ class PushSpider extends Spider {
     }
 
     async init(cfg) {
-        await super.init(cfg)
-        await initAli(this.cfgObj["token"]);
+        try {
+            await super.init(cfg);
+            await initAli(this.cfgObj["token"]);
+        } catch (e) {
+            await this.jadeLog.error(`初始化失败,失败原因为:${e}`)
+        }
+
     }
 
     async parseVodDetailfromJson(id) {
         let vodDetail = new VodDetail()
         vodDetail.vod_pic = "https://pic.rmb.bdstatic.com/bjh/1d0b02d0f57f0a42201f92caba5107ed.jpeg"
         let mather = Utils.patternAli.exec(id)
-        if (mather.length > 0){
+        if (mather.length > 0) {
             let aliVodDetail = await detailContent(id)
             vodDetail.vod_play_url = aliVodDetail.vod_play_url
             vodDetail.vod_play_from = aliVodDetail.vod_play_from
-        }else{
+        } else {
             vodDetail.vod_play_from = '推送';
             vodDetail.vod_play_url = '推送$' + id;
         }
@@ -45,7 +50,7 @@ class PushSpider extends Spider {
     }
 
     async setDetail(id) {
-      this.vodDetail = await this.parseVodDetailfromJson(id)
+        this.vodDetail = await this.parseVodDetailfromJson(id)
     }
 }
 
