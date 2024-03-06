@@ -8,6 +8,8 @@
 */
 import {Spider} from "./spider.js";
 import {VodDetail} from "../lib/vod.js";
+import * as Utils from "../lib/utils.js";
+import {detailContent, initAli} from "../lib/ali.js";
 
 class PushSpider extends Spider {
     constructor() {
@@ -23,6 +25,7 @@ class PushSpider extends Spider {
     }
 
     async init(cfg) {
+        await initAli(this.cfgObj["token"]);
         await this.jadeLog.debug(`初始化参数为:${JSON.parse(cfg)}`)
         await super.init(cfg)
     }
@@ -30,8 +33,15 @@ class PushSpider extends Spider {
     async parseVodDetailfromJson(id) {
         let vodDetail = new VodDetail()
         vodDetail.vod_pic = "https://pic.rmb.bdstatic.com/bjh/1d0b02d0f57f0a42201f92caba5107ed.jpeg"
-        vodDetail.vod_play_from = '推送';
-        vodDetail.vod_play_url = '推送$' + id;
+        let mather = Utils.patternAli.exec(id)
+        if (mather.length > 0){
+            let aliVodDetail = await detailContent(id)
+            vodDetail.vod_play_url = aliVodDetail.vod_play_url
+            vodDetail.vod_play_from = aliVodDetail.vod_play_from
+        }else{
+            vodDetail.vod_play_from = '推送';
+            vodDetail.vod_play_url = '推送$' + id;
+        }
         return vodDetail
     }
 
@@ -43,8 +53,12 @@ class PushSpider extends Spider {
 let spider = new PushSpider()
 
 async function check(args) {
+    // 目前支持http链接和https链接
     await spider.jadeLog.debug(`剪切板输入内容为:${args}`)
-    return true;
+    if (args.startsWith("http")){
+        return true;
+    }
+
 }
 
 async function init(cfg) {

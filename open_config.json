@@ -222,7 +222,7 @@
                 "name": "|推送|",
                 "type": 3,
                 "api": "./js/push_agent.js",
-                "ext": ""
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
             }
         ]
     },

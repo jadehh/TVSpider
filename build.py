@@ -157,11 +157,12 @@ class Build(object):
                     f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
 
 
-    def get_site_obj(self,push_file_list,site_obj_list):
+    def get_site_obj(self,push_file_list,site_obj_list,type):
         for book_file in push_file_list:
             js_file_name = book_file.split(".")[0]
             jsMoudle = JSMoudle(os.path.join(self.js_path, book_file))
-            site_obj = {"key": "", "name": "", "type": 3, "api": "", "ext": ""}
+            dic = {"box":type,"token":self.ali_token}
+            site_obj = {"key": "", "name": "", "type": 3, "api": "", "ext": json.dumps(dic)}
             site_obj_copy = copy.copy(site_obj)
             site_obj_copy["key"] = js_file_name
             site_obj_copy["name"] = jsMoudle.getName()
@@ -178,14 +179,14 @@ class Build(object):
                 with open(file_name,"rb") as f:
                     dic = json.load(f)
                 site_obj_list = dic["video"]["sites"]
-                self.get_site_obj(push_file_list,site_obj_list)
+                self.get_site_obj(push_file_list,site_obj_list,"CatOpen")
                 with open(file_name,"wb") as f:
                     f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
             elif "tv_config.json" in file_name:
                 with open(file_name, "rb") as f:
                     dic = json.load(f)
                 site_obj_list = dic["sites"]
-                self.get_site_obj(push_file_list, site_obj_list)
+                self.get_site_obj(push_file_list, site_obj_list,"TV")
                 with open(file_name, "wb") as f:
                     f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
 
