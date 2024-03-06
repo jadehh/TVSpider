@@ -88,10 +88,11 @@ class JableTVSpider extends Spider {
         let $ = await this.getHtml(this.siteUrl)
         let classes = this.classes.slice(1, -1)
         for (let i = 0; i < classes.length; i++) {
-            let type_name =classes[i].type_name
+            let type_name = classes[i].type_name
             let type_id = classes[i].type_id
             this.filterObj[type_id] = await this.getFilter($, i, type_id,type_name)
         }
+        let x = 0
     }
 
     async parseVodShortListFromDoc($) {
