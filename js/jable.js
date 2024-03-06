@@ -15,9 +15,9 @@ class JableTVSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = "https://jable.tv"
+        this.cookie = ""
 
     }
-
     getAppName() {
         return "Jable"
     }
@@ -25,7 +25,6 @@ class JableTVSpider extends Spider {
     getName() {
         return "🐈|Jable|🐈"
     }
-
     getHeader() {
         // let header = super.getHeader()
         let header = {}
