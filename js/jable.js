@@ -24,7 +24,7 @@ class JableTVSpider extends Spider {
     }
 
     getName() {
-        return "🐈|Jable|🐈"
+        return "🔞|Jable|🔞"
     }
 
     getHeader() {

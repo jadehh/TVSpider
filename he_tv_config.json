@@ -113,14 +113,6 @@
             "ext": "{\"box\": \"TVBox\"}"
         },
         {
-            "key": "jable",
-            "name": "🐈|Jable|🐈",
-            "type": 3,
-            "api": "./js/jable.js",
-            "timeout": 30,
-            "ext": "{\"box\": \"TVBox\"}"
-        },
-        {
             "key": "jiafeimao",
             "name": "🐈|加菲猫|🐈",
             "type": 3,
