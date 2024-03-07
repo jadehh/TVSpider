@@ -493,7 +493,7 @@ class HuyaSpider extends Spider {
         return vod_list
     }
 
-    getPlayUrlData(streamInfo,ratio) {
+    getPlayUrlData(streamInfo, ratio) {
         const hlsUrl = streamInfo["sHlsUrl"] + '/' + streamInfo["sStreamName"] + '.' + streamInfo["sHlsUrlSuffix"];
         const srcAntiCode = unescape(streamInfo["sHlsAntiCode"]);
         let codeList = srcAntiCode.split('&');
@@ -518,7 +518,7 @@ class HuyaSpider extends Spider {
         const v1 = Utils.md5Encode(v0);
         const v2 = hashPrefix + '_' + u + '_' + streamInfo["sStreamName"] + '_' + v1 + '_' + wsTime;
         const hash = Utils.md5Encode(v2);
-        ratio = ""
+        // ratio = ""
         const purl = `${hlsUrl}?wsSecret=${hash}&wsTime=${wsTime}&seqid=${seqid}&ctype=${ctype}&ver=1&txyp=${txyp}&fs=${fs}&ratio=${ratio}&u=${u}&t=${t}&sv=2107230339`;
         return {
             cdnType: streamInfo["sCdnType"], playUrl: purl,
@@ -541,7 +541,7 @@ class HuyaSpider extends Spider {
             for (const bitinfo of bitInfoList) {
                 let format_name = this.huYaPlayForamtObj[streamInfo["sCdnType"]]
                 if (format_name === bitinfo["sDisplayName"]) {
-                    const urlData = this.getPlayUrlData(streamInfo,bitinfo["iBitRate"]);
+                    const urlData = this.getPlayUrlData(streamInfo, bitinfo["iBitRate"]);
                     vod_play_from_list.push(format_name)
                     vodItems.push("虎牙直播" + '$' + urlData["playUrl"])
                     vod_play_list.push(vodItems.join("#"))
@@ -616,25 +616,38 @@ class HuyaSpider extends Spider {
         let liveInfo = null;
         let streamInfoList = null;
         if (this.isJustLive) {
-            await this.jadeLog.debug("JustLive",true)
+            await this.jadeLog.debug("JustLive", true)
             const vodInfo = await this.fetch(this.siteUrl + `/api/live/getRoomInfo?platform=huya&roomId=${id}`, null, this.getHeader())
             const playInfo = await this.fetch(this.siteUrl + `/api/live/getRealUrl?platform=huya&roomId=${id}`, null, this.getHeader())
             const vodData = JSON.parse(vodInfo);
             const playData = JSON.parse(playInfo)
             this.vodDetail = await this.parseVodDetailFromDoc(vodData, playData)
         } else {
-            await this.jadeLog.debug("虎牙直播",true)
-            const headers = {
-                'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': Utils.MOBILEUA,
-            };
-            let content = await this.fetch('https://m.huya.com/' + id, null, headers);
-            let liveData = JSON.parse(Utils.getStrByRegex(/<script> window.HNF_GLOBAL_INIT = (.*?)<\/script>/, content))
-            const vodData = liveData["roomInfo"];
-            liveInfo = vodData["tLiveInfo"];
-            streamInfoList = vodData["tLiveInfo"]["tLiveStreamInfo"]["vStreamInfo"]["value"]
-            let bitInfoList = vodData["tLiveInfo"]["tLiveStreamInfo"]["vBitRateInfo"]["value"]
-            this.vodDetail = await this.parseVodDetailfromJson(liveInfo, streamInfoList, bitInfoList)
+            await this.jadeLog.debug("虎牙直播", true)
+            const resp = await this.fetch('https://mp.huya.com/cache.php?m=Live&do=profileRoom&roomid=' + id, null, this.getHeader());
+            const data = JSON.parse(resp);
+            liveInfo = data.data["liveData"];
+            let bitInfo = JSON.parse(liveInfo["bitRateInfo"])
+            streamInfoList = data.data.stream["baseSteamInfoList"];
+            this.vodDetail = await this.parseVodDetailfromJson(liveInfo,streamInfoList,bitInfo)
         }
+
+        /** 网页链接
+         *
+         * await this.jadeLog.debug("虎牙直播",true)
+         * const headers = {
+         * 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': Utils.MOBILEUA,
+         * };
+         * let content = await this.fetch('https://m.huya.com/' + id, null, headers);
+         * let liveData = JSON.parse(Utils.getStrByRegex(/<script> window.HNF_GLOBAL_INIT = (.*?)<\/script>/, content))
+         * const vodData = liveData["roomInfo"];
+         * liveInfo = vodData["tLiveInfo"];
+         * streamInfoList = vodData["tLiveInfo"]["tLiveStreamInfo"]["vStreamInfo"]["value"]
+         * let bitInfoList = vodData["tLiveInfo"]["tLiveStreamInfo"]["vBitRateInfo"]["value"]
+         * this.vodDetail = await this.parseVodDetailfromJson(liveInfo, streamInfoList, bitInfoList)
+         * */
+
+
     }
 
     async setSearch(wd, quick) {
