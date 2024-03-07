@@ -14,8 +14,8 @@ import {Spider} from "./spider.js";
 class HuyaSpider extends Spider {
     constructor() {
         super();
-        this.isJustLive = true
-        this.dataFrom = "justlive"
+        this.isJustLive = false
+        this.dataFrom = ""
         this.customArea = ""
         this.huYaPlayForamtObj = {"AL":"蓝光8M","TX":"蓝光4M","HW":"超清","HY":"流畅"}
         this.livePlayForamtObj = {"HD":"蓝光8M","LD":"蓝光4M","SD":"超清","OD":"流畅"}
