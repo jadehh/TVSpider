@@ -615,12 +615,14 @@ class HuyaSpider extends Spider {
         let liveInfo = null;
         let streamInfoList = null;
         if (this.isJustLive) {
+            await this.jadeLog.debug("JustLive",true)
             const vodInfo = await this.fetch(this.siteUrl + `/api/live/getRoomInfo?platform=huya&roomId=${id}`, null, this.getHeader())
             const playInfo = await this.fetch(this.siteUrl + `/api/live/getRealUrl?platform=huya&roomId=${id}`, null, this.getHeader())
             const vodData = JSON.parse(vodInfo);
             const playData = JSON.parse(playInfo)
             this.vodDetail = await this.parseVodDetailFromDoc(vodData, playData)
         } else {
+            await this.jadeLog.debug("虎牙直播",true)
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': Utils.MOBILEUA,
             };
