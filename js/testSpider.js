@@ -55,7 +55,7 @@ async function test() {
     await spider.init({
         skey: siteKey,
         stype: siteType,
-        ext: {"token": "302ef8e4b4d7430db6d82de284978359", "box": "CatOpen", "code": "1","from":"justlive"}
+        ext: {"token": "302ef8e4b4d7430db6d82de284978359", "box": "CatOpen", "code": "1","from":"justlive1"}
     });
 
 
