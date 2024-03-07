@@ -463,6 +463,11 @@ class HuyaSpider extends Spider {
         this.classes.unshift({"type_id": "home", "type_name": "首页"});
     }
 
+    async setHome(filter) {
+        await this.setClasses()
+        await this.setFilterObj()
+    }
+
     async parseVodShortListFromJson(obj) {
         let vod_list = []
         if (this.isJustLive) {
