@@ -29,13 +29,11 @@ class HuyaSpider extends Spider {
 
     async init(cfg) {
         await super.init(cfg);
-        if (this.cfgObj.hasOwnProperty('ext')) {
-            if (this.cfgObj.ext.hasOwnProperty('custom')) {
-                this.customArea = this.cfgObj.ext.custom;
-            }
-            if (this.cfgObj.ext.hasOwnProperty('from')) {
-                this.dataFrom = this.cfgObj.ext.from;
-            }
+        if (this.cfgObj.hasOwnProperty('custom')) {
+            this.customArea = this.cfgObj.custom;
+        }
+        if (this.cfgObj.hasOwnProperty('from')) {
+            this.dataFrom = this.cfgObj.from;
         }
         if (this.dataFrom === 'justlive') {
             this.siteUrl = 'http://live.yj1211.work';
@@ -462,38 +460,142 @@ class HuyaSpider extends Spider {
         this.classes.unshift({"type_id": "home", "type_name": "首页"});
     }
 
+    async parseVodShortListFromJson(obj) {
+        let vod_list = []
+        if (this.isJustLive) {
+            for (const it of obj["data"]) {
+                let vodShort = new VodShort()
+                vodShort.vod_id = it["roomId"]
+                vodShort.vod_name = it["ownerName"] + it["roomName"]
+                vodShort.vod_pic = it["roomPic"]
+                vodShort.vod_remarks = it["categoryName"]
+                vod_list.push(vodShort)
+            }
+
+        } else {
+            for (const it of obj.data.datas) {
+                let vodShort = new VodShort()
+                vodShort.vod_id = it["profileRoom"]
+                vodShort.vod_name = it["nick"] + it["introduction"]
+                vodShort.vod_pic = it["screenshot"]
+                vodShort.vod_remarks = it["gameFullName"]
+                vod_list.push(vodShort)
+            }
+        }
+        return vod_list
+    }
+
+    getPlayUrlData(streamInfo) {
+        const hlsUrl = streamInfo["sHlsUrl"] + '/' + streamInfo["sStreamName"] + '.' + streamInfo["sHlsUrlSuffix"];
+        const srcAntiCode = unescape(streamInfo["sHlsAntiCode"]);
+        let codeList = srcAntiCode.split('&');
+        codeList = codeList.filter(code => code !== '');
+        let cryptoInfo = {};
+        for (const code of codeList) {
+            const [k, v] = code.split('=');
+            cryptoInfo[k] = v;
+        }
+        const fm = Utils.unquote(cryptoInfo["fm"]);
+        const fmDecoded = Utils.base64Decode(fm);
+        const hashPrefix = fmDecoded.split('_')[0];
+        const ctype = cryptoInfo["ctype"] || '';
+        const txyp = cryptoInfo["txyp"] || '';
+        const fs = cryptoInfo.fs || '';
+        const t = cryptoInfo.t || '';
+        const u = 1463993859134;
+        const curTime = Date.now();
+        const seqid = Math.floor(curTime + u);
+        const wsTime = (Math.floor(curTime / 1e3) + 3600).toString(16);
+        const v0 = seqid + '|' + ctype + '|' + t;
+        const v1 = Utils.md5Encode(v0);
+        const v2 = hashPrefix + '_' + u + '_' + streamInfo["sStreamName"] + '_' + v1 + '_' + wsTime;
+        const hash = Utils.md5Encode(v2);
+        const ratio = ''
+        const purl = `${hlsUrl}?wsSecret=${hash}&wsTime=${wsTime}&seqid=${seqid}&ctype=${ctype}&ver=1&txyp=${txyp}&fs=${fs}&ratio=${ratio}&u=${u}&t=${t}&sv=2107230339`;
+        return {
+            cdnType: streamInfo["sCdnType"], playUrl: purl,
+        };
+    }
+
+    async parseVodDetailfromJson(liveInfo, streamInfoList) {
+        let vodDetail = new VodDetail()
+        vodDetail.vod_name = liveInfo["introduction"] ?? liveInfo["sIntroduction"]
+        vodDetail.vod_pic = liveInfo["screenshot"] ?? liveInfo["sScreenshot"]
+        vodDetail.vod_remarks = liveInfo["gameFullName"] ?? liveInfo["sGameFullName"]
+        vodDetail.type_name = liveInfo["gameFullName"] ?? liveInfo["sGameFullName"]
+        vodDetail.vod_director = liveInfo["nick"] ?? liveInfo["sNick"]
+        vodDetail.vod_content = liveInfo["activityCount"] ?? liveInfo["lActivityCount"]
+        vodDetail.vod_content = vodDetail.vod_content  + '人在线'
+        let playUrl = '';
+        for (const streamInfo of streamInfoList) {
+            const urlData = this.getPlayUrlData(streamInfo);
+            playUrl += `${urlData["cdnType"]}$${urlData["playUrl"]}#`;
+        }
+        vodDetail.vod_play_from = '虎牙';
+        vodDetail.vod_play_url = playUrl.replace(/#$/g, '');
+        return vodDetail
+    }
+
+    async parseVodShortListFromDocBySearch(data) {
+        let vod_list = [];
+        for (const vod of data.response['3']["docs"]) {
+            let vodShort = new VodShort()
+            vodShort.vod_id = vod["room_id"]
+            vodShort.vod_name = vod["game_nick"] + vod["game_introduction"]
+            vodShort.vod_pic = vod["game_screenshot"]
+            vodShort.vod_remarks = vod["game_name"]
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
     async setCategory(tid, pg, filter, extend) {
         if (pg <= 0 || typeof pg == 'undefined') pg = 1;
         let url = '';
-        let videos = [];
+        let data = {}
         if (this.isJustLive) {
             if (tid === 'home') {
                 url = this.siteUrl + '/api/live/getRecommendByPlatform?platform=huya&size=20&page=' + pg;
             } else {
                 url = this.siteUrl + '/api/live/getRecommendByPlatformArea?platform=huya&size=20&area=' + extend.cateId + '&page=' + pg;
             }
-            const data = JSON.parse(await this.fetch(url,null,this.getHeader()));
-            this.vodList = _.map(data.data, (it) => {
-                return {
-                    vod_id: it["roomId"], vod_name: it["roomName"], vod_pic: it["roomPic"], vod_remarks: it["ownerName"],
-                }
-            });
+            data = JSON.parse(await this.fetch(url, null, this.getHeader()));
         } else {
             if (tid === 'home') {
                 url = this.siteUrl + '/cache.php?m=LiveList&do=getLiveListByPage&tagAll=1&page=' + pg;
             } else {
                 url = this.siteUrl + '/cache.php?m=LiveList&do=getLiveListByPage&gameId=' + extend["cateId"] + '&tagAll=0&page=' + pg;
             }
-            const data = JSON.parse(await this.fetch(url,null,this.getHeader()));
-            videos = _.map(data.data.datas, (it) => {
-                return {
-                    vod_id: it["profileRoom"], vod_name: it["roomName"], vod_pic: it["screenshot"], vod_remarks: it["nick"],
-                }
-            });
+            data = JSON.parse(await this.fetch(url, null, this.getHeader()));
         }
-        return JSON.stringify({
-            page: parseInt(pg), pagecount: 9999, limit: 90, total: 999999, list: videos,
-        });
+        this.vodList = await this.parseVodShortListFromJson(data)
+    }
+
+    async setDetail(id) {
+        let liveInfo = null;
+        let streamInfoList = null;
+        if (this.isJustLive) {
+            const headers = {
+                'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': Utils.MOBILEUA,
+            };
+            let content = await this.fetch('https://www.huya.com/' + id, null, headers);
+            let liveData = JSON.parse(Utils.getStrByRegex(/<script> window.HNF_GLOBAL_INIT = (.*?)<\/script>/,content))
+            const vodData = liveData["roomInfo"];
+            liveInfo = vodData["tLiveInfo"];
+            streamInfoList = vodData["tLiveInfo"]["tLiveStreamInfo"]["vStreamInfo"]["value"]
+        } else {
+            const resp = await this.fetch('https://mp.huya.com/cache.php?m=Live&do=profileRoom&roomid=' + id, null, this.getHeader());
+            const data = JSON.parse(resp);
+            liveInfo = data.data["liveData"];
+            streamInfoList = data.data.stream["baseSteamInfoList"];
+        }
+        this.vodDetail = await this.parseVodDetailfromJson(liveInfo, streamInfoList)
+    }
+
+    async setSearch(wd, quick) {
+        const resp = await this.fetch('https://search.cdn.huya.com/?m=Search&do=getSearchContent&q=' + wd + '&uid=0&v=4&typ=-5&livestate=0&rows=40&start=0',null,this.getHeader());
+        const data = JSON.parse(resp);
+        this.vodList = await this.parseVodShortListFromDocBySearch(data)
     }
 }
 

@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './jable.js';
+import {__jsEvalReturn} from './huya.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,37 +50,43 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'jable';
+    let siteKey = 'huya';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
         stype: siteType,
-        ext: {"token": "302ef8e4b4d7430db6d82de284978359", "box": "CatOpen", "code": "1"}
+        ext: {"token": "302ef8e4b4d7430db6d82de284978359", "box": "CatOpen", "code": "1","from":"justlive"}
     });
 
 
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("adn-535"))
-    await testPlay(detail1)
+
 
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
 
+
+
     //测试分类列表
-    let  catePage = JSON.parse(await spider.category("https://jable.tv/models/bfaca44240620be2f3092c294fb22fbe/", "1", undefined,{}));
+    let  catePage = JSON.parse(await spider.category("home", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
 
-
-
-
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("189201"))
+    await testPlay(detail1)
 
     // 测试搜索
-    let search_page = JSON.parse(await spider.search("SSNI"))
+    let search_page = JSON.parse(await spider.search("霸哥"))
     console.debug(JSON.stringify(search_page));
+
+
+
+
+
+
 
     // 测试详情
     if (search_page.list && search_page.list.length > 0) {
