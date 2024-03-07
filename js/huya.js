@@ -18,6 +18,8 @@ class HuyaSpider extends Spider {
         this.dataFrom = ""
         this.customArea = ""
         this.huYaPlayForamtObj = {"AL":"蓝光8M","TX":"蓝光4M","HW":"超清","HY":"流畅"}
+        this.livePlayForamtObj = {"HD":"蓝光8M","LD":"蓝光4M","SD":"超清","OD":"流畅"}
+
     }
 
     getName() {
@@ -541,6 +543,28 @@ class HuyaSpider extends Spider {
         return vodDetail
     }
 
+    async parseVodDetailFromDoc(vodData,playData) {
+        let vodDetail = new VodDetail()
+        vodDetail.vod_name =  vodData["data"]["roomName"]
+        vodDetail.vod_director = vodData["data"]["ownerName"]
+        vodDetail.vod_pic = vodData["data"]["roomPic"]
+        vodDetail.vod_remarks = vodData["data"]["categoryName"]
+        vodDetail.vod_content = vodData["data"]["online"] + "人在线"
+        let vod_play_from_list = []
+        let vod_play_list = []
+        for (const key of Object.keys(this.livePlayForamtObj)) {
+            let vodItems = []
+            if (playData.data.hasOwnProperty(key)){
+                vod_play_from_list.push(this.livePlayForamtObj[key])
+                vodItems.push("虎牙直播" + '$' + playData["data"][key])
+                vod_play_list.push(vodItems.join("#"))
+            }
+        }
+        vodDetail.vod_play_from = vod_play_from_list.join("$$$")
+        vodDetail.vod_play_url = vod_play_list.join("$$$")
+        return vodDetail
+    }
+
     async parseVodShortListFromDocBySearch(data) {
         let vod_list = [];
         for (const vod of data.response['3']["docs"]) {
@@ -580,6 +604,12 @@ class HuyaSpider extends Spider {
         let liveInfo = null;
         let streamInfoList = null;
         if (this.isJustLive) {
+            const vodInfo = await this.fetch(this.siteUrl + `/api/live/getRoomInfo?platform=huya&roomId=${id}`,null,this.getHeader())
+            const playInfo = await this.fetch(this.siteUrl + `/api/live/getRealUrl?platform=huya&roomId=${id}`,null,this.getHeader())
+            const vodData = JSON.parse(vodInfo);
+            const playData = JSON.parse(playInfo)
+            this.vodDetail = await this.parseVodDetailFromDoc(vodData,playData)
+        } else {
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': Utils.MOBILEUA,
             };
@@ -588,13 +618,10 @@ class HuyaSpider extends Spider {
             const vodData = liveData["roomInfo"];
             liveInfo = vodData["tLiveInfo"];
             streamInfoList = vodData["tLiveInfo"]["tLiveStreamInfo"]["vStreamInfo"]["value"]
-        } else {
-            const resp = await this.fetch('https://mp.huya.com/cache.php?m=Live&do=profileRoom&roomid=' + id, null, this.getHeader());
-            const data = JSON.parse(resp);
-            liveInfo = data.data["liveData"];
-            streamInfoList = data.data.stream["baseSteamInfoList"];
+            this.vodDetail = await this.parseVodDetailfromJson(liveInfo, streamInfoList)
+
+
         }
-        this.vodDetail = await this.parseVodDetailfromJson(liveInfo, streamInfoList)
     }
 
     async setSearch(wd, quick) {

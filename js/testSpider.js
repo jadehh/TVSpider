@@ -75,7 +75,7 @@ async function test() {
     console.debug(JSON.stringify(catePage));
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("189201"))
+    let detail1 = JSON.parse(await spider.detail("998"))
     await testPlay(detail1)
 
     // 测试搜索
