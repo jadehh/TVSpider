@@ -42,14 +42,6 @@
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
             },
             {
-                "key": "ciliduo",
-                "name": "🍚|磁力多BT|🍚",
-                "type": 3,
-                "api": "./js/ciliduo.js",
-                "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\"}"
-            },
-            {
                 "key": "douban",
                 "name": "🍥┃豆瓣┃🍥",
                 "type": 3,
@@ -102,6 +94,14 @@
                 "name": "🌿|好戏追剧|🌿",
                 "type": 3,
                 "api": "./js/haoxi.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "huya",
+                "name": "🐯|虎牙直播|🐯",
+                "type": 3,
+                "api": "./js/huya.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\"}"
             },

@@ -23,7 +23,7 @@ class CiliDuoSpider extends Spider {
     }
 
     getName() {
-        return "🍚|磁力多BT|🍚"
+        return "🔞|磁力多BT|🔞"
     }
 
     getAppName() {
