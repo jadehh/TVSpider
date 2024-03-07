@@ -626,7 +626,8 @@ class HuyaSpider extends Spider {
             const headers = {
                 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': Utils.MOBILEUA,
             };
-            let content = await this.fetch('https://www.huya.com/' + id, null, headers);
+            let content = await this.fetch('https://m.huya.com/' + id, null, headers);
+            await this.jadeLog.debug(content)
             let liveData = JSON.parse(Utils.getStrByRegex(/<script> window.HNF_GLOBAL_INIT = (.*?)<\/script>/, content))
             const vodData = liveData["roomInfo"];
             liveInfo = vodData["tLiveInfo"];
