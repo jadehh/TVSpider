@@ -518,6 +518,7 @@ class HuyaSpider extends Spider {
         const v1 = Utils.md5Encode(v0);
         const v2 = hashPrefix + '_' + u + '_' + streamInfo["sStreamName"] + '_' + v1 + '_' + wsTime;
         const hash = Utils.md5Encode(v2);
+        ratio = ""
         const purl = `${hlsUrl}?wsSecret=${hash}&wsTime=${wsTime}&seqid=${seqid}&ctype=${ctype}&ver=1&txyp=${txyp}&fs=${fs}&ratio=${ratio}&u=${u}&t=${t}&sv=2107230339`;
         return {
             cdnType: streamInfo["sCdnType"], playUrl: purl,
@@ -627,7 +628,6 @@ class HuyaSpider extends Spider {
                 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': Utils.MOBILEUA,
             };
             let content = await this.fetch('https://m.huya.com/' + id, null, headers);
-            await this.jadeLog.debug(content)
             let liveData = JSON.parse(Utils.getStrByRegex(/<script> window.HNF_GLOBAL_INIT = (.*?)<\/script>/, content))
             const vodData = liveData["roomInfo"];
             liveInfo = vodData["tLiveInfo"];
