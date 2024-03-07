@@ -17,6 +17,7 @@ class HuyaSpider extends Spider {
         this.isJustLive = false
         this.dataFrom = ""
         this.customArea = ""
+        this.huYaPlayForamtObj = {"AL":"蓝光8M","TX":"蓝光4M","HW":"超清","HY":"流畅"}
     }
 
     getName() {
@@ -526,13 +527,17 @@ class HuyaSpider extends Spider {
         vodDetail.vod_director = liveInfo["nick"] ?? liveInfo["sNick"]
         vodDetail.vod_content = liveInfo["activityCount"] ?? liveInfo["lActivityCount"]
         vodDetail.vod_content = vodDetail.vod_content  + '人在线'
-        let playUrl = '';
+        let vod_play_from_list = []
+        let vod_play_list = []
         for (const streamInfo of streamInfoList) {
+            let vodItems = []
             const urlData = this.getPlayUrlData(streamInfo);
-            playUrl += `${urlData["cdnType"]}$${urlData["playUrl"]}#`;
+            vod_play_from_list.push(this.huYaPlayForamtObj[urlData["cdnType"]])
+            vodItems.push("虎牙直播" + '$' + urlData["playUrl"])
+            vod_play_list.push(vodItems.join("#"))
         }
-        vodDetail.vod_play_from = '虎牙';
-        vodDetail.vod_play_url = playUrl.replace(/#$/g, '');
+        vodDetail.vod_play_from = vod_play_from_list.join("$$$")
+        vodDetail.vod_play_url = vod_play_list.join("$$$")
         return vodDetail
     }
 
