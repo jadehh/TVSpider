@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './huya.js';
+import {__jsEvalReturn} from './jianpian.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'huya';
+    let siteKey = 'jianpian';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -67,16 +67,16 @@ async function test() {
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
-
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("563183"))
+    await testPlay(detail1)
 
 
     //测试分类列表
     let  catePage = JSON.parse(await spider.category("home", "1", undefined,{}));
     console.debug(JSON.stringify(catePage));
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("998"))
-    await testPlay(detail1)
+
 
     // 测试搜索
     let search_page = JSON.parse(await spider.search("霸哥"))

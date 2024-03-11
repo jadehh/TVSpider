@@ -4,15 +4,14 @@
 [TV发布地址](https://github.com/FongMi/Release/tree/main/apk/release)
 
 ```bash
-https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/js/tv_config.json
-https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TV/js/he_tv_config.json
+https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TVSpider/js/tv_config.json
 ```
 
 ## CatVodOpen
 [CatVodOpen发布地址](https://github.com/catvod/CatVodOpen/releases)
 
 ```bash
-gitee://Token@gitee.com/jadehh_743/TV/js/open_config.json
+gitee://Token@gitee.com/jadehh_743/TVSpider/js/open_config.json
 ```
 > CatVodOpen和TV中的requets请求不一致的问题
 > 使用Gitee导入,并设置为私有仓库,仅支持私有仓库
@@ -31,3 +30,7 @@ python build.py
 
 ### 阿里Token获取
 [https://alist.nn.ci/zh/guide/drivers/aliyundrive.html](https://alist.nn.ci/zh/guide/drivers/aliyundrive.html)
+
+
+赞助
+如果觉得此项目有用，可以考虑赞助我喝杯咖啡❤
