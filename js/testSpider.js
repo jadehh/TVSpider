@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './kuyun.js';
+import {__jsEvalReturn} from './jiujiuliu.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'kuyun';
+    let siteKey = 'jiujiuliu';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -69,7 +69,7 @@ async function test() {
     console.debug(JSON.stringify(homeVod));
 
 
-        // 测试详情
+    // 测试详情
     let detail1 = JSON.parse(await spider.detail(homeVod["list"][0].vod_id))
     await testPlay(detail1)
 

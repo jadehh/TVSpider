@@ -230,7 +230,7 @@ class JiuJiuLiuSpider extends Spider {
                 this.playUrl = decodeURIComponent(Crypto.enc.Utf8.stringify(Crypto.enc.Base64.parse(player["url"])))
                 this.header = this.getHeader()
             } catch (e) {
-                await this.jadeLog.error(e)
+                this.playUrl = player["url"]
             }
         }
     }
