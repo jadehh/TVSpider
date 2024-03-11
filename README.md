@@ -32,6 +32,8 @@ python build.py
 ## 赞助
 如果觉得此项目有用，可以考虑赞助我喝杯咖啡❤
 
-![微信](./resources/wechat.jpg)
+<img src="./resources/wechat.jpg" alt="微信" width="256" height="256" align="left" />
+<img src="./resources/alipay.jpg" alt="支付宝" width="256" height="256" align="right" />
+
 
 
