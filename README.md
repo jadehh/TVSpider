@@ -36,4 +36,5 @@ python build.py
 <img src="./resources/alipay.jpg" alt="支付宝" width="256" height="256" align="right" />
 
 
+> 感谢Star❤
 
