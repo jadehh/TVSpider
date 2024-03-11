@@ -32,6 +32,6 @@ python build.py
 ## 赞助
 如果觉得此项目有用，可以考虑赞助我喝杯咖啡❤
 
-[微信](./resources/wechat.jpg)
+![微信](./resources/wechat.jpg)
 
 
