@@ -74,28 +74,12 @@
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
-                "key": "freeok",
-                "name": "🆗|OK资源网|🆗",
-                "type": 3,
-                "api": "./js/freeok.js",
-                "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\"}"
-            },
-            {
                 "key": "gitcafe",
                 "name": "🦊┃阿里纸条┃🦊",
                 "type": 3,
                 "api": "./js/gitcafe.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
-            },
-            {
-                "key": "haoxi",
-                "name": "🌿|好戏追剧|🌿",
-                "type": 3,
-                "api": "./js/haoxi.js",
-                "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\"}"
             },
             {
                 "key": "huya",
@@ -168,14 +152,6 @@
                 "api": "./js/pan_search.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
-            },
-            {
-                "key": "pipixia",
-                "name": "🦐┃皮皮虾影视┃🦐",
-                "type": 3,
-                "api": "./js/pipixia.js",
-                "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\"}"
             },
             {
                 "key": "star",

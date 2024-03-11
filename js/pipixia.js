@@ -4,7 +4,7 @@
 * @Date     : 2024/2/2 13:33
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     : 完成所有的功能开发
+* @Desc     : 完成所有的功能开发(已失效,需要登录,后续需要完成皮皮虾的登录功能)
 */
 import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
@@ -28,11 +28,11 @@ class PiPiXiaSpider extends Spider {
 
 
     getName() {
-        return "🦐┃皮皮虾影视┃🦐"
+        return `🦐┃皮皮虾影视┃🦐`
     }
 
     getAppName() {
-        return "皮皮虾影视"
+        return `皮皮虾影视`
     }
 
     async parseVodShortListFromDoc($) {

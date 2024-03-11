@@ -4,7 +4,7 @@
 * @Date     : 2023/12/25 17:18
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     :
+* @Desc     : 阿里盘搜（仅支持搜搜）
 */
 import {_, load} from "../lib/cat.js";
 import {Spider} from "./spider.js";
@@ -62,6 +62,7 @@ class PanSearchSpider extends Spider {
             vodDetail.vod_play_url = aliVodDetail.vod_play_url
             vodDetail.vod_play_from = aliVodDetail.vod_play_from
         } catch (e) {
+            await this.jadeLog.error(`获取阿里视频播放失败,失败原因为:${e}`)
         }
         return vodDetail
     }

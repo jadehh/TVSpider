@@ -4,7 +4,7 @@
 * @Date     : 2024/2/7 14:24
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     :
+* @Desc     : 好戏追剧 已失效
 */
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
@@ -17,11 +17,11 @@ class HaoXiSpider extends Spider {
     }
 
     getAppName() {
-        return "好戏追剧"
+        return `好戏追剧`
     }
 
     getName() {
-        return "🌿|好戏追剧|🌿"
+        return `🌿|好戏追剧|🌿`
     }
 
     parseVodShortFromElement($, element) {

@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './jianpian.js';
+import {__jsEvalReturn} from './pipixia.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'jianpian';
+    let siteKey = 'pipixia';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -63,13 +63,16 @@ async function test() {
     console.debug(JSON.stringify(classes));
 
 
+
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("563183"))
+
+        // 测试详情
+    let detail1 = JSON.parse(await spider.detail(homeVod["list"][0].vod_id))
     await testPlay(detail1)
+
 
 
     //测试分类列表
@@ -79,9 +82,8 @@ async function test() {
 
 
     // 测试搜索
-    let search_page = JSON.parse(await spider.search("霸哥"))
+    let search_page = JSON.parse(await spider.search("三大队"))
     console.debug(JSON.stringify(search_page));
-
 
 
 
