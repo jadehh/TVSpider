@@ -17,7 +17,7 @@ class NivodSpider extends Spider {
 
     }
     getName() {
-        return "👑‍┃泥视频┃👑"
+        return "👑‍┃泥视频┃墙👑"
     }
     getAppName() {
         return "泥视频"

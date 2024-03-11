@@ -24,7 +24,7 @@ class StarSpider extends Spider {
     }
 
     getName() {
-        return "☄️|星视界|☄️"
+        return "☄️|星视界|墙☄️"
     }
 
     getApiHeader() {
