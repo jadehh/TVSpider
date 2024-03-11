@@ -6,11 +6,9 @@
 * @Software : Samples
 * @Desc     :
 */
-import {_} from '../lib/cat.js';
 import {Spider} from "./spider.js";
 import {BookShort} from "../lib/book.js";
 import {} from "../lib/crypto-js.js"
-import axios_1 from "axios";
 
 function u(e) {
     (this._parameters = {}), this._loadParameters(e || {});

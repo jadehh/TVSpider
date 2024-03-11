@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './pipixia.js';
+import {__jsEvalReturn} from './kuyun.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'pipixia';
+    let siteKey = 'kuyun';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
