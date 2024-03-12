@@ -256,12 +256,15 @@ class IKanBotSpider extends Spider {
 
     }
 
-    async setPlay(flag, id, flags) {
-        this.playUrl = id
+    // async setPlay(flag, id, flags) {
+    //     this.playUrl = id
+    // }
+
+    async play(flag, id, flags) {
+        let playObj =  {"header":"{\"User-Agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36\",\"Referer\":\"https://www.360kan.com\"}","danmaku":"http://127.0.0.1:9978/proxy?do=danmu&url=http%3A%2F%2Fv.qq.com%2Fx%2Fcover%2Fmzc00200zm1aje0%2Fz0048qql7p4.html%3Fptag%3D360kan.tv.free","url":"http://v.qq.com/x/cover/mzc00200zm1aje0/z0048qql7p4.html?ptag=360kan.tv.free","parse":1,"jx":1}
+        await this.jadeLog.debug(JSON.stringify(playObj))
+        return JSON.stringify(playObj)
     }
-
-
-
 }
 
 
