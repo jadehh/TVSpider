@@ -261,9 +261,12 @@ class WoggSpider extends Spider {
         }
     }
 
-    async play(flag, id, flags) {
-        return await playContent(flag, id, flags);
+    async setPlay(flag, id, flags) {
+        let playObjStr = await playContent(flag, id, flags);
+        this.playUrl = JSON.parse(playObjStr)["url"]
     }
+
+
 
     async setSearch(wd, quick) {
         let searchUrl = this.siteUrl + '/index.php/vodsearch/-------------.html?wd=' + wd;

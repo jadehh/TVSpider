@@ -14,6 +14,7 @@ import {_, load, Uri} from "../lib/cat.js";
 import {} from "../lib/crypto-js.js"
 import * as HLS from "../lib/hls.js";
 import {hlsCache, tsCache} from "./ffm3u8_open.js";
+import {TencentDammuSpider} from "../lib/tencentDanmu.js";
 
 class Result {
     constructor() {
@@ -63,7 +64,7 @@ class Result {
 
     play(url) {
         return JSON.stringify({
-            "url": url, "parse": this.parse, "header": this.header, "format": this.format, "subs": this.subs
+            "url": url, "parse": this.parse, "header": this.header, "format": this.format, "subs": this.subs,"danmaku":this.danmaku
         })
     }
 
@@ -190,6 +191,8 @@ class Spider {
         this.remove18 = false
         this.type_id_18 = 0
         this.type_name_18 = "伦理片"
+        this.episodeObj = {}
+        this.tencentDammuSpider = new TencentDammuSpider()
     }
 
     async reconnnect(reqUrl, params, headers, redirect_url, return_cookie, buffer) {
@@ -541,6 +544,25 @@ class Spider {
 
     }
 
+
+
+    setEpisodeCache(){
+        // 记录每个播放链接的集数
+        let episodeObj = {
+            "vodDetail":this.vodDetail.to_dict(),
+        }
+        let vod_url_channels_list = this.vodDetail.vod_play_url.split("$$$")
+        for (const vodItemsStr of vod_url_channels_list){
+            let vodItems = vodItemsStr.split("#")
+            for (const vodItem  of vodItems){
+                let episodeName = vodItem.split("$")[0].split(" ")[0]
+                let episodeUrl = vodItem.split("$")[1]
+                episodeObj[episodeUrl] = {"episodeName":episodeName,"episodeId":episodeName}
+            }
+        }
+        return episodeObj
+    }
+
     async detail(id) {
         this.vodDetail = new VodDetail();
         await this.jadeLog.info(`正在获取详情页面,id为:${id}`)
@@ -549,6 +571,7 @@ class Spider {
             await this.jadeLog.debug(`详情页面内容为:${this.result.detail(this.vodDetail)}`)
             await this.jadeLog.info("详情页面解析完成", true)
             this.vodDetail.vod_id = id
+            this.episodeObj = this.setEpisodeCache()
             return this.result.detail(this.vodDetail)
         } catch (e) {
             await this.jadeLog.error("详情界面获取失败,失败原因为:" + e)
@@ -560,10 +583,19 @@ class Spider {
         this.playUrl = id
     }
 
+    async setDanmu(id){
+        await this.jadeLog.debug("获取当前播放链接的集数")
+        let episodeId = this.episodeObj[id]
+        let vodDetail = JSON.parse(this.episodeObj["vodDetail"])
+        let damuStr = await this.tencentDammuSpider.getDammu(vodDetail,episodeId)
+        return damuStr
+    }
+
     async play(flag, id, flags) {
         await this.jadeLog.info("正在解析播放页面", true)
         try {
             await this.setPlay(flag, id, flags)
+            await this.setDanmu(id)
             await this.jadeLog.debug(`播放页面内容为:${this.result.play(this.playUrl)}`)
             await this.jadeLog.info("播放页面解析完成", true)
             return this.result.setHeader(this.header).play(this.playUrl)

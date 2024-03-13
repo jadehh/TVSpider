@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './jiujiuliu.js';
+import {__jsEvalReturn} from './wogg.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
-    let siteKey = 'jiujiuliu';
+    let siteKey = 'wogg';
     let siteType = 0;
     await spider.init({
         skey: siteKey,
@@ -59,18 +59,23 @@ async function test() {
     });
 
 
-    let classes = JSON.parse(await spider.home(true));
-    console.debug(JSON.stringify(classes));
+    // let classes = JSON.parse(await spider.home(true));
+    // console.debug(JSON.stringify(classes));
 
 
 
     // //测试首页列表
-    let homeVod = JSON.parse(await spider.homeVod())
-    console.debug(JSON.stringify(homeVod));
+    // let homeVod = JSON.parse(await spider.homeVod())
+    // console.debug(JSON.stringify(homeVod));
+
+    // 测试搜索
+    // let search_page = JSON.parse(await spider.search("三大队"))
+    // console.debug(JSON.stringify(search_page));
+
 
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail(homeVod["list"][0].vod_id))
+    let detail1 = JSON.parse(await spider.detail("/index.php/voddetail/82501.html"))
     await testPlay(detail1)
 
 
@@ -81,9 +86,6 @@ async function test() {
 
 
 
-    // 测试搜索
-    let search_page = JSON.parse(await spider.search("三大队"))
-    console.debug(JSON.stringify(search_page));
 
 
 
