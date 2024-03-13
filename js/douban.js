@@ -555,7 +555,6 @@ class DoubanSpider extends Spider {
             this.vodList = await this.parseVodShortListFromJson(items)
         }
     }
-
     async setSearch(wd, quick) {
         let _api_url = "https://frodo.douban.com/api/v2"
         let _api_key = "0dad551ec0f84ed02907ff5c42e8ec70"
