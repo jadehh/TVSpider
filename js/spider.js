@@ -599,7 +599,7 @@ class Spider {
     }
 
     async setDanmu(id) {
-        await this.jadeLog.debug("获取当前播放链接的集数")
+        await this.jadeLog.debug(`获取当前播放链接的集数,${JSON.stringify(this.episodeObj[id])}`)
         let episodeId = this.episodeObj[id]
         let vodDetail = JSON.parse(this.episodeObj["vodDetail"])
         //区分电影还是电视剧
