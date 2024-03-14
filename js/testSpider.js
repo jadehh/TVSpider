@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './wogg.js';
+import {__jsEvalReturn} from './alipansou.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,12 +50,7 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    // let params = {"do": "set", "key": "danmu", "value": "我的"}
-    // let savecontent = await req("http://172.27.185.163:9978/cache", {method: "post", data: params, postType: "form-data"});
-    // let content=  await req("http://172.27.185.163:9978/cache?do=get&key=danmu");
-
-
-    let siteKey = 'wogg';
+    let siteKey = 'alipansou';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
@@ -69,16 +64,16 @@ async function test() {
 
 
     // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
 
     // 测试搜索
-    let search_page = JSON.parse(await spider.search("斗破苍穹"))
-    console.debug(JSON.stringify(search_page));
+    // let search_page = JSON.parse(await spider.search("斗破苍穹"))
+    // console.debug(JSON.stringify(search_page));
 
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/index.php/voddetail/82110.html"))
+    let detail1 = JSON.parse(await spider.detail("/search?k=%e5%91%a8%e5%a4%84%e9%99%a4%e4%b8%89%e5%ae%b3"))
     await testPlay(detail1)
 
 
