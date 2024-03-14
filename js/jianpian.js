@@ -25,7 +25,7 @@ class JianPianSpider extends Spider {
     }
 
     getAppName() {
-        return "|荐片|"
+        return "荐片"
     }
 
     getHeader() {

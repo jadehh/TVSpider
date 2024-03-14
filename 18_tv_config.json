@@ -3,6 +3,7 @@
         {
             "key": "asianx",
             "name": "🔞┃海外宅┃🔞",
+            "playerType": 0,
             "type": 3,
             "api": "./js/asianx.js",
             "timeout": 30,
@@ -11,6 +12,7 @@
         {
             "key": "ciliduo",
             "name": "🔞|磁力多BT|🔞",
+            "playerType": 0,
             "type": 3,
             "api": "./js/ciliduo.js",
             "timeout": 30,
@@ -19,6 +21,7 @@
         {
             "key": "doll",
             "name": "🔞┃玩偶姐姐┃🔞",
+            "playerType": 0,
             "type": 3,
             "api": "./js/doll.js",
             "timeout": 30,
@@ -27,6 +30,7 @@
         {
             "key": "feifan18",
             "name": "🔞|非凡资源18+|🔞",
+            "playerType": 0,
             "type": 3,
             "api": "./js/feifan18.js",
             "timeout": 30,
@@ -35,6 +39,7 @@
         {
             "key": "hscangku",
             "name": "🔞┃黄色仓库┃🔞",
+            "playerType": 0,
             "type": 3,
             "api": "./js/hscangku.js",
             "timeout": 30,
@@ -43,6 +48,7 @@
         {
             "key": "jable",
             "name": "🔞|Jable|🔞",
+            "playerType": 0,
             "type": 3,
             "api": "./js/jable.js",
             "timeout": 30,
@@ -51,6 +57,7 @@
         {
             "key": "liangzi18",
             "name": "🔞|量子资源18+|🔞",
+            "playerType": 0,
             "type": 3,
             "api": "./js/liangzi18.js",
             "timeout": 30,
@@ -59,6 +66,7 @@
         {
             "key": "nivod_18",
             "name": "🔞┃泥视频18+┃🔞",
+            "playerType": 0,
             "type": 3,
             "api": "./js/nivod_18.js",
             "timeout": 30,
@@ -67,6 +75,7 @@
         {
             "key": "sehuatang",
             "name": "🔞|色花堂BT|🔞",
+            "playerType": 0,
             "type": 3,
             "api": "./js/sehuatang.js",
             "timeout": 30,
