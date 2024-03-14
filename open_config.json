@@ -7,7 +7,7 @@
                 "type": 3,
                 "api": "./js/6080.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "aiyingshi",
@@ -15,7 +15,7 @@
                 "type": 3,
                 "api": "./js/aiyingshi.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "alipansou",
@@ -23,7 +23,7 @@
                 "type": 3,
                 "api": "./js/alipansou.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
             },
             {
                 "key": "aliyunpanshare",
@@ -31,7 +31,7 @@
                 "type": 3,
                 "api": "./js/aliyunpanshare.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
             },
             {
                 "key": "changzhang",
@@ -39,7 +39,7 @@
                 "type": 3,
                 "api": "./js/changzhang.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
             },
             {
                 "key": "douban",
@@ -47,7 +47,7 @@
                 "type": 3,
                 "api": "./js/douban.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "dygangs",
@@ -55,7 +55,7 @@
                 "type": 3,
                 "api": "./js/dygangs.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "dyttbt",
@@ -63,7 +63,7 @@
                 "type": 3,
                 "api": "./js/dyttbt.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "feifan",
@@ -71,7 +71,7 @@
                 "type": 3,
                 "api": "./js/feifan.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "gitcafe",
@@ -79,7 +79,7 @@
                 "type": 3,
                 "api": "./js/gitcafe.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
             },
             {
                 "key": "huya",
@@ -87,7 +87,7 @@
                 "type": 3,
                 "api": "./js/huya.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "ikanbot",
@@ -95,7 +95,7 @@
                 "type": 3,
                 "api": "./js/ikanbot.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "jiafeimao",
@@ -103,7 +103,7 @@
                 "type": 3,
                 "api": "./js/jiafeimao.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "jianpian",
@@ -111,7 +111,7 @@
                 "type": 3,
                 "api": "./js/jianpian.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "jiujiuliu",
@@ -119,7 +119,7 @@
                 "type": 3,
                 "api": "./js/jiujiuliu.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "kankan70",
@@ -127,7 +127,7 @@
                 "type": 3,
                 "api": "./js/kankan70.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "liangzi",
@@ -135,7 +135,7 @@
                 "type": 3,
                 "api": "./js/liangzi.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true, \"code\": 1}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false, \"code\": 1}"
             },
             {
                 "key": "mp4movie",
@@ -143,7 +143,7 @@
                 "type": 3,
                 "api": "./js/mp4movie.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "nivod",
@@ -151,7 +151,7 @@
                 "type": 3,
                 "api": "./js/nivod.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true, \"code\": 1}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false, \"code\": 1}"
             },
             {
                 "key": "pan_search",
@@ -159,7 +159,7 @@
                 "type": 3,
                 "api": "./js/pan_search.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
             },
             {
                 "key": "star",
@@ -167,7 +167,7 @@
                 "type": 3,
                 "api": "./js/star.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "weixine",
@@ -175,7 +175,7 @@
                 "type": 3,
                 "api": "./js/weixine.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
             },
             {
                 "key": "wogg",
@@ -183,7 +183,7 @@
                 "type": 3,
                 "api": "./js/wogg.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
             },
             {
                 "key": "xb6v",
@@ -191,7 +191,7 @@
                 "type": 3,
                 "api": "./js/xb6v.js",
                 "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": true}"
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
                 "key": "push_agent",

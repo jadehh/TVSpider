@@ -6,7 +6,7 @@
             "type": 3,
             "api": "./js/6080.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "aiyingshi",
@@ -14,7 +14,7 @@
             "type": 3,
             "api": "./js/aiyingshi.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "alipansou",
@@ -22,7 +22,7 @@
             "type": 3,
             "api": "./js/alipansou.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
         },
         {
             "key": "aliyunpanshare",
@@ -30,7 +30,7 @@
             "type": 3,
             "api": "./js/aliyunpanshare.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
         },
         {
             "key": "changzhang",
@@ -38,7 +38,7 @@
             "type": 3,
             "api": "./js/changzhang.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
         },
         {
             "key": "douban",
@@ -46,7 +46,7 @@
             "type": 3,
             "api": "./js/douban.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "dygangs",
@@ -54,7 +54,7 @@
             "type": 3,
             "api": "./js/dygangs.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "dyttbt",
@@ -62,7 +62,7 @@
             "type": 3,
             "api": "./js/dyttbt.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "feifan",
@@ -70,7 +70,7 @@
             "type": 3,
             "api": "./js/feifan.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "gitcafe",
@@ -78,7 +78,7 @@
             "type": 3,
             "api": "./js/gitcafe.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
         },
         {
             "key": "huya",
@@ -86,7 +86,7 @@
             "type": 3,
             "api": "./js/huya.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "ikanbot",
@@ -94,7 +94,7 @@
             "type": 3,
             "api": "./js/ikanbot.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "jiafeimao",
@@ -102,7 +102,7 @@
             "type": 3,
             "api": "./js/jiafeimao.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "jianpian",
@@ -110,7 +110,7 @@
             "type": 3,
             "api": "./js/jianpian.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "jiujiuliu",
@@ -118,7 +118,7 @@
             "type": 3,
             "api": "./js/jiujiuliu.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "kankan70",
@@ -126,7 +126,7 @@
             "type": 3,
             "api": "./js/kankan70.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "liangzi",
@@ -134,7 +134,7 @@
             "type": 3,
             "api": "./js/liangzi.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true, \"code\": 1}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false, \"code\": 1}"
         },
         {
             "key": "mp4movie",
@@ -142,7 +142,7 @@
             "type": 3,
             "api": "./js/mp4movie.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "nivod",
@@ -150,7 +150,7 @@
             "type": 3,
             "api": "./js/nivod.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true, \"code\": 1}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false, \"code\": 1}"
         },
         {
             "key": "pan_search",
@@ -158,7 +158,7 @@
             "type": 3,
             "api": "./js/pan_search.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
         },
         {
             "key": "star",
@@ -166,7 +166,7 @@
             "type": 3,
             "api": "./js/star.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "weixine",
@@ -174,7 +174,7 @@
             "type": 3,
             "api": "./js/weixine.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
         },
         {
             "key": "wogg",
@@ -182,7 +182,7 @@
             "type": 3,
             "api": "./js/wogg.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false, \"token\": \"3d3c5c67581e4db188e753a56ea5829a\"}"
         },
         {
             "key": "xb6v",
@@ -190,7 +190,7 @@
             "type": 3,
             "api": "./js/xb6v.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\", \"danmu\": true}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "push_agent",
