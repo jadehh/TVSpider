@@ -4,7 +4,7 @@ import * as Utils from "../lib/utils.js";
 
 let spider = __jsEvalReturn();
 
-async function testPlay(vodDetail){
+async function testPlay(vodDetail) {
     if (vodDetail.list && vodDetail.list.length > 0) {
         const pFlag = vodDetail.list[0].vod_play_from.split('$$$');
         const pUrls = vodDetail.list[0].vod_play_url.split('$$$');
@@ -26,7 +26,7 @@ async function testPlay(vodDetail){
     }
 }
 
-async function testMusicPlay(vodDetail){
+async function testMusicPlay(vodDetail) {
     if (vodDetail.list && vodDetail.list.length > 0) {
         const pFlag = vodDetail.list[0].volumes.split('$$$');
         const pUrls = vodDetail.list[0].urls.split('$$$');
@@ -50,18 +50,22 @@ async function testMusicPlay(vodDetail){
 }
 
 async function test() {
+    // let params = {"do": "set", "key": "danmu", "value": "我的"}
+    // let savecontent = await req("http://172.27.185.163:9978/cache", {method: "post", data: params, postType: "form-data"});
+    // let content=  await req("http://172.27.185.163:9978/cache?do=get&key=danmu");
+
+
     let siteKey = 'wogg';
     let siteType = 0;
     await spider.init({
-        skey: siteKey,
-        stype: siteType,
-        ext: {"token": "302ef8e4b4d7430db6d82de284978359", "box": "TV", "code": "1","from":"justlive1","danmu":false}
+        skey: siteKey, stype: siteType, ext: {
+            "token": "302ef8e4b4d7430db6d82de284978359", "box": "TV", "code": "1", "from": "justlive1", "danmu": false
+        }
     });
 
 
     // let classes = JSON.parse(await spider.home(true));
     // console.debug(JSON.stringify(classes));
-
 
 
     // //测试首页列表
@@ -73,23 +77,14 @@ async function test() {
     // console.debug(JSON.stringify(search_page));
 
 
-
     // 测试详情
     let detail1 = JSON.parse(await spider.detail("/index.php/voddetail/82512.html"))
     await testPlay(detail1)
 
 
-
     //测试分类列表
-    let  catePage = JSON.parse(await spider.category("home", "1", undefined,{}));
+    let catePage = JSON.parse(await spider.category("home", "1", undefined, {}));
     console.debug(JSON.stringify(catePage));
-
-
-
-
-
-
-
 
 
     // 测试详情
