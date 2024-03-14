@@ -572,6 +572,10 @@ class Spider {
             for (const vodItem of vodItems) {
                 let episodeName = vodItem.split("$")[0].split(" ")[0]
                 let episodeUrl = vodItem.split("$")[1]
+                let matchers = episodeName.match(/\d+/g)
+                if (matchers !== null && matchers.length > 0){
+                    episodeName = matchers[0]
+                }
                 episodeObj[episodeUrl] = {"episodeName": episodeName, "episodeId": episodeName}
             }
         }
@@ -599,9 +603,13 @@ class Spider {
     }
 
     async setDanmu(id) {
-        await this.jadeLog.debug(`获取当前播放链接的集数,${JSON.stringify(this.episodeObj[id])}`)
         let episodeId = this.episodeObj[id]
         let vodDetail = JSON.parse(this.episodeObj["vodDetail"])
+        delete vodDetail.vod_content;
+        delete vodDetail.vod_play_from;
+        delete vodDetail.vod_play_url;
+        delete vodDetail.vod_pic;
+        await this.jadeLog.debug(`正在加载弹幕,视频详情为:${JSON.stringify(vodDetail)},集数:${JSON.stringify(this.episodeObj[id])}`)
         //区分电影还是电视剧
         return await this.danmuSpider.getDammu(vodDetail, episodeId)
     }
@@ -611,7 +619,6 @@ class Spider {
         try {
             await this.setPlay(flag, id, flags)
             if (this.danmuStaus && !this.catOpenStatus) {
-                await this.jadeLog.debug("需要加载弹幕", true)
                 let danmuUrl;
                 try {
                     danmuUrl = await this.setDanmu(id)

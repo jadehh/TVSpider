@@ -80,7 +80,7 @@ class WoggSpider extends Spider {
             if (!_.isEmpty(matches)) share_url_list.push(matches[1])
         }
         if (share_url_list.length > 0) {
-            let aliVodDetail = await detailContent(share_url_list)
+            let aliVodDetail = await detailContent(share_url_list,vodDetail.type_name)
             vodDetail.vod_play_url = aliVodDetail.vod_play_url
             vodDetail.vod_play_from = aliVodDetail.vod_play_from
         } else {

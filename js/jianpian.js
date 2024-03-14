@@ -4,7 +4,7 @@
 * @Date     : 2024/1/15 10:32
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     : 完成荐片所有功能
+* @Desc     : 完成荐片所有功能（添加弹幕）
 */
 
 import {Spider} from "./spider.js";
@@ -39,6 +39,7 @@ class JianPianSpider extends Spider {
     async init(cfg) {
         await super.init(cfg);
         this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
+        this.danmuStaus = true
     }
 
 
@@ -90,7 +91,7 @@ class JianPianSpider extends Spider {
         vodDetail.vod_id = obj["id"]
         vodDetail.vod_year = obj["year"]["title"]
         vodDetail.vod_pic = this.jsBase + Utils.base64Encode(obj["thumbnail"])
-        vodDetail.type_name = this.objToList(obj["types"], "name")
+        vodDetail.type_name = obj["category"][0]["title"]
         vodDetail.vod_name = obj["title"]
         vodDetail.vod_content = obj["description"]
         vodDetail.vod_area = obj["area"]["title"]

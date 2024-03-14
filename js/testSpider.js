@@ -73,12 +73,12 @@ async function test() {
     // console.debug(JSON.stringify(homeVod));
 
     // 测试搜索
-    // let search_page = JSON.parse(await spider.search("繁花"))
-    // console.debug(JSON.stringify(search_page));
+    let search_page = JSON.parse(await spider.search("斗破苍穹"))
+    console.debug(JSON.stringify(search_page));
 
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/index.php/voddetail/82512.html"))
+    let detail1 = JSON.parse(await spider.detail("/index.php/voddetail/82110.html"))
     await testPlay(detail1)
 
 
