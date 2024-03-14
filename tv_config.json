@@ -6,6 +6,7 @@
             "type": 3,
             "api": "./js/alipansou.js",
             "timeout": 30,
+            "searchable": 0,
             "ext": "{\"box\": \"TVBox\", \"danmu\": false, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
         }
     ],

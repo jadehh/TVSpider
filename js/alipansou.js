@@ -20,7 +20,9 @@ class GitCafeSpider extends Spider {
     }
     getSearchHeader(id) {
         let headers = this.getHeader()
-        headers["Referer"] = this.siteUrl + id
+        headers["Referer"] = id
+        headers["Postman-Token"] = "5f1bb291-ce30-44c7-8885-6db1f3a50785"
+        headers["Host"] = "www.alipansou.com"
         return headers
     }
 
@@ -76,9 +78,12 @@ class GitCafeSpider extends Spider {
     }
 
     async getAliUrl(id) {
-        let headers = this.getSearchHeader(id)
-        await this.jadeLog.debug(`获取阿里链接url:${this.siteUrl + id.replace("/s/", "/cv/")},headers:${JSON.stringify(headers)}`)
-        return await this.fetch(this.siteUrl + id.replace("/s/", "/cv/"), null, headers, true)
+        let url = this.siteUrl + id.replace("/s/", "/cv/")
+        let headers = this.getSearchHeader(url)
+        let content = await req(url,{headers:headers,redirect:2})
+        await this.jadeLog.debug(`回复内容为:${JSON.stringify(content)}`)
+        // let url = await this.fetch(this.siteUrl + id.replace("/s/", "/cv/"), null, headers, true)
+        return content.headers.location
     }
 
     async parseVodDetailfromJson(obj) {
