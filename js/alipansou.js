@@ -11,19 +11,20 @@ import {_, load} from "../lib/cat.js";
 import {Spider} from "./spider.js";
 import {detailContent, initAli, playContent} from "../lib/ali.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
+import * as Utils from "../lib/utils.js";
 
 class GitCafeSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = "https://alipansou.com"
     }
-
-    getHeader() {
-        let headers = super.getHeader()
-        headers["Connection"] = "keep-alive"
-        headers["Cookie"] = "_ga=GA1.1.1647939453.1701612530; cf_clearance=9uoGAVglm4FmzyBQ6lAQHtqsgQfxAL9_mKiDvoG9IG4-1701689787-0-1-d796e2dc.b6a4f5f.8097bd3c-0.2.1701689787; no_show_donate=1; mysession=MTcwOTU1MDg5NXxEdi1CQkFFQ180SUFBUkFCRUFBQU1QLUNBQUVHYzNSeWFXNW5EQXdBQ25ObFlYSmphRjlyWlhrR2MzUnlhVzVuREE0QURPV05sLWFkcGVXTWwtVy1nQT09fKLZ-Nt7ZRL9imGWBfdOmNlteN2dzRl3SemquoSIyBzr; _bid=23ce30384338b02900cbeadd67ac614f; Hm_lvt_02f69e0ba673e328ef49b5fb98dd4601=1708761367,1709550896; cto_bundle=Xw_ss194N016R1FoTHM1RFFSNUJnZyUyQmFnUGN5c2czTnRRSjVrcFNUUlJ4TkI1YzZxcXVOTiUyRk82WmIlMkZncEJKUzhTb2d3UGhPdk5SMzRzazVCcVRVYmxURW40TFRiTzdHWGRlbk1uZnE4VWNrN3Z1d2FGS0MxMDVhWXpRMjJlc21VSnIlMkIyRjhSJTJCcll5SVFhZU52R1gxYmtIMUNiciUyQjdaZ25sdkNpJTJCTUN3c00ySjdxUjdlRnZhSjFHWkglMkJNcFp6Zkd6YiUyQno5Z3FzdUM4Qkh5enklMkZadXJPMFp0YnclM0QlM0Q; Hm_lpvt_02f69e0ba673e328ef49b5fb98dd4601=1709550950; _ga_NYNC791BP2=GS1.1.1709550896.4.1.1709550950.0.0.0; _ga_0B2NFC7Z09=GS1.1.1709550896.4.1.1709550950.6.0.0; _egg=bfe7e29486b54e5b919cb9b8a16471eae"
+    getSearchHeader(id) {
+        let headers = this.getHeader()
+        headers["Referer"] = this.siteUrl + id
+        headers["_bid"] = "6d14a5dd6c07980d9dc089a693805ad8";
         return headers
     }
+
 
     getName() {
         return "😸┃阿里猫狸┃😸"
@@ -31,6 +32,10 @@ class GitCafeSpider extends Spider {
 
     getAppName() {
         return "阿里猫狸"
+    }
+
+    getHeader() {
+        return {"User-Agent":Utils.CHROME, "Connection": "keep-alive", "Cookie":"_ga=GA1.1.1647939453.1701612530; cf_clearance=9uoGAVglm4FmzyBQ6lAQHtqsgQfxAL9_mKiDvoG9IG4-1701689787-0-1-d796e2dc.b6a4f5f.8097bd3c-0.2.1701689787; no_show_donate=1; mysession=MTcwOTU1MDg5NXxEdi1CQkFFQ180SUFBUkFCRUFBQU1QLUNBQUVHYzNSeWFXNW5EQXdBQ25ObFlYSmphRjlyWlhrR2MzUnlhVzVuREE0QURPV05sLWFkcGVXTWwtVy1nQT09fKLZ-Nt7ZRL9imGWBfdOmNlteN2dzRl3SemquoSIyBzr; _bid=23ce30384338b02900cbeadd67ac614f; Hm_lvt_02f69e0ba673e328ef49b5fb98dd4601=1708761367,1709550896; cto_bundle=Xw_ss194N016R1FoTHM1RFFSNUJnZyUyQmFnUGN5c2czTnRRSjVrcFNUUlJ4TkI1YzZxcXVOTiUyRk82WmIlMkZncEJKUzhTb2d3UGhPdk5SMzRzazVCcVRVYmxURW40TFRiTzdHWGRlbk1uZnE4VWNrN3Z1d2FGS0MxMDVhWXpRMjJlc21VSnIlMkIyRjhSJTJCcll5SVFhZU52R1gxYmtIMUNiciUyQjdaZ25sdkNpJTJCTUN3c00ySjdxUjdlRnZhSjFHWkglMkJNcFp6Zkd6YiUyQno5Z3FzdUM4Qkh5enklMkZadXJPMFp0YnclM0QlM0Q; Hm_lpvt_02f69e0ba673e328ef49b5fb98dd4601=1709550950; _ga_NYNC791BP2=GS1.1.1709550896.4.1.1709550950.0.0.0; _ga_0B2NFC7Z09=GS1.1.1709550896.4.1.1709550950.6.0.0; _egg=bfe7e29486b54e5b919cb9b8a16471eae"}
     }
 
     async getContentHtml() {
@@ -70,19 +75,17 @@ class GitCafeSpider extends Spider {
         return vod_list
     }
 
-    async getAliUrl(url) {
-        let headers = this.getHeader()
-        headers["Referer"] = url
-        headers["_bid"] = "6d14a5dd6c07980d9dc089a693805ad8";
-        await this.jadeLog.debug(`获取阿里链接url:${url.replace("/s/", "/cv/")},headers:${JSON.stringify(headers)}`)
-        return await this.fetch(url.replace("/s/", "/cv/"), null, headers, true)
+    async getAliUrl(id) {
+        let headers = this.getSearchHeader(id)
+        await this.jadeLog.debug(`获取阿里链接url:${this.siteUrl + id.replace("/s/", "/cv/")},headers:${JSON.stringify(headers)}`)
+        return await this.fetch(this.siteUrl + id.replace("/s/", "/cv/"), null, headers, true)
     }
 
     async parseVodDetailfromJson(obj) {
         let vodDetail = new VodDetail();
         vodDetail.vod_name = obj["name"]
         vodDetail.vod_remarks = obj["remarks"]
-        let ali_url = await this.getAliUrl(this.siteUrl + obj["id"])
+        let ali_url = await this.getAliUrl(obj["id"])
         await this.jadeLog.debug(`阿里分享链接为:${ali_url}`)
         if (!_.isEmpty(ali_url)) {
             let aliVodDetail = await detailContent([ali_url])
