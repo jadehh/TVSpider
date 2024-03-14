@@ -16,12 +16,11 @@ import * as Utils from "../lib/utils.js";
 class GitCafeSpider extends Spider {
     constructor() {
         super();
-        this.siteUrl = "https://alipansou.com"
+        this.siteUrl = "https://www.alipansou.com"
     }
     getSearchHeader(id) {
         let headers = this.getHeader()
         headers["Referer"] = this.siteUrl + id
-        headers["_bid"] = "6d14a5dd6c07980d9dc089a693805ad8";
         return headers
     }
 
@@ -35,7 +34,8 @@ class GitCafeSpider extends Spider {
     }
 
     getHeader() {
-        return {"User-Agent":Utils.CHROME, "Connection": "keep-alive", "Cookie":"_ga=GA1.1.1647939453.1701612530; cf_clearance=9uoGAVglm4FmzyBQ6lAQHtqsgQfxAL9_mKiDvoG9IG4-1701689787-0-1-d796e2dc.b6a4f5f.8097bd3c-0.2.1701689787; no_show_donate=1; mysession=MTcwOTU1MDg5NXxEdi1CQkFFQ180SUFBUkFCRUFBQU1QLUNBQUVHYzNSeWFXNW5EQXdBQ25ObFlYSmphRjlyWlhrR2MzUnlhVzVuREE0QURPV05sLWFkcGVXTWwtVy1nQT09fKLZ-Nt7ZRL9imGWBfdOmNlteN2dzRl3SemquoSIyBzr; _bid=23ce30384338b02900cbeadd67ac614f; Hm_lvt_02f69e0ba673e328ef49b5fb98dd4601=1708761367,1709550896; cto_bundle=Xw_ss194N016R1FoTHM1RFFSNUJnZyUyQmFnUGN5c2czTnRRSjVrcFNUUlJ4TkI1YzZxcXVOTiUyRk82WmIlMkZncEJKUzhTb2d3UGhPdk5SMzRzazVCcVRVYmxURW40TFRiTzdHWGRlbk1uZnE4VWNrN3Z1d2FGS0MxMDVhWXpRMjJlc21VSnIlMkIyRjhSJTJCcll5SVFhZU52R1gxYmtIMUNiciUyQjdaZ25sdkNpJTJCTUN3c00ySjdxUjdlRnZhSjFHWkglMkJNcFp6Zkd6YiUyQno5Z3FzdUM4Qkh5enklMkZadXJPMFp0YnclM0QlM0Q; Hm_lpvt_02f69e0ba673e328ef49b5fb98dd4601=1709550950; _ga_NYNC791BP2=GS1.1.1709550896.4.1.1709550950.0.0.0; _ga_0B2NFC7Z09=GS1.1.1709550896.4.1.1709550950.6.0.0; _egg=bfe7e29486b54e5b919cb9b8a16471eae"}
+
+        return {"User-Agent":Utils.CHROME, "Connection": "keep-alive", "Cookie":"_ga=GA1.1.1506025676.1708225506;FCNEC=%5B%5B%22AKsRol9sCpH4JteOAAMprJLQxCHddrtkOFinxqt1cs8x3fKzbBZ5Ll76VvjATz1Ejf6NoayGSONFl2gfn6PbVAG97MlHjhp6cY5NFLQtLIUy0TuzI1_ThHnANe8fW03fHdU2-cx5yM3MftaHt4awEGBWhgtE9H_P5w%3D%3D%22%5D%5D;_cc_id=cc82bd83ea8936df45fe63c887a6f221;mysession=MTcwOTYyMjMxMHxEdi1CQkFFQ180SUFBUkFCRUFBQU1fLUNBQUVHYzNSeWFXNW5EQXdBQ25ObFlYSmphRjlyWlhrR2MzUnlhVzVuREJFQUQtV1JxT1draE9tWnBPUzRpZVd1c3c9PXyjHmLCdFvUlsW_gilBojjCq1ak-ffOud6aZKm3kxzJ4w==;Hm_lvt_02f69e0ba673e328ef49b5fb98dd4601=1708225506,1709622301,1710414091;_bid=28d3966abb8cf873ea912b715552f587;cf_clearance=6LuYs83fWIZlcwwzZkgRyYyFrP6Hndxe_CgByMe.pMs-1710414092-1.0.1.1-V44M.u7MNIozBytYixxp4Qe1OVr.CBH78.IEK2QJTWGQ7.HQBR0DoUgiSfpa23U.nxtOfhkrASpqogvz53knnw;cto_bundle=-WbYyl9VWGZjQkhzZ0gyQjE4VXNlcTJnYTNaV3dMaTdVV0xST3p5RkVnUTNxVWpxYVElMkZtNnVsaWtQSzdQU3JJY0slMkYxc3R5SXdyQlRzbkp1clVNZk84OElTR2MlMkJPeGx0bGtsUHk2VzhGdk1yYyUyRnB5eUNNblhKbWpzcjY1SVI1ODlWRGZXemgzUU51bGF5UWxFNVljcUZpd252bnVZZ1R1d0VXRmJ3S1FXQ1RCMXhVNCUzRA;Hm_lpvt_02f69e0ba673e328ef49b5fb98dd4601=1710416656;_ga_NYNC791BP2=GS1.1.1710414091.2.1.1710416656.0.0.0;_ga_0B2NFC7Z09=GS1.1.1710414091.2.1.1710416656.60.0.0;_egg=16a87a4666714be885e814217b225d50e"}
     }
 
     async getContentHtml() {

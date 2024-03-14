@@ -308,6 +308,7 @@ class Spider {
         } else {
             response = await req(uri.toString(), {method: "get", headers: headers, buffer: buffer, data: null});
         }
+        await this.jadeLog.debug(`返回response1:${JSON.stringify(response.headers)}`)
         if (this.catOpenStatus) {
             if (response.code === 200 || response.code === 302 || response.code === 301 || return_cookie) {
                 return await this.getResponse(reqUrl, params, headers, redirect_url, return_cookie, buffer, response)
@@ -573,7 +574,7 @@ class Spider {
                 let episodeName = vodItem.split("$")[0].split(" ")[0]
                 let episodeUrl = vodItem.split("$")[1]
                 let matchers = episodeName.match(/\d+/g)
-                if (matchers !== null && matchers.length > 0){
+                if (matchers !== null && matchers.length > 0) {
                     episodeName = matchers[0]
                 }
                 episodeObj[episodeUrl] = {"episodeName": episodeName, "episodeId": episodeName}
@@ -622,17 +623,16 @@ class Spider {
                 let danmuUrl;
                 try {
                     danmuUrl = await this.setDanmu(id)
-                }catch (e){
+                } catch (e) {
                     await this.jadeLog.error(`弹幕加载失败,失败原因为:${e}`)
                 }
                 return this.result.setHeader(this.header).danmu(danmuUrl).play(this.playUrl)
-            }else{
+            } else {
                 await this.jadeLog.debug("不需要加载弹幕", true)
                 await this.jadeLog.debug(`播放页面内容为:${this.result.play(this.playUrl)}`)
                 await this.jadeLog.info("播放页面解析完成", true)
                 return this.result.setHeader(this.header).play(this.playUrl)
             }
-
 
 
         } catch (e) {
