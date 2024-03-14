@@ -612,7 +612,12 @@ class Spider {
             await this.setPlay(flag, id, flags)
             if (this.danmuStaus && !this.catOpenStatus) {
                 await this.jadeLog.debug("需要加载弹幕", true)
-                let danmuUrl = await this.setDanmu(id)
+                let danmuUrl;
+                try {
+                    danmuUrl = await this.setDanmu(id)
+                }catch (e){
+                    await this.jadeLog.error(`弹幕加载失败,失败原因为:${e}`)
+                }
                 return this.result.setHeader(this.header).danmu(danmuUrl).play(this.playUrl)
             }else{
                 await this.jadeLog.debug("不需要加载弹幕", true)
