@@ -55,7 +55,7 @@ async function test() {
     await spider.init({
         skey: siteKey,
         stype: siteType,
-        ext: {"token": "302ef8e4b4d7430db6d82de284978359", "box": "CatOpen", "code": "1","from":"justlive1"}
+        ext: {"token": "302ef8e4b4d7430db6d82de284978359", "box": "TV", "code": "1","from":"justlive1","danmu":false}
     });
 
 
@@ -75,7 +75,7 @@ async function test() {
 
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/index.php/voddetail/82501.html"))
+    let detail1 = JSON.parse(await spider.detail("/index.php/voddetail/82472.html"))
     await testPlay(detail1)
 
 

@@ -17,11 +17,13 @@ class WoggSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = 'https://tvfan.xxooo.cf';
+        this.woggTypeObj = {"玩偶电影":"电影","玩偶剧集":"电视剧"}
     }
 
     async init(cfg) {
         await super.init(cfg);
         await initAli(this.cfgObj["token"]);
+        this.danmuStaus = true
     }
 
     getName() {
@@ -54,14 +56,7 @@ class WoggSpider extends Spider {
         let vodDetail = new VodDetail()
         vodDetail.vod_name = $('.page-title')[0].children[0].data
         vodDetail.vod_pic = $($(".mobile-play")).find(".lazyload")[0].attribs["data-src"]
-        let video_info_aux_list = $($(".video-info-aux")).find(".tag-link")[1].children
-        for (const video_info_aux of video_info_aux_list) {
-            try {
-                vodDetail.type_name = vodDetail.type_name + video_info_aux.children[0].data
-            } catch {
-
-            }
-        }
+        vodDetail.type_name = this.woggTypeObj[$("[class=\"video-info-aux\"]").find("a")[0].attribs.title]
         let video_items = $('.video-info-items')
         vodDetail.vod_director = $(video_items[0]).find("a")[0].children[0].data
         let vidoe_info_actor_list = $(video_items[1]).find("a")
@@ -73,7 +68,7 @@ class WoggSpider extends Spider {
         }
         vodDetail.vod_actor = actor_list.join(" * ")
         vodDetail.vod_year = $(video_items[2]).find("a")[0].children[0].data
-        vodDetail.vod_remarks = `清晰度:${$(video_items[3]).find("div")[0].children[0].data}, 制作人:Jade`
+        vodDetail.vod_remarks = `${$(video_items[3]).find("div")[0].children[0].data}, 制作人:Jade`
         vodDetail.vod_content = $(video_items[4]).find("p")[0].children[0].data
 
         vodDetail.vod_content = vodDetail.vod_content.replace("[收起部分]", "").replace("[展开全部]", "")

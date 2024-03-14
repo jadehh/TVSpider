@@ -90,7 +90,7 @@ class Build(object):
                     site_obj_copy = copy.copy(site_obj)
                     site_obj_copy["key"] = js_file_name
                     site_obj_copy["name"] = jsMoudle.getName()
-                    site_obj_copy["ext"] = {"box": json_file_name}
+                    site_obj_copy["ext"] = {"box": json_file_name,"danmu":False}
                     site_obj_copy["api"] = "./{}/{}".format(self.js_path, js_file)
                     print(js_file_name,jsMoudle.getAppName())
                     if "阿里" in jsMoudle.getAppName() or "厂长直连" in jsMoudle.getAppName():

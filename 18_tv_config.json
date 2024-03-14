@@ -6,7 +6,7 @@
             "type": 3,
             "api": "./js/asianx.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "ciliduo",
@@ -14,7 +14,7 @@
             "type": 3,
             "api": "./js/ciliduo.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "doll",
@@ -22,7 +22,7 @@
             "type": 3,
             "api": "./js/doll.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "feifan18",
@@ -30,7 +30,7 @@
             "type": 3,
             "api": "./js/feifan18.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "hscangku",
@@ -38,7 +38,7 @@
             "type": 3,
             "api": "./js/hscangku.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "jable",
@@ -46,7 +46,7 @@
             "type": 3,
             "api": "./js/jable.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "liangzi18",
@@ -54,7 +54,7 @@
             "type": 3,
             "api": "./js/liangzi18.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "nivod_18",
@@ -62,7 +62,7 @@
             "type": 3,
             "api": "./js/nivod_18.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "sehuatang",
@@ -70,7 +70,7 @@
             "type": 3,
             "api": "./js/sehuatang.js",
             "timeout": 30,
-            "ext": "{\"box\": \"TVBox\"}"
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
             "key": "push_agent",
