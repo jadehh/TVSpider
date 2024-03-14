@@ -308,7 +308,6 @@ class Spider {
         } else {
             response = await req(uri.toString(), {method: "get", headers: headers, buffer: buffer, data: null});
         }
-        await this.jadeLog.debug(`返回response1:${JSON.stringify(response.headers)}`)
         if (this.catOpenStatus) {
             if (response.code === 200 || response.code === 302 || response.code === 301 || return_cookie) {
                 return await this.getResponse(reqUrl, params, headers, redirect_url, return_cookie, buffer, response)
