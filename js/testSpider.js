@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './alipansou.js';
+import {__jsEvalReturn} from './push_agent.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'alipansou';
+    let siteKey = 'nangua';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
@@ -58,22 +58,22 @@ async function test() {
         }
     });
 
-
+    //
     // let classes = JSON.parse(await spider.home(true));
     // console.debug(JSON.stringify(classes));
-
-
-    // //测试首页列表
-    let homeVod = JSON.parse(await spider.homeVod())
-    console.debug(JSON.stringify(homeVod));
-
-    // 测试搜索
+    //
+    //
+    // // //测试首页列表
+    // let homeVod = JSON.parse(await spider.homeVod())
+    // console.debug(JSON.stringify(homeVod));
+    //
+    // // 测试搜索
     // let search_page = JSON.parse(await spider.search("斗破苍穹"))
     // console.debug(JSON.stringify(search_page));
 
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/search?k=%e5%91%a8%e5%a4%84%e9%99%a4%e4%b8%89%e5%ae%b3"))
+    let detail1 = JSON.parse(await spider.detail("https://110.42.2.247:9092/c/m3u8_301/acce27eaf190611c6e66c87ecdf6df64.m3u8?vkey=0f2cK01AmxuqNlNke1ZLm1gpdZ7IRKLp24BrqlpzvxDC0q-6NpqFVK-xO0bquDbu"))
     await testPlay(detail1)
 
 

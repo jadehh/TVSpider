@@ -50,7 +50,7 @@ class PushSpider extends Spider {
         let vodDetail = new VodDetail()
         vodDetail.vod_pic = Utils.RESOURCEURL + "/resources/push.jpg"
         let mather = Utils.patternAli.exec(id)
-        if (mather.length > 0) {
+        if (mather !== null && mather.length > 0) {
             let aliVodDetail = await detailContent([id])
             vodDetail.vod_play_url = aliVodDetail.vod_play_url
             vodDetail.vod_play_from = aliVodDetail.vod_play_from
