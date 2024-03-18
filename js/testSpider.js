@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './push_agent.js';
+import {__jsEvalReturn} from './nangua.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -58,22 +58,22 @@ async function test() {
         }
     });
 
-    //
-    // let classes = JSON.parse(await spider.home(true));
-    // console.debug(JSON.stringify(classes));
-    //
-    //
-    // // //测试首页列表
-    // let homeVod = JSON.parse(await spider.homeVod())
-    // console.debug(JSON.stringify(homeVod));
-    //
-    // // 测试搜索
-    // let search_page = JSON.parse(await spider.search("斗破苍穹"))
-    // console.debug(JSON.stringify(search_page));
+
+    let classes = JSON.parse(await spider.home(true));
+    console.debug(JSON.stringify(classes));
+
+
+    // //测试首页列表
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
+
+    // 测试搜索
+    let search_page = JSON.parse(await spider.search("斗破苍穹"))
+    console.debug(JSON.stringify(search_page));
 
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("https://110.42.2.247:9092/c/m3u8_301/acce27eaf190611c6e66c87ecdf6df64.m3u8?vkey=0f2cK01AmxuqNlNke1ZLm1gpdZ7IRKLp24BrqlpzvxDC0q-6NpqFVK-xO0bquDbu"))
+    let detail1 = JSON.parse(await spider.detail("261159"))
     await testPlay(detail1)
 
 

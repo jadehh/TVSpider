@@ -31,10 +31,11 @@ class NanGuaSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = 'http://ys.changmengyun.com';
+        this.danmuStaus = true
     }
 
     getName() {
-        return "|南瓜影视|"
+        return "🎃|南瓜影视|🎃"
     }
 
     getAppName() {
@@ -284,8 +285,7 @@ class NanGuaSpider extends Spider {
                 let jData = JSON.parse(await this.fetch(mjurl, null, this.getHeader()));
                 this.playUrl = jData["data"]["url"]
             } else {
-                let mjurl = 'http://43.154.104.152:1234/jhapi/cs.php?url=' + id.split('url=')[1]
-                let jData = JSON.parse(await this.fetch(mjurl, null, this.getHeader()));
+                let jData = JSON.parse(await this.fetch(id, null, this.getHeader()));
                 this.playUrl = jData["data"]["url"]
             }
         } catch (e) {

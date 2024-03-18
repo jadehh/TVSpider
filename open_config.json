@@ -164,6 +164,15 @@
                 "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
+                "key": "nangua",
+                "name": "🎃|南瓜影视|🎃",
+                "playerType": 0,
+                "type": 3,
+                "api": "./js/nangua.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
+            },
+            {
                 "key": "nivod",
                 "name": "👑‍┃泥视频┃墙👑",
                 "playerType": 0,

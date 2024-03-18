@@ -1,13 +1,14 @@
 ### 更新日志
+### jsV1.0.2.7 - 2024-03-18
+* 新增南瓜影视
+---
+
+<details onclose>
 
 ### jsV1.0.2.6 - 2024-03-13
 * 修复详情界面,返回episodeUrl需要带上VodDetail和episodeId
 * 播放页面,解析其他信息
 ---
-
-<details onclose>
-
-
 
 
 
