@@ -20,6 +20,7 @@ gitee://Token@gitee.com/jadehh_743/TVSpider/js/open_config.json
 ```bash
 python build.py
 ```
+> Token如果失效,需要重新获取阿里Token
 
 ## 遇到的问题
 * 玩偶姐姐播放不了,需要切换VPN节点
