@@ -8,7 +8,7 @@
 */
 import {Crypto, jinja2, _} from "../lib/cat.js";
 import {Spider} from "./spider.js";
-import {VodDetail} from "../lib/vod.js";
+import {VodDetail, VodShort} from "../lib/vod.js";
 
 function stripHtmlTag(src) {
     return src
@@ -31,7 +31,6 @@ class NanGuaSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = 'http://ys.changmengyun.com';
-        this.danmuStaus = true
     }
 
     getName() {
@@ -40,6 +39,11 @@ class NanGuaSpider extends Spider {
 
     getAppName() {
         return "南瓜影视"
+    }
+
+    async init(cfg) {
+        await super.init(cfg);
+        this.danmuStaus = true
     }
 
     getHeader() {
@@ -198,11 +202,18 @@ class NanGuaSpider extends Spider {
 
     async parseVodShortListFromJson(obj) {
         let vod_list = []
-        obj.forEach(function (it) {
-            vod_list.push({
-                vod_id: it.id, vod_name: it.name, vod_pic: it.img, vod_remarks: it.remarks,
-            });
-        });
+        for (const data of obj){
+            let vodShort = new VodShort()
+            vodShort.vod_id = data["id"]
+            vodShort.vod_name = data["name"]
+            vodShort.vod_pic = data["img"]
+            vodShort.vod_remarks = data["remarks"]
+            if (_.isEmpty(vodShort.vod_remarks)){
+                vodShort.vod_remarks = data["msg"]
+            }
+            vod_list.push(vodShort)
+        }
+
         return vod_list
     }
 

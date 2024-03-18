@@ -54,7 +54,7 @@ async function test() {
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
-            "token": "302ef8e4b4d7430db6d82de284978359", "box": "TV", "code": "1", "from": "justlive1", "danmu": false
+            "token": "302ef8e4b4d7430db6d82de284978359", "box": "TV", "code": "1", "from": "justlive1", "danmu": true
         }
     });
 
@@ -62,6 +62,9 @@ async function test() {
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
 
+    //测试分类列表
+    let catePage = JSON.parse(await spider.category(2, "1", undefined, {}));
+    console.debug(JSON.stringify(catePage));
 
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
@@ -77,9 +80,7 @@ async function test() {
     await testPlay(detail1)
 
 
-    //测试分类列表
-    let catePage = JSON.parse(await spider.category("home", "1", undefined, {}));
-    console.debug(JSON.stringify(catePage));
+
 
 
     // 测试详情
