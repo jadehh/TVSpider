@@ -165,6 +165,7 @@ class KuaiKanSpider extends Spider {
     }
 
     async getFilter(filterData) {
+        await this.jadeLog.debug(JSON.stringify(filterData))
         let filterAll = []
         for (let key of Object.keys(filterData)) {
             let itemValues = filterData[key];
