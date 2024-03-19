@@ -6,7 +6,7 @@
 * @Software : Samples
 * @Desc     :
 */
-import {Crypto, jinja2, _, dayjs} from "../lib/cat.js";
+import {jinja2, _, dayjs} from "../lib/cat.js";
 import {Spider} from "./spider.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
@@ -67,7 +67,7 @@ async function request(reqUrl, postData, agentSp, get) {
         let src = CryptoJS.enc.Base64.parse(content);
         let dst = CryptoJS.AES.decrypt({ciphertext: src}, key, {iv: iv, padding: CryptoJS.pad.Pkcs7});
         dst = CryptoJS.enc.Utf8.stringify(dst);
-        // console.log(dst);
+        await this.jadeLog.debug(`response:${dst}`)
         return JSON.parse(dst);
     } catch (e) {
         return JSON.parse(content)
