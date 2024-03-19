@@ -311,6 +311,7 @@ class KuaiKanSpider extends Spider {
                             if (result.url){
                                 this.playUrl = result.url // 这里可以直接返回弹幕,无法进行快进操作
                                 this.danmuUrl = await this.danmuSpider.getVideoUrl(id,0)
+                                break
                             }
                         } catch (error) {
                         }
