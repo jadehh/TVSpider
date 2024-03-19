@@ -324,8 +324,12 @@ class KuaiKanSpider extends Spider {
             }
             let res = await this.request(this.siteUrl + '/video.php', {url: id});
             let result = jsonParse(id, res.data);
-            if (result.url) {
-                this.playUrl = await js2Proxy(true, this.siteType, this.siteKey, 'lzm3u8/' + Utils.base64Encode(result.url), {});
+            if (result.url ) {
+                if (result.url.indexOf("filename=1.mp4") > -1){
+                    this.playUrl = result.url
+                }else{
+                    this.playUrl = await js2Proxy(true, this.siteType, this.siteKey, 'lzm3u8/' + Utils.base64Encode(result.url), {});
+                }
             }
         } catch (e) {
             await this.jadeLog.error(e)
