@@ -307,8 +307,11 @@ class KuaiKanSpider extends Spider {
                             let res = await req(p + id, {
                                 headers: {'user-agent': 'okhttp/4.1.0'},
                             });
-                            let result = jsonParse(id, JSON.parse(res.content));
-                            this.playUrl = result.url
+                            let result = jsonParse(id, JSON.parse(res.content)["data"]);
+                            if (result.url){
+                                this.playUrl = result.url
+                                return
+                            }
                         } catch (error) {
                         }
                     }
@@ -353,7 +356,6 @@ class KuaiKanSpider extends Spider {
             await this.jadeLog.debug(`使用代理播放,播放连接为:${url}`)
             const resp = await req(url, {});
             let hls = resp.content;
-            await this.jadeLog.debug(`hls:${hls}`)
             const jsBase = await js2Proxy(false, this.siteType, this.siteKey, 'lzm3u8/', {});
             const baseUrl = url.substr(0, url.lastIndexOf('/') + 1);
             await this.jadeLog.debug(hls.length)
