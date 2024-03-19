@@ -119,7 +119,7 @@ class KuaiKanSpider extends Spider {
             headers['Content-Type'] = 'application/x-www-form-urlencoded';
         }
         let res = await req(reqUrl, {
-            method: get ? 'get' : 'post', headers: headers, data: postData || {},
+            method: get ? 'get' : 'post', headers: headers, data: postData || {}, postType: 'form'
         });
         await this.jadeLog.debug(`URL:${reqUrl},headers:${JSON.stringify(headers)},data:${[JSON.stringify(postData)]}`)
         let content = res.content;
