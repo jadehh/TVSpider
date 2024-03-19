@@ -346,9 +346,9 @@ class KuaiKanSpider extends Spider {
             let hls = resp.content;
             const jsBase = await js2Proxy(false, this.siteType, this.siteKey, 'lzm3u8/', {});
             const baseUrl = url.substr(0, url.lastIndexOf('/') + 1);
-            console.log(hls.length);
+            await this.jadeLog.debug(hls.length)
             hls = hls.replace(/#EXT-X-DISCONTINUITY\r*\n*#EXTINF:6.433333,[\s\S]*?#EXT-X-DISCONTINUITY/, '');
-            console.log(hls.length);
+            await this.jadeLog.debug(hls.length)
             hls = hls.replace(/(#EXT-X-KEY\S+URI=")(\S+)("\S+)/g, function (match, p1, p2, p3) {
                 let up = (!p2.startsWith('http') ? baseUrl : '') + p2;
                 return p1 + up + p3;

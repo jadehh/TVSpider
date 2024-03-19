@@ -59,6 +59,10 @@ async function test() {
     });
 
 
+        // 测试详情
+    let detail1 = JSON.parse(await spider.detail("25110"))
+    await testPlay(detail1)
+
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
 
@@ -76,9 +80,7 @@ async function test() {
     let search_page = JSON.parse(await spider.search("小日子"))
     console.debug(JSON.stringify(search_page));
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("25168"))
-    await testPlay(detail1)
+
 
 
 
