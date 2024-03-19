@@ -206,11 +206,10 @@ class KuaiKanSpider extends Spider {
 
     async setFilterObj() {
         for (const typeDic of this.classes) {
-            let typeName = typeDic["type_name"]
             let typeId = typeDic["type_id"]
             if (typeId !== "最近更新") {
                 let filterData = (await request(this.siteUrl + '/api.php/Video/getFilterType', {type: typeId})).data;
-                this.classes[typeId] = await this.getFilter(filterData)
+                this.filterObj[typeId] = await this.getFilter(filterData)
             }
         }
 
