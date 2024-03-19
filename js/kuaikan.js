@@ -298,7 +298,8 @@ class KuaiKanSpider extends Spider {
 
     async setPlay(flag, id, flags) {
         try {
-            if (id.indexOf('youku') >= 0 || id.indexOf('iqiyi') >= 0 || id.indexOf('v.qq.com') >= 0 || id.indexOf('pptv') >= 0 || id.indexOf('le.com') >= 0 || id.indexOf('1905.com') >= 0 || id.indexOf('mgtv') >= 0) {
+            if (id.indexOf('youku') >= 0 || id.indexOf('iqiyi') >= 0 || id.indexOf('v.qq.com') >= 0 || id.indexOf('pptv') >= 0 || id.indexOf('le.com') >= 0 || id.indexOf('1905.com') >= 0 || id.indexOf('mgtv') >= 0)
+            {
                 if (this.parse.length > 0) {
                     for (let index = 0; index < this.parse.length; index++) {
                         try {

@@ -605,7 +605,7 @@ class Spider {
     }
 
     async play(flag, id, flags) {
-        await this.jadeLog.info("正在解析播放页面", true)
+        await this.jadeLog.info(`正在解析播放页面,flag:${flag},id:${id},flags:${flags}`, true)
         try {
             await this.setPlay(flag, id, flags)
             if (this.danmuStaus && !this.catOpenStatus) {
