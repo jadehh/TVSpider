@@ -309,9 +309,8 @@ class KuaiKanSpider extends Spider {
                             await this.jadeLog.debug(`解析连接结果为:${JSON.stringify(res)}`)
                             let result = jsonParse(id, JSON.parse(res.content)["data"]);
                             if (result.url){
+                                this.playUrl = result.url // 这里可以直接返回弹幕,无法进行快进操作
                                 this.danmuUrl = await this.danmuSpider.getVideoUrl(id,0)
-                                this.playUrl = await js2Proxy(true, this.siteType, this.siteKey, 'lzm3u8/' + Utils.base64Encode(result.url), {});
-
                             }
                         } catch (error) {
                         }
