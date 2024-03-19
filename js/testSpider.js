@@ -18,7 +18,7 @@ async function testPlay(vodDetail) {
                     var name = urls[j].split('$')[0];
                     var url = urls[j].split('$')[1];
                     console.debug(flag + " | " + name + " | " + url);
-                    var playUrl = await spider.play("mgtv", "https://www.mgtv.com/b/516474/20592911.html", []);
+                    var playUrl = await spider.play(name, url, []);
                     console.debug('playURL: ' + playUrl);
                 }
             }

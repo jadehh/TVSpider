@@ -594,6 +594,7 @@ class Spider {
     }
 
     async setDanmu(id) {
+        await this.jadeLog.debug(`${JSON.stringify(this.episodeObj)}`)
         let episodeId = this.episodeObj[id]
         let vodDetail = JSON.parse(this.episodeObj["vodDetail"])
         delete vodDetail.vod_content;
