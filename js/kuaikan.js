@@ -67,7 +67,6 @@ function jsonParse(input, json) {
             header: headers, url: url,
         };
     } catch (error) {
-        console.log(error);
     }
     return {};
 }
@@ -307,10 +306,11 @@ class KuaiKanSpider extends Spider {
                             let res = await req(p + id, {
                                 headers: {'user-agent': 'okhttp/4.1.0'},
                             });
+                            await this.jadeLog.debug(`解析连接结果为:${JSON.stringify(res)}`)
                             let result = jsonParse(id, JSON.parse(res.content)["data"]);
                             if (result.url){
-                                this.playUrl = result.url
-                                return
+                                this.playUrl = result.url // 这里可以直接返回弹幕
+                                this.danmuUrl = await this.danmuSpider.getVideoUrl(id,0)
                             }
                         } catch (error) {
                         }

@@ -206,6 +206,7 @@ class Spider {
         this.type_id_18 = 0
         this.type_name_18 = "伦理片"
         this.episodeObj = {}
+        this.danmuUrl = ""
 
     }
 
@@ -609,18 +610,25 @@ class Spider {
         try {
             await this.setPlay(flag, id, flags)
             if (this.danmuStaus && !this.catOpenStatus) {
-                let danmuUrl;
-                try {
-                    danmuUrl = await this.setDanmu(id)
-                } catch (e) {
-                    await this.jadeLog.error(`弹幕加载失败,失败原因为:${e}`)
+                if (!_.isEmpty(this.danmuUrl)) {
+                    await this.jadeLog.debug("播放详情页面有弹幕,所以不需要再查找弹幕")
+                    return this.result.setHeader(this.header).danmu(this.danmuUrl).play(this.playUrl)
+                } else {
+                    let danmuUrl;
+                    try {
+                        danmuUrl = await this.setDanmu(id)
+                    } catch (e) {
+                        await this.jadeLog.error(`弹幕加载失败,失败原因为:${e}`)
+                    }
+                    return this.result.setHeader(this.header).danmu(danmuUrl).play(this.playUrl)
                 }
-                return this.result.setHeader(this.header).danmu(danmuUrl).play(this.playUrl)
+
             } else {
                 await this.jadeLog.debug("不需要加载弹幕", true)
                 await this.jadeLog.debug(`播放页面内容为:${this.result.play(this.playUrl)}`)
                 await this.jadeLog.info("播放页面解析完成", true)
                 return this.result.setHeader(this.header).play(this.playUrl)
+
             }
 
 
