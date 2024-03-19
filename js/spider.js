@@ -608,11 +608,12 @@ class Spider {
     async play(flag, id, flags) {
         await this.jadeLog.info(`正在解析播放页面,flag:${flag},id:${id},flags:${flags}`, true)
         try {
+            let return_result;
             await this.setPlay(flag, id, flags)
             if (this.danmuStaus && !this.catOpenStatus) {
                 if (!_.isEmpty(this.danmuUrl)) {
                     await this.jadeLog.debug("播放详情页面有弹幕,所以不需要再查找弹幕")
-                    return this.result.setHeader(this.header).danmu(this.danmuUrl).play(this.playUrl)
+                    return_result = this.result.setHeader(this.header).danmu(this.danmuUrl).play(this.playUrl)
                 } else {
                     let danmuUrl;
                     try {
@@ -620,17 +621,17 @@ class Spider {
                     } catch (e) {
                         await this.jadeLog.error(`弹幕加载失败,失败原因为:${e}`)
                     }
-                    return this.result.setHeader(this.header).danmu(danmuUrl).play(this.playUrl)
+                    return_result = this.result.setHeader(this.header).danmu(danmuUrl).play(this.playUrl)
                 }
 
             } else {
                 await this.jadeLog.debug("不需要加载弹幕", true)
-                await this.jadeLog.debug(`播放页面内容为:${this.result.play(this.playUrl)}`)
-                await this.jadeLog.info("播放页面解析完成", true)
-                return this.result.setHeader(this.header).play(this.playUrl)
+                return_result = this.result.setHeader(this.header).play(this.playUrl)
 
             }
-
+            await this.jadeLog.info("播放页面解析完成", true)
+            await this.jadeLog.debug(`播放页面内容为:${return_result}`)
+            return return_result;
 
         } catch (e) {
             await this.jadeLog.error("解析播放页面出错,失败原因为:" + e)

@@ -296,6 +296,7 @@ class KuaiKanSpider extends Spider {
     }
 
     async setPlay(flag, id, flags) {
+        this.result.jx = 0
         try {
             if (id.indexOf('youku') >= 0 || id.indexOf('iqiyi') >= 0 || id.indexOf('v.qq.com') >= 0 || id.indexOf('pptv') >= 0 || id.indexOf('le.com') >= 0 || id.indexOf('1905.com') >= 0 || id.indexOf('mgtv') >= 0)
             {
