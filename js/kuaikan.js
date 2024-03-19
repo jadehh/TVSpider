@@ -95,7 +95,7 @@ class KuaiKanSpider extends Spider {
     }
 
 
-    async request(reqUrl , postData, agentSp, get) {
+    async request(reqUrl, postData, agentSp, get) {
         let ts = dayjs().valueOf().toString();
         let rand = randStr(32);
         let sign = CryptoJS.enc.Hex.stringify(CryptoJS.MD5('H58d2%gLbeingX*%D4Y8!C!!@G_' + ts + '_' + rand))
@@ -250,8 +250,8 @@ class KuaiKanSpider extends Spider {
         let playlist = {};
         for (const item of obj["vod_play"]) {
             let from = item["playerForm"];
-            if (from === 'jp') continue;
-            if (from === 'xg') continue;
+            if (from === 'jp' && this.catOpenStatus) continue;
+            if (from === 'xg' && this.catOpenStatus) continue;
             let urls = [];
             for (const u of item.url) {
                 urls.push(formatPlayUrl(vodDetail.vod_name, u.title) + '$' + u.play_url);
@@ -312,8 +312,7 @@ class KuaiKanSpider extends Spider {
                         }
                     }
                 }
-            }
-            if (id.indexOf('jqq-') >= 0) {
+            } else if (id.indexOf('jqq-') >= 0) {
                 let jqqHeaders = await this.request(this.siteUrl + '/jqqheader.json', null, null, true);
                 let ids = id.split('-');
                 let jxJqq = await req('https://api.juquanquanapp.com/app/drama/detail?dramaId=' + ids[1] + '&episodeSid=' + ids[2] + '&quality=LD', {headers: jqqHeaders});
@@ -321,16 +320,20 @@ class KuaiKanSpider extends Spider {
                 if (jqqInfo.data["playInfo"]["url"]) {
                     this.playUrl = jqqInfo.data["playInfo"]["url"]
                 }
-            }
-            let res = await this.request(this.siteUrl + '/video.php', {url: id});
-            let result = jsonParse(id, res.data);
-            if (result.url ) {
-                if (result.url.indexOf("filename=1.mp4") > -1){
-                    this.playUrl = result.url
-                }else{
-                    this.playUrl = await js2Proxy(true, this.siteType, this.siteKey, 'lzm3u8/' + Utils.base64Encode(result.url), {});
+            } else if (id.startsWith("ftp")) {
+                this.playUrl = id
+            } else {
+                let res = await this.request(this.siteUrl + '/video.php', {url: id});
+                let result = jsonParse(id, res.data);
+                if (result.url) {
+                    if (result.url.indexOf("filename=1.mp4") > -1) {
+                        this.playUrl = result.url
+                    } else {
+                        this.playUrl = await js2Proxy(true, this.siteType, this.siteKey, 'lzm3u8/' + Utils.base64Encode(result.url), {});
+                    }
                 }
             }
+
         } catch (e) {
             await this.jadeLog.error(e)
 
@@ -349,6 +352,7 @@ class KuaiKanSpider extends Spider {
             await this.jadeLog.debug(`使用代理播放,播放连接为:${url}`)
             const resp = await req(url, {});
             let hls = resp.content;
+            await this.jadeLog.debug(`hls:${hls}`)
             const jsBase = await js2Proxy(false, this.siteType, this.siteKey, 'lzm3u8/', {});
             const baseUrl = url.substr(0, url.lastIndexOf('/') + 1);
             await this.jadeLog.debug(hls.length)
