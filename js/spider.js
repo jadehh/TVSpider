@@ -70,15 +70,14 @@ class Result {
                 "header": this.header,
                 "format": this.format,
                 "subs": this.subs,
-                "danmaku": this.danmaku
+                "danmaku": this.danmaku,
+                "jx":this.jx
             })
-        }
-        {
+        }else{
             return JSON.stringify({
-                "url": url, "parse": this.parse, "header": this.header, "format": this.format, "subs": this.subs,
+                "url": url, "parse": this.parse, "header": this.header, "format": this.format, "subs": this.subs,"jx":this.jx
             })
         }
-
     }
 
     errorCategory(error_message) {
