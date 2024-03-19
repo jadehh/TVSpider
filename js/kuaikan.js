@@ -121,7 +121,7 @@ class KuaiKanSpider extends Spider {
         let res = await req(reqUrl, {
             method: get ? 'get' : 'post', headers: headers, data: postData || {},
         });
-
+        await this.jadeLog.debug(`URL:${reqUrl},headers:${JSON.stringify(headers)},data:${[JSON.stringify(postData)]}`)
         let content = res.content;
         try {
             let key = CryptoJS.enc.Utf8.parse('IjhHsCB2B5^#%0Ag');
