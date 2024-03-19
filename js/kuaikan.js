@@ -268,7 +268,7 @@ class KuaiKanSpider extends Spider {
         return vodDetail
     }
 
-    async setHome(filter) {
+    async setHomeVod() {
         let data = await request(this.siteUrl + "/api.php/Index/getHomePage", {"p": "1", "type": "1"})
         this.homeVodList = await this.parseVodShortListFromJSONByHome(data.data)
     }
