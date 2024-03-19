@@ -65,7 +65,6 @@ async function request(reqUrl,device, postData, agentSp, get) {
         let src = CryptoJS.enc.Base64.parse(content);
         let dst = CryptoJS.AES.decrypt({ciphertext: src}, key, {iv: iv, padding: CryptoJS.pad.Pkcs7});
         dst = CryptoJS.enc.Utf8.stringify(dst);
-        await this.jadeLog.debug(`response:${dst}`)
         return JSON.parse(dst);
     } catch (e) {
         return JSON.parse(content)
