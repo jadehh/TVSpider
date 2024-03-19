@@ -310,7 +310,7 @@ class KuaiKanSpider extends Spider {
                             let result = jsonParse(id, JSON.parse(res.content)["data"]);
                             if (result.url){
                                 this.playUrl = result.url // 这里可以直接返回弹幕,无法进行快进操作
-                                this.danmuUrl = await this.danmuSpider.getVideoUrl(id,0)
+                                // this.danmuUrl = await this.danmuSpider.getVideoUrl(id,0)
                             }
                         } catch (error) {
                         }
