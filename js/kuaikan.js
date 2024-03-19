@@ -342,6 +342,7 @@ class KuaiKanSpider extends Spider {
         let what = segments[0];
         let url = Utils.base64Decode(segments[1]);
         if (what === 'lzm3u8') {
+            await this.jadeLog.debug(`使用代理播放,播放连接为:${url}`)
             const resp = await req(url, {});
             let hls = resp.content;
             const jsBase = await js2Proxy(false, this.siteType, this.siteKey, 'lzm3u8/', {});
