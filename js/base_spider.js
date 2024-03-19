@@ -34,9 +34,15 @@ async function init(cfg) {
 
 async function home(filter) {
     await JadeLog.info("正在解析首页类别", true)
-    await JadeLog.debug(`首页类别内容为:${result.home()}`)
-    await JadeLog.info("首页类别解析完成", true)
-    return result.homeVod()
+    try{
+        await JadeLog.debug(`首页类别内容为:${result.home()}`)
+        await JadeLog.info("首页类别解析完成", true)
+        return result.homeVod()
+    }catch (e){
+        await this.jadeLog.error(`首页内容解析失败,失败原因为:{e}`)
+    }
+
+
 }
 
 

@@ -10,13 +10,9 @@ import {Crypto, jinja2, _, dayjs} from "../lib/cat.js";
 import {Spider} from "./spider.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
-
-
 let device;
-
 const charStr = 'abacdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789';
 let parse = []
-
 function randStr(len, withNum) {
     let _str = '';
     let containsNum = withNum === undefined ? true : withNum;
