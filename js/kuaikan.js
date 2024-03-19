@@ -10,9 +10,7 @@ import {jinja2, _, dayjs} from "../lib/cat.js";
 import {Spider} from "./spider.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
-let device;
 const charStr = 'abacdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789';
-let parse = []
 function randStr(len, withNum) {
     let _str = '';
     let containsNum = withNum === undefined ? true : withNum;
@@ -32,7 +30,7 @@ function randDevice() {
     };
 }
 
-async function request(reqUrl, postData, agentSp, get) {
+async function request(reqUrl,device, postData, agentSp, get) {
     let ts = dayjs().valueOf().toString();
     let rand = randStr(32);
     let sign = CryptoJS.enc.Hex.stringify(CryptoJS.MD5('H58d2%gLbeingX*%D4Y8!C!!@G_' + ts + '_' + rand))
@@ -117,6 +115,8 @@ class KuaiKanSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = 'https://api1.baibaipei.com:8899';
+        this.device = {}
+        this.parse = []
     }
 
     getName() {
@@ -139,21 +139,21 @@ class KuaiKanSpider extends Spider {
         let deviceInfo = await local.get(this.siteKey, deviceKey);
         if (deviceInfo.length > 0) {
             try {
-                device = JSON.parse(deviceInfo);
+                this.device = JSON.parse(deviceInfo);
             } catch (error) {
             }
         }
-        if (_.isEmpty(device)) {
-            device = randDevice();
-            device.id = randStr(13).toLowerCase();
-            device.ua = 'okhttp/3.14.9';
-            await local.set(this.siteKey, deviceKey, JSON.stringify(device));
+        if (_.isEmpty(this.device)) {
+            this.device = randDevice();
+            this.device.id = randStr(13).toLowerCase();
+            this.device.ua = 'okhttp/3.14.9';
+            await local.set(this.siteKey, deviceKey, JSON.stringify(this.device));
         }
     }
 
     async setClasses() {
         await this.setDevice()
-        let response = await request(this.siteUrl + '/api.php/Index/getTopVideoCategory');
+        let response = await request(this.siteUrl + '/api.php/Index/getTopVideoCategory',this.device);
         for (const type of response.data) {
             let typeName = type["nav_name"];
             if (typeName === '推荐') continue;
@@ -209,7 +209,7 @@ class KuaiKanSpider extends Spider {
         for (const typeDic of this.classes) {
             let typeId = typeDic["type_id"]
             if (typeId !== "最近更新") {
-                let filterData = (await request(this.siteUrl + '/api.php/Video/getFilterType', {type: typeId})).data;
+                let filterData = (await request(this.siteUrl + '/api.php/Video/getFilterType',this.device, {type: typeId})).data;
                 this.filterObj[typeId] = await this.getFilter(filterData)
             }
         }
@@ -257,7 +257,7 @@ class KuaiKanSpider extends Spider {
                 playlist[from] = urls;
             }
         }
-        parse = obj.parse || [];
+        this.parse = obj.parse || [];
         vodDetail.vod_play_from = _.keys(playlist).join('$$$');
         let urls = _.values(playlist);
         let vod_play_url = [];
@@ -269,7 +269,7 @@ class KuaiKanSpider extends Spider {
     }
 
     async setHomeVod() {
-        let data = await request(this.siteUrl + "/api.php/Index/getHomePage", {"p": "1", "type": "1"})
+        let data = await request(this.siteUrl + "/api.php/Index/getHomePage",this.device, {"p": "1", "type": "1"})
         this.homeVodList = await this.parseVodShortListFromJSONByHome(data.data)
     }
 
@@ -284,22 +284,22 @@ class KuaiKanSpider extends Spider {
         "sort": "{{ext.sort|default(0)}}",
         "class": "{{ext.class|default(0)}}"}`, {ext: extend, tid: tid, pg: pg}));
         console.log(formData);
-        let data = await request(reqUrl, formData);
+        let data = await request(reqUrl,this.device, formData);
         this.vodList = await this.parseVodShortListFromJson(data["data"]["data"])
     }
 
     async setDetail(id) {
-        let data = await request(this.siteUrl + '/api.php/Video/getVideoInfo', {video_id: id})
+        let data = await request(this.siteUrl + '/api.php/Video/getVideoInfo',this.device, {video_id: id})
         this.vodDetail = await this.parseVodDetailfromJson(data["data"]["video"])
     }
 
     async setPlay(flag, id, flags) {
         try {
             if (id.indexOf('youku') >= 0 || id.indexOf('iqiyi') >= 0 || id.indexOf('v.qq.com') >= 0 || id.indexOf('pptv') >= 0 || id.indexOf('le.com') >= 0 || id.indexOf('1905.com') >= 0 || id.indexOf('mgtv') >= 0) {
-                if (parse.length > 0) {
-                    for (let index = 0; index < parse.length; index++) {
+                if (this.parse.length > 0) {
+                    for (let index = 0; index < this.parse.length; index++) {
                         try {
-                            const p = parse[index];
+                            const p = this.parse[index];
                             let res = await req(p + id, {
                                 headers: {'user-agent': 'okhttp/4.1.0'},
                             });
@@ -311,7 +311,7 @@ class KuaiKanSpider extends Spider {
                 }
             }
             if (id.indexOf('jqq-') >= 0) {
-                let jqqHeaders = await request(this.siteUrl + '/jqqheader.json', null, null, true);
+                let jqqHeaders = await request(this.siteUrl + '/jqqheader.json',this.device, null, null, true);
                 let ids = id.split('-');
                 let jxJqq = await req('https://api.juquanquanapp.com/app/drama/detail?dramaId=' + ids[1] + '&episodeSid=' + ids[2] + '&quality=LD', {headers: jqqHeaders});
                 let jqqInfo = JSON.parse(jxJqq.content);
@@ -319,7 +319,7 @@ class KuaiKanSpider extends Spider {
                     this.playUrl = jqqInfo.data["playInfo"]["url"]
                 }
             }
-            let res = await request(this.siteUrl + '/video.php', {url: id});
+            let res = await request(this.siteUrl + '/video.php',this.device, {url: id});
             let result = jsonParse(id, res.data);
             if (result.url) {
                 this.playUrl = await js2Proxy(true, this.siteType, this.siteKey, 'lzm3u8/' + Utils.base64Encode(result.url), {});
@@ -331,7 +331,7 @@ class KuaiKanSpider extends Spider {
     }
 
     async setSearch(wd, quick) {
-        let data = await request(this.siteUrl + '/api.php/Search/getSearch', {key: wd, type_id: 0, p: 1})
+        let data = await request(this.siteUrl + '/api.php/Search/getSearch',this.device, {key: wd, type_id: 0, p: 1})
         this.vodList = await this.parseVodShortListFromJson(data["data"]["data"])
     }
 
