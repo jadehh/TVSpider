@@ -145,6 +145,15 @@
             "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
+            "key": "kuaikan",
+            "name": "🛥︎|快看视频|🛥︎",
+            "playerType": 0,
+            "type": 3,
+            "api": "./js/kuaikan.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
+        },
+        {
             "key": "liangzi",
             "name": "🐝|量子资源|🐝",
             "playerType": 0,

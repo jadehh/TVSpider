@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './nangua.js';
+import {__jsEvalReturn} from './kuaikan.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'nangua';
+    let siteKey = 'kuaikan';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
@@ -62,7 +62,13 @@ async function test() {
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
 
+      // 测试搜索
+    let search_page = JSON.parse(await spider.search("小日子"))
+    console.debug(JSON.stringify(search_page));
 
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("25168"))
+    await testPlay(detail1)
 
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
@@ -72,14 +78,10 @@ async function test() {
     let catePage = JSON.parse(await spider.category(2, "1", undefined, {}));
     console.debug(JSON.stringify(catePage));
 
-    // 测试搜索
-    let search_page = JSON.parse(await spider.search("斗破苍穹"))
-    console.debug(JSON.stringify(search_page));
 
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("261159"))
-    await testPlay(detail1)
+
+
 
 
 
