@@ -62,13 +62,15 @@ async function test() {
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
 
-    //测试分类列表
-    let catePage = JSON.parse(await spider.category(2, "1", undefined, {}));
-    console.debug(JSON.stringify(catePage));
+
 
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
+
+        //测试分类列表
+    let catePage = JSON.parse(await spider.category(2, "1", undefined, {}));
+    console.debug(JSON.stringify(catePage));
 
     // 测试搜索
     let search_page = JSON.parse(await spider.search("斗破苍穹"))

@@ -200,6 +200,15 @@ class NanGuaSpider extends Spider {
         };
     }
 
+    async parseVodShortListFromJSONByHome(obj){
+        let vod_list = []
+        for (const data of obj["video"]){
+            let video_vod_list = await this.parseVodShortListFromJson(data["data"])
+            vod_list.push(...video_vod_list)
+        }
+        return vod_list
+    }
+
     async parseVodShortListFromJson(obj) {
         let vod_list = []
         for (const data of obj){
@@ -261,8 +270,8 @@ class NanGuaSpider extends Spider {
     }
 
     async setHomeVod() {
-        let data = JSON.parse(await this.fetch(this.siteUrl + '/api.php/provide/vod_rank?app=ylys&sort_type=month&imei=c431ea542cee9679&id=2&page=1', null, this.getHeader()));
-        this.homeVodList = await this.parseVodShortListFromJson(data)
+        let data = JSON.parse(await this.fetch(this.siteUrl + '/api.php/provide/home_data?app=ylys&devices=android&imei=c431ea542cee9679&deviceModel=Subsystem%20for%20Android(TM)&deviceVersion=33&appVersionName=1.0.9&deviceScreen=427*250&appVersionCode=9&deviceBrand=Windows', null, this.getHeader()));
+        this.homeVodList = await this.parseVodShortListFromJSONByHome(data)
     }
 
     async setCategory(tid, pg, filter, extend) {
