@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './kuaikan.js';
+import {__jsEvalReturn} from './yiqikan.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'kuaikan';
+    let siteKey = 'yiqikan';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
@@ -59,34 +59,25 @@ async function test() {
     });
 
 
-        // 测试详情
-    let detail1 = JSON.parse(await spider.detail("25110"))
-    await testPlay(detail1)
-
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes));
-
 
 
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
-        //测试分类列表
-    let catePage = JSON.parse(await spider.category(2, "1", undefined, {}));
+    //测试分类列表
+    let catePage = JSON.parse(await spider.category("50", "1", undefined, {}));
     console.debug(JSON.stringify(catePage));
 
-          // 测试搜索
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("127828"))
+    await testPlay(detail1)
+
+    // 测试搜索
     let search_page = JSON.parse(await spider.search("小日子"))
     console.debug(JSON.stringify(search_page));
-
-
-
-
-
-
-
-
 
 
     // 测试详情

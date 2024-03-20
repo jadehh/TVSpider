@@ -235,6 +235,15 @@
             "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
         },
         {
+            "key": "yiqikan",
+            "name": "🛫|一起看|🛫",
+            "playerType": 0,
+            "type": 3,
+            "api": "./js/yiqikan.js",
+            "timeout": 30,
+            "ext": "{\"box\": \"TVBox\", \"danmu\": false}"
+        },
+        {
             "key": "push_agent",
             "name": "|推送|",
             "type": 3,

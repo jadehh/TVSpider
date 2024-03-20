@@ -15,7 +15,7 @@ import {pipixiaMd5} from "../lib/pipiXiaObject.js"
 class PiPiXiaSpider extends Spider {
     constructor() {
         super();
-        this.siteUrl = "http://pipixia.vip"
+        this.siteUrl = "http://aikun.tv/"
         this.pipixiaReconnectTimes = 0
     }
 
