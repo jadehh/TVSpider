@@ -19,6 +19,19 @@ class YiQiKanSpider extends Spider {
         this.nextObj = {}
     }
 
+    getRequestId() {
+        let strArr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+        let sb = "";
+        for (let i = 0; i < 32; i++) {
+            sb = sb + strArr[_.random(0, strArr.length)];
+        }
+        return sb.toString();
+    }
+
+
+
+
+
     getName() {
         return "🛫|一起看|🛫"
     }
@@ -35,12 +48,17 @@ class YiQiKanSpider extends Spider {
     }
 
     getParams() {
+        let requestId = this.getRequestId()
+        let appid = "e6ddefe09e0349739874563459f56c54"
+        let reqDomain = "m.yqktv888.com"
+        let udid = Utils.getUUID();
+        let appkey = "3359de478f8d45638125e446a10ec541"
         return {
-            "appId": "e6ddefe09e0349739874563459f56c54",
-            "reqDomain": "m.yqktv888.com",
-            "requestId": "Lijp48hZIISGLLh8wsT2VGYHJrNXVPvC",
-            "udid": "516d15d9-ffff-497a-86c6-959d244c28bd-18e564903e6",
-            "sign": "400eb4a56f31d5c378cb28b9c2cbd9f6"
+            "appId": appid,
+            "reqDomain": reqDomain,
+            "requestId": requestId,
+            "udid":  udid,
+            "sign": md5X(`appId=${appid}&reqDomain=${reqDomain}&requestId=${requestId}&udid=${udid}&appKey=${appkey}`)
         }
     }
 
@@ -76,17 +94,15 @@ class YiQiKanSpider extends Spider {
         this.limit = 18
         params["nextCount"] = this.limit
         params["nextVal"] = this.nextObj[tid] ?? ""
-        params["queryValueJson"] = JSON.stringify([{"filerName":"channelId","filerValue":tid.toString()}])
-        params["sign"] = "0fb3206365fb6de20b110bf59520a12a"
-        params["udid"] = "ee8c303e-88f7-433a-a1eb-ddfe1aa38d1e-18e564b071a"
-        params["requestId"] = "sBTpVQmS19ufWuFIjySRWxIpEYNvXKZM"
+        params["queryValueJson"] = JSON.stringify([{"filerName": "channelId", "filerValue": tid.toString()}])
         let response = await this.post(url, params, this.getHeader(), "raw")
         let resJson = JSON.parse(response)
-        if (resJson["data"]["hasNext"]){
-           this.nextObj["tid"] = resJson["data"]["nextVal"]
+        if (resJson["data"]["hasNext"]) {
+            this.nextObj["tid"] = resJson["data"]["nextVal"]
         }
         this.vodList = await this.parseVodShortListFromJson(resJson["data"]["items"])
     }
+
 
 }
 
