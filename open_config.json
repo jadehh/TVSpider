@@ -200,6 +200,15 @@
                 "ext": "{\"box\": \"CatOpen\", \"danmu\": false, \"token\": \"302ef8e4b4d7430db6d82de284978359\"}"
             },
             {
+                "key": "sp360",
+                "name": "🥎┃360影视┃🥎",
+                "playerType": 0,
+                "type": 3,
+                "api": "./js/sp360.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
+            },
+            {
                 "key": "star",
                 "name": "☄️|星视界|墙☄️",
                 "playerType": 0,
