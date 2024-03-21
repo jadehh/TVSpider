@@ -504,7 +504,11 @@ class Sp360Spider extends Spider {
         for (const data of obj["data"]["movies"]) {
             let vodShort = new VodShort();
             vodShort.vod_id = data["id"] + "+" + tid
-            vodShort.vod_pic = data["cover"]
+            if (!data["cover"].startsWith("http")) {
+                vodShort.vod_pic = "https:" + data["cover"]
+            } else {
+                vodShort.vod_pic = data["cover"]
+            }
             vodShort.vod_name = data["title"]
             vodShort.vod_remarks = data["tag"]
             if (!_.isEmpty(data["doubanscore"])) {
@@ -549,7 +553,6 @@ class Sp360Spider extends Spider {
             }
             playlist[playFormat] = vodItems.join("#")
         }
-
 
 
         vodDetail.vod_play_url = _.values(playlist).join('$$$');

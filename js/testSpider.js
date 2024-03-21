@@ -58,6 +58,10 @@ async function test() {
         }
     });
 
+    //测试分类列表
+    let catePage = JSON.parse(await spider.category("1", "1", undefined, {}));
+    console.debug(JSON.stringify(catePage));
+
 
     // 测试详情
     let detail1 = JSON.parse(await spider.detail("RLFqaX7mSGLrMX+2"))
@@ -71,9 +75,7 @@ async function test() {
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
-    //测试分类列表
-    let catePage = JSON.parse(await spider.category("1", "2", undefined, {}));
-    console.debug(JSON.stringify(catePage));
+
 
 
 
