@@ -240,7 +240,7 @@
                 "name": "🛫|一起看|🛫",
                 "playerType": 0,
                 "type": 3,
-                "api": "https://gh.con.sh/https://raw.githubusercontent.com/gaotianliuyun/gao/master/cat/js/yqktv_open2.js",
+                "api": "./js/yiqikan.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
