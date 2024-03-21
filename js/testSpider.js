@@ -63,6 +63,8 @@ async function test() {
     console.debug(JSON.stringify(classes));
 
 
+
+
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
@@ -71,13 +73,16 @@ async function test() {
     let catePage = JSON.parse(await spider.category("3", "1", undefined, {}));
     console.debug(JSON.stringify(catePage));
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("127828"))
-    await testPlay(detail1)
 
-    // 测试搜索
+        // 测试搜索
     let search_page = JSON.parse(await spider.search("小日子"))
     console.debug(JSON.stringify(search_page));
+
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("147262"))
+    await testPlay(detail1)
+
+
 
 
     // 测试详情
