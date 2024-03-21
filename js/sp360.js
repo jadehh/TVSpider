@@ -615,7 +615,7 @@ class Sp360Spider extends Spider {
         if (this.danmuUrl) {
             this.danmuUrl = await this.danmuSpider.getVideoUrl(id, 0)
         }
-        this.result.parse = 1
+        this.result.parse = 1 //启用自动解析
         this.result.jx = 1
         this.playUrl = id
     }
