@@ -10,6 +10,7 @@ import * as Utils from "../lib/utils.js";
 import {_, load} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import {Spider} from "./spider.js";
+import qs from "qs";
 
 
 class YiQiKanSpider extends Spider {
@@ -47,19 +48,26 @@ class YiQiKanSpider extends Spider {
         return headers
     }
 
-    getParams() {
+    getParams(is_category=false,tid=null) {
         let requestId = this.getRequestId()
         let appid = "e6ddefe09e0349739874563459f56c54"
         let reqDomain = "m.yqktv888.com"
         let udid = Utils.getUUID();
-        let appkey = "3359de478f8d45638125e446a10ec541"
-        return {
-            "appId": appid,
-            "reqDomain": reqDomain,
-            "requestId": requestId,
-            "udid":  udid,
-            "sign": md5X(`appId=${appid}&reqDomain=${reqDomain}&requestId=${requestId}&udid=${udid}&appKey=${appkey}`)
+        let appKey = "3359de478f8d45638125e446a10ec541"
+        let params = {"appId":appid}
+        if (is_category){
+            if (!_.isEmpty(this.nextObj[tid])){
+                params["nextVal"] = this.nextObj[tid]
+            }
+            params["queryValueJson"] = JSON.stringify([{"filerName": "channelId", "filerValue": tid.toString()}]).replaceAll("\\\\","")
         }
+        params["reqDomain"] = reqDomain
+        params["requestId"] = requestId
+        params["udid"] = udid
+        params["appKey"] = appKey
+        params["sign"] = md5X( qs.stringify(params, {encode: false}))
+        delete params["appKey"]
+        return params
     }
 
     async setClasses() {
@@ -90,11 +98,8 @@ class YiQiKanSpider extends Spider {
 
     async setCategory(tid, pg, filter, extend) {
         let url = this.siteUrl + "/v1/api/search/queryNow"
-        let params = this.getParams()
         this.limit = 18
-        params["nextCount"] = this.limit
-        params["nextVal"] = this.nextObj[tid] ?? ""
-        params["queryValueJson"] = JSON.stringify([{"filerName": "channelId", "filerValue": tid.toString()}])
+        let params = this.getParams(true,tid)
         let response = await this.post(url, params, this.getHeader(), "raw")
         let resJson = JSON.parse(response)
         if (resJson["data"]["hasNext"]) {
