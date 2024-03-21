@@ -531,17 +531,26 @@ class Sp360Spider extends Spider {
         vodDetail.vod_year = data["pubdate"]
         vodDetail.vod_area = data["area"].join("*")
         vodDetail.vod_content = data["description"]
+
         let playlist = {}
-        let playDic = data["allepidetail"]
-        for (const key of Object.keys(playDic)) {
+        for (const playFormat of data["playlink_sites"]) {
             let vodItems = []
-            for (const items of playDic[key]) {
-                let episodeUrl = items["url"]
-                let episodeName = items["playlink_num"]
+            if (!_.isEmpty(data["allepidetail"])) {
+                for (const items of data["allepidetail"][playFormat]) {
+                    let episodeUrl = items["url"]
+                    let episodeName = items["playlink_num"]
+                    vodItems.push(episodeName + "$" + episodeUrl);
+                }
+            } else {
+                let items = data["playlinksdetail"][playFormat]
+                let episodeUrl = items["default_url"]
+                let episodeName = items["quality"]
                 vodItems.push(episodeName + "$" + episodeUrl);
             }
-            playlist[key] = vodItems.join("#")
+            playlist[playFormat] = vodItems.join("#")
         }
+
+
 
         vodDetail.vod_play_url = _.values(playlist).join('$$$');
         vodDetail.vod_play_from = _.keys(playlist).join('$$$');
