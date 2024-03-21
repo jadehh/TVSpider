@@ -58,6 +58,11 @@ async function test() {
         }
     });
 
+
+    // 测试搜索
+    let search_page = JSON.parse(await spider.search("小日子"))
+    console.debug(JSON.stringify(search_page));
+
     //测试分类列表
     let catePage = JSON.parse(await spider.category("1", "1", undefined, {}));
     console.debug(JSON.stringify(catePage));
@@ -81,9 +86,7 @@ async function test() {
 
 
 
-        // 测试搜索
-    let search_page = JSON.parse(await spider.search("小日子"))
-    console.debug(JSON.stringify(search_page));
+
 
 
 

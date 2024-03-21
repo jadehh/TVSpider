@@ -25,6 +25,11 @@ class Sp360Spider extends Spider {
         return "360"
     }
 
+    async init(cfg) {
+        await super.init(cfg);
+        this.danmuUrl = true
+    }
+
     async setClasses() {
         this.classes = [this.getTypeDic("最近更新", "最近更新"), this.getTypeDic("电影", "1"), this.getTypeDic("剧集", "2"), this.getTypeDic("综艺", "3"), this.getTypeDic("动漫", "4")]
     }
@@ -560,6 +565,23 @@ class Sp360Spider extends Spider {
         return vodDetail
     }
 
+    async parseVodShortListFromJsonBySearch(obj) {
+        let vod_list = []
+        for (const data of obj["data"]["longData"]["rows"]) {
+            let vodShort = new VodShort();
+            vodShort.vod_id = data["en_id"] + "+" + data["cat_id"]
+            if (!data["cover"].startsWith("http")) {
+                vodShort.vod_pic = "https:" + data["cover"]
+            } else {
+                vodShort.vod_pic = data["cover"]
+            }
+            vodShort.vod_name = data["titleTxt"]
+            vodShort.vod_remarks = data["coverInfo"]["txt"]
+            vod_list.push(vodShort)
+        }
+        return vod_list
+    }
+
     async setHomeVod() {
         let response = await this.fetch(this.siteUrl + "/v1/rank?cat=1", null, this.getHeader())
         this.homeVodList = await this.parseVodShortListFromJson(JSON.parse(response))
@@ -584,12 +606,18 @@ class Sp360Spider extends Spider {
     }
 
     async setSearch(wd, quick) {
-
-
+        let url = `https://api.so.360kan.com/index?force_v=1&kw=${wd}&from=&pageno=1&v_ap=1&tab=all`
+        let response = await this.fetch(url, null, this.getHeader())
+        this.vodList = await this.parseVodShortListFromJsonBySearch(JSON.parse(response))
     }
 
     async setPlay(flag, id, flags) {
-
+        if (this.danmuUrl) {
+            this.danmuUrl = await this.danmuSpider.getVideoUrl(id, 0)
+        }
+        this.result.parse = 1
+        this.result.jx = 1
+        this.playUrl = id
     }
 }
 
