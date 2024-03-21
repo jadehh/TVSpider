@@ -505,9 +505,9 @@ class Sp360Spider extends Spider {
             let vodShort = new VodShort();
             vodShort.vod_id = data["id"] + "+" + tid
             if (!data["cover"].startsWith("http")) {
-                vodShort.vod_pic = "https:" + data["cover"]
+                vodShort.vod_pic = "https:" + data["cdncover"]
             } else {
-                vodShort.vod_pic = data["cover"]
+                vodShort.vod_pic = data["cdncover"]
             }
             vodShort.vod_name = data["title"]
             vodShort.vod_remarks = data["tag"]
