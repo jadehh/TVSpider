@@ -102,7 +102,7 @@ class YiQiKanSpider extends Spider {
         let response = await this.post(url, params, this.getHeader(), "raw")
         let resJson = JSON.parse(response)
         if (resJson["data"]["hasNext"]) {
-            this.nextObj["tid"] = resJson["data"]["nextVal"]
+            this.nextObj[tid] = resJson["data"]["nextVal"]
         }
         this.vodList = await this.parseVodShortListFromJson(resJson["data"]["items"])
     }
