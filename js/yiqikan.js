@@ -10,7 +10,6 @@ import * as Utils from "../lib/utils.js";
 import {_, load} from "../lib/cat.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import {Spider} from "./spider.js";
-import qs from "qs";
 
 
 class YiQiKanSpider extends Spider {
@@ -65,7 +64,7 @@ class YiQiKanSpider extends Spider {
         params["requestId"] = requestId
         params["udid"] = udid
         params["appKey"] = appKey
-        params["sign"] = md5X( qs.stringify(params, {encode: false}))
+        params["sign"] = md5X(Utils.objectToStr(params))
         delete params["appKey"]
         return params
     }
