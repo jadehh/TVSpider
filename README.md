@@ -27,7 +27,7 @@ python build.py
 * m3u8遇到跨域的问题可以尝试使用代理来进行加载,如果没有跨域使用代理会引起死循环
 * 虎牙弹幕功能无法实现,现在并不支持WebSocket来监听弹幕
 * [阿里Token获取](https://alist.nn.ci/zh/guide/drivers/aliyundrive.html)
-
+* SP360启用嗅探解析,CatVodOpen目前还不支持嗅探
 
 
 ## 赞助
