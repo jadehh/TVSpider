@@ -30,6 +30,11 @@ python build.py
 * SP360启用嗅探解析,CatVodOpen目前还不支持嗅探
 
 
+## 特别说明
+* 近期CatVodOpen更新移除了quickjs,导致无法使用,请尝试使用旧版本,还未考虑适配,除非TV考虑支持nodejs
+* 因为TV和CatVodOpen使用同样一套的代码,维护起来难度较大
+
+
 ## 赞助
 如果觉得此项目有用，可以考虑赞助我喝杯咖啡,感谢star❤
 
