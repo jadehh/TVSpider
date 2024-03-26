@@ -257,14 +257,14 @@ class KunYun77Spider extends Spider {
             param += '&Signature=' + encodeURIComponent(sign);
 
             const aliurl = 'https://vod.cn-shanghai.aliyuncs.com/?' + param;
-            const res = await req.get(aliurl, {
+            const res = await req(aliurl, {
                 header: {
                     'User-Agent': ua,
                 },
             });
-            if (res.status === 200) {
+            if (res.code === 200) {
                 this.result.header = ua
-                const p = res.data;
+                const p = JSON.parse(res.content);
                 this.playUrl = p["PlayInfoList"]["PlayInfo"][0]["PlayURL"]
             } else {
                 this.playUrl = id
