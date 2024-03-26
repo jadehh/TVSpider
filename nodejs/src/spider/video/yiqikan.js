@@ -1,27 +1,22 @@
 /*
-* @File     : yiqikan.js
+* @File     : yiqikan.js.js
 * @Author   : jade
-* @Date     : 2024/3/19 18:45
+* @Date     : 2024/3/22 15:12
 * @Email    : jadehh@1ive.com
 * @Software : Samples
 * @Desc     :
 */
-import * as Utils from "../lib/utils.js";
-import {_, load} from "../lib/cat.js";
-import {VodDetail, VodShort} from "../lib/vod.js";
-import {Spider} from "./spider.js";
 
+import {Spider} from "../spider.js";
+import * as Utils from "../../../../lib/utils.js";
+import {_, load, Uri} from "../../../../lib/cat.js";
+import {VodShort,VodDetail} from "../../../../lib/vod.js";
 
 class YiQiKanSpider extends Spider {
     constructor() {
         super();
         this.siteUrl = "https://api.gquaxhce.com"
         this.nextObj = {}
-    }
-
-    async init(cfg) {
-        await super.init(cfg);
-        this.danmuStaus = true;
     }
 
     getRequestId() {
@@ -217,47 +212,46 @@ class YiQiKanSpider extends Spider {
 
 let spider = new YiQiKanSpider()
 
-async function init(cfg) {
-    await spider.init(cfg)
+async function init(inReq, _outResp) {
+    return await spider.init(inReq, _outResp)
 }
-
-async function home(filter) {
-    return await spider.home(filter)
+async function home(inReq, _outResp) {
+    return await spider.home(inReq, _outResp)
 }
-
-async function homeVod() {
-    return await spider.homeVod()
+async function homeVod(inReq, _outResp) {
+    return await spider.homeVod(inReq, _outResp)
 }
-
-async function category(tid, pg, filter, extend) {
-    return await spider.category(tid, pg, filter, extend)
+async function category(inReq, _outResp) {
+    return await spider.category(inReq, _outResp)
 }
-
-async function detail(id) {
-    return await spider.detail(id)
+async function detail(inReq, _outResp) {
+    return await spider.detail(inReq, _outResp)
 }
-
-async function play(flag, id, flags) {
-    return await spider.play(flag, id, flags)
+async function play(inReq, _outResp) {
+    return await spider.play(inReq, _outResp)
 }
-
-async function search(wd, quick) {
-    return await spider.search(wd, quick)
+async function search(inReq, _outResp) {
+    return await spider.search(inReq, _outResp)
 }
-
-async function proxy(segments, headers) {
-    return await spider.proxy(segments, headers)
-}
-
-export function __jsEvalReturn() {
-    return {
+export default {
+    meta: {
+        key: spider.getJSName(), name: spider.getName(), type: spider.getType(),
+    },
+    api: async (fastify) => {
+        fastify.post('/init', init);
+        fastify.post('/home', home);
+        fastify.post('/category', category);
+        fastify.post('/detail',detail);
+        fastify.post('/play', play);
+        fastify.post('/search', search);
+    },
+    spider: {
         init: init,
         home: home,
-        homeVod: homeVod,
-        category: category,
-        detail: detail,
-        play: play,
-        search: search,
-        proxy: proxy
-    };
-}
+        homeVod:homeVod,
+        category:category,
+        detail:detail,
+        play:play,
+        search:search
+    }
+};

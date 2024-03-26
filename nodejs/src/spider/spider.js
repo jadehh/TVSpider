@@ -1,20 +1,19 @@
 /*
 * @File     : spider.js
 * @Author   : jade
-* @Date     : 2023/12/25 17:19
+* @Date     : 2024/3/22 15:17
 * @Email    : jadehh@1ive.com
 * @Software : Samples
 * @Desc     :
 */
-
-import {JadeLogging} from "../lib/log.js";
-import * as Utils from "../lib/utils.js";
-import {VodDetail, VodShort} from "../lib/vod.js";
-import {_, load, Uri} from "../lib/cat.js";
-import {} from "../lib/crypto-js.js"
-import * as HLS from "../lib/hls.js";
-import {hlsCache, tsCache} from "./ffm3u8_open.js";
-import {DanmuSpider} from "../lib/danmuSpider.js";
+import "../util/global.js"
+import {VodDetail, VodShort} from "../../../lib/vod.js";
+import * as Utils from "../../../lib/utils.js";
+import {_, load, Uri} from "../../../lib/cat.js";
+import {DanmuSpider} from "../../../lib/danmuSpider.js";
+import {hlsCache, tsCache} from "../../../js/ffm3u8_open.js";
+import * as HLS from "../../../lib/hls.js";
+import {JadeLogging} from "../util/log.js"
 
 class Result {
     constructor() {
@@ -71,11 +70,16 @@ class Result {
                 "format": this.format,
                 "subs": this.subs,
                 "danmaku": this.danmaku,
-                "jx":this.jx
+                "jx": this.jx
             })
-        }else{
+        } else {
             return JSON.stringify({
-                "url": url, "parse": this.parse, "header": this.header, "format": this.format, "subs": this.subs,"jx":this.jx
+                "url": url,
+                "parse": this.parse,
+                "header": this.header,
+                "format": this.format,
+                "subs": this.subs,
+                "jx": this.jx
             })
         }
     }
@@ -201,9 +205,6 @@ class Spider {
         this.vodDetail = new VodDetail()
         this.playUrl = ""
         this.header = {}
-        this.remove18 = false
-        this.type_id_18 = 0
-        this.type_name_18 = "伦理片"
         this.episodeObj = {}
         this.danmuUrl = ""
 
@@ -345,15 +346,17 @@ class Spider {
 
 
     getName() {
-        return `🍥┃基础┃🍥`
+        return `?┃基础┃?`
     }
 
     getAppName() {
         return `基础`
     }
+
     getJSName() {
         return "base"
     }
+
     getType() {
         return 3
     }
@@ -409,8 +412,6 @@ class Spider {
 
     async SpiderInit(cfg) {
         try {
-            this.siteKey = cfg["skey"]
-            this.siteType = parseInt(cfg["stype"].toString())
             let extObj = null;
             if (typeof cfg.ext === "string") {
                 await this.jadeLog.info(`读取配置文件,ext为:${cfg.ext}`)
@@ -433,29 +434,34 @@ class Spider {
 
     }
 
-    async init(cfg) {
-        this.danmuSpider = new DanmuSpider()
-        this.cfgObj = await this.SpiderInit(cfg)
-        await this.jadeLog.debug(`初始化参数为:${JSON.stringify(cfg)}`)
-        this.catOpenStatus = this.cfgObj.CatOpenStatus
-        this.danmuStaus = this.cfgObj["danmu"] ?? this.danmuStaus
+
+    async init(inReq, _outResp) {
+        await this.jadeLog.info("初始化", true)
         try {
-            if (await this.loadFilterAndClasses()) {
-                await this.jadeLog.debug(`读取缓存列表和二级菜单成功`)
-            } else {
-                await this.jadeLog.warning(`读取缓存列表和二级菜单失败`)
-                await this.writeFilterAndClasses()
+            this.danmuSpider = new DanmuSpider()
+            this.siteKey = this.getJSName()
+            this.siteType = this.getType()
+            this.cfgObj = inReq.server.config[this.siteKey]
+            this.deviceKey = inReq.server.prefix + '/device';
+            this.db = inReq.server.db
+            this.catOpenStatus = true
+            this.danmuStaus = false
+            try {
+                if (await this.loadFilterAndClasses()) {
+                    await this.jadeLog.debug(`读取缓存列表和二级菜单成功`)
+                } else {
+                    await this.jadeLog.warning(`读取缓存列表和二级菜单失败`)
+                    await this.writeFilterAndClasses()
+                }
+            } catch (e) {
+                await this.db.push(this.deviceKey + "classes", {})
+                await this.db.push(this.deviceKey + "filterObj", {})
+                await this.jadeLog.error("读取缓存失败,失败原因为:" + e, false)
             }
         } catch (e) {
-            await local.set(this.siteKey, "classes", JSON.stringify([]));
-            await local.set(this.siteKey, "filterObj", JSON.stringify({}));
-            await this.jadeLog.error("读取缓存失败,失败原因为:" + e)
+            await this.jadeLog.error(`初始化失败,失败原因为:${e}`)
         }
-        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
-        this.douBanjsBase = await js2Proxy(true, this.siteType, this.siteKey, 'douban/', {});
-        this.baseProxy = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
-        this.videoProxy = await js2Proxy(true, this.siteType, this.siteKey, 'm3u8/', {});
-        this.detailProxy = await js2Proxy(true, this.siteType, this.siteKey, 'detail/', this.getHeader());
+        await this.jadeLog.info("初始化完成", true)
 
     }
 
@@ -468,8 +474,8 @@ class Spider {
         if (this.classes.length > 0) {
             return true
         } else {
-            await local.set(this.siteKey, "classes", JSON.stringify([]));
-            await local.set(this.siteKey, "filterObj", JSON.stringify({}));
+            await this.db.push(this.deviceKey + "classes", {})
+            await this.db.push(this.deviceKey + "filterObj", {})
             return false
         }
     }
@@ -480,23 +486,23 @@ class Spider {
         }
         await this.setClasses()
         await this.setFilterObj()
-        await local.set(this.siteKey, "classes", JSON.stringify(this.classes));
-        await local.set(this.siteKey, "filterObj", JSON.stringify(this.filterObj));
+        await this.db.push(this.deviceKey + "classes", this.classes);
+        await this.db.push(this.deviceKey + "filterObj", this.filterObj);
     }
 
     async getClassesCache() {
-        let cacheClasses = await local.get(this.siteKey, "classes")
+        let cacheClasses = await this.db.getObjectDefault(this.deviceKey + "classes", {});
         if (!_.isEmpty(cacheClasses)) {
-            return JSON.parse(cacheClasses)
+            return cacheClasses
         } else {
             return this.classes
         }
     }
 
     async getFiletObjCache() {
-        let cacheFilterObj = await local.get(this.siteKey, "filterObj")
+        let cacheFilterObj = await this.db.getObjectDefault(this.deviceKey + "filterObj", {});
         if (!_.isEmpty(cacheFilterObj)) {
-            return JSON.parse(cacheFilterObj)
+            return cacheFilterObj
         } else {
             return this.filterObj
         }
@@ -506,10 +512,10 @@ class Spider {
     async setHome(filter) {
     }
 
-    async home(filter) {
+    async home(inReq, _outResp) {
         this.vodList = []
         await this.jadeLog.info("正在解析首页类别", true)
-        await this.setHome(filter)
+        await this.setHome()
         await this.jadeLog.debug(`首页类别内容为:${this.result.home(this.classes, [], this.filterObj)}`)
         await this.jadeLog.info("首页类别解析完成", true)
         return this.result.home(this.classes, [], this.filterObj)
@@ -521,19 +527,27 @@ class Spider {
 
     async homeVod() {
         await this.jadeLog.info("正在解析首页内容", true)
-        await this.setHomeVod()
-        await this.jadeLog.debug(`首页内容为:${this.result.homeVod(this.homeVodList)}`)
-        await this.jadeLog.info("首页内容解析完成", true)
-        return this.result.homeVod(this.homeVodList)
+        try {
+            await this.setHomeVod()
+            await this.jadeLog.debug(`首页内容为:${this.result.homeVod(this.homeVodList)}`)
+            await this.jadeLog.info("首页内容解析完成", true)
+            return this.result.homeVod(this.homeVodList)
+        } catch (e) {
+            await this.jadeLog.error(`首页内容解析失败,失败原因为:${e}`)
+        }
     }
 
     async setCategory(tid, pg, filter, extend) {
 
     }
 
-    async category(tid, pg, filter, extend) {
+    async category(inReq, _outResp) {
+        const tid = inReq.body.id;
+        const pg = inReq.body.page;
+        const filter = true
+        const extend = inReq.body.filters
         this.page = parseInt(pg)
-        await this.jadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},filter = ${filter},extend = ${JSON.stringify(extend)}`)
+        await this.jadeLog.info(`正在解析分类页面,tid = ${tid},pg = ${pg},extend = ${JSON.stringify(extend)}`)
         if (tid === "最近更新") {
             this.page = 0
             return await this.homeVod()
@@ -578,7 +592,9 @@ class Spider {
         return episodeObj
     }
 
-    async detail(id) {
+    async detail(inReq, _outResp) {
+        const ids = !Array.isArray(inReq.body.id) ? [inReq.body.id] : inReq.body.id;
+        const id = ids[0]
         this.vodDetail = new VodDetail();
         await this.jadeLog.info(`正在获取详情页面,id为:${id}`)
         try {
@@ -611,7 +627,10 @@ class Spider {
         return await this.danmuSpider.getDammu(vodDetail, episodeId)
     }
 
-    async play(flag, id, flags) {
+    async play(inReq, _outResp) {
+        const flag = inReq.body.flag;
+        const id = inReq.body.id;
+        const flags = "";
         await this.jadeLog.info(`正在解析播放页面,flag:${flag},id:${id},flags:${flags}`, true)
         try {
             let return_result;
@@ -649,14 +668,17 @@ class Spider {
 
     }
 
-    async search(wd, quick) {
+    async search(inReq, _outResp) {
+        const pg = inReq.body.page;
+        const wd = inReq.body.wd;
+        let quick = true
         this.vodList = []
         await this.jadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick}`)
         await this.setSearch(wd, quick)
         if (this.vodList.length === 0) {
             if (wd.indexOf(" ") > -1) {
                 await this.jadeLog.debug(`搜索关键词为:${wd},其中有空格,去除空格在搜索一次`)
-                await this.search(wd.replaceAll(" ", "").replaceAll("﻿", ""), quick)
+                await this.search(wd.replaceAll(" ", "").replaceAll("?", ""), quick)
             }
         }
         await this.jadeLog.debug(`搜索页面内容为:${this.result.search(this.vodList)}`)
@@ -860,4 +882,6 @@ class Spider {
 }
 
 
-export {Spider}
+export {
+    Spider
+}

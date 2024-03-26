@@ -1,6 +1,6 @@
+import "./global.js"
 const level_list = ["DEBUG", "INFO", "WARNING", "ERROR"];
 const file_path = "log"
-
 class JadeLogging {
 
     constructor(app_name, level = "DEBUG") {
@@ -54,28 +54,28 @@ class JadeLogging {
 
     async log(message) {
         console.debug(message)
-        await local.set(file_path,this.getTime(), message);
+        await localLog.set(message);
     }
 
-    async info(message, is_format=false) {
+    async info(message, is_format) {
         if (this.level_index <= 1) {
             await this.log(this.formatMessage("INFO", message, is_format))
         }
     }
 
-    async warning(message, is_format=false) {
+    async warning(message, is_format) {
         if (this.level_index <= 2) {
             await this.log(this.formatMessage("WARNING", message, is_format))
         }
     }
 
-    async error(message, is_format=false) {
+    async error(message, is_format) {
         if (this.level_index <= 3) {
             await this.log(this.formatMessage("ERROR", message, is_format))
         }
     }
 
-    async debug(message, is_format=false) {
+    async debug(message, is_format) {
         if (this.level_index <= 0) {
             await this.log(this.formatMessage("DEBUG", message, is_format))
         }
