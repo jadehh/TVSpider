@@ -164,7 +164,7 @@ class KunYun77Spider extends Spider {
         for (const vod of list) {
             let vodShort = new VodShort()
             vodShort.vod_id = vod["id"]
-            vodShort.vod_name = vod["title"]
+            vodShort.vod_name = vod["title"] ?? vod["videoName"]
             vodShort.vod_pic = vod["videoCover"]
             vodShort.vod_remarks = vod["msg"]
             videos.push(vodShort)
@@ -229,6 +229,7 @@ class KunYun77Spider extends Spider {
         if (flag == 'alivc') {
             const ua = `Dalvik/2.1.0(sevenVideo android)${device.release} ${appVer} ${device.brand}`;
             let data = (await this.request(this.siteUrl + '/api.php/provide/getVideoPlayAuth?videoId=' + id)).data;
+            await this.jadeLog.debug(`data:${data}`)
             var s = CryptoJS.enc.Utf8.stringify(CryptoJS.enc.Base64.parse(data["playAuth"]));
             s = JSON.parse(s);
             const e = {
@@ -263,32 +264,36 @@ class KunYun77Spider extends Spider {
                 },
             });
             if (res.code === 200) {
-                this.result.header = ua
+                this.result.header = {
+                    'User-Agent': ua,
+                }
                 const p = JSON.parse(res.content);
                 this.playUrl = p["PlayInfoList"]["PlayInfo"][0]["PlayURL"]
             } else {
                 this.playUrl = id
             }
-        }
-        let data = (await this.request(this.siteUrl + '/api.php/provide/parserUrl?url=' + id + '&retryNum=0')).data;
-        let playHeader = data.playHeader;
-        let jxUrl = data.url;
-        if (jxUrl.indexOf(this.siteUrl) >= 0) {
-            let result = jsonParse(id, await this.request(jxUrl));
-            this.result.parse = 0
-            this.playUrl = result["url"]
-            this.result.header = Object.assign(result.header, playHeader);
         } else {
-            let res = await req(jxUrl, {
-                headers: {
-                    'user-agent': 'okhttp/3.12.0',
-                },
-            });
-            let result = jsonParse(id, res.data);
-            this.result.parse = 0
-            this.result.header = Object.assign(result.header, playHeader);
-            this.playUrl = res["url"]
+            let data = (await this.request(this.siteUrl + '/api.php/provide/parserUrl?url=' + id + '&retryNum=0')).data;
+            let playHeader = data.playHeader;
+            let jxUrl = data.url;
+            if (jxUrl.indexOf(this.siteUrl) >= 0) {
+                let result = jsonParse(id, await this.request(jxUrl));
+                this.result.parse = 0
+                this.playUrl = result["url"]
+                this.result.header = Object.assign(result.header, playHeader);
+            } else {
+                let res = await req(jxUrl, {
+                    headers: {
+                        'user-agent': 'okhttp/3.12.0',
+                    },
+                });
+                let result = jsonParse(id, res.data);
+                this.result.parse = 0
+                this.result.header = Object.assign(result.header, playHeader);
+                this.playUrl = res["url"]
+            }
         }
+
     }
 
     async setSearch(wd, quick) {
