@@ -31,8 +31,7 @@ python build.py
 
 
 ## 特别说明
-* 近期CatVodOpen更新移除了quickjs,导致无法使用,请尝试使用旧版本,还未考虑适配,除非TV考虑支持nodejs
-* 因为TV和CatVodOpen使用同样一套的代码,维护起来难度较大
+* 近期CatVodOpen更新移除了quickjs,导致无法使用,请尝试使用旧版本或切换至nodejs目录下编译生成dist目录
 
 
 ## 赞助
