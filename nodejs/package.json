@@ -1,0 +1,41 @@
+{
+    "name": "cat_vod_nodejs_fastify",
+    "version": "1.0.0",
+    "description": "CatVodOpen nodejs config api server demo.",
+    "type": "module",
+    "scripts": {
+        "dev": "cross-env DEV_HTTP_PORT=3006 nodemon --config nodemon.json src/dev.js",
+        "build": "rimraf dist && cross-env NODE_ENV=production node esbuild.js && cross-env NODE_ENV=production node esbuild-config.js",
+        "build:config": "cross-env NODE_ENV=production node esbuild-config.js",
+        "build:rollup": "rimraf dist && cross-env NODE_ENV=production node rollup.js && cross-env NODE_ENV=production node rollup-config.js",
+        "build:rollup:config": "cross-env NODE_ENV=production node rollup-config.js"
+    },
+    "author": "",
+    "devDependencies": {
+        "@babel/plugin-transform-runtime": "^7.23.9",
+        "@babel/preset-env": "^7.23.9",
+        "@rollup/plugin-babel": "^6.0.4",
+        "@rollup/plugin-commonjs": "^25.0.7",
+        "@rollup/plugin-json": "^6.1.0",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@types/node": "^20.11.14",
+        "cross-env": "^7.0.3",
+        "esbuild": "0.20.1",
+        "eslint": "^8.57.0",
+        "nodemon": "^3.0.3",
+        "rimraf": "^5.0.5",
+        "rollup": "^2.79.1"
+    },
+    "dependencies": {
+        "axios": "^1.6.7",
+        "cheerio": "^1.0.0-rc.12",
+        "crypto-js": "^4.2.0",
+        "dayjs": "^1.11.10",
+        "fastify": "^4.26.0",
+        "hls-parser": "^0.10.8",
+        "iconv-lite": "^0.6.3",
+        "node-json-db": "^2.3.0",
+        "node-rsa": "^1.1.1"
+    }
+}
