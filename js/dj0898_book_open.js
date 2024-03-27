@@ -24,6 +24,14 @@ class DJ0898Spider extends Spider {
         return "世纪DJ音乐网"
     }
 
+    getJSName() {
+        return "dj0898_book_open"
+    }
+
+    getType() {
+        return 10
+    }
+
     async parseVodShortListFromDoc($) {
         let books = []
         const list = $("ul.djddv_djList > li");
@@ -204,3 +212,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

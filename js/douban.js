@@ -8,8 +8,7 @@
 */
 import {VodShort} from "../lib/vod.js";
 import {Spider} from "./spider.js";
-import {_} from "../lib/cat.js";
-import {} from "../lib/crypto-js.js"
+import {_, Crypto} from "../lib/cat.js";
 
 
 class DoubanSpider extends Spider {
@@ -43,6 +42,14 @@ class DoubanSpider extends Spider {
 
     getAppName() {
         return "豆瓣"
+    }
+
+    getJSName() {
+        return "douban"
+    }
+
+    getType() {
+        return 3
     }
 
     async setClasses() {
@@ -483,7 +490,7 @@ class DoubanSpider extends Spider {
         let _api_secret_key = "bf7dddc7c9cfe6f7"
         let url_path = "%2F" + url.split("/").slice(3).join("%2F")
         let raw_sign = [method.toLocaleUpperCase(), url_path, ts.toString()].join("&")
-        return CryptoJS.HmacSHA1(raw_sign, _api_secret_key).toString(CryptoJS.enc.Base64)
+        return Crypto.HmacSHA1(raw_sign, _api_secret_key).toString(Crypto.enc.Base64)
     }
     async setHomeVod() {
         let url = this.siteUrl + "/subject_collection/subject_real_time_hotest/items"
@@ -613,3 +620,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

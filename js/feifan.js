@@ -22,7 +22,14 @@ class FeiFanSpider extends VodSpider {
     }
 
     getName() {
-        return "🥗|非凡资源|🥗"
+        return "🥗┃非凡资源┃🥗"
+    }
+    getJSName() {
+        return "feifan"
+    }
+
+    getType() {
+        return 3
     }
 
 }
@@ -73,3 +80,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

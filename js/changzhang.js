@@ -13,17 +13,17 @@ import * as Utils from "../lib/utils.js";
 import {detailContent, initAli, playContent} from "../lib/ali.js";
 
 function cryptJs(text, key, iv, type) {
-    let key_value = CryptoJS.enc.Utf8.parse(key || 'PBfAUnTdMjNDe6pL');
-    let iv_value = CryptoJS.enc.Utf8.parse(iv || 'sENS6bVbwSfvnXrj');
+    let key_value = Crypto.enc.Utf8.parse(key || 'PBfAUnTdMjNDe6pL');
+    let iv_value = Crypto.enc.Utf8.parse(iv || 'sENS6bVbwSfvnXrj');
     let content
     if (type) {
-        content = CryptoJS.AES.encrypt(text, key_value, {
-            iv: iv_value, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7
+        content = Crypto.AES.encrypt(text, key_value, {
+            iv: iv_value, mode: Crypto.mode.CBC, padding: Crypto.pad.Pkcs7
         })
     } else {
-        content = CryptoJS.AES.decrypt(text, key_value, {
-            iv: iv_value, padding: CryptoJS.pad.Pkcs7
-        }).toString(CryptoJS.enc.Utf8)
+        content = Crypto.AES.decrypt(text, key_value, {
+            iv: iv_value, padding: Crypto.pad.Pkcs7
+        }).toString(Crypto.enc.Utf8)
     }
     return content
 }
@@ -47,6 +47,14 @@ class ChangZhangSpider extends Spider {
 
     getAppName() {
         return "厂长直连"
+    }
+
+    getJSName() {
+        return "changzhang"
+    }
+
+    getType() {
+        return 3
     }
 
     async getHtml(url = this.siteUrl, headers = this.getHeader()) {
@@ -336,3 +344,4 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
+export {spider}

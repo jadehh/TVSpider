@@ -17,11 +17,19 @@ class PushSpider extends Spider {
     }
 
     getName() {
-        return "|推送|"
+        return "┃推送┃"
     }
 
     getAppName() {
         return "推送"
+    }
+
+    getJSName() {
+        return "push"
+    }
+
+    getType() {
+        return 3
     }
 
     async init(cfg) {
@@ -97,3 +105,4 @@ export function __jsEvalReturn() {
         support: check, init: init, detail: detail, play: play,
     };
 }
+export {spider}

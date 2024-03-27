@@ -20,15 +20,23 @@ class SHTSpider extends Spider {
     getAppName() {
         return "色花堂BT"
     }
+    getName() {
+        return "🔞┃色花堂BT┃🔞"
+    }
+    getJSName() {
+        return "sehuatang"
+    }
+
+    getType() {
+        return 3
+    }
 
     async init(cfg) {
         await super.init(cfg);
         this.jsBaseDetail = await js2Proxy(true, this.siteType, this.siteKey, 'detail/', {});
     }
 
-    getName() {
-        return "🔞|色花堂BT|🔞"
-    }
+
 
     getHeader() {
         return {
@@ -240,3 +248,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

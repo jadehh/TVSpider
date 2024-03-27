@@ -24,7 +24,14 @@ class StarSpider extends Spider {
     }
 
     getName() {
-        return "☄️|星视界|墙☄️"
+        return "☄️┃星视界┃墙☄️"
+    }
+    getJSName() {
+        return "star"
+    }
+
+    getType() {
+        return 3
     }
 
     getApiHeader() {
@@ -280,3 +287,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

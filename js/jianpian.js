@@ -21,11 +21,19 @@ class JianPianSpider extends Spider {
     }
 
     getName() {
-        return "🌼|荐片|🌼"
+        return "🌼┃荐片┃🌼"
     }
 
     getAppName() {
         return "荐片"
+    }
+
+    getJSName() {
+        return "jianpian"
+    }
+
+    getType() {
+        return 3
     }
 
     getHeader() {
@@ -471,3 +479,4 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
+export {spider}

@@ -24,7 +24,14 @@ class JableTVSpider extends Spider {
     }
 
     getName() {
-        return "🔞|Jable|🔞"
+        return "🔞┃Jable┃🔞"
+    }
+    getJSName() {
+        return "jable"
+    }
+
+    getType() {
+        return 3
     }
 
     getHeader() {
@@ -264,3 +271,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

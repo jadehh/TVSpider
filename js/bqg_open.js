@@ -1,5 +1,5 @@
 /*
-* @File     : 13bqg_open.js.js
+* @File     : bqg_open.js.js
 * @Author   : jade
 * @Date     : 2024/1/30 15:38
 * @Email    : jadehh@1ive.com
@@ -22,8 +22,16 @@ class BQQSpider extends Spider {
         return "笔趣阁"
     }
 
+    getJSName() {
+        return "bqg_open"
+    }
+
+    getType() {
+        return 10
+    }
+
     getName() {
-        return "📚︎|笔趣阁|📚︎"
+        return "📚︎┃笔趣阁┃📚︎"
     }
 
     async init(cfg) {
@@ -247,4 +255,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
-
+export {spider}

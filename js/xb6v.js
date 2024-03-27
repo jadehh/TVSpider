@@ -20,12 +20,21 @@ class Xb6vSpider extends Spider {
     }
 
     getName() {
-        return "🧲|磁力新6V|🧲"
+        return "🧲┃磁力新6V┃🧲"
     }
 
     getAppName() {
         return "磁力新6V"
     }
+
+    getJSName() {
+        return "xb6v"
+    }
+
+    getType() {
+        return 3
+    }
+
     async redirect(response) {
         await this.jadeLog.debug(`重定向回复值为:${response.content}`)
         let matcher = /<a HREF=(.*?)>/.exec(response.content)
@@ -292,3 +301,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

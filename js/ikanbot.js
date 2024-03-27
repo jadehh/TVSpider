@@ -62,11 +62,18 @@ class IKanBotSpider extends Spider {
     }
 
     getName() {
-        return "🤖|爱看机器人|🤖"
+        return "🤖┃爱看机器人┃🤖"
     }
 
     getAppName() {
-        return "|爱看机器人|"
+        return "爱看机器人"
+    }
+    getJSName() {
+        return "ikanbot"
+    }
+
+    getType() {
+        return 3
     }
 
     async init(cfg) {
@@ -310,3 +317,4 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
+export {spider}

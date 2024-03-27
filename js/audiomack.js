@@ -8,7 +8,7 @@
 */
 import {Spider} from "./spider.js";
 import {BookShort} from "../lib/book.js";
-import {} from "../lib/crypto-js.js"
+import {Crypto} from "../lib/cat.js";
 
 function u(e) {
     (this._parameters = {}), this._loadParameters(e || {});
@@ -87,8 +87,7 @@ function getSignature(method, urlPath, params, secret = "f3ac5b086f3eab260520d8e
     const httpMethod = method.toUpperCase();
     const normdParams = getNormalizedParams(r);
     const l = _encode(httpMethod) + "&" + _encode(urlPath) + "&" + _encode(normdParams);
-    const hash = CryptoJS.HmacSHA1(l, secret + "&").toString(CryptoJS.enc.Base64);
-    return hash;
+    return Crypto.HmacSHA1(l, secret + "&").toString(Crypto.enc.Base64);
 }
 
 class AudioMackSpider extends Spider {
@@ -103,6 +102,14 @@ class AudioMackSpider extends Spider {
 
     getAppName() {
         return "音声"
+    }
+
+    getJSName() {
+        return "audiomack"
+    }
+
+    getType() {
+        return 10
     }
 
     async parseVodShortListFromJson(obj) {
@@ -248,3 +255,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

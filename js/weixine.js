@@ -32,6 +32,14 @@ class WeiXineSpider extends Spider {
         return "阿里影视"
     }
 
+    getJSName() {
+        return "weixine"
+    }
+
+    getType() {
+        return 3
+    }
+
     async parseVodShortListFromDoc($) {
         let items = $('.module-item');
         let vod_list = [];
@@ -67,8 +75,8 @@ class WeiXineSpider extends Spider {
         let vidoe_info_actor_list = $(video_items[1]).find("a")
         let actor_list = []
         for (const video_info_actor of vidoe_info_actor_list) {
-            if (video_info_actor.children.length > 0){
-                 actor_list.push(video_info_actor.children[0].data)
+            if (video_info_actor.children.length > 0) {
+                actor_list.push(video_info_actor.children[0].data)
             }
         }
         vodDetail.vod_actor = actor_list.join(" * ")
@@ -192,8 +200,7 @@ class WeiXineSpider extends Spider {
             } else {
                 extend_dic["name"] = $($(elements[i]).find("a")[0]).text()
                 extend_dic["value"] = [{"n": "全部", "v": "0"}, {
-                    "n": $($(elements[i]).find("a")[1]).text(),
-                    "v": "hits"
+                    "n": $($(elements[i]).find("a")[1]).text(), "v": "hits"
                 }, {"n": $($(elements[i]).find("a")[2]).text(), "v": "score"}]
 
                 extend_list.push(extend_dic)
@@ -216,6 +223,7 @@ class WeiXineSpider extends Spider {
             }
         }
     }
+
     async setHomeVod() {
         let con = await this.fetch(this.siteUrl, null, this.getHeader());
         if (!_.isEmpty(con)) {
@@ -264,6 +272,7 @@ class WeiXineSpider extends Spider {
     async play(flag, id, flags) {
         return await playContent(flag, id, flags);
     }
+
     async setSearch(wd, quick) {
         let searchUrl = this.siteUrl + '/index.php/vodsearch/-------------.html?wd=' + wd;
         let html = await this.fetch(searchUrl, null, this.getHeader())
@@ -310,4 +319,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
-
+export {spider}

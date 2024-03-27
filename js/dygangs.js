@@ -24,7 +24,15 @@ class MoviePortSpider extends Spider {
     }
 
     getName() {
-        return "🏖️|电影港|🏖️"
+        return "🏖️┃电影港┃🏖️"
+    }
+
+    getJSName() {
+        return "dygangs"
+    }
+
+    getType() {
+        return 3
     }
 
 
@@ -266,3 +274,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

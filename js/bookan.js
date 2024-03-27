@@ -31,6 +31,14 @@ class BooKanSpider extends Spider {
         return "看书"
     }
 
+    getJSName() {
+        return "bookan"
+    }
+
+    getType() {
+        return 10
+    }
+
     async parseVodShortListFromJson(obj) {
         let books = [];
         for (const book of obj.list) {
@@ -141,4 +149,4 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
-
+export {spider}

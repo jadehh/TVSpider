@@ -23,13 +23,19 @@ class CiliDuoSpider extends Spider {
     }
 
     getName() {
-        return "🔞|磁力多BT|🔞"
+        return "🔞┃磁力多BT┃🔞"
     }
 
     getAppName() {
         return "磁力多BT"
     }
+    getJSName() {
+        return "ciliduo"
+    }
 
+    getType() {
+        return 3
+    }
     getProxy(src) {
         return Utils.base64Decode(src)
     }
@@ -183,3 +189,4 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
+export {spider}

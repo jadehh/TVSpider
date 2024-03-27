@@ -1,13 +1,39 @@
-import kunyu77 from './spider/video/kunyu77.js';
-import kkys from './spider/video/kkys.js';
-import push from './spider/video/push.js';
-import alist from './spider/pan/alist.js';
-import _13bqg from './spider/book/13bqg.js';
+import bqg from './spider/book/bqg.js';
 import copymanga from './spider/book/copymanga.js';
+import alist from './spider/pan/alist.js';
+import aiyingshi from './spider/video/aiyingshi.js';
+import alipansou from './spider/video/alipansou.js';
+import aliyunpanshare from './spider/video/aliyunpanshare.js';
+import changzhang from './spider/video/changzhang.js';
+import douban from './spider/video/douban.js';
+import dygangs from './spider/video/dygangs.js';
+import dyttbt from './spider/video/dyttbt.js';
+import feifan from './spider/video/feifan.js';
 import ffm3u8 from './spider/video/ffm3u8.js';
-import yiqikan from "./spider/video/yiqikan.js";
-
-const spiders = [kunyu77, kkys, ffm3u8, push, alist, _13bqg, copymanga,yiqikan];
+import gitcafe from './spider/video/gitcafe.js';
+import huya from './spider/video/huya.js';
+import ikanbot from './spider/video/ikanbot.js';
+import jiafeimao from './spider/video/jiafeimao.js';
+import jianpian from './spider/video/jianpian.js';
+import jiujiuliu from './spider/video/jiujiuliu.js';
+import kankan70 from './spider/video/kankan70.js';
+import kkys from './spider/video/kkys.js';
+import kuaikan from './spider/video/kuaikan.js';
+import kunyu77 from './spider/video/kunyu77.js';
+import liangzi from './spider/video/liangzi.js';
+import mp4movie from './spider/video/mp4movie.js';
+import nangua from './spider/video/nangua.js';
+import NewVision from './spider/video/NewVision.js';
+import nivod from './spider/video/nivod.js';
+import pan_search from './spider/video/pan_search.js';
+import push from './spider/video/push.js';
+import sp360 from './spider/video/sp360.js';
+import star from './spider/video/star.js';
+import weixine from './spider/video/weixine.js';
+import wogg from './spider/video/wogg.js';
+import xb6v from './spider/video/xb6v.js';
+import yiqikan from './spider/video/yiqikan.js';
+const spiders = [bqg,copymanga,alist,aiyingshi,alipansou,aliyunpanshare,changzhang,douban,dygangs,dyttbt,feifan,ffm3u8,gitcafe,huya,ikanbot,jiafeimao,jianpian,jiujiuliu,kankan70,kkys,kuaikan,kunyu77,liangzi,mp4movie,nangua,NewVision,nivod,pan_search,push,sp360,star,weixine,wogg,xb6v,yiqikan];
 const spiderPrefix = '/spider';
 
 /**

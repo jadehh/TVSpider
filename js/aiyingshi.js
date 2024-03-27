@@ -25,6 +25,13 @@ class AiYingShiSpider extends Spider {
     getAppName() {
         return "爱影视"
     }
+    getJSName() {
+        return "aiyingshi"
+    }
+
+    getType() {
+        return 3
+    }
 
     async parseVodShortListFromDoc($) {
         let items = $('.module-item');
@@ -290,3 +297,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,proxy:proxy
     };
 }
+export {spider}

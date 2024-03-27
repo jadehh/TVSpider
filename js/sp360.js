@@ -24,6 +24,13 @@ class Sp360Spider extends Spider {
     getAppName() {
         return "360"
     }
+    getJSName() {
+        return "sp360"
+    }
+
+    getType() {
+        return 3
+    }
 
     async init(cfg) {
         await super.init(cfg);
@@ -656,3 +663,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

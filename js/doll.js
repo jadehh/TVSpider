@@ -27,6 +27,14 @@ class Doll extends Spider {
         return "玩偶姐姐"
     }
 
+    getJSName() {
+        return "doll"
+    }
+
+    getType() {
+        return 3
+    }
+
     async parseVodShortListFromDoc($) {
         let vod_list = []
         let vodElements = $("[class=\"row\"]").find("[class=\"video-detail\"]")
@@ -114,8 +122,7 @@ class Doll extends Spider {
                 let type_id = $(menuElement).find("a")[0].attribs["href"]
                 if (type_id !== undefined && type_id.indexOf(this.siteUrl) > -1) {
                     let type_dic = {
-                        "type_name": $(menuElement).text(),
-                        "type_id": type_id
+                        "type_name": $(menuElement).text(), "type_id": type_id
                     }
                     this.classes.push(type_dic)
                 }
@@ -133,8 +140,8 @@ class Doll extends Spider {
     }
 
     async setCategory(tid, pg, filter, extend) {
-        if (extend["1"] !== undefined){
-            if (extend["1"] !== "1" ){
+        if (extend["1"] !== undefined) {
+            if (extend["1"] !== "1") {
                 tid = extend[1]
             }
         }
@@ -169,8 +176,8 @@ class Doll extends Spider {
 
     async setSearch(wd, quick) {
         let searchUrl = this.siteUrl + "search/" + encodeURIComponent(wd)
-        let html = await this.fetch(searchUrl,null,this.getHeader())
-        if (html !== null){
+        let html = await this.fetch(searchUrl, null, this.getHeader())
+        if (html !== null) {
             let $ = load(html)
             this.vodList = await this.parseVodShortListFromDoc($)
         }
@@ -209,12 +216,7 @@ async function search(wd, quick) {
 
 export function __jsEvalReturn() {
     return {
-        init: init,
-        home: home,
-        homeVod: homeVod,
-        category: category,
-        detail: detail,
-        play: play,
-        search: search,
+        init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

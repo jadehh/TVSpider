@@ -22,11 +22,19 @@ class DyttSpider extends Spider {
     }
 
     getName() {
-        return "🍚|Mp4电影|🍚"
+        return "🍚┃Mp4电影┃🍚"
     }
 
     getAppName() {
         return "Mp4电影"
+    }
+
+    getJSName() {
+        return "mp4movie"
+    }
+
+    getType() {
+        return 3
     }
 
     // getHeader() {
@@ -258,3 +266,4 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
+export {spider}

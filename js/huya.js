@@ -23,11 +23,19 @@ class HuyaSpider extends Spider {
     }
 
     getName() {
-        return "🐯|虎牙直播|🐯"
+        return "🐯┃虎牙直播┃🐯"
     }
 
     getAppName() {
         return "虎牙直播"
+    }
+
+    getJSName() {
+        return "huya"
+    }
+
+    getType() {
+        return 3
     }
 
     async init(cfg) {
@@ -692,3 +700,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

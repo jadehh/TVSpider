@@ -21,13 +21,19 @@ class OkSpider extends Spider {
     }
 
     getName() {
-        return `🆗|OK资源网|🆗`
+        return `🆗┃OK资源网┃🆗`
     }
 
     getAppName() {
-        return `|OK资源网|`
+        return `OK资源网`
+    }
+    getJSName() {
+        return "freeok"
     }
 
+    getType() {
+        return 3
+    }
     async init(cfg) {
         this.cookie = await this.load_cache()
         await super.init(cfg);
@@ -324,3 +330,4 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
+export {spider}

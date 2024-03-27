@@ -34,6 +34,13 @@ class GitCafeSpider extends Spider {
     getAppName() {
         return "阿里猫狸"
     }
+    getJSName() {
+        return "alipansou"
+    }
+
+    getType() {
+        return 3
+    }
 
     getHeader() {
 
@@ -216,3 +223,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

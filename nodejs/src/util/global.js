@@ -162,3 +162,18 @@ globalThis.md5X = md5;
 function md5(text) {
     return crypto.createHash('md5').update(Buffer.from(text, 'utf8')).digest('hex');
 }
+let charStr = 'abacdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789';
+
+function randStr(len, withNum) {
+    let _str = '';
+    let containsNum = withNum === undefined ? true : withNum;
+    for (let i = 0; i < len; i++) {
+        let idx = _.random(0, containsNum ? charStr.length - 1 : charStr.length - 11);
+        _str += charStr[idx];
+    }
+    return _str;
+}
+globalThis.js2Proxy = function (dynamic, siteType, site, url, headers) {
+    let hd = Object.keys(headers).length === 0 ? '_' : encodeURIComponent(JSON.stringify(headers));
+    return (dynamic ? 'js2p://_WEB_/' : 'http://127.0.0.1:13333/jp/') + randStr(6) + '/' + siteType + '/' + site + '/' + hd + '/' + encodeURIComponent(url);
+};

@@ -23,7 +23,15 @@ class JiaFeiMaoSpider extends Spider {
     }
 
     getName() {
-        return "🐈|加菲猫|🐈"
+        return "🐈┃加菲猫┃🐈"
+    }
+
+    getJSName() {
+        return "jiafeimao"
+    }
+
+    getType() {
+        return 3
     }
 
     getPic(url){
@@ -284,3 +292,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

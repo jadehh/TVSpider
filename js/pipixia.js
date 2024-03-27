@@ -6,7 +6,7 @@
 * @Software : Samples
 * @Desc     : 完成所有的功能开发(已失效,需要登录,后续需要完成皮皮虾的登录功能)
 */
-import {_, load} from '../lib/cat.js';
+import {_, Crypto, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
@@ -33,6 +33,14 @@ class PiPiXiaSpider extends Spider {
 
     getAppName() {
         return `皮皮虾影视`
+    }
+
+    getJSName() {
+        return "pipixia"
+    }
+
+    getType() {
+        return 3
     }
 
     async parseVodShortListFromDoc($) {
@@ -353,10 +361,10 @@ class PiPiXiaSpider extends Spider {
     }
 
     uic(url, uid) {
-        let ut = CryptoJS.enc.Utf8.parse('2890' + uid + 'tB959C');
-        let mm = CryptoJS.enc.Utf8.parse("2F131BE91247866E");
-        let decrypted = CryptoJS.AES.decrypt(url, ut, {iv: mm, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
-        return CryptoJS.enc.Utf8.stringify(decrypted);
+        let ut = Crypto.enc.Utf8.parse('2890' + uid + 'tB959C');
+        let mm = Crypto.enc.Utf8.parse("2F131BE91247866E");
+        let decrypted = Crypto.AES.decrypt(url, ut, {iv: mm, mode: Crypto.mode.CBC, padding: Crypto.pad.Pkcs7});
+        return Crypto.enc.Utf8.stringify(decrypted);
     }
 
     async setVideoProxy(playUrl){
@@ -448,3 +456,4 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
+export {spider}

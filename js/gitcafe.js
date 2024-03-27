@@ -26,7 +26,13 @@ class GitCafeSpider extends Spider {
     getAppName() {
         return "阿里纸条"
     }
+    getJSName() {
+        return "gitcafe"
+    }
 
+    getType() {
+        return 3
+    }
     async getApiUrl() {
         let html = await this.fetch(this.siteUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
@@ -212,3 +218,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

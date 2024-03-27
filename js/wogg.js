@@ -22,7 +22,7 @@ class WoggSpider extends Spider {
 
     async init(cfg) {
         await super.init(cfg);
-        await initAli(this.cfgObj["token"]);
+        await this.initAli(this.cfgObj["token"]);
         this.danmuStaus = true
     }
 
@@ -33,7 +33,13 @@ class WoggSpider extends Spider {
     getAppName() {
         return "阿里玩偶"
     }
+    getJSName() {
+        return "wogg"
+    }
 
+    getType() {
+        return 3
+    }
     async parseVodShortListFromDoc($) {
         let items = $('.module-item');
         let vod_list = [];
@@ -310,3 +316,4 @@ export function __jsEvalReturn() {
     };
 }
 
+export {spider}

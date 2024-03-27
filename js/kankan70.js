@@ -51,6 +51,14 @@ class Kankan70Spider extends Spider {
         return "70看看"
     }
 
+    getJSName() {
+        return "kankan70"
+    }
+
+    getType() {
+        return 3
+    }
+
     paraseUrlObject(js_str) {
         let content_list = js_str.split(";")
         let urlObject = {}
@@ -297,3 +305,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

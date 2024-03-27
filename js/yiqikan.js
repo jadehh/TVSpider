@@ -35,7 +35,7 @@ class YiQiKanSpider extends Spider {
 
 
     getName() {
-        return "🛫|一起看|🛫"
+        return "🛫┃一起看┃🛫"
     }
 
     getAppName() {
@@ -44,6 +44,10 @@ class YiQiKanSpider extends Spider {
 
     getJSName() {
         return "yiqikan"
+    }
+
+    getType() {
+        return 3
     }
 
     getHeader() {
@@ -261,3 +265,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

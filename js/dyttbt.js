@@ -21,11 +21,18 @@ class DyttSpider extends Spider {
     }
 
     getName() {
-        return "👼|电影天堂BT|👼"
+        return "👼┃电影天堂BT┃👼"
     }
 
     getAppName() {
         return "电影天堂BT"
+    }
+    getJSName() {
+        return "dyttbt"
+    }
+
+    getType() {
+        return 3
     }
 
     // getHeader() {
@@ -204,3 +211,4 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
+export {spider}

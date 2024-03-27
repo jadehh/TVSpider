@@ -25,6 +25,14 @@ class PanSearchSpider extends Spider {
         return "阿里盘搜"
     }
 
+    getJSName() {
+        return "pan_search"
+    }
+
+    getType() {
+        return 3
+    }
+
     getSearchHeader() {
         let headers = this.getHeader();
         headers["x-nextjs-data"] = "1";
@@ -141,3 +149,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

@@ -1,5 +1,5 @@
 /*
-* @File     : 6080.js
+* @File     : newvision.js
 * @Author   : jade
 * @Date     : 2024/2/20 14:14
 * @Email    : jadehh@1ive.com
@@ -9,6 +9,7 @@
 import {VodDetail, VodShort} from "../lib/vod.js"
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
+import {Crypto} from "../lib/cat.js";
 
 
 class NewVisionSpider extends Spider {
@@ -22,9 +23,15 @@ class NewVisionSpider extends Spider {
     }
 
     getName() {
-        return "🐼|新视觉影院|🐼"
+        return "🐼┃新视觉影院┃🐼"
+    }
+    getJSName() {
+        return "newvision"
     }
 
+    getType() {
+        return 3
+    }
     async setClasses() {
         let $ = await this.getHtml()
         let navElements = $($("[class=\"nav-menu-items\"]")[0]).find("a")
@@ -176,10 +183,10 @@ class NewVisionSpider extends Spider {
     }
 
      uic(url,uid){
-        let ut = CryptoJS.enc.Utf8.parse('2890'+uid+'tB959C')
-        let mm = CryptoJS.enc.Utf8.parse("2F131BE91247866E")
-        let decrypted = CryptoJS.AES.decrypt(url, ut, {iv: mm, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
-        return CryptoJS.enc.Utf8.stringify(decrypted);
+        let ut = Crypto.enc.Utf8.parse('2890'+uid+'tB959C')
+        let mm = Crypto.enc.Utf8.parse("2F131BE91247866E")
+        let decrypted = Crypto.AES.decrypt(url, ut, {iv: mm, mode: Crypto.mode.CBC, padding: Crypto.pad.Pkcs7});
+        return Crypto.enc.Utf8.stringify(decrypted);
 }
 
     async setPlay(flag, id, flags) {
@@ -251,3 +258,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

@@ -19,7 +19,14 @@ class Liangzi18Spider extends VodSpider {
     }
 
     getName() {
-        return "🔞|量子资源18+|🔞"
+        return "🔞┃量子资源18+┃🔞"
+    }
+    getJSName() {
+        return "liangzi18"
+    }
+
+    getType() {
+        return 3
     }
 }
 
@@ -69,3 +76,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

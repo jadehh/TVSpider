@@ -24,6 +24,13 @@ class HsCangkuSpider extends Spider {
     getAppName() {
         return "黄色仓库"
     }
+    getJSName() {
+        return "hscangku"
+    }
+
+    getType() {
+        return 3
+    }
 
     async parseVodShortListFromDoc($) {
         let vod_list = []
@@ -143,3 +150,4 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
+export {spider}

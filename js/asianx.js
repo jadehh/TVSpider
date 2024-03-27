@@ -27,7 +27,13 @@ class AsianXSpider extends Spider {
     getAppName() {
         return "海外宅"
     }
+    getJSName() {
+        return "asianx"
+    }
 
+    getType() {
+        return 3
+    }
 
     async getFilter($) {
         let navElements = $($("[class=\"menu m-0 mb-2 mb-lg-0\"]")).find("a").slice(6)
@@ -174,3 +180,4 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
+export {spider}

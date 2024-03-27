@@ -25,6 +25,13 @@ class JiuJiuLiuSpider extends Spider {
     getAppName() {
         return "九九六影视"
     }
+    getJSName() {
+        return "jiujiuliu"
+    }
+
+    getType() {
+        return 3
+    }
 
     async parseVodShortListFromDoc($) {
         let vod_list = []
@@ -271,3 +278,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

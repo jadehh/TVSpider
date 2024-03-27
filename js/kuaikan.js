@@ -6,7 +6,7 @@
 * @Software : Samples
 * @Desc     :
 */
-import {jinja2, _, dayjs} from "../lib/cat.js";
+import {jinja2, _, dayjs, Crypto} from "../lib/cat.js";
 import {Spider} from "./spider.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
 import * as Utils from "../lib/utils.js";
@@ -80,11 +80,19 @@ class KuaiKanSpider extends Spider {
     }
 
     getName() {
-        return "🛥︎|快看视频|🛥︎"
+        return "🛥︎┃快看视频┃🛥︎"
     }
 
     getAppName() {
         return "快看视频"
+    }
+
+    getJSName() {
+        return "kuaikan"
+    }
+
+    getType() {
+        return 3
     }
 
     async init(cfg) {
@@ -97,7 +105,7 @@ class KuaiKanSpider extends Spider {
     async request(reqUrl, postData, agentSp, get) {
         let ts = dayjs().valueOf().toString();
         let rand = randStr(32);
-        let sign = CryptoJS.enc.Hex.stringify(CryptoJS.MD5('H58d2%gLbeingX*%D4Y8!C!!@G_' + ts + '_' + rand))
+        let sign = Crypto.enc.Hex.stringify(Crypto.MD5('H58d2%gLbeingX*%D4Y8!C!!@G_' + ts + '_' + rand))
             .toString()
             .toLowerCase();
         let headers = {
@@ -123,11 +131,11 @@ class KuaiKanSpider extends Spider {
         await this.jadeLog.debug(`URL:${reqUrl},headers:${JSON.stringify(headers)},data:${[JSON.stringify(postData)]}`)
         let content = res.content;
         try {
-            let key = CryptoJS.enc.Utf8.parse('IjhHsCB2B5^#%0Ag');
-            let iv = CryptoJS.enc.Utf8.parse('y8_m.3rauW/>j,}.');
-            let src = CryptoJS.enc.Base64.parse(content);
-            let dst = CryptoJS.AES.decrypt({ciphertext: src}, key, {iv: iv, padding: CryptoJS.pad.Pkcs7});
-            dst = CryptoJS.enc.Utf8.stringify(dst);
+            let key = Crypto.enc.Utf8.parse('IjhHsCB2B5^#%0Ag');
+            let iv = Crypto.enc.Utf8.parse('y8_m.3rauW/>j,}.');
+            let src = Crypto.enc.Base64.parse(content);
+            let dst = Crypto.AES.decrypt({ciphertext: src}, key, {iv: iv, padding: Crypto.pad.Pkcs7});
+            dst = Crypto.enc.Utf8.stringify(dst);
             await this.jadeLog.debug(`response:${dst}`)
             return JSON.parse(dst);
         } catch (e) {
@@ -433,3 +441,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}

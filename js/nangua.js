@@ -34,11 +34,19 @@ class NanGuaSpider extends Spider {
     }
 
     getName() {
-        return "🎃|南瓜影视|🎃"
+        return "🎃┃南瓜影视┃🎃"
     }
 
     getAppName() {
         return "南瓜影视"
+    }
+
+    getJSName() {
+        return "nangua"
+    }
+
+    getType() {
+        return 3
     }
 
     async init(cfg) {
@@ -351,3 +359,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

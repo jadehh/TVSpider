@@ -22,6 +22,15 @@ class NivodSpider extends Spider {
     getAppName() {
         return "泥视频"
     }
+
+    getJSName() {
+        return "nivod"
+    }
+
+    getType() {
+        return 3
+    }
+
     async setClasses() {
         this.Remove18ChannelCode = parseInt(this.cfgObj["code"])
         let url = this.siteUrl + "/show/channel/list/WEB/3.2" + await createSign()
@@ -231,3 +240,4 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+export {spider}

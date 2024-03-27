@@ -21,9 +21,15 @@ class HaoXiSpider extends Spider {
     }
 
     getName() {
-        return `🌿|好戏追剧|🌿`
+        return `🌿┃好戏追剧┃🌿`
+    }
+    getJSName() {
+        return "haoxi"
     }
 
+    getType() {
+        return 3
+    }
     parseVodShortFromElement($, element) {
         let vodShort = new VodShort();
         vodShort.vod_id = $(element).find("a")[0].attribs.href
@@ -264,3 +270,4 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+export {spider}
