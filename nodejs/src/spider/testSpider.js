@@ -6,7 +6,7 @@
 * @Software : Samples
 * @Desc     :
 */
-import base_spider from "./video/jianpian.js"
+import base_spider from "./video/alipansou.js"
 
 class DB {
     constructor() {
@@ -16,7 +16,7 @@ class DB {
         return {}
     }
 
-    push() {
+    async push() {
 
     }
 }
@@ -31,17 +31,17 @@ let inReq = {"server":
         }}
 let init = await spider.init(inReq)
 
-let home = JSON.parse(await spider.home())
-let homeVod = JSON.parse(await spider.homeVod())
-let cateInReq = {"body": {"id": "2", "page": "1", "filters": {}}}
-let category = JSON.parse(await spider.category(cateInReq))
-let detailInReq = {"body": {"id": "154378"}}
-let detail = JSON.parse(await spider.detail(detailInReq))
+// let home = JSON.parse(await spider.home())
+// let homeVod = JSON.parse(await spider.homeVod())
+// let cateInReq = {"body": {"id": "2", "page": "1", "filters": {}}}
+// let category = JSON.parse(await spider.category(cateInReq))
+// let detailInReq = {"body": {"id": "154378"}}
+// let detail = JSON.parse(await spider.detail(detailInReq))
 
 let playInReq = {
     "body": {
         "flag": "原画",
-        "id": "6602a6b10b01351f145949debbbe89971b2cc9ea+97hoD7JJh9P+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21Kc29uIjoie1wiZG9tYWluX2lkXCI6XCJiajI5XCIsXCJzaGFyZV9pZFwiOlwiOTdob0Q3SkpoOVBcIixcImNyZWF0b3JcIjpcImUwYzhlZTZhYWYwZjQ5YzU5MDZhYWVmZWUzM2IzMDk2XCIsXCJ1c2VyX2lkXCI6XCJhbm9ueW1vdXNcIn0iLCJjdXN0b21UeXBlIjoic2hhcmVfbGluayIsImV4cCI6MTcxMTUyNzQwMywiaWF0IjoxNzExNTIwMTQzfQ.r2k_K3cxA6AFBP3B7qPWOhXkz3l27S0pmNpdMVeDYHoZSXtdf0EC1jkbILanqTs-Oo8A00Pa49oI9jN6f6G5CVRw3B01fHIM2PrZqXA4sY_a3tPhVYZQkV_2jlYstQT9K-dsUyM116GbI347gdq0aVSuegKO6W_Dkvz91T15wcM"
+        "id": "6347b6a5d4b85050537a416f810063b2630b6d2a+cfeM8bMRAhg+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21Kc29uIjoie1wiZG9tYWluX2lkXCI6XCJiajI5XCIsXCJzaGFyZV9pZFwiOlwiY2ZlTThiTVJBaGdcIixcImNyZWF0b3JcIjpcIjU5MmQ4ODM2NWMyYjQ2NDhiZjJiZWY2OTYzZjkzM2UyXCIsXCJ1c2VyX2lkXCI6XCJhbm9ueW1vdXNcIn0iLCJjdXN0b21UeXBlIjoic2hhcmVfbGluayIsImV4cCI6MTcxMTU1MzEyMCwiaWF0IjoxNzExNTQ1ODYwfQ.XIiWtXS6P-Wev5D_jQqhDF6nggSKHF3RxHukMRMjljSf0lyku0SOHULzcNin6WYTXQcCpxYJ5gJ2vKokFeri9WlqRD6ZY7E20oV20csZQTJEtvo_kwA5M_lhy5b164rjEmbxqgVFCH0BIwdq1pP2QeQSc8vUblO1WTfa-upOBnk"
     }
 }
 let play = JSON.parse(await spider.play(playInReq))
