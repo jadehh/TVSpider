@@ -41,10 +41,12 @@ jobs:
           git checkout  $checkname -b dist  ##分支不存在用这个
           # git checkout dist  ## 分支已存在用这个
           cp -r code/nodejs/dist/* ./
+          cp -r code/readme.md ./README.md
           git add index.config.js
           git add index.config.js.md5
           git add index.js
           git add index.js.md5
+          git add README.md
           commit_msg="* 发布源"
           git commit -a -m "$commit_msg"
 
