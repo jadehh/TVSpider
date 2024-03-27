@@ -23,7 +23,9 @@ jobs:
       - name: 发布版本
         run: |
           cd code/nodejs
-          npm install && npm run build
+          npm install qs --save
+          npm install 
+          npm run build
 
       - name: 新建分支
         run: |
