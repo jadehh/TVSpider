@@ -29,12 +29,11 @@ jobs:
 
       - name: 新建分支
         run: |
-          cd code
           git config --global user.email "jadehh@live.com"
           git config --global user.name "jade"
           git checkout js  -b dist  ##分支不存在用这个
           # git checkout dist  ## 分支已存在用这个
-          cp -r nodejs/dist/* ./
+          cp -r code/nodejs/dist/* ./
           git add index.config.js
           git add index.config.js.md5
           git add index.js
