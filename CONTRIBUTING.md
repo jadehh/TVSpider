@@ -1,10 +1,14 @@
 ### 更新日志
-### jsV1.0.2.9 - 2024-03-27
-* 同步Gitee分支和Github分支
+### jsV1.0.3.0 - 2024-03-27
+* 完成quick js 转 node js代码
 ----
 
 <details onclose>
 
+
+### jsV1.0.2.9 - 2024-03-27
+* 同步Gitee分支和Github分支
+----
 
 ### jsV1.0.2.8 - 2024-03-27
 * 自动发布支持新版本CatVodOpen源
