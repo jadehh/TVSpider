@@ -36,6 +36,7 @@
         "hls-parser": "^0.10.8",
         "iconv-lite": "^0.6.3",
         "node-json-db": "^2.3.0",
-        "node-rsa": "^1.1.1"
+        "node-rsa": "^1.1.1",
+        "sqlite3": "^5.1.7"
     }
 }

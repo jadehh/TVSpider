@@ -1,7 +1,7 @@
 /*
 * @File     : pan_search.js
 * @Author   : jade
-* @Date     : 2024-03-27 16:11:36
+* @Date     : 2024-03-27 17:05:31
 * @Email    : jadehh@1ive.com
 * @Software : Samples
 * @Desc     :
@@ -28,7 +28,7 @@ class pan_searchSpider extends Spider {
 
     async init(inReq, _outResp) {
         if (this.getAppName().indexOf("阿里") > -1) {
-            await spider.initAli(inReq.server.config["alitoken"])
+            await spider.initAli(inReq.server.config["alitoken"],inReq.server.db)
         }
         await super.init(inReq, _outResp)
     }

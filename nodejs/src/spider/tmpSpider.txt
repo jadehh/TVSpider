@@ -28,7 +28,7 @@ class tempSpider extends Spider {
 
     async init(inReq, _outResp) {
         if (this.getAppName().indexOf("阿里") > -1) {
-            await spider.initAli(inReq.server.config["alitoken"])
+            await spider.initAli(inReq.server.config["alitoken"],inReq.server.db)
         }
         await super.init(inReq, _outResp)
     }

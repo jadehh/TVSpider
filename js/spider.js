@@ -432,8 +432,8 @@ class Spider {
 
     }
 
-    async initAli(token){
-        await initAli(token)
+    async initAli(token,db=null){
+        await initAli(token,db)
     }
 
     async init(cfg) {
