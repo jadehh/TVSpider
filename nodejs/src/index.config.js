@@ -1,6 +1,6 @@
 export default {
 
-    alitoken:"302ef8e4b4d7430db6d82de284978359",
+    alitoken:"6827db23e5474d02a07fd7431d3d5a5a",
 
     ffm3u8: {
 
