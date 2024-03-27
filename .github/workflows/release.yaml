@@ -16,9 +16,15 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: jadehh/TVSpider
+          fetch-depth: 0  # 显示所有提交的日志
+          token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
+      - name: 下载需要打包更新的代码
+        uses: actions/checkout@v3
+        with:
+          repository: jadehh/TVSpider
           ref: js
           path: code
-          fetch-depth: 0  # 显示所有提交的日志
+          fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
       - name: 发布版本
         run: |
@@ -40,7 +46,7 @@ jobs:
           git add index.js.md5
           commit_msg="* 发布源"
           git commit -a -m "$commit_msg"
-        
+
       - name: 查看分支
         run: |
           ls -l
