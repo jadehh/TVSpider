@@ -34,7 +34,8 @@ jobs:
           git config --global user.name "jade"
           git checkout js  -b dist  ##分支不存在用这个
           # git checkout dist  ## 分支已存在用这个
-          git add nodejs/dist
+          cp -r nodejs/dist dist
+          git add dist
           commit_msg="* 发布源"
           git commit -a -m "$commit_msg"
         
