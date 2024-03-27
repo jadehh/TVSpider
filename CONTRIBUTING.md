@@ -1,4 +1,10 @@
 ### 更新日志
+### jsV1.0.2.9 - 2024-03-27
+* 同步Gitee分支和Github分支
+----
+
+<details onclose>
+
 
 ### jsV1.0.2.8 - 2024-03-27
 * 自动发布支持新版本CatVodOpen源
@@ -8,7 +14,6 @@
 * 新增南瓜影视
 ---
 
-<details onclose>
 
 ### jsV1.0.2.6 - 2024-03-13
 * 修复详情界面,返回episodeUrl需要带上VodDetail和episodeId

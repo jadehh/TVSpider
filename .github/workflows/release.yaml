@@ -53,7 +53,7 @@ jobs:
       - name: 查看分支
         run: |
           ls -l
-      - name: 上传分支
+      - name: 上传Github分支
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GH_PAT }}
@@ -64,3 +64,17 @@ jobs:
           tags: true
         env:
           GITHUB_ACTOR: jadehh
+
+      - name: 上传Gitee分支
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GT_TOKEN }}
+          repository: jadehh_743/TVSpider
+          directory: .
+          branch: dist
+          force: true
+          tags: true
+          github_url: https://gitee.com
+        env:
+          GITHUB_ACTOR: jadehh
+
