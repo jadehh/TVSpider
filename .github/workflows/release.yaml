@@ -35,6 +35,7 @@ jobs:
 
       - name: 新建分支
         run: |
+          ls -l
           git config --global user.email "jadehh@live.com"
           git config --global user.name "jade"
           git checkout js  -b dist  ##分支不存在用这个
