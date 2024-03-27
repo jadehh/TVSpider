@@ -6,7 +6,7 @@
 * @Software : Samples
 * @Desc     :
 */
-import wogg from "./video/wogg.js"
+import base_spider from "./video/jianpian.js"
 
 class DB {
     constructor() {
@@ -22,8 +22,13 @@ class DB {
 }
 
 
-let spider = wogg.spider
-let inReq = {"server": {"config": {"yiqikan": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"}, "db": new DB()}}
+let spider = base_spider.spider
+let inReq = {"server":
+        {
+            "config": {"yiqikan": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"},
+            "db": new DB(),
+            "prefix":"12"
+        }}
 let init = await spider.init(inReq)
 
 let home = JSON.parse(await spider.home())

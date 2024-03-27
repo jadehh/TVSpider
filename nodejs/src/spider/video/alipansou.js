@@ -29,7 +29,7 @@ class alipansouSpider extends Spider {
     async init(inReq, _outResp) {
         await spider.spiderInit()
         if (this.getAppName().indexOf("阿里") > -1) {
-            await spider.initAli(inReq.server.config["alitoken"],inReq.server.db)
+            await spider.initAli(inReq.server.config["alitoken"],inReq.server)
         }
         await super.init(inReq, _outResp)
     }

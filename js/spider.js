@@ -186,7 +186,7 @@ class Spider {
         this.classes = []
         this.filterObj = {}
         this.result = new Result()
-        this.catOpenStatus = false
+        this.catOpenStatus = true
         this.danmuStaus = false
         this.reconnectTimes = 0
         this.maxReconnectTimes = 5

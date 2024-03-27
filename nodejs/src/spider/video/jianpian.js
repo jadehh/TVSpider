@@ -27,11 +27,17 @@ class jianpianSpider extends Spider {
     }
 
     async init(inReq, _outResp) {
-        await spider.spiderInit()
-        if (this.getAppName().indexOf("阿里") > -1) {
-            await spider.initAli(inReq.server.config["alitoken"],inReq.server.db)
+        try {
+            await spider.spiderInit(inReq)
+            if (this.getAppName().indexOf("阿里") > -1) {
+                await spider.initAli(inReq.server.config["alitoken"], inReq.server.db)
+            }
+            await super.init(inReq, _outResp)
+        } catch (e) {
+            await this.jadeLog.error(e)
         }
-        await super.init(inReq, _outResp)
+
+
     }
 
     async setClasses() {
@@ -71,6 +77,10 @@ class jianpianSpider extends Spider {
         this.vodList = spider.vodList
     }
 
+    async setProxy(segments, headers) {
+        await spider.proxy(segments, headers)
+    }
+
 }
 
 let baseSpider = new jianpianSpider()
@@ -103,6 +113,10 @@ async function search(inReq, _outResp) {
     return await baseSpider.search(inReq, _outResp)
 }
 
+async function proxy(inReq, _outResp) {
+    return await baseSpider.proxy(inReq, _outResp)
+}
+
 export default {
     meta: {
         key: spider.getJSName(), name: spider.getName(), type: spider.getType(),
@@ -113,6 +127,7 @@ export default {
         fastify.post('/detail', detail);
         fastify.post('/play', play);
         fastify.post('/search', search);
+        fastify.post('/proxy', proxy);
     }, spider: {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search
     }

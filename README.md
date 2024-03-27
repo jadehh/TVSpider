@@ -42,6 +42,7 @@ python build.py
 * 虎牙弹幕功能无法实现,现在并不支持WebSocket来监听弹幕
 * [阿里Token获取](https://alist.nn.ci/zh/guide/drivers/aliyundrive.html)
 * SP360启用嗅探解析,CatVodOpen目前还不支持嗅探
+* 新版本的CatVodOpen暂时还不支持proxy,后续可能会考虑加入
 
 
 ## 特别说明

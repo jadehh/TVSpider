@@ -173,7 +173,6 @@ function randStr(len, withNum) {
     }
     return _str;
 }
-globalThis.js2Proxy = function (dynamic, siteType, site, url, headers) {
-    let hd = Object.keys(headers).length === 0 ? '_' : encodeURIComponent(JSON.stringify(headers));
-    return (dynamic ? 'js2p://_WEB_/' : 'http://127.0.0.1:13333/jp/') + randStr(6) + '/' + siteType + '/' + site + '/' + hd + '/' + encodeURIComponent(url);
+globalThis.js2Proxy = function (inReq) {
+    return 'js2p://_WEB_' + inReq.server.prefix + "/proxy/"
 };

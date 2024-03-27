@@ -44,9 +44,17 @@ class JianPianSpider extends Spider {
         }
     }
 
+    async spiderInit(inReq=null) {
+        if (inReq !== null){
+            this.jsBase = await js2Proxy(inReq);
+        }else{
+            this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
+        }
+
+    }
+
     async init(cfg) {
         await super.init(cfg);
-        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
         this.danmuStaus = true
     }
 

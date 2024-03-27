@@ -26,7 +26,7 @@ class Spider {
         this.classes = []
         this.filterObj = {}
         this.result = new Result()
-        this.catOpenStatus = false
+        this.catOpenStatus = true
         this.danmuStaus = false
         this.reconnectTimes = 0
         this.maxReconnectTimes = 5
@@ -278,6 +278,7 @@ class Spider {
             this.siteType = this.getType()
             this.cfgObj = inReq.server.config[this.siteKey]
             this.deviceKey = inReq.server.prefix + '/device';
+            await this.jadeLog.debug(`deviceKey:${this.deviceKey}`)
             this.db = inReq.server.db
             this.catOpenStatus = true
             this.danmuStaus = false
@@ -521,6 +522,7 @@ class Spider {
         return this.result.search(this.vodList)
     }
 
+
     async getImg(url, headers) {
         let resp;
         if (_.isEmpty(headers)) {
@@ -544,105 +546,14 @@ class Spider {
         }
     }
 
-    async proxy(segments, headers) {
-        await this.jadeLog.debug(`正在设置反向代理 segments = ${segments.join(",")},headers = ${JSON.stringify(headers)}`)
-        let what = segments[0];
-        let url = Utils.base64Decode(segments[1]);
-        await this.jadeLog.debug(`反向代理参数为:${url}`)
-        if (what === 'img') {
-            let resp = await this.getImg(url, headers)
-            return JSON.stringify({
-                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
-            });
-        } else if (what === "douban") {
-            let vod_list = await this.doubanSearch(url)
-            if (vod_list !== null) {
-                let vod_pic = vod_list[0].vod_pic
-                let resp;
-                if (!_.isEmpty(headers)) {
-                    resp = await req(vod_pic, {
-                        buffer: 2, headers: headers
-                    });
-                } else {
-                    resp = await req(vod_pic, {
-                        buffer: 2, headers: {
-                            Referer: vod_pic, 'User-Agent': Utils.CHROME,
-                        },
-                    });
-                }
-                return JSON.stringify({
-                    code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
-                });
-            }
-        } else if (what === "m3u8") {
-            let content;
-
-            if (!_.isEmpty(headers)) {
-                content = await this.fetch(url, null, headers, false, false, 2)
-            } else {
-                content = await this.fetch(url, null, {"Referer": url, 'User-Agent': Utils.CHROME}, false, false, 2)
-            }
-            await this.jadeLog.debug(`m3u8返回内容为:${Utils.base64Decode(content)}`)
-            if (!_.isEmpty(content)) {
-                return JSON.stringify({
-                    code: 200, buffer: 2, content: content, headers: {},
-                });
-            } else {
-                return JSON.stringify({
-                    code: 500, buffer: 2, content: content, headers: {},
-                })
-
-            }
-
-        } else if (what === 'hls') {
-            function hlsHeader(data, hls) {
-                let hlsHeaders = {};
-                if (data.headers['content-length']) {
-                    Object.assign(hlsHeaders, data.headers, {'content-length': hls.length.toString()});
-                } else {
-                    Object.assign(hlsHeaders, data.headers);
-                }
-                delete hlsHeaders['transfer-encoding'];
-                if (hlsHeaders['content-encoding'] == 'gzip') {
-                    delete hlsHeaders['content-encoding'];
-                }
-                return hlsHeaders;
-            }
-
-            const hlsData = await hlsCache(url, headers);
-            if (hlsData.variants) {
-                // variants -> variants -> .... ignore
-                const hls = HLS.stringify(hlsData.plist);
-                return {
-                    code: hlsData.code, content: hls, headers: hlsHeader(hlsData, hls),
-                };
-            } else {
-                const hls = HLS.stringify(hlsData.plist, (segment) => {
-                    return js2Proxy(false, this.siteType, this.siteKey, 'ts/' + encodeURIComponent(hlsData.key + '/' + segment.mediaSequenceNumber.toString()), headers);
-                });
-                return {
-                    code: hlsData.code, content: hls, headers: hlsHeader(hlsData, hls),
-                };
-            }
-        } else if (what === 'ts') {
-            const info = url.split('/');
-            const hlsKey = info[0];
-            const segIdx = parseInt(info[1]);
-            return await tsCache(hlsKey, segIdx, headers);
-        } else if (what === "detail") {
-            let $ = await this.getHtml(this.siteUrl + url)
-            let vodDetail = await this.parseVodDetailFromDoc($)
-            let resp = await this.getImg(vodDetail.vod_pic, headers)
-            return JSON.stringify({
-                code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
-            });
-        } else {
-            return JSON.stringify({
-                code: 500, content: '',
-            });
-        }
+    async setProxy(segments, headers) {
     }
 
+    async proxy(inReq, outResp) {
+        const what = inReq.params.what;
+        const purl = decodeURIComponent(inReq.params.ids);
+        await this.setProxy([what, purl], null)
+    }
 
     getSearchHeader() {
         const UserAgents = ["api-client/1 com.douban.frodo/7.22.0.beta9(231) Android/23 product/Mate 40 vendor/HUAWEI model/Mate 40 brand/HUAWEI  rom/android  network/wifi  platform/AndroidPad", "api-client/1 com.douban.frodo/7.18.0(230) Android/22 product/MI 9 vendor/Xiaomi model/MI 9 brand/Android  rom/miui6  network/wifi  platform/mobile nd/1", "api-client/1 com.douban.frodo/7.1.0(205) Android/29 product/perseus vendor/Xiaomi model/Mi MIX 3  rom/miui6  network/wifi  platform/mobile nd/1", "api-client/1 com.douban.frodo/7.3.0(207) Android/22 product/MI 9 vendor/Xiaomi model/MI 9 brand/Android  rom/miui6  network/wifi platform/mobile nd/1"]
