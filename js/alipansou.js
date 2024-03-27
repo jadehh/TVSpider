@@ -57,10 +57,14 @@ class GitCafeSpider extends Spider {
         }
     }
 
-    async init(cfg) {
+    async spiderInit() {
         this.content_html = await this.getContentHtml()
+    }
+
+    async init(cfg) {
         await super.init(cfg);
         await initAli(this.cfgObj["token"]);
+        await this.spiderInit()
     }
 
     async parseClassFromDoc($) {

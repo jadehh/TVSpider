@@ -436,6 +436,9 @@ class Spider {
         await initAli(token,db)
     }
 
+    async spiderInit(){
+    }
+
     async init(cfg) {
         this.danmuSpider = new DanmuSpider()
         this.cfgObj = await this.SpiderInit(cfg)

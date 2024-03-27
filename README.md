@@ -14,6 +14,10 @@ V1.1.3版本以上
 ```bash
 gitee://Token@gitee.com/jadehh_743/TVSpider/dist/index.js.md5
 ```
+改动
+* quickjs改为nodejs
+* init只有第一次加载的时候执行
+
 > 见dist分支
 
 V1.1.2版本以下

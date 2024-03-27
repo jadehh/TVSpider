@@ -1,7 +1,7 @@
 /*
 * @File     : newvision.js
 * @Author   : jade
-* @Date     : 2024-03-27 17:13:27
+* @Date     : 2024-03-27 17:25:00
 * @Email    : jadehh@1ive.com
 * @Software : Samples
 * @Desc     :
@@ -27,6 +27,7 @@ class newvisionSpider extends Spider {
     }
 
     async init(inReq, _outResp) {
+        await spider.spiderInit()
         if (this.getAppName().indexOf("阿里") > -1) {
             await spider.initAli(inReq.server.config["alitoken"],inReq.server.db)
         }
