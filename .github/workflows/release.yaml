@@ -15,15 +15,34 @@ jobs:
       - name: 下载代码
         uses: actions/checkout@v3
         with:
-          repository: jadehh/TV
+          repository: jadehh/TVSpider
           ref: js
+          path: code
           fetch-depth: 0  # 显示所有提交的日志
           token: ${{ secrets.GH_PAT }}
-      - name: 执行爬虫脚本
+      - name: 发布版本
         run: |
-          python build.py
+          cd code/nodejs
+          npm install && npm run build
 
-      - uses: actions/upload-artifact@v4
+      - name: 新建分支
+        run: |
+          cd code
+          git config --global user.email "jadehh@live.com"
+          git config --global user.name "jade"
+          git checkout dist -b js  ##分支不存在用这个
+          # git checkout dist  ## 分支已存在用这个
+          git add nodejs/dist
+          commit_msg="* 发布源"
+          git commit -a -m "$commit_msg"
+        
+
+      - name: 上传分支
+        uses: ad-m/github-push-action@master
         with:
-          # also implicitly named as 'artifact', will fail here!
-          path: tv_config.json
+          github_token: ${{ secrets.GH_PAT }}
+          repository: jadehh/TVSpider
+          directory: .
+          branch: dist
+          force: true
+          tags: true

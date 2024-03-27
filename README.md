@@ -10,9 +10,18 @@ https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TVSpider/js/tv_config
 ## CatVodOpen
 [CatVodOpen发布地址](https://github.com/catvod/CatVodOpen/releases)
 
+V1.1.3版本以上
+```bash
+gitee://Token@gitee.com/jadehh_743/TVSpider/dist/index.js.md5
+```
+
+V1.1.2版本以下
 ```bash
 gitee://Token@gitee.com/jadehh_743/TVSpider/js/open_config.json
 ```
+
+
+
 > CatVodOpen和TV中的requets请求不一致的问题
 > 使用Gitee导入,并设置为私有仓库,仅支持私有仓库
 
