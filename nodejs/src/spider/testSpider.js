@@ -27,10 +27,12 @@ let init = await spider.init(inReq)
 
 let home = JSON.parse(await spider.home())
 let homeVod = JSON.parse(await spider.homeVod())
+let detailInReq = {"body": {"id": "/search?k=%e4%b8%8e%e5%87%a4%e8%a1%8c"}}
+let detail = JSON.parse(await spider.detail(detailInReq))
+
 let cateInReq = {"body": {"id": "2", "page": "1", "filters": {}}}
 let category = JSON.parse(await spider.category(cateInReq))
-let detailInReq = {"body": {"id": "154378"}}
-let detail = JSON.parse(await spider.detail(detailInReq))
+
 
 let playInReq = {
     "body": {

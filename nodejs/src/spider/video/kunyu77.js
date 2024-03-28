@@ -1,11 +1,9 @@
+import {Spider} from "../spider.js";
 import {formatPlayUrl, randDeviceWithId, jsonParse, randUUID} from '../../util/misc.js';
-import "../../util/global.js"
 import dayjs from 'dayjs';
 import NodeRSA from 'node-rsa';
 import CryptoJS from 'crypto-js';
-import {Spider} from "../spider.js";
 import {VodDetail, VodShort} from "../../../../lib/vod.js";
-
 let device = {};
 let timeOffset = 0;
 const appVer = '2.3.0';
