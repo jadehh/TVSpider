@@ -42,6 +42,7 @@ class Spider {
         this.result = new Result()
 
     }
+
     getName() {
         return `?┃基础┃?`
     }
@@ -57,6 +58,32 @@ class Spider {
     getType() {
         return 3
     }
+    getTypeDic(type_name, type_id) {
+        return {"type_name": type_name, "type_id": type_id}
+    }
+    async parseVodShortListFromDoc($) {
+    }
+
+    async parseVodShortListFromJson(obj) {
+    }
+    parseVodShortFromElement($, element) {
+    }
+
+    async parseVodShortListFromDocByCategory($) {
+    }
+
+    async parseVodShortListFromDocBySearch($) {
+    }
+
+    async parseVodDetailFromDoc($) {
+    }
+    async parseVodDetailfromJson(obj) {
+    }
+
+    async getFilter($) {
+
+    }
+
     async setClasses() {
 
     }
@@ -64,6 +91,8 @@ class Spider {
     async setFilterObj() {
 
     }
+
+
     async init(inReq, _outResp) {
         await this.jadeLog.info("初始化", true)
         try {
@@ -198,6 +227,7 @@ class Spider {
     async setDetail(id) {
 
     }
+
     async detail(inReq, _outResp) {
         const ids = !Array.isArray(inReq.body.id) ? [inReq.body.id] : inReq.body.id;
         const id = ids[0]
@@ -269,11 +299,11 @@ class Spider {
             const what = inReq.params.what;
             const headers = JSON.parse(inReq.params.ids);
             const purl = decodeURIComponent(inReq.params.end);
-            let resp =  JSON.parse(await this.setProxy([what, purl],headers))
-            if (resp.code === 200){
+            let resp = JSON.parse(await this.setProxy([what, purl], headers))
+            if (resp.code === 200) {
                 outResp.code(resp.code).headers(resp.headers);
-               return Buffer.from(resp.content, 'base64')
-            }else{
+                return Buffer.from(resp.content, 'base64')
+            } else {
                 outResp.code(500)
                 return ""
             }

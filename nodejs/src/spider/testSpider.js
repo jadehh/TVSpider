@@ -6,23 +6,26 @@
 * @Software : Samples
 * @Desc     :
 */
-import base_spider from "./video/alipansou.js"
+import base_spider from "./video/kunyu77.js"
 import {Config, JsonDB} from "node-json-db";
+function getInreq() {
+    let prefix = "/spider/video/kunyu77"
+    let db = new JsonDB(new Config((process.env['NODE_PATH'] || '.') + '/db.json', true, true, '/', true));
+    class Server {
+        constructor() {
+            this.config = {"yiqikan": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"}
+            this.db = db
+            this.prefix = prefix
+        }
 
-let prefix = "/spider/video/alipansou"
-let db = new JsonDB(new Config((process.env['NODE_PATH'] || '.') + '/db.json', true, true, '/', true));
-let spider = base_spider.spider
-class Server{
-    constructor() {
-        this.config = {"yiqikan": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"}
-        this.db = db
-        this.prefix = prefix
+        address() {
+            return {"dynamic": "127.0.0.1"}
+        }
     }
-    address(){
-        return {"dynamic":"127.0.0.1"}
-    }
+    return {"server": new Server()}
 }
-let inReq = {"server":new Server()}
+let spider = base_spider.spider
+let inReq = getInreq()
 let init = await spider.init(inReq)
 
 let home = JSON.parse(await spider.home())
