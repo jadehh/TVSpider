@@ -14,18 +14,16 @@ V1.1.3版本以上
 ```bash
 gitee://Token@gitee.com/jadehh_743/TVSpider/dist/index.js.md5
 ```
-改动
-* quickjs改为nodejs
-* init只有第一次加载的时候执行
+<font color="red">**改动**</font>
 
-> 见dist分支
+* quickjs改为nodejs, proxy设置修改
+* 在ios上无法使用local,所以后面会将所有含有local部分都删除掉,缓存使用数据库来管理
+> 配置信息见dist分支
 
 V1.1.2版本以下
 ```bash
 gitee://Token@gitee.com/jadehh_743/TVSpider/js/open_config.json
 ```
-
-
 
 > CatVodOpen和TV中的requets请求不一致的问题
 > 使用Gitee导入,并设置为私有仓库,仅支持私有仓库
@@ -46,7 +44,8 @@ python build.py
 
 
 ## 特别说明
-* 近期CatVodOpen更新移除了quickjs,导致无法使用,请尝试使用旧版本或切换至nodejs目录下编译生成dist目录
+* 近期CatVodOpen更新移除了quickjs,导致无法使用,请尝试使用旧版本
+* 或切换至nodejs目录下编译生成dist目录,dist目录发布到dist分支下
 
 
 ## 赞助
