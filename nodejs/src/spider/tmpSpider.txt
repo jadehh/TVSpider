@@ -32,6 +32,7 @@ class tempSpider extends Spider {
         if (this.getAppName().indexOf("阿里") > -1) {
             await spider.initAli(inReq.server.config["alitoken"])
         }
+        spider.classes.push({"type_name": "最近更新", "type_id": "最近更新"})
         await super.init(inReq, _outResp)
     }
 

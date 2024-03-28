@@ -56,6 +56,7 @@ class JianPianSpider extends Spider {
     async init(cfg) {
         await super.init(cfg);
         this.danmuStaus = true
+        await this.spiderInit(null)
     }
 
 

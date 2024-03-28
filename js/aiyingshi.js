@@ -209,7 +209,6 @@ class AiYingShiSpider extends Spider {
 
     async setCategory(tid, pg, filter, extend) {
         let reqUrl = await this.getCateUrl(tid,pg,extend)
-        await this.jadeLog.debug(`分类详情URL:${reqUrl}`)
         let html = await this.fetch(reqUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)

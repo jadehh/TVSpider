@@ -76,9 +76,18 @@ class IKanBotSpider extends Spider {
         return 3
     }
 
+    async spiderInit(inReq=null) {
+        if (inReq !== null){
+            this.jsBase = await js2Proxy(inReq,"img",this.getHeader());
+        }else{
+            this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
+        }
+
+    }
+
     async init(cfg) {
         await super.init(cfg);
-        this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
+        await this.spiderInit(null)
     }
 
     async parseVodShortListFromDoc($) {
@@ -152,31 +161,11 @@ class IKanBotSpider extends Spider {
         let html = await this.fetch(this.siteUrl + "/category", null, this.getHeader())
         if (!_.isEmpty(html)) {
             let $ = load(html)
-            let navElements = $("[class=\"navbar navbar-default navbar-fixed-bottom visible-xs-block visible-sm-block\"]").find("li").find("a")
-
             let classElements = $($($("[class=\"row visible-xs-block visible-sm-block\"]")).find("li")).find("a")
-            let classList = []
             for (const classElement of classElements) {
-                classList.push($(classElement).text())
                 this.classes.push({"type_name": $(classElement).text(), "type_id": classElement.attribs["href"]})
             }
-
-
-            for (const navElement of navElements) {
-                let type_name = $(navElement).text().replaceAll("\n", "")
-
-                if (type_name !== "首页" && type_name !== "看过" && type_name !== "分类") {
-                    if (classList.indexOf(type_name) > -1) {
-                        this.classes[classList.indexOf(type_name) + 1]["type_id"] = this.classes[classList.indexOf(type_name) + 1]["type_id"] + "," + navElement.attribs["href"]
-                    } else {
-                        this.classes.push({"type_name": type_name, "type_id": navElement.attribs["href"]})
-                    }
-                }
-            }
-
-
         }
-
     }
 
     async setFilterObj() {

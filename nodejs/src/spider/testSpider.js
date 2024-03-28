@@ -6,14 +6,14 @@
 * @Software : Samples
 * @Desc     :
 */
-import base_spider from "./video/kunyu77.js"
+import base_spider from "./video/ikanbot.js"
 import {Config, JsonDB} from "node-json-db";
 function getInreq() {
-    let prefix = "/spider/video/kunyu77"
+    let prefix = "/spider/video/ikanbot"
     let db = new JsonDB(new Config((process.env['NODE_PATH'] || '.') + '/db.json', true, true, '/', true));
     class Server {
         constructor() {
-            this.config = {"yiqikan": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"}
+            this.config = {"ikanbot": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"}
             this.db = db
             this.prefix = prefix
         }
@@ -30,11 +30,14 @@ let init = await spider.init(inReq)
 
 let home = JSON.parse(await spider.home())
 let homeVod = JSON.parse(await spider.homeVod())
+
+let cateInReq = {"body": {"id": "1", "page": "1", "filters": {}}}
+let category = JSON.parse(await spider.category(cateInReq))
+
 let detailInReq = {"body": {"id": "/search?k=%e4%b8%8e%e5%87%a4%e8%a1%8c"}}
 let detail = JSON.parse(await spider.detail(detailInReq))
 
-let cateInReq = {"body": {"id": "2", "page": "1", "filters": {}}}
-let category = JSON.parse(await spider.category(cateInReq))
+
 
 
 let playInReq = {

@@ -26,6 +26,7 @@ class GitCafeSpider extends Spider {
     getAppName() {
         return "阿里纸条"
     }
+
     getJSName() {
         return "gitcafe"
     }
@@ -33,6 +34,7 @@ class GitCafeSpider extends Spider {
     getType() {
         return 3
     }
+
     async getApiUrl() {
         let html = await this.fetch(this.siteUrl, null, this.getHeader())
         if (!_.isEmpty(html)) {
@@ -55,11 +57,15 @@ class GitCafeSpider extends Spider {
         }
     }
 
-    async init(cfg) {
+    async spiderInit() {
         this.content_json = await this.getContentJson()
         this.token_dic = await this.load_cache()
+    }
+
+    async init(cfg) {
         await super.init(cfg);
         await initAli(this.cfgObj["token"]);
+        await this.spiderInit()
     }
 
 
@@ -218,4 +224,5 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+
 export {spider}

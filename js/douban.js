@@ -9,6 +9,7 @@
 import {VodShort} from "../lib/vod.js";
 import {Spider} from "./spider.js";
 import {_, Crypto} from "../lib/cat.js";
+import star from "../nodejs/src/spider/video/star.js";
 
 
 class DoubanSpider extends Spider {
@@ -509,7 +510,10 @@ class DoubanSpider extends Spider {
         this.count = 0
         this.limit = 20;
         this.total = 0;
-        let start = (this.page - 1) * this.limit
+        let start = 0
+        if (parseInt(pg) > 1){
+          start = (parseInt(pg) - 1) * this.limit
+        }
         let cateUrl = ""
         let params = {"start": start.toString(), "count": this.limit.toString()}
         let itemKey = "items"

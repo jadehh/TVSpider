@@ -205,6 +205,7 @@ class Spider {
         this.type_name_18 = "伦理片"
         this.episodeObj = {}
         this.danmuUrl = ""
+        this.cfgObj = {}
 
     }
 

@@ -1,7 +1,7 @@
 /*
 * @File     : wogg.js
 * @Author   : jade
-* @Date     : 2024-03-28 16:40:51
+* @Date     : 2024-03-28 19:31:46
 * @Email    : jadehh@1ive.com
 * @Software : Samples
 * @Desc     :
@@ -32,6 +32,7 @@ class woggSpider extends Spider {
         if (this.getAppName().indexOf("阿里") > -1) {
             await spider.initAli(inReq.server.config["alitoken"])
         }
+        spider.classes.push({"type_name": "最近更新", "type_id": "最近更新"})
         await super.init(inReq, _outResp)
     }
 

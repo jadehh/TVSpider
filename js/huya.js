@@ -38,20 +38,25 @@ class HuyaSpider extends Spider {
         return 3
     }
 
-    async init(cfg) {
-        await super.init(cfg);
+    async spiderInit() {
         if (this.cfgObj.hasOwnProperty('custom')) {
             this.customArea = this.cfgObj.custom;
         }
         if (this.cfgObj.hasOwnProperty('from')) {
             this.dataFrom = this.cfgObj.from;
         }
-        if (this.dataFrom === 'justlive') {
+        if (this.dataFrom !== 'justlive') {
+            this.siteUrl = 'https://www.huya.com';
+        } else {
             this.siteUrl = 'http://live.yj1211.work';
             this.isJustLive = true;
-        } else {
-            this.siteUrl = 'https://www.huya.com';
+
         }
+    }
+
+    async init(cfg) {
+        await super.init(cfg);
+        await this.spiderInit()
     }
 
     getHeader() {
@@ -637,7 +642,7 @@ class HuyaSpider extends Spider {
             liveInfo = data.data["liveData"];
             let bitInfo = JSON.parse(liveInfo["bitRateInfo"])
             streamInfoList = data.data.stream["baseSteamInfoList"];
-            this.vodDetail = await this.parseVodDetailfromJson(liveInfo,streamInfoList,bitInfo)
+            this.vodDetail = await this.parseVodDetailfromJson(liveInfo, streamInfoList, bitInfo)
         }
 
         /** 网页链接
@@ -700,4 +705,5 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+
 export {spider}
