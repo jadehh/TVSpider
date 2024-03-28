@@ -1,7 +1,7 @@
 /*
 * @File     : jianpian.js
 * @Author   : jade
-* @Date     : 2024-03-27 17:25:00
+* @Date     : 2024-03-28 16:40:51
 * @Email    : jadehh@1ive.com
 * @Software : Samples
 * @Desc     :
@@ -27,17 +27,12 @@ class jianpianSpider extends Spider {
     }
 
     async init(inReq, _outResp) {
-        try {
-            await spider.spiderInit(inReq)
-            if (this.getAppName().indexOf("阿里") > -1) {
-                await spider.initAli(inReq.server.config["alitoken"], inReq.server.db)
-            }
-            await super.init(inReq, _outResp)
-        } catch (e) {
-            await this.jadeLog.error(e)
+        dataBase = inReq.server.db
+        await spider.spiderInit(inReq)
+        if (this.getAppName().indexOf("阿里") > -1) {
+            await spider.initAli(inReq.server.config["alitoken"])
         }
-
-
+        await super.init(inReq, _outResp)
     }
 
     async setClasses() {
@@ -78,7 +73,7 @@ class jianpianSpider extends Spider {
     }
 
     async setProxy(segments, headers) {
-        await spider.proxy(segments, headers)
+        return await spider.proxy(segments, headers);
     }
 
 }
@@ -112,11 +107,9 @@ async function play(inReq, _outResp) {
 async function search(inReq, _outResp) {
     return await baseSpider.search(inReq, _outResp)
 }
-
-async function proxy(inReq, _outResp) {
-    return await baseSpider.proxy(inReq, _outResp)
+async function proxy(inReq, outResp){
+    return await baseSpider.proxy(inReq,outResp)
 }
-
 export default {
     meta: {
         key: spider.getJSName(), name: spider.getName(), type: spider.getType(),
@@ -127,7 +120,7 @@ export default {
         fastify.post('/detail', detail);
         fastify.post('/play', play);
         fastify.post('/search', search);
-        fastify.post('/proxy', proxy);
+        fastify.get('/proxy/:what/:ids/:end', proxy);
     }, spider: {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search
     }

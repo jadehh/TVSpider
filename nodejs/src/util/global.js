@@ -13,42 +13,30 @@ import axios, {toFormData} from "axios";
 import https from "https";
 import crypto from "crypto";
 
-const confs = {};
+let confs = {};
+globalThis.dataBase = null
+
 globalThis.local = {
     get: async function (storage, key) {
-        return localGet(storage, key);
+        return  await localGet(storage, key);
     }, set: async function (storage, key, val) {
-        localSet(storage, key, val);
+        await localSet(storage, key, val);
     },
 };
 
 
-function initLocalStorage(storage) {
-    if (!_.has(confs, storage)) {
-        if (!fs.existsSync('local')) {
-            fs.mkdirSync('local');
-        }
 
-        const storagePath = 'local/js_' + storage;
 
-        if (!fs.existsSync(storagePath)) {
-            fs.writeFileSync(storagePath, '{}');
-            confs[storage] = {};
-        } else {
-            confs[storage] = JSON.parse(fs.readFileSync(storagePath).toString());
-        }
-    }
+async function localGet(storage, key) {
+    const storagePath = "/js_" + storage + `/${key}/`
+    return await dataBase.getObjectDefault(storagePath, {});
 }
 
-function localGet(storage, key) {
-    initLocalStorage(storage);
-    return _.get(confs[storage], key, '');
-}
-
-function localSet(storage, key, value) {
-    initLocalStorage(storage);
-    confs[storage][key] = value;
-    fs.writeFileSync('local/js_' + storage, JSON.stringify(confs[storage]));
+async function localSet(storage, key, value) {
+    const storagePath = "/js_" + storage
+    confs = await dataBase.getObjectDefault(storagePath, {})
+    confs[key] = value;
+    await dataBase.push(storagePath, confs);
 }
 
 
@@ -173,6 +161,7 @@ function randStr(len, withNum) {
     }
     return _str;
 }
-globalThis.js2Proxy = function (inReq) {
-    return 'js2p://_WEB_' + inReq.server.prefix + "/proxy/"
+globalThis.js2Proxy = function (inReq,url,headers) {
+    let hd = Object.keys(headers).length === 0 ? '_' : encodeURIComponent(JSON.stringify(headers));
+    return inReq.server.address().dynamic + inReq.server.prefix + "/proxy/" + encodeURIComponent(url) + "/" + hd + '/'
 };

@@ -7,36 +7,30 @@
 * @Desc     :
 */
 import base_spider from "./video/alipansou.js"
+import {Config, JsonDB} from "node-json-db";
 
-class DB {
+let prefix = "/spider/video/alipansou"
+let db = new JsonDB(new Config((process.env['NODE_PATH'] || '.') + '/db.json', true, true, '/', true));
+let spider = base_spider.spider
+class Server{
     constructor() {
+        this.config = {"yiqikan": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"}
+        this.db = db
+        this.prefix = prefix
     }
-
-    async getObjectDefault() {
-        return {}
-    }
-
-    async push() {
-
+    address(){
+        return {"dynamic":"127.0.0.1"}
     }
 }
-
-
-let spider = base_spider.spider
-let inReq = {"server":
-        {
-            "config": {"yiqikan": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"},
-            "db": new DB(),
-            "prefix":"12"
-        }}
+let inReq = {"server":new Server()}
 let init = await spider.init(inReq)
 
-// let home = JSON.parse(await spider.home())
-// let homeVod = JSON.parse(await spider.homeVod())
-// let cateInReq = {"body": {"id": "2", "page": "1", "filters": {}}}
-// let category = JSON.parse(await spider.category(cateInReq))
-// let detailInReq = {"body": {"id": "154378"}}
-// let detail = JSON.parse(await spider.detail(detailInReq))
+let home = JSON.parse(await spider.home())
+let homeVod = JSON.parse(await spider.homeVod())
+let cateInReq = {"body": {"id": "2", "page": "1", "filters": {}}}
+let category = JSON.parse(await spider.category(cateInReq))
+let detailInReq = {"body": {"id": "154378"}}
+let detail = JSON.parse(await spider.detail(detailInReq))
 
 let playInReq = {
     "body": {

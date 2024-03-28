@@ -1,7 +1,7 @@
 /*
 * @File     : kankan70.js
 * @Author   : jade
-* @Date     : 2024-03-27 17:25:00
+* @Date     : 2024-03-28 16:40:51
 * @Email    : jadehh@1ive.com
 * @Software : Samples
 * @Desc     :
@@ -27,9 +27,10 @@ class kankan70Spider extends Spider {
     }
 
     async init(inReq, _outResp) {
-        await spider.spiderInit()
+        dataBase = inReq.server.db
+        await spider.spiderInit(inReq)
         if (this.getAppName().indexOf("阿里") > -1) {
-            await spider.initAli(inReq.server.config["alitoken"],inReq.server.db)
+            await spider.initAli(inReq.server.config["alitoken"])
         }
         await super.init(inReq, _outResp)
     }
@@ -71,6 +72,10 @@ class kankan70Spider extends Spider {
         this.vodList = spider.vodList
     }
 
+    async setProxy(segments, headers) {
+        return await spider.proxy(segments, headers);
+    }
+
 }
 
 let baseSpider = new kankan70Spider()
@@ -102,7 +107,9 @@ async function play(inReq, _outResp) {
 async function search(inReq, _outResp) {
     return await baseSpider.search(inReq, _outResp)
 }
-
+async function proxy(inReq, outResp){
+    return await baseSpider.proxy(inReq,outResp)
+}
 export default {
     meta: {
         key: spider.getJSName(), name: spider.getName(), type: spider.getType(),
@@ -113,6 +120,7 @@ export default {
         fastify.post('/detail', detail);
         fastify.post('/play', play);
         fastify.post('/search', search);
+        fastify.get('/proxy/:what/:ids/:end', proxy);
     }, spider: {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search
     }

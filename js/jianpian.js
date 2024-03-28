@@ -46,7 +46,7 @@ class JianPianSpider extends Spider {
 
     async spiderInit(inReq=null) {
         if (inReq !== null){
-            this.jsBase = await js2Proxy(inReq);
+            this.jsBase = await js2Proxy(inReq,"img",this.getHeader());
         }else{
             this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
         }

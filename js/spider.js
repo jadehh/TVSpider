@@ -678,16 +678,11 @@ class Spider {
         resp = await req(url, {buffer: 2, headers: headers});
         try {
             Utils.base64Decode(resp.content)
-            if (this.reconnectTimes < this.maxReconnectTimes) {
-                Utils.sleep(2)
-                this.reconnectTimes = this.reconnectTimes + 1
-                return await this.getImg(url, headers)
-            } else {
-                await this.jadeLog.error(`图片代理获取失败,重试失败`, true)
-                this.reconnectTimes = 0
-                return resp
-            }
+            await this.jadeLog.error(`图片代理获取失败,重连失败`, true)
+            this.reconnectTimes = 0
+            return {"code":500,"headers":headers,"content":"加载失败"}
         } catch (e) {
+            await this.jadeLog.debug("图片代理成功",true)
             this.reconnectTimes = 0
             return resp
         }
@@ -699,6 +694,7 @@ class Spider {
         let url = Utils.base64Decode(segments[1]);
         await this.jadeLog.debug(`反向代理参数为:${url}`)
         if (what === 'img') {
+            await this.jadeLog.debug("通过代理获取图片",true)
             let resp = await this.getImg(url, headers)
             return JSON.stringify({
                 code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
