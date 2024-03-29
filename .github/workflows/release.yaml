@@ -18,6 +18,7 @@ jobs:
           repository: jadehh/TVSpider
           fetch-depth: 0  # 显示所有提交的日志
           token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
+
       - name: 下载需要打包更新的代码
         uses: actions/checkout@v3
         with:
@@ -26,6 +27,48 @@ jobs:
           path: code
           fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
+
+      - name: TV Config文件生成
+        run: |
+          pip install https://github.com/jadehh/pythonTools/releases/download/JadeV2.1.7/jade-2.1.7-py3-none-any.whl
+          python build --aliToken "${{ secrets.Ali_TOKEN }}" False
+
+      - name: 上传Config
+        run: |
+          git config --global user.email "jadehh@live.com"
+          git config --global user.name "jade"
+          git add 18_open_config.json
+          git add 18_tv_config.json
+          git add open_config.json
+          git add tv_config.json
+          commit_msg="* 更新TVConfig"
+          git commit -a -m "$commit_msg"
+
+      - name: Config上传Github分支
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          repository: jadehh/TVSpider
+          directory: .
+          branch: js
+          force: true
+          tags: true
+        env:
+          GITHUB_ACTOR: jadehh
+
+      - name: Config上传Gitee分支
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GT_TOKEN }}
+          repository: jadehh_743/TVSpider
+          directory: .
+          branch: js
+          force: true
+          tags: true
+          github_url: https://gitee.com
+        env:
+          GITHUB_ACTOR: jadehh
+
       - name: 发布版本
         run: |
           cd code/nodejs
@@ -47,7 +90,7 @@ jobs:
           git add index.js
           git add index.js.md5
           git add README.md
-          commit_msg="* 发布源"
+          commit_msg="* 发布 CatVodOpen新源"
           git commit -a -m "$commit_msg"
 
       - name: 查看分支

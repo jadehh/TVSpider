@@ -11,29 +11,33 @@ import copy
 import json
 import os
 
-from jade import GetTimeStamp
+from jade import GetTimeStamp,CreateSavePath
 
 
-def get_import_name(book_file_list, pan_file_list, video_file_list):
+def get_import_name(file_list,book_file_list, pan_file_list, video_file_list,is_18=False):
     write_router_content = ""
     spider_list = []
-    for book_file in book_file_list:
-        js_name = book_file.split(".js")[0]
-        spider_list.append(js_name)
-        write_router_content = write_router_content + "import {} from './spider/book/{}.js';\n".format(js_name,
+    if is_18:
+        for video_file in file_list:
+            js_name = video_file.split(".js")[0]
+            spider_list.append(js_name)
+            write_router_content = write_router_content + "import {} from './spider/18/{}.js';\n".format(js_name,js_name)
+    else:
+            for book_file in book_file_list:
+                js_name = book_file.split(".js")[0]
+                spider_list.append(js_name)
+                write_router_content = write_router_content + "import {} from './spider/book/{}.js';\n".format(js_name,
+                                                                                                           js_name)
+            for pan_file in pan_file_list:
+                js_name = pan_file.split(".js")[0]
+                spider_list.append(js_name)
+                write_router_content = write_router_content + "import {} from './spider/pan/{}.js';\n".format(js_name,
                                                                                                           js_name)
-    for pan_file in pan_file_list:
-        js_name = pan_file.split(".js")[0]
-        spider_list.append(js_name)
-        write_router_content = write_router_content + "import {} from './spider/pan/{}.js';\n".format(js_name,
-                                                                                                          js_name)
-
-    for video_file in video_file_list:
-        js_name = video_file.split(".js")[0]
-        spider_list.append(js_name)
-        write_router_content = write_router_content + "import {} from './spider/video/{}.js';\n".format(js_name,
-                                                                                                          js_name)
-
+            for video_file in video_file_list:
+                js_name = video_file.split(".js")[0]
+                spider_list.append(js_name)
+                write_router_content = write_router_content + "import {} from './spider/video/{}.js';\n".format(js_name,
+                                                                                                            js_name)
     return write_router_content + "const spiders = [{}];".format(",".join(spider_list)) + "\n"
 
 def config_to_nodejs(ali_token):
@@ -46,6 +50,7 @@ def config_to_nodejs(ali_token):
     with open("nodejs/src/index.config.js","wb") as f:
         f.write(write_content.encode("utf-8"))
 def js_to_nodejs(js_file_list, type="video"):
+    CreateSavePath("nodejs/src/spider/{}".format(type))
     for js_file in js_file_list:
         jsMoudle = JSMoudle(os.path.join("js", js_file))
         modleName = jsMoudle.getName()
@@ -60,11 +65,12 @@ def js_to_nodejs(js_file_list, type="video"):
         with open("nodejs/src/spider/{}/{}".format(type, js_file), "wb") as f:
             f.write(write_content.encode("utf-8"))
 
-def nodejs_config(ali_token):
+def nodejs_config(ali_token,is_18):
     book_file_list = os.listdir("nodejs/src/spider/book")
     pan_file_list = os.listdir("nodejs/src/spider/pan")
     video_file_list = os.listdir("nodejs/src/spider/video")
-    write_router_content = get_import_name(book_file_list, pan_file_list, video_file_list)
+    file_list = os.listdir("nodejs/src/spider/18")
+    write_router_content = get_import_name(file_list,book_file_list, pan_file_list, video_file_list,is_18)
     with open("nodejs/src/router.txt", "rb") as f:
         contentlist = f.readlines()
         for content in contentlist:
@@ -261,17 +267,31 @@ class Build(object):
                 with open(file_name, "wb") as f:
                     f.write(json.dumps(dic, indent=4, ensure_ascii=False).encode("utf-8"))
 
-    def build(self):
+    def build(self,no_18=False):
         json_file_list = self.getJsonFileList()
         no_18_js_file_list = self.getJsFileList(case=0)
         y_js_file_list = self.getJsFileList(case=1)
+        if no_18 is False:
+            js_to_nodejs(no_18_js_file_list)
+            nodejs_config(self.ali_token,no_18)
+        else:
+            js_to_nodejs(y_js_file_list,"18")
+            nodejs_config(self.ali_token,no_18)
         book_file_list = self.getJsFileList(case=2)
         push_file_list = self.getJsFileList(case=3)
-        js_to_nodejs(no_18_js_file_list)  # self.write_config(self.ali_name,json_file_list,no_18_js_file_list,is_18=False)  # self.write_config(self.ali_name,json_file_list,y_js_file_list,is_18=True)  # self.write_book_config(book_file_list)  # self.write_push_config(push_file_list)
-
-        nodejs_config(self.ali_token)
+        self.write_config(self.ali_name, json_file_list, no_18_js_file_list, is_18=False)
+        self.write_config(self.ali_name, json_file_list, y_js_file_list, is_18=True)
+        self.write_book_config(book_file_list)
+        self.write_push_config(push_file_list)
 
 
 if __name__ == '__main__':
-    build = Build("js", "json", token_name="", aliToken="6827db23e5474d02a07fd7431d3d5a5a")
-    build.build()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--aliToken', type=str,
+                            default="6827db23e5474d02a07fd7431d3d5a5a")  ## 添加环境变量
+    parser.add_argument('--is_18', type=bool,
+                            default=True)  ## 添加
+    args = parser.parse_args()
+    build = Build("js", "json", token_name="", aliToken=args.aliToken)
+    build.build(args.is_18)

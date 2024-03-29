@@ -1,15 +1,15 @@
 /*
-* @File     : nivod.js
+* @File     : liangzi18.js
 * @Author   : jade
-* @Date     : 2024-03-29 09:33:44
+* @Date     : 2024-03-29 09:34:08
 * @Email    : jadehh@1ive.com
 * @Software : Samples
 * @Desc     :
 */
 import {Spider} from "../spider.js";
-import {spider} from "../../../../js/nivod.js";
+import {spider} from "../../../../js/liangzi18.js";
 
-class nivodSpider extends Spider {
+class liangzi18Spider extends Spider {
     constructor() {
         super();
     }
@@ -79,7 +79,7 @@ class nivodSpider extends Spider {
 
 }
 
-let baseSpider = new nivodSpider()
+let baseSpider = new liangzi18Spider()
 
 async function init(inReq, _outResp) {
     return await baseSpider.init(inReq, _outResp)
