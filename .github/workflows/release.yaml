@@ -16,7 +16,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: jadehh/TVSpider
-          ref: js
           fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
       - name: 下载代码
@@ -39,6 +38,8 @@ jobs:
         run: |
           git config --global user.email "jadehh@live.com"
           git config --global user.name "jade"
+          git checkout  $checkname -b js  ##分支不存在用这个
+          # git checkout dist  ## 分支已存在用这个
           cp -r code/18_open_config.json ./
           cp -r code/18_tv_config.json ./
           cp -r code/open_config.json ./
