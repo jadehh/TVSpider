@@ -291,7 +291,7 @@ if __name__ == '__main__':
     parser.add_argument('--aliToken', type=str,
                             default="6827db23e5474d02a07fd7431d3d5a5a")  ## 添加环境变量
     parser.add_argument('--is_18', type=bool,
-                            default=True)  ## 添加
+                            default=False)  ## 添加
     args = parser.parse_args()
     build = Build("js", "json", token_name="", aliToken=args.aliToken)
     build.build(args.is_18)

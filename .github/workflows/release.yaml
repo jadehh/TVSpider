@@ -31,7 +31,7 @@ jobs:
       - name: TV Config文件生成
         run: |
           pip install https://github.com/jadehh/pythonTools/releases/download/JadeV2.1.7/jade-2.1.7-py3-none-any.whl
-          python build --aliToken "${{ secrets.Ali_TOKEN }}" False
+          python build.py --aliToken "${{ secrets.Ali_TOKEN }}"
 
       - name: 上传Config
         run: |
