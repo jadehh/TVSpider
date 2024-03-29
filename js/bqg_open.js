@@ -34,10 +34,10 @@ class BQQSpider extends Spider {
     }
 
     async spiderInit(inReq = null) {
-        if (inReq !== null) {
-            this.jsBase = await js2Proxy(inReq, "img", {});
-        } else {
-             this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
+        if (inReq !== null){
+            this.jsBase = await js2Proxy(inReq,"img",this.getHeader());
+        }else{
+            this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
         }
     }
 
@@ -66,7 +66,7 @@ class BQQSpider extends Spider {
         for (const item of $('div.item')) {
             let bookShort = new BookShort()
             bookShort.book_id = $(item).find('a:first')[0].attribs.href;
-            const img = $(a).find('img:first')[0];
+            const img = $(item).find('img:first')[0];
             bookShort.book_name = img.attribs.alt
             bookShort.book_pic = img.attribs.src
             bookShort.book_remarks = $(item).find('span:first')[0].children[0].data.trim();
