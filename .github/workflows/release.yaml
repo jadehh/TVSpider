@@ -1,8 +1,8 @@
-name: JS爬虫发布
+name: Spider
 on:
   push:
     tags:
-      - jsV[0-9]+.*
+      - V[0-9]+.*
 jobs:
   build:
     name: TVSpider
