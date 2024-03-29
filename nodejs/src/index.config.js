@@ -1,6 +1,6 @@
 export default {
 
-    alitoken:"6827db23e5474d02a07fd7431d3d5a5a",
+    alitoken:"${{ secrets.Ali_TOKEN }}",
 
     ffm3u8: {
 
