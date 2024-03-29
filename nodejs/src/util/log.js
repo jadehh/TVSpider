@@ -54,7 +54,7 @@ class JadeLogging {
 
     async log(message) {
         console.debug(message)
-        await localLog.set(message);
+        // await localLog.set(message);
     }
 
     async info(message, is_format) {
