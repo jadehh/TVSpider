@@ -2,10 +2,11 @@
 
 ## TVBox互联网发布地址
 [TV发布地址](https://github.com/FongMi/Release/tree/main/apk/release)
-
 ```bash
 https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TVSpider/js/tv_config.json
 ```
+> 配置信息见JS分支分支
+
 
 ## CatVodOpen
 [CatVodOpen发布地址](https://github.com/catvod/CatVodOpen/releases)
@@ -24,9 +25,9 @@ V1.1.2版本以下
 ```bash
 gitee://Token@gitee.com/jadehh_743/TVSpider/js/open_config.json
 ```
+> 注意使用Gitee或Github导入,并设置为私有仓库,仅支持私有仓库
+> 见js分支
 
-> CatVodOpen和TV中的requets请求不一致的问题
-> 使用Gitee导入,并设置为私有仓库,仅支持私有仓库
 
 ## config文件生成
 ```bash
@@ -46,6 +47,7 @@ python build.py
 ## 特别说明
 * 近期CatVodOpen更新移除了quickjs,导致无法使用,请尝试使用旧版本
 * 或切换至nodejs目录下编译生成dist目录,dist目录发布到dist分支下
+* main分支用于代码测试(不包含任何配置信息),js分支发布支持quickjs爬虫配置信息,dist分支发布支持nodejs爬虫配置信息
 
 
 ## 赞助
