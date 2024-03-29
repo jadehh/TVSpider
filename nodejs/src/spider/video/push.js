@@ -1,71 +1,101 @@
+/*
+* @File     : push.js
+* @Author   : jade
+* @Date     : 2024/3/29 13:59
+* @Email    : jadehh@1ive.com
+* @Software : Samples
+* @Desc     :
+*/
+
+import {Spider} from "../spider.js";
+import {detailContent, initAli, playContent} from "../../../../lib/ali.js";
+import {VodDetail} from "../../../../lib/vod.js";
+import * as Utils from "../../../../lib/utils.js";
+
+class PushSpider extends Spider {
+    constructor() {
+        super();
+    }
+
+    getName() {
+        return "┃推送┃"
+    }
+
+    getAppName() {
+        return "推送"
+    }
+
+    getJSName() {
+        return "push"
+    }
+
+    getType() {
+        return 4
+    }
+
+    async init(inReq, _outResp) {
+        await this.jadeLog.debug("初始化",true)
+        await initAli(inReq.server.config["alitoken"])
+        return {};
+    }
+
+    async check(_inReq, _outResp){
+        const clip = _inReq.body.clip;
+        // CatVodOpen目前支持http链接和https链接
+        await this.jadeLog.debug(`剪切板输入内容为:${clip}`)
+        if (clip.startsWith("http")){
+            await this.jadeLog.debug("满足推送条件",true)
+             return 'true';
+        }else{
+            await this.jadeLog.debug("不满足推送条件",true)
+            return 'false';
+        }
+    }
+
+    async parseVodDetailfromJson(id) {
+        let vodDetail = new VodDetail()
+        vodDetail.vod_pic = Utils.RESOURCEURL + "/resources/push.jpg"
+        let mather = Utils.patternAli.exec(id)
+        if (mather !== null && mather.length > 0) {
+            let aliVodDetail = await detailContent([id])
+            vodDetail.vod_play_url = aliVodDetail.vod_play_url
+            vodDetail.vod_play_from = aliVodDetail.vod_play_from
+        } else {
+            vodDetail.vod_play_from = '推送';
+            vodDetail.vod_play_url = '推送$' + id;
+        }
+        return vodDetail
+    }
+
+    async setDetail(id) {
+        this.vodDetail = await this.parseVodDetailfromJson(id)
+    }
+
+    async setPlay(flag, id, flags) {
+        if (flag === "推送"){
+            this.playUrl = id
+        }else{
+           this.playUrl = JSON.parse(await playContent(flag, id, flags))["url"];
+        }
+    }
+}
+
+
+let spider = new PushSpider()
 async function init(_inReq, _outResp) {
-    return {};
+    return await spider.init(_inReq, _outResp)
 }
 
 async function support(_inReq, _outResp) {
-    // const clip = inReq.body.clip;
-    return 'true';
+   return await spider.check(_inReq,_outResp)
 }
 
 async function detail(inReq, _outResp) {
-    const ids = !Array.isArray(inReq.body.id) ? [inReq.body.id] : inReq.body.id;
-    const videos = [];
-    for (const id of ids) {
-        let vod = {
-            vod_id: id,
-            vod_content: '',
-            vod_name: id,
-            vod_pic: 'https://pic.rmb.bdstatic.com/bjh/1d0b02d0f57f0a42201f92caba5107ed.jpeg',
-        };
-        vod.vod_play_from = '推送';
-        vod.vod_play_url = '测试$' + id;
-        videos.push(vod);
-    }
-    return {
-        list: videos,
-    };
+   return await spider.detail(inReq,_outResp)
 }
 
 async function play(inReq, _outResp) {
-    // const flag = inReq.body.flag;
-    const id = inReq.body.id;
-    return {
-        parse: 0,
-        url: id,
-    };
-}
-
-async function test(inReq, outResp) {
-    try {
-        const printErr = function (json) {
-            if (json.statusCode && json.statusCode == 500) {
-                console.error(json);
-            }
-        };
-        const prefix = inReq.server.prefix;
-        const dataResult = {};
-        let resp = await inReq.server.inject().post(`${prefix}/support`).payload({
-            clip: 'https://xx.xx/1.m3u8',
-        });
-        dataResult.support = resp.json();
-        printErr(resp.json());
-        resp = await inReq.server.inject().post(`${prefix}/detail`).payload({
-            id: 'https://xx.xx/1.m3u8',
-        });
-        dataResult.detail = resp.json();
-        printErr(resp.json());
-        resp = await inReq.server.inject().post(`${prefix}/play`).payload({
-            flag: 'xx',
-            id: 'https://xx.xx/1.m3u8',
-        });
-        dataResult.play = resp.json();
-        printErr(resp.json());
-        return dataResult;
-    } catch (err) {
-        console.error(err);
-        outResp.code(500);
-        return { err: err.message, tip: 'check debug console output' };
-    }
+    return await spider.play(inReq, _outResp)
 }
 
 export default {
@@ -79,6 +109,5 @@ export default {
         fastify.post('/support', support);
         fastify.post('/detail', detail);
         fastify.post('/play', play);
-        fastify.get('/test', test);
     },
 };

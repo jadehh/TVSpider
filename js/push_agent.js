@@ -29,7 +29,7 @@ class PushSpider extends Spider {
     }
 
     getType() {
-        return 3
+        return 4
     }
 
     async init(cfg) {

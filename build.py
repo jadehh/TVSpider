@@ -55,15 +55,19 @@ def js_to_nodejs(js_file_list, type="video"):
         jsMoudle = JSMoudle(os.path.join("js", js_file))
         modleName = jsMoudle.getName()
         write_content = ""
-        print(jsMoudle.getAppName(), jsMoudle.getJSName())
+        print(jsMoudle.getAppName(),jsMoudle.getType(), jsMoudle.getJSName())
         with open("nodejs/src/spider/tmpSpider.txt", "rb") as f:
             contentlist = f.readlines()
             for content in contentlist:
                 write_content = write_content + str(content, encoding="utf-8").replace("temp",
                                                                                        jsMoudle.getJSName()).replace(
                     "updateTime", GetTimeStamp())
-        with open("nodejs/src/spider/{}/{}".format(type, js_file), "wb") as f:
-            f.write(write_content.encode("utf-8"))
+        if jsMoudle.getType() == "3" :
+            with open("nodejs/src/spider/{}/{}".format(type, js_file), "wb") as f:
+                f.write(write_content.encode("utf-8"))
+        elif jsMoudle.getType() == "10":
+            with open("nodejs/src/spider/{}/{}".format("book", js_file), "wb") as f:
+                f.write(write_content.encode("utf-8"))
 
 def nodejs_config(ali_token,is_18):
     book_file_list = os.listdir("nodejs/src/spider/book")
@@ -102,7 +106,7 @@ class JSMoudle():
         try:
             name = (self.js_str.split("getAppName()")[-1].split("}")[0].split("return")[-1].split('"')[1])
             return name
-        except:
+        except Exception as e:
             return None
 
     def getJSName(self):
@@ -176,7 +180,6 @@ class Build(object):
                     site_obj_copy["name"] = jsMoudle.getName()
                     site_obj_copy["ext"] = {"box": json_file_name, "danmu": False}
                     site_obj_copy["api"] = "./{}/{}".format(self.js_path, js_file)
-                    print(js_file_name, jsMoudle.getAppName())
                     if "阿里" in jsMoudle.getAppName() or "厂长直连" in jsMoudle.getAppName():
                         site_obj_copy["ext"]["token"] = self.ali_token
                     elif jsMoudle.getAppName() == "泥视频":
@@ -274,18 +277,25 @@ class Build(object):
         json_file_list = self.getJsonFileList()
         no_18_js_file_list = self.getJsFileList(case=0)
         y_js_file_list = self.getJsFileList(case=1)
-        if no_18 is False:
-            js_to_nodejs(no_18_js_file_list)
-            nodejs_config(self.ali_token,no_18)
-        else:
-            js_to_nodejs(y_js_file_list,"18")
-            nodejs_config(self.ali_token,no_18)
+
         book_file_list = self.getJsFileList(case=2)
         push_file_list = self.getJsFileList(case=3)
         self.write_config(self.ali_name, json_file_list, no_18_js_file_list, is_18=False)
         self.write_config(self.ali_name, json_file_list, y_js_file_list, is_18=True)
         self.write_book_config(book_file_list)
         self.write_push_config(push_file_list)
+
+        no_18_js_file_list.extend(book_file_list)
+        no_18_js_file_list.extend(push_file_list)
+
+        if no_18 is False:
+            js_to_nodejs(no_18_js_file_list)
+            nodejs_config(self.ali_token,no_18)
+        else:
+            js_to_nodejs(y_js_file_list,"18")
+            nodejs_config(self.ali_token,no_18)
+
+
 
 
 if __name__ == '__main__':

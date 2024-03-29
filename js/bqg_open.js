@@ -9,7 +9,6 @@
 import {_} from '../lib/cat.js';
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
-import {VodShort} from "../lib/vod.js";
 import {BookDetail, BookShort} from "../lib/book.js";
 
 class BQQSpider extends Spider {
@@ -36,11 +35,10 @@ class BQQSpider extends Spider {
 
     async spiderInit(inReq = null) {
         if (inReq !== null) {
-            this.jsBase = await js2Proxy(inReq, "img", this.getHeader());
+            this.jsBase = await js2Proxy(inReq, "img", {});
         } else {
-            this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
+             this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
         }
-
     }
 
     async init(cfg) {

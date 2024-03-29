@@ -96,7 +96,7 @@ class DJ0898Spider extends Spider {
             book_content: '',
         };
         const playlist = ["点击播放" + "$" + vod.book_id];
-        vod.volumes = this.getAppName();
+        vod.volumes = "世纪DJ音乐网";
         vod.urls = playlist.join("#");
         return vod
     }
