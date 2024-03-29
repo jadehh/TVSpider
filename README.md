@@ -35,10 +35,11 @@ gitee://Token@gitee.com/jadehh_743/TVSpider/js/open_config.json
 ```bash
 python build.py --aliToken aliToken
 ```
-> * Token如果失效,需要重新获取阿里Token 
+> Token如果失效,需要重新获取阿里Token 
 >
-> * [阿里Token获取](https://alist.nn.ci/zh/guide/drivers/aliyundrive.html)
-> * nodejs 部分只生成代码，需要手动build，区分18+
+> [阿里Token获取](https://alist.nn.ci/zh/guide/drivers/aliyundrive.html)
+>
+> nodejs 部分只生成代码，需要手动build，区分18+
 
 ## 遇到的问题
 * 玩偶姐姐播放不了,需要切换VPN节点
