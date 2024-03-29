@@ -48,10 +48,12 @@ jobs:
           cp -r code/js/ ./
           cp -r code/lib ./
           cp -r code/README.md ./README.md
+          cp -r code/resources ./
           git add 18_open_config.json
           git add 18_tv_config.json
           git add open_config.json
           git add tv_config.json
+          git add resources
           git add js
           git add lib 
           git add README.md

@@ -86,6 +86,9 @@ class MoviePortSpider extends Spider {
         vodShort.vod_name = element.attribs.title
         vodShort.vod_pic = $(element).find("img")[0].attribs["data-original"]
         vodShort.vod_remarks = $($(element).find("i")[0]).text().replaceAll(" ", "").replaceAll("\n", "")
+        if (_.isEmpty(vodShort.vod_pic)){
+            vodShort.vod_pic =  Utils.RESOURCEURL + "/resources/dygang.jpg"
+        }
         return vodShort
     }
 
