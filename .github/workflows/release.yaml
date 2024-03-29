@@ -45,8 +45,8 @@ jobs:
           cp -r code/18_tv_config.json ./
           cp -r code/open_config.json ./
           cp -r code/tv_config.json ./
-          cp -r js/ ./
-          cp -r lib ./
+          cp -r code/js/ ./
+          cp -r code/lib ./
           git add 18_open_config.json
           git add 18_tv_config.json
           git add open_config.json
