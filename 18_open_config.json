@@ -87,7 +87,7 @@
                 "name": "┃推送┃",
                 "type": 3,
                 "api": "./js/push_agent.js",
-                "ext": "{\"box\": \"CatOpen\", \"token\": \"${{ secrets.Ali_TOKEN }}\"}"
+                "ext": "{\"box\": \"CatOpen\", \"token\": \"6827db23e5474d02a07fd7431d3d5a5a\"}"
             }
         ]
     },
