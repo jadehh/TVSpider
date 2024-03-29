@@ -121,3 +121,60 @@ jobs:
         env:
           GITHUB_ACTOR: jadehh
 
+
+      - name: 18+Config文件生成
+        run: |
+          git checkout js
+          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" --is_18 True
+
+      - name: 18+发布版本
+        run: |
+          cd code/nodejs
+          npm install qs --save
+          npm install 
+          npm run build
+
+      - name: 新建18+分支
+        run: |
+          git config --global user.email "jadehh@live.com"
+          git config --global user.name "jade"
+          checkname=$(git rev-list --max-parents=0 HEAD)
+          git checkout  $checkname -b 18_dist  ##分支不存在用这个
+          # git checkout 18_dist  ## 分支已存在用这个
+          cp -r code/nodejs/dist/* ./
+          cp -r code/nodejs/readme.md ./README.md
+          git add index.config.js
+          git add index.config.js.md5
+          git add index.js
+          git add index.js.md5
+          git add README.md
+          commit_msg="* 发布 CatVodOpen 18+ 新源"
+          git commit -a -m "$commit_msg"
+
+      - name: 18+查看分支
+        run: |
+          ls -l
+      - name: 18+上传Github分支
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          repository: jadehh/TVSpider
+          directory: .
+          branch: 18_dist
+          force: true
+          tags: true
+        env:
+          GITHUB_ACTOR: jadehh
+
+      - name: 18+上传Gitee分支
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GT_TOKEN }}
+          repository: jadehh_743/TVSpider
+          directory: .
+          branch: 18_dist
+          force: true
+          tags: true
+          github_url: https://gitee.com
+        env:
+          GITHUB_ACTOR: jadehh
