@@ -12,21 +12,21 @@ jobs:
       matrix:
         os: [ "ubuntu-latest" ] #, "macos-latest", "windows-latest"
     steps:
-      - name: 下载代码
-        uses: actions/checkout@v3
-        with:
-          repository: jadehh/TVSpider
-          fetch-depth: 0  # 显示所有提交的日志
-          token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
-
-      - name: 下载需要打包更新的代码
+      - name: JS分支下载
         uses: actions/checkout@v3
         with:
           repository: jadehh/TVSpider
           ref: js
-          path: code
           fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
+      - name: 下载代码
+        uses: actions/checkout@v3
+        with:
+          repository: jadehh/TVSpider
+          path: code
+          fetch-depth: 0  # 显示所有提交的日志
+          token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
+
 
       - name: TV Config文件生成
         run: |
@@ -34,21 +34,24 @@ jobs:
           pip install https://github.com/jadehh/pythonTools/releases/download/JadeV2.1.7/jade-2.1.7-py3-none-any.whl
           python build.py --aliToken "${{ secrets.Ali_TOKEN }}"
 
+
       - name: 上传Config
         run: |
-          ls -l
-          ls -l code/
           git config --global user.email "jadehh@live.com"
           git config --global user.name "jade"
           cp -r code/18_open_config.json ./
           cp -r code/18_tv_config.json ./
           cp -r code/open_config.json ./
           cp -r code/tv_config.json ./
+          cp -r js ./
+          cp -r lib ./
           git add 18_open_config.json
           git add 18_tv_config.json
           git add open_config.json
           git add tv_config.json
-          commit_msg="* 更新TVConfig"
+          git add js
+          git add lib 
+          commit_msg="* 更新TVConfig和OpenConfig"
           git commit -a -m "$commit_msg"
 
       - name: Config上传Github分支
