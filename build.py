@@ -69,7 +69,10 @@ def nodejs_config(ali_token,is_18):
     book_file_list = os.listdir("nodejs/src/spider/book")
     pan_file_list = os.listdir("nodejs/src/spider/pan")
     video_file_list = os.listdir("nodejs/src/spider/video")
-    file_list = os.listdir("nodejs/src/spider/18")
+    if is_18:
+        file_list = os.listdir("nodejs/src/spider/18")
+    else:
+        file_list = []
     write_router_content = get_import_name(file_list,book_file_list, pan_file_list, video_file_list,is_18)
     with open("nodejs/src/router.txt", "rb") as f:
         contentlist = f.readlines()
