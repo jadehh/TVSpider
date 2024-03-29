@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './sp360.js';
+import {__jsEvalReturn} from './gitcafe.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,13 +50,17 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'sp360';
+    let siteKey = 'gitcafe';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
             "token": "302ef8e4b4d7430db6d82de284978359", "box": "TV", "code": "1", "from": "justlive1", "danmu": true
         }
     });
+
+    // //测试首页列表
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
 
 
     // 测试搜索
@@ -73,19 +77,7 @@ async function test() {
     await testPlay(detail1)
 
     let classes = JSON.parse(await spider.home(true));
-    console.debug(JSON.stringify(classes));
-
-
-    // //测试首页列表
-    let homeVod = JSON.parse(await spider.homeVod())
-    console.debug(JSON.stringify(homeVod));
-
-
-
-
-
-
-
+    console.debug(JSON.stringify(classes))
 
 
 

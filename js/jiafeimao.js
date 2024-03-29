@@ -4,7 +4,7 @@
 * @Date     : 2024/1/24 9:15
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     : 加菲猫
+* @Desc     : 加菲猫 (已失效)
 */
 import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
@@ -23,7 +23,7 @@ class JiaFeiMaoSpider extends Spider {
     }
 
     getName() {
-        return "🐈┃加菲猫┃🐈"
+        return `🐈┃加菲猫┃🐈`
     }
 
     getJSName() {

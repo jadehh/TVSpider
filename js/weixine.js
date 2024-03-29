@@ -4,7 +4,7 @@
  * @LastEditors: samples jadehh@live.com
  * @LastEditTime: 2023-12-14 11:03:04
  * @FilePath: js/weixine.js
- * @Description: 阿里影视
+ * @Description: 阿里影视(已失效)
  */
 import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
@@ -25,7 +25,7 @@ class WeiXineSpider extends Spider {
     }
 
     getName() {
-        return "💂‍┃阿里影视┃💂"
+        return `💂‍┃阿里影视┃💂`
     }
 
     getAppName() {
