@@ -9,7 +9,6 @@
 import {VodShort} from "../lib/vod.js";
 import {Spider} from "./spider.js";
 import {_, Crypto} from "../lib/cat.js";
-import star from "../nodejs/src/spider/video/star.js";
 
 
 class DoubanSpider extends Spider {

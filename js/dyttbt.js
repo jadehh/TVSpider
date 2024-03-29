@@ -21,7 +21,7 @@ class DyttSpider extends Spider {
     }
 
     getName() {
-        return "👼┃电影天堂BT┃👼"
+        return `👼┃电影天堂BT┃👼`
     }
 
     getAppName() {

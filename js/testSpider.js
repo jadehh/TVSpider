@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './gitcafe.js';
+import {__jsEvalReturn} from './douban.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'gitcafe';
+    let siteKey = 'douban';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
