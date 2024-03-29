@@ -15,6 +15,7 @@ import * as HLS from "../lib/hls.js";
 import {hlsCache, tsCache} from "../lib/ffm3u8_open.js";
 import {DanmuSpider} from "../lib/danmuSpider.js";
 import {initAli} from "../lib/ali.js";
+
 class Result {
     constructor() {
         this.class = []
@@ -70,15 +71,22 @@ class Result {
                 "format": this.format,
                 "subs": this.subs,
                 "danmaku": this.danmaku,
-                "jx":this.jx
+                "jx": this.jx
             })
-        }else{
+        } else {
             return JSON.stringify({
-                "url": url, "parse": this.parse, "header": this.header, "format": this.format, "subs": this.subs,"jx":this.jx
+                "url": url,
+                "parse": this.parse,
+                "header": this.header,
+                "format": this.format,
+                "subs": this.subs,
+                "jx": this.jx
             })
         }
     }
-
+    playTxt(url){
+        return url
+    }
     errorCategory(error_message) {
         let vodShort = new VodShort()
         vodShort.vod_name = "错误:打开无效"
@@ -351,9 +359,11 @@ class Spider {
     getAppName() {
         return `基础`
     }
+
     getJSName() {
         return "base"
     }
+
     getType() {
         return 3
     }
@@ -433,11 +443,11 @@ class Spider {
 
     }
 
-    async initAli(token,db=null){
-        await initAli(token,db)
+    async initAli(token, db = null) {
+        await initAli(token, db)
     }
 
-    async spiderInit(){
+    async spiderInit() {
     }
 
     async init(cfg) {
@@ -593,7 +603,7 @@ class Spider {
             await this.jadeLog.debug(`详情页面内容为:${this.result.detail(this.vodDetail)}`)
             await this.jadeLog.info("详情页面解析完成", true)
             this.vodDetail.vod_id = id
-            if (this.siteType === 3){
+            if (this.siteType === 3) {
                 this.episodeObj = this.setEpisodeCache()
             }
 
@@ -626,24 +636,27 @@ class Spider {
         try {
             let return_result;
             await this.setPlay(flag, id, flags)
-            if (this.danmuStaus && !this.catOpenStatus) {
-                if (!_.isEmpty(this.danmuUrl)) {
-                    await this.jadeLog.debug("播放详情页面有弹幕,所以不需要再查找弹幕")
-                    return_result = this.result.setHeader(this.header).danmu(this.danmuUrl).play(this.playUrl)
-                } else {
-                    let danmuUrl;
-                    try {
-                        danmuUrl = await this.setDanmu(id)
-                    } catch (e) {
-                        await this.jadeLog.error(`弹幕加载失败,失败原因为:${e}`)
-                    }
-                    return_result = this.result.setHeader(this.header).danmu(danmuUrl).play(this.playUrl)
-                }
-
+            if (this.playUrl["content"] !== undefined) {
+                return_result = this.result.playTxt(this.playUrl)
             } else {
-                await this.jadeLog.debug("不需要加载弹幕", true)
-                return_result = this.result.setHeader(this.header).play(this.playUrl)
+                if (this.danmuStaus && !this.catOpenStatus) {
+                    if (!_.isEmpty(this.danmuUrl)) {
+                        await this.jadeLog.debug("播放详情页面有弹幕,所以不需要再查找弹幕")
+                        return_result = this.result.setHeader(this.header).danmu(this.danmuUrl).play(this.playUrl)
+                    } else {
+                        let danmuUrl;
+                        try {
+                            danmuUrl = await this.setDanmu(id)
+                        } catch (e) {
+                            await this.jadeLog.error(`弹幕加载失败,失败原因为:${e}`)
+                        }
+                        return_result = this.result.setHeader(this.header).danmu(danmuUrl).play(this.playUrl)
+                    }
 
+                } else {
+                    await this.jadeLog.debug("不需要加载弹幕", true)
+                    return_result = this.result.setHeader(this.header).play(this.playUrl)
+                }
             }
             await this.jadeLog.info("播放页面解析完成", true)
             await this.jadeLog.debug(`播放页面内容为:${return_result}`)
@@ -684,9 +697,9 @@ class Spider {
             Utils.base64Decode(resp.content)
             await this.jadeLog.error(`图片代理获取失败,重连失败`, true)
             this.reconnectTimes = 0
-            return {"code":500,"headers":headers,"content":"加载失败"}
+            return {"code": 500, "headers": headers, "content": "加载失败"}
         } catch (e) {
-            await this.jadeLog.debug("图片代理成功",true)
+            await this.jadeLog.debug("图片代理成功", true)
             this.reconnectTimes = 0
             return resp
         }
@@ -698,7 +711,7 @@ class Spider {
         let url = Utils.base64Decode(segments[1]);
         await this.jadeLog.debug(`反向代理参数为:${url}`)
         if (what === 'img') {
-            await this.jadeLog.debug("通过代理获取图片",true)
+            await this.jadeLog.debug("通过代理获取图片", true)
             let resp = await this.getImg(url, headers)
             return JSON.stringify({
                 code: resp.code, buffer: 2, content: resp.content, headers: resp.headers,
@@ -866,4 +879,4 @@ class Spider {
 }
 
 
-export {Spider,Result}
+export {Spider, Result}

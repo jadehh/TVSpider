@@ -34,7 +34,7 @@ let homeVod = JSON.parse(await spider.homeVod())
 let cateInReq = {"body": {"id": "xuanhuan", "page": "1", "filters": {}}}
 let category = JSON.parse(await spider.category(cateInReq))
 
-let detailInReq = {"body": {"id": "/search?k=%e4%b8%8e%e5%87%a4%e8%a1%8c"}}
+let detailInReq = {"body": {"id": "/html/31575/"}}
 let detail = JSON.parse(await spider.detail(detailInReq))
 
 

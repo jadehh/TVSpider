@@ -34,9 +34,9 @@ class BQQSpider extends Spider {
     }
 
     async spiderInit(inReq = null) {
-        if (inReq !== null){
-            this.jsBase = await js2Proxy(inReq,"img",this.getHeader());
-        }else{
+        if (inReq !== null) {
+            this.jsBase = await js2Proxy(inReq, "img", this.getHeader());
+        } else {
             this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
         }
     }
@@ -81,7 +81,7 @@ class BQQSpider extends Spider {
         bookDetail.book_year = $('[property$=update_time]')[0].attribs.content
         bookDetail.book_director = $('[property$=author]')[0].attribs.content
         bookDetail.book_content = $('[property$=description]')[0].attribs.content
-        bookDetail.book_pic =  $($("[class=\"cover\"]")).find("img")[0].attribs.src
+        bookDetail.book_pic = $($("[class=\"cover\"]")).find("img")[0].attribs.src
         if (id !== undefined) {
             $ = await this.getHtml(this.siteUrl + id + `list.html`);
             let urls = [];
@@ -123,7 +123,7 @@ class BQQSpider extends Spider {
         this.vodList = await this.parseVodShortListFromDocByCategory($)
     }
 
-    async play(flag, id, flags) {
+    async setPlay(flag, id, flags) {
         try {
             let content = '';
             while (true) {
@@ -135,13 +135,9 @@ class BQQSpider extends Spider {
                 id = $('a.Readpage_down')[0].attribs.href;
                 if (id.indexOf('_') < 0) break;
             }
-            return {
-                content: content + '\n\n',
-            };
+            this.playUrl = {"content":content + '\n\n'}
         } catch (e) {
-            return {
-                content: '',
-            };
+            this.playUrl = {"content":""}
         }
     }
 
