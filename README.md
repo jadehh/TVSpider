@@ -53,6 +53,7 @@ python build.py --aliToken aliToken
 * 或切换至nodejs目录下编译生成dist目录，dist目录发布到dist分支下
 * main分支用于代码测试(不包含任何配置信息)，js分支发布支持quickjs爬虫配置信息，dist分支发布支持nodejs爬虫配置信息
 * 所有的配置信息都通过Github Actions发布，通过创建tag来生成新的配置信息并自动发布
+* fork仓库时去掉仅复制main分支的&#x2714;，这样就可以fork所有的分支了
 
 
 ## 赞助
