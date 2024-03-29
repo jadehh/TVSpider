@@ -38,10 +38,10 @@ jobs:
         run: |
           git config --global user.email "jadehh@live.com"
           git config --global user.name "jade"
-          cp code code/18_open_config.json ./
-          cp code code/18_tv_config.json ./
-          cp code code/open_config.json ./
-          cp code code/tv_config.json ./
+          cp -r code/18_open_config.json ./
+          cp -r code/18_tv_config.json ./
+          cp -r code/open_config.json ./
+          cp -r code/tv_config.json ./
           git add 18_open_config.json
           git add 18_tv_config.json
           git add open_config.json
