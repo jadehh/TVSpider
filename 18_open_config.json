@@ -2,29 +2,20 @@
     "video": {
         "sites": [
             {
-                "key": "feifan18",
-                "name": "🔞┃非凡资源18+┃🔞",
+                "key": "asianx",
+                "name": "🔞┃海外宅┃🔞",
                 "playerType": 0,
                 "type": 3,
-                "api": "./js/feifan18.js",
+                "api": "./js/asianx.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
-                "key": "sehuatang",
-                "name": "🔞┃色花堂BT┃🔞",
+                "key": "ciliduo",
+                "name": "🔞┃磁力多BT┃🔞",
                 "playerType": 0,
                 "type": 3,
-                "api": "./js/sehuatang.js",
-                "timeout": 30,
-                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
-            },
-            {
-                "key": "jable",
-                "name": "🔞┃Jable┃🔞",
-                "playerType": 0,
-                "type": 3,
-                "api": "./js/jable.js",
+                "api": "./js/ciliduo.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
@@ -38,11 +29,11 @@
                 "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
-                "key": "asianx",
-                "name": "🔞┃海外宅┃🔞",
+                "key": "feifan18",
+                "name": "🔞┃非凡资源18+┃🔞",
                 "playerType": 0,
                 "type": 3,
-                "api": "./js/asianx.js",
+                "api": "./js/feifan18.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
@@ -52,6 +43,15 @@
                 "playerType": 0,
                 "type": 3,
                 "api": "./js/hscangku.js",
+                "timeout": 30,
+                "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
+            },
+            {
+                "key": "jable",
+                "name": "🔞┃Jable┃🔞",
+                "playerType": 0,
+                "type": 3,
+                "api": "./js/jable.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
@@ -74,11 +74,11 @@
                 "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
             {
-                "key": "ciliduo",
-                "name": "🔞┃磁力多BT┃🔞",
+                "key": "sehuatang",
+                "name": "🔞┃色花堂BT┃🔞",
                 "playerType": 0,
                 "type": 3,
-                "api": "./js/ciliduo.js",
+                "api": "./js/sehuatang.js",
                 "timeout": 30,
                 "ext": "{\"box\": \"CatOpen\", \"danmu\": false}"
             },
@@ -94,13 +94,6 @@
     "read": {
         "sites": [
             {
-                "key": "bqg_open",
-                "name": "📚︎┃笔趣阁┃📚︎",
-                "type": 10,
-                "api": "./js/bqg_open.js",
-                "ext": "{\"box\": \"CatOpen\"}"
-            },
-            {
                 "key": "audiomack",
                 "name": "🎵┃音声┃🎵",
                 "type": 3,
@@ -112,6 +105,13 @@
                 "name": "🎵┃看书┃🎵",
                 "type": 3,
                 "api": "./js/bookan.js",
+                "ext": "{\"box\": \"CatOpen\"}"
+            },
+            {
+                "key": "bqg_open",
+                "name": "📚︎┃笔趣阁┃📚︎",
+                "type": 10,
+                "api": "./js/bqg_open.js",
                 "ext": "{\"box\": \"CatOpen\"}"
             },
             {
