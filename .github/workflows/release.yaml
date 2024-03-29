@@ -47,12 +47,14 @@ jobs:
           cp -r code/tv_config.json ./
           cp -r code/js/ ./
           cp -r code/lib ./
+          cp -r code/README.md ./README.md
           git add 18_open_config.json
           git add 18_tv_config.json
           git add open_config.json
           git add tv_config.json
           git add js
           git add lib 
+          git add README.md
           commit_msg="* 更新TVConfig和OpenConfig"
           git commit -a -m "$commit_msg"
 

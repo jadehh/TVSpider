@@ -1,14 +1,14 @@
-## CatVodOpenĞÂÔ´
+## CatVodOpenæ–°æº
 
-#### ±àÒë
+#### ç¼–è¯‘
 
 ```bash
 npm install && npm run build
 ```
-> Éú³ÉµÄdistÎÄ¼ş·¢²¼µ½dist·ÖÖ§ÖĞ
+> ç”Ÿæˆçš„distæ–‡ä»¶å‘å¸ƒåˆ°diståˆ†æ”¯ä¸­
 
 
-#### ĞÂÔ´µØÖ·
+#### æ–°æºåœ°å€
 ```text
 gitee://Token@gitee.com/jadehh_743/TVSpider/dist/index.js.md5
 github://Token@gitee.com/jadehh/TVSpider/dist/index.js.md5
