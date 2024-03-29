@@ -36,6 +36,8 @@ jobs:
 
       - name: 上传Config
         run: |
+          ls -l
+          ls -l code/
           git config --global user.email "jadehh@live.com"
           git config --global user.name "jade"
           cp -r code/18_open_config.json ./
