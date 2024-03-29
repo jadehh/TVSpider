@@ -30,6 +30,7 @@ jobs:
 
       - name: TV Config文件生成
         run: |
+          cd code
           pip install https://github.com/jadehh/pythonTools/releases/download/JadeV2.1.7/jade-2.1.7-py3-none-any.whl
           python build.py --aliToken "${{ secrets.Ali_TOKEN }}"
 
@@ -37,6 +38,10 @@ jobs:
         run: |
           git config --global user.email "jadehh@live.com"
           git config --global user.name "jade"
+          cp code code/18_open_config.json ./
+          cp code code/18_tv_config.json ./
+          cp code code/open_config.json ./
+          cp code code/tv_config.json ./
           git add 18_open_config.json
           git add 18_tv_config.json
           git add open_config.json
@@ -124,7 +129,7 @@ jobs:
 
       - name: 18+Config文件生成
         run: |
-          git checkout js
+          cd code
           python build.py --aliToken "${{ secrets.Ali_TOKEN }}" --is_18 True
 
       - name: 18+发布版本
