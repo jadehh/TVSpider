@@ -257,11 +257,17 @@ class Spider {
         try {
             let return_result;
             await this.setPlay(flag, id, flags)
-            await this.jadeLog.debug("不需要加载弹幕", true)
-            return_result = this.result.play(this.playUrl)
-            await this.jadeLog.info("播放页面解析完成", true)
-            await this.jadeLog.debug(`播放页面内容为:${return_result}`)
-            return return_result;
+            if (this.playUrl["content"] !==undefined){
+                return  this.playUrl
+            }else{
+                 await this.jadeLog.debug("不需要加载弹幕", true)
+                return_result = this.result.play(this.playUrl)
+                await this.jadeLog.info("播放页面解析完成", true)
+                await this.jadeLog.debug(`播放页面内容为:${return_result}`)
+                return return_result;
+            }
+
+
 
         } catch (e) {
             await this.jadeLog.error("解析播放页面出错,失败原因为:" + e)
