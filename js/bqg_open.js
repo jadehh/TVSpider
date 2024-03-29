@@ -10,7 +10,7 @@ import {_} from '../lib/cat.js';
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 import {VodShort} from "../lib/vod.js";
-import {BookShort} from "../lib/book.js";
+import {BookDetail, BookShort} from "../lib/book.js";
 
 class BQQSpider extends Spider {
     constructor() {
@@ -34,8 +34,18 @@ class BQQSpider extends Spider {
         return "📚︎┃笔趣阁┃📚︎"
     }
 
+    async spiderInit(inReq = null) {
+        if (inReq !== null) {
+            this.jsBase = await js2Proxy(inReq, "img", this.getHeader());
+        } else {
+            this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
+        }
+
+    }
+
     async init(cfg) {
         await super.init(cfg);
+        await this.spiderInit(null)
     }
 
     async parseVodShortListFromDoc($) {
@@ -68,13 +78,12 @@ class BQQSpider extends Spider {
     }
 
     async parseVodDetailFromDoc($, id) {
-        let book = {
-            book_name: $('[property$=book_name]')[0].attribs.content,
-            book_year: $('[property$=update_time]')[0].attribs.content,
-            book_director: $('[property$=author]')[0].attribs.content,
-            book_content: $('[property$=description]')[0].attribs.content,
-            book_pic: $($("[class=\"cover\"]")).find("img")[0].attribs.src
-        };
+        let bookDetail = new BookDetail()
+        bookDetail.book_name = $('[property$=book_name]')[0].attribs.content
+        bookDetail.book_year = $('[property$=update_time]')[0].attribs.content
+        bookDetail.book_director = $('[property$=author]')[0].attribs.content
+        bookDetail.book_content = $('[property$=description]')[0].attribs.content
+        bookDetail.book_pic =  $($("[class=\"cover\"]")).find("img")[0].attribs.src
         if (id !== undefined) {
             $ = await this.getHtml(this.siteUrl + id + `list.html`);
             let urls = [];
@@ -84,10 +93,10 @@ class BQQSpider extends Spider {
                 const link = l.attribs.href;
                 urls.push(name + '$' + link);
             }
-            book.volumes = '全卷';
-            book.urls = urls.join('#');
+            bookDetail.volumes = '全卷';
+            bookDetail.urls = urls.join('#');
         }
-        return book
+        return bookDetail
 
     }
 
@@ -255,4 +264,5 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+
 export {spider}

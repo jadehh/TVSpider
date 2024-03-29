@@ -593,7 +593,10 @@ class Spider {
             await this.jadeLog.debug(`详情页面内容为:${this.result.detail(this.vodDetail)}`)
             await this.jadeLog.info("详情页面解析完成", true)
             this.vodDetail.vod_id = id
-            this.episodeObj = this.setEpisodeCache()
+            if (this.siteType === 3){
+                this.episodeObj = this.setEpisodeCache()
+            }
+
             return this.result.detail(this.vodDetail)
         } catch (e) {
             await this.jadeLog.error("详情界面获取失败,失败原因为:" + e)

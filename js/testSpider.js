@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './douban.js';
+import {__jsEvalReturn} from './dj0898_book_open.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -58,26 +58,30 @@ async function test() {
         }
     });
 
+
+    let classes = JSON.parse(await spider.home(true));
+    console.debug(JSON.stringify(classes))
+
+
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
-
-    // 测试搜索
-    let search_page = JSON.parse(await spider.search("小日子"))
-    console.debug(JSON.stringify(search_page));
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("http://m.dj0898.com/dance/play/id/202181"))
+    await testPlay(detail1)
 
     //测试分类列表
     let catePage = JSON.parse(await spider.category("1", "1", undefined, {}));
     console.debug(JSON.stringify(catePage));
 
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("RLFqaX7mSGLrMX+2"))
-    await testPlay(detail1)
 
-    let classes = JSON.parse(await spider.home(true));
-    console.debug(JSON.stringify(classes))
+
+
+    // 测试搜索
+    let search_page = JSON.parse(await spider.search("小日子"))
+    console.debug(JSON.stringify(search_page));
 
 
 
