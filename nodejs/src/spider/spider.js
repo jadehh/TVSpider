@@ -229,6 +229,7 @@ class Spider {
     }
 
     async detail(inReq, _outResp) {
+        await this.jadeLog.debug(`获取详情页面:${JSON.stringify(inReq.body)}`)
         const ids = !Array.isArray(inReq.body.id) ? [inReq.body.id] : inReq.body.id;
         const id = ids[0]
         this.vodDetail = new VodDetail();

@@ -82,6 +82,7 @@ class BQQSpider extends Spider {
         bookDetail.book_director = $('[property$=author]')[0].attribs.content
         bookDetail.book_content = $('[property$=description]')[0].attribs.content
         bookDetail.book_pic = $($("[class=\"cover\"]")).find("img")[0].attribs.src
+        bookDetail.book_id = id
         if (id !== undefined) {
             $ = await this.getHtml(this.siteUrl + id + `list.html`);
             let urls = [];
