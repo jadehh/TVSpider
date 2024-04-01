@@ -154,7 +154,7 @@ class Build(object):
                         new_js_file_list.append(js_file)
             elif case == 2:
                 if jsMoudle.getName():
-                    if "📚︎" in jsMoudle.getName() or "🎵" in jsMoudle.getName():
+                    if "📚︎" in jsMoudle.getName() or "🎵" in jsMoudle.getName() or jsMoudle.getType() == "20":
                         new_js_file_list.append(js_file)
             elif case == 3:
                 if jsMoudle.getName():
