@@ -24,6 +24,7 @@ class Sp360Spider extends Spider {
     getAppName() {
         return "360"
     }
+
     getJSName() {
         return "sp360"
     }
@@ -552,10 +553,12 @@ class Sp360Spider extends Spider {
         for (const playFormat of data["playlink_sites"]) {
             let vodItems = []
             if (!_.isEmpty(data["allepidetail"])) {
-                for (const items of data["allepidetail"][playFormat]) {
-                    let episodeUrl = items["url"]
-                    let episodeName = items["playlink_num"]
-                    vodItems.push(episodeName + "$" + episodeUrl);
+                if (data["allepidetail"][playFormat] !== undefined) {
+                    for (const items of data["allepidetail"][playFormat]) {
+                        let episodeUrl = items["url"]
+                        let episodeName = items["playlink_num"]
+                        vodItems.push(episodeName + "$" + episodeUrl);
+                    }
                 }
             } else {
                 let items = data["playlinksdetail"][playFormat]
@@ -563,7 +566,9 @@ class Sp360Spider extends Spider {
                 let episodeName = items["quality"]
                 vodItems.push(episodeName + "$" + episodeUrl);
             }
-            playlist[playFormat] = vodItems.join("#")
+            if (vodItems.length > 0){
+                  playlist[playFormat] = vodItems.join("#")
+            }
         }
 
 
@@ -663,4 +668,5 @@ export function __jsEvalReturn() {
         init: init, home: home, homeVod: homeVod, category: category, detail: detail, play: play, search: search,
     };
 }
+
 export {spider}

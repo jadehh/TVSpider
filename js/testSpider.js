@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './copymanga.js';
+import {__jsEvalReturn} from './sp360.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -18,7 +18,7 @@ async function testPlay(vodDetail) {
                     var name = urls[j].split('$')[0];
                     var url = urls[j].split('$')[1];
                     console.debug(flag + " | " + name + " | " + url);
-                    var playUrl = await spider.play(name, url, []);
+                    var playUrl = await spider.play(flag, url, []);
                     console.debug('playURL: ' + playUrl);
                 }
             }
@@ -50,13 +50,17 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'copymanga';
+    let siteKey = 'sp360';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
             "token": "302ef8e4b4d7430db6d82de284978359", "box": "CatOpen", "code": "1", "from": "justlive1", "danmu": true
         }
     });
+
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("PkPmasHbYo3uED+4"))
+    await testPlay(detail1)
 
 
     let classes = JSON.parse(await spider.home(true));
@@ -67,22 +71,16 @@ async function test() {
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
+
+
+
     //测试分类列表
-    let catePage = JSON.parse(await spider.category("c1", "1", undefined, {}));
+    let catePage = JSON.parse(await spider.category("riman", "1", undefined, {"4":"hits"}));
     console.debug(JSON.stringify(catePage));
-
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("wangzinvhaiduanpianji"))
-    await testPlay(detail1)
-
-
-
-
-
 
 
     // 测试搜索
-    let search_page = JSON.parse(await spider.search("小日子"))
+    let search_page = JSON.parse(await spider.search("海贼王"))
     console.debug(JSON.stringify(search_page));
 
 

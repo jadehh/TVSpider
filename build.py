@@ -145,7 +145,7 @@ class Build(object):
             jsMoudle = JSMoudle(os.path.join(self.js_path, js_file))
             if case == 0:
                 if jsMoudle.getName():
-                    if "🔞" not in jsMoudle.getName() and "📚︎" not in jsMoudle.getName() and "🎵" not in jsMoudle.getName() and "推送" not in jsMoudle.getName():
+                    if "🔞" not in jsMoudle.getName() and "📚︎" not in jsMoudle.getName() and "🎵" not in jsMoudle.getName() and "推送" not in jsMoudle.getName() and jsMoudle.getType() == "3":
                         new_js_file_list.append(js_file)
             elif case == 1:
                 if jsMoudle.getName():
