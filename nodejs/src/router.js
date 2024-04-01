@@ -1,7 +1,6 @@
 import audiomack from './spider/book/audiomack.js';
 import bookan from './spider/book/bookan.js';
 import bqg_open from './spider/book/bqg_open.js';
-import copymanga from './spider/book/copymanga.js';
 import dj0898_book_open from './spider/book/dj0898_book_open.js';
 import alist from './spider/pan/alist.js';
 import aiyingshi from './spider/video/aiyingshi.js';
@@ -32,7 +31,7 @@ import star from './spider/video/star.js';
 import wogg from './spider/video/wogg.js';
 import xb6v from './spider/video/xb6v.js';
 import yiqikan from './spider/video/yiqikan.js';
-const spiders = [audiomack,bookan,bqg_open,copymanga,dj0898_book_open,alist,aiyingshi,alipansou,aliyunpanshare,changzhang,douban,dygangs,feifan,gitcafe,huya,ikanbot,jianpian,jiujiuliu,kankan70,kuaikan,kunyu77,liangzi,mp4movie,nangua,newvision,nivod,pan_search,push,sp360,star,wogg,xb6v,yiqikan];
+const spiders = [audiomack,bookan,bqg_open,dj0898_book_open,alist,aiyingshi,alipansou,aliyunpanshare,changzhang,douban,dygangs,feifan,gitcafe,huya,ikanbot,jianpian,jiujiuliu,kankan70,kuaikan,kunyu77,liangzi,mp4movie,mxanime,nangua,newvision,nivod,pan_search,push,sp360,star,wogg,xb6v,yiqikan];
 const spiderPrefix = '/spider';
 
 /**
