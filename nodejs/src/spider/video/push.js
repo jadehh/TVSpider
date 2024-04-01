@@ -7,12 +7,12 @@
 * @Desc     :
 */
 
-import {Spider} from "../spider.js";
+import {NodeJSSpider} from "../spider.js";
 import {detailContent, initAli, playContent} from "../../../../lib/ali.js";
 import {VodDetail} from "../../../../lib/vod.js";
 import * as Utils from "../../../../lib/utils.js";
 
-class PushSpider extends Spider {
+class PushSpider extends NodeJSSpider {
     constructor() {
         super();
     }

@@ -6,97 +6,23 @@
 * @Software : Samples
 * @Desc     :
 */
-import "../util/global.js"
-import {VodDetail, VodShort} from "../../../lib/vod.js";
-import * as Utils from "../../../lib/utils.js";
-import {_, load, Uri} from "../../../lib/cat.js";
-import {DanmuSpider} from "../../../lib/danmuSpider.js";
-import {JadeLogging} from "../util/log.js"
-import {Result} from "../../../js/spider.js";
-import CryptoJS from "crypto-js";
+
+import {Spider} from "../../../js/spider.js";
+import {JadeLogging} from "../util/log.js";
+import {_,} from "../../../lib/cat.js"
+import {VodDetail} from "../../../lib/vod.js";
 
 
-class Spider {
+
+
+class NodeJSSpider extends Spider{
     constructor() {
-        this.siteKey = ""
-        this.siteType = 0
-        this.jadeLog = new JadeLogging(this.getAppName(), "DEBUG")
-        this.classes = []
-        this.filterObj = {}
-        this.catOpenStatus = true
-        this.danmuStaus = false
-        this.reconnectTimes = 0
-        this.maxReconnectTimes = 5
-        this.siteUrl = ""
-        this.vodList = []
-        this.homeVodList = []
-        this.count = 0
-        this.limit = 0
-        this.total = 0
-        this.page = 0
-        this.vodDetail = new VodDetail()
-        this.playUrl = ""
-        this.header = {}
-        this.episodeObj = {}
-        this.danmuUrl = ""
-        this.result = new Result()
-
+        super();
+        this.jadeLog = new JadeLogging(this.getAppName(),"DEBUG")
     }
-
-    getName() {
-        return `?┃基础┃?`
-    }
-
-    getAppName() {
-        return `基础`
-    }
-
-    getJSName() {
-        return "base"
-    }
-
-    getType() {
-        return 3
-    }
-    getTypeDic(type_name, type_id) {
-        return {"type_name": type_name, "type_id": type_id}
-    }
-    async parseVodShortListFromDoc($) {
-    }
-
-    async parseVodShortListFromJson(obj) {
-    }
-    parseVodShortFromElement($, element) {
-    }
-
-    async parseVodShortListFromDocByCategory($) {
-    }
-
-    async parseVodShortListFromDocBySearch($) {
-    }
-
-    async parseVodDetailFromDoc($) {
-    }
-    async parseVodDetailfromJson(obj) {
-    }
-
-    async getFilter($) {
-
-    }
-
-    async setClasses() {
-
-    }
-
-    async setFilterObj() {
-
-    }
-
-
     async init(inReq, _outResp) {
         await this.jadeLog.info("初始化", true)
         try {
-            this.danmuSpider = new DanmuSpider()
             this.siteKey = this.getJSName()
             this.siteType = this.getType()
             this.cfgObj = inReq.server.config[this.siteKey]
@@ -156,7 +82,6 @@ class Spider {
             return this.classes
         }
     }
-
     async getFiletObjCache() {
         let cacheFilterObj = await this.db.getObjectDefault(this.deviceKey + "filterObj", {});
         if (!_.isEmpty(cacheFilterObj)) {
@@ -165,11 +90,6 @@ class Spider {
             return this.filterObj
         }
     }
-
-
-    async setHome(filter) {
-    }
-
     async home(inReq, _outResp) {
         this.vodList = []
         await this.jadeLog.info("正在解析首页类别", true)
@@ -178,11 +98,6 @@ class Spider {
         await this.jadeLog.info("首页类别解析完成", true)
         return this.result.home(this.classes, [], this.filterObj)
     }
-
-    async setHomeVod() {
-
-    }
-
     async homeVod() {
         await this.jadeLog.info("正在解析首页内容", true)
         try {
@@ -193,10 +108,6 @@ class Spider {
         } catch (e) {
             await this.jadeLog.error(`首页内容解析失败,失败原因为:${e}`)
         }
-    }
-
-    async setCategory(tid, pg, filter, extend) {
-
     }
 
     async category(inReq, _outResp) {
@@ -224,10 +135,6 @@ class Spider {
 
     }
 
-    async setDetail(id) {
-
-    }
-
     async detail(inReq, _outResp) {
         await this.jadeLog.debug(`获取详情页面:${JSON.stringify(inReq.body)}`)
         const ids = !Array.isArray(inReq.body.id) ? [inReq.body.id] : inReq.body.id;
@@ -244,10 +151,6 @@ class Spider {
             await this.jadeLog.error("详情界面获取失败,失败原因为:" + e)
         }
 
-    }
-
-    async setPlay(flag, id, flags) {
-        this.playUrl = id
     }
 
     async play(inReq, _outResp) {
@@ -267,17 +170,9 @@ class Spider {
                 await this.jadeLog.debug(`播放页面内容为:${return_result}`)
                 return return_result;
             }
-
-
-
         } catch (e) {
             await this.jadeLog.error("解析播放页面出错,失败原因为:" + e)
         }
-
-    }
-
-    async setSearch(wd, quick) {
-
     }
 
     async search(inReq, _outResp) {
@@ -297,10 +192,6 @@ class Spider {
         await this.jadeLog.info("搜索页面解析完成", true)
         return this.result.search(this.vodList)
     }
-
-    async setProxy(segments, headers) {
-    }
-
     async proxy(inReq, outResp) {
         try {
             const what = inReq.params.what;
@@ -317,12 +208,10 @@ class Spider {
         } catch (e) {
             await this.jadeLog.error(`代理回调失败,失败原因为:${e}`)
         }
-
     }
-
 }
 
 
 export {
-    Spider
+    NodeJSSpider
 }

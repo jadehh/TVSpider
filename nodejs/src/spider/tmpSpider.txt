@@ -6,10 +6,10 @@
 * @Software : Samples
 * @Desc     :
 */
-import {Spider} from "../spider.js";
+import {NodeJSSpider} from "../spider.js";
 import {spider} from "../../../../js/temp.js";
 
-class tempSpider extends Spider {
+class tempSpider extends NodeJSSpider {
     constructor() {
         super();
     }

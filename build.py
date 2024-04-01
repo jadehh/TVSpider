@@ -65,7 +65,7 @@ def js_to_nodejs(js_file_list, type="video"):
         if jsMoudle.getType() == "3" :
             with open("nodejs/src/spider/{}/{}".format(type, js_file), "wb") as f:
                 f.write(write_content.encode("utf-8"))
-        elif jsMoudle.getType() == "10":
+        elif jsMoudle.getType() == "10" or jsMoudle.getType() == "20":
             with open("nodejs/src/spider/{}/{}".format("book", js_file), "wb") as f:
                 f.write(write_content.encode("utf-8"))
 
