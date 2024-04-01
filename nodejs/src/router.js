@@ -11,14 +11,12 @@ import changzhang from './spider/video/changzhang.js';
 import douban from './spider/video/douban.js';
 import dygangs from './spider/video/dygangs.js';
 import feifan from './spider/video/feifan.js';
-import ffm3u8 from './spider/video/ffm3u8.js';
 import gitcafe from './spider/video/gitcafe.js';
 import huya from './spider/video/huya.js';
 import ikanbot from './spider/video/ikanbot.js';
 import jianpian from './spider/video/jianpian.js';
 import jiujiuliu from './spider/video/jiujiuliu.js';
 import kankan70 from './spider/video/kankan70.js';
-import kkys from './spider/video/kkys.js';
 import kuaikan from './spider/video/kuaikan.js';
 import kunyu77 from './spider/video/kunyu77.js';
 import liangzi from './spider/video/liangzi.js';
@@ -33,7 +31,7 @@ import star from './spider/video/star.js';
 import wogg from './spider/video/wogg.js';
 import xb6v from './spider/video/xb6v.js';
 import yiqikan from './spider/video/yiqikan.js';
-const spiders = [audiomack,bookan,bqg_open,copymanga,dj0898_book_open,alist,aiyingshi,alipansou,aliyunpanshare,changzhang,douban,dygangs,feifan,ffm3u8,gitcafe,huya,ikanbot,jianpian,jiujiuliu,kankan70,kkys,kuaikan,kunyu77,liangzi,mp4movie,nangua,newvision,nivod,pan_search,push,sp360,star,wogg,xb6v,yiqikan];
+const spiders = [audiomack,bookan,bqg_open,copymanga,dj0898_book_open,alist,aiyingshi,alipansou,aliyunpanshare,changzhang,douban,dygangs,feifan,gitcafe,huya,ikanbot,jianpian,jiujiuliu,kankan70,kuaikan,kunyu77,liangzi,mp4movie,nangua,newvision,nivod,pan_search,push,sp360,star,wogg,xb6v,yiqikan];
 const spiderPrefix = '/spider';
 
 /**

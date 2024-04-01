@@ -13,13 +13,12 @@ import {_,} from "../../../lib/cat.js"
 import {VodDetail} from "../../../lib/vod.js";
 
 
-
-
-class NodeJSSpider extends Spider{
+class NodeJSSpider extends Spider {
     constructor() {
         super();
-        this.jadeLog = new JadeLogging(this.getAppName(),"DEBUG")
+        this.jadeLog = new JadeLogging(this.getAppName(), "DEBUG")
     }
+
     async init(inReq, _outResp) {
         await this.jadeLog.info("初始化", true)
         try {
@@ -82,6 +81,7 @@ class NodeJSSpider extends Spider{
             return this.classes
         }
     }
+
     async getFiletObjCache() {
         let cacheFilterObj = await this.db.getObjectDefault(this.deviceKey + "filterObj", {});
         if (!_.isEmpty(cacheFilterObj)) {
@@ -90,6 +90,7 @@ class NodeJSSpider extends Spider{
             return this.filterObj
         }
     }
+
     async home(inReq, _outResp) {
         this.vodList = []
         await this.jadeLog.info("正在解析首页类别", true)
@@ -98,6 +99,7 @@ class NodeJSSpider extends Spider{
         await this.jadeLog.info("首页类别解析完成", true)
         return this.result.home(this.classes, [], this.filterObj)
     }
+
     async homeVod() {
         await this.jadeLog.info("正在解析首页内容", true)
         try {
@@ -161,11 +163,31 @@ class NodeJSSpider extends Spider{
         try {
             let return_result;
             await this.setPlay(flag, id, flags)
-            if (this.playUrl["content"] !==undefined){
-                return  this.playUrl
-            }else{
-                 await this.jadeLog.debug("不需要加载弹幕", true)
-                return_result = this.result.play(this.playUrl)
+            if (this.playUrl["content"] !== undefined) {
+                return this.playUrl
+            } else {
+                await this.jadeLog.debug("不需要加载弹幕", true)
+                if (this.result.jx === 1 && this.playUrl.indexOf(".m3u8") < 0) {
+                    const sniffer = await inReq.server.messageToDart({
+                        action: 'sniff', opt: {
+                            url: id, timeout: 10000, rule: 'http((?!http).){12,}?\\.m3u8(?!\\?)',
+                        },
+                    });
+                    if (sniffer && sniffer.url) {
+                        const hds = {};
+                        if (sniffer.headers) {
+                            if (sniffer.headers['user-agent']) {
+                                hds['User-Agent'] = sniffer.headers['user-agent'];
+                            }
+                            if (sniffer.headers['referer']) {
+                                hds['Referer'] = sniffer.headers['referer'];
+                            }
+                        }
+                        return_result = JSON.stringify({parse: 0, url: sniffer.url, header: hds, "jx": "0"});
+                    }
+                } else {
+                    return_result = this.result.play(this.playUrl)
+                }
                 await this.jadeLog.info("播放页面解析完成", true)
                 await this.jadeLog.debug(`播放页面内容为:${return_result}`)
                 return return_result;
@@ -192,6 +214,7 @@ class NodeJSSpider extends Spider{
         await this.jadeLog.info("搜索页面解析完成", true)
         return this.result.search(this.vodList)
     }
+
     async proxy(inReq, outResp) {
         try {
             const what = inReq.params.what;
