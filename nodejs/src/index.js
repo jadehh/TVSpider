@@ -2,9 +2,10 @@ import fastify from 'fastify';
 import router from './router.js';
 import { JsonDB, Config } from 'node-json-db';
 import axios from 'axios';
+import {JadeLogging} from "./util/log.js";
 
 let server = null;
-
+let JadeLog = new JadeLogging("服务管理","DEBUG")
 /**
  * Start the server with the given configuration.
  *
@@ -36,6 +37,7 @@ export async function start(config) {
             if (port == 0) {
                 return null;
             }
+            await JadeLog.debug(`数据:${JSON.stringify(data)},端口号为:${port}`)
             const resp = await axios.post(`http://127.0.0.1:${port}/msg`, data);
             return resp.data;
         } catch (error) {

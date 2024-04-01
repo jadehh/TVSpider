@@ -6,14 +6,14 @@
 * @Software : Samples
 * @Desc     :
 */
-import base_spider from "./book/bqg_open.js"
+import base_spider from "./video/sp360.js"
 import {Config, JsonDB} from "node-json-db";
 function getInreq() {
-    let prefix = "/spider/book/bqg_open"
+    let prefix = "/spider/video/sp360"
     let db = new JsonDB(new Config((process.env['NODE_PATH'] || '.') + '/db.json', true, true, '/', true));
     class Server {
         constructor() {
-            this.config = {"bqg_open": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"}
+            this.config = {"sp360": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"}
             this.db = db
             this.prefix = prefix
         }
@@ -31,10 +31,10 @@ let init = await spider.init(inReq)
 let home = JSON.parse(await spider.home())
 let homeVod = JSON.parse(await spider.homeVod())
 
-let cateInReq = {"body": {"id": "xuanhuan", "page": "1", "filters": {}}}
+let cateInReq = {"body": {"id": "1", "page": "1", "filters": {}}}
 let category = JSON.parse(await spider.category(cateInReq))
 
-let detailInReq = {"body": {"id": "/html/31575/"}}
+let detailInReq = {"body": {"id": "hKPiZRH4QHP7Tx+1"}}
 let detail = JSON.parse(await spider.detail(detailInReq))
 
 
@@ -42,8 +42,8 @@ let detail = JSON.parse(await spider.detail(detailInReq))
 
 let playInReq = {
     "body": {
-        "flag": "原画",
-        "id": "6347b6a5d4b85050537a416f810063b2630b6d2a+cfeM8bMRAhg+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdXN0b21Kc29uIjoie1wiZG9tYWluX2lkXCI6XCJiajI5XCIsXCJzaGFyZV9pZFwiOlwiY2ZlTThiTVJBaGdcIixcImNyZWF0b3JcIjpcIjU5MmQ4ODM2NWMyYjQ2NDhiZjJiZWY2OTYzZjkzM2UyXCIsXCJ1c2VyX2lkXCI6XCJhbm9ueW1vdXNcIn0iLCJjdXN0b21UeXBlIjoic2hhcmVfbGluayIsImV4cCI6MTcxMTU1MzEyMCwiaWF0IjoxNzExNTQ1ODYwfQ.XIiWtXS6P-Wev5D_jQqhDF6nggSKHF3RxHukMRMjljSf0lyku0SOHULzcNin6WYTXQcCpxYJ5gJ2vKokFeri9WlqRD6ZY7E20oV20csZQTJEtvo_kwA5M_lhy5b164rjEmbxqgVFCH0BIwdq1pP2QeQSc8vUblO1WTfa-upOBnk"
+        "flag": "hd",
+        "id": "https://www.douyin.com/lvdetail/6915956278669869581"
     }
 }
 let play = JSON.parse(await spider.play(playInReq))
