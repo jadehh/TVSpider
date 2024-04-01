@@ -21,6 +21,7 @@ import kuaikan from './spider/video/kuaikan.js';
 import kunyu77 from './spider/video/kunyu77.js';
 import liangzi from './spider/video/liangzi.js';
 import mp4movie from './spider/video/mp4movie.js';
+import mxanime from './spider/video/mxanime.js';
 import nangua from './spider/video/nangua.js';
 import newvision from './spider/video/newvision.js';
 import nivod from './spider/video/nivod.js';
