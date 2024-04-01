@@ -53,6 +53,7 @@ def js_to_nodejs(js_file_list, type="video"):
     CreateSavePath("nodejs/src/spider/video")
     CreateSavePath("nodejs/src/spider/book")
     CreateSavePath("nodejs/src/spider/pan")
+    CreateSavePath("nodejs/src/spider/18")
     for js_file in js_file_list:
         jsMoudle = JSMoudle(os.path.join("js", js_file))
         modleName = jsMoudle.getName()
