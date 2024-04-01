@@ -183,7 +183,11 @@ class NodeJSSpider extends Spider {
                                 hds['Referer'] = sniffer.headers['referer'];
                             }
                         }
+                        await this.jadeLog.debug(`嗅探成功,播放连接为:${sniffer.url}`)
                         return_result = JSON.stringify({parse: 0, url: sniffer.url, header: hds, "jx": "0"});
+                    }else{
+                        await this.jadeLog.error("解析失败,无法嗅探到播放连接")
+                        return_result = JSON.stringify({parse: 0, url: "", "jx": "0"});
                     }
                 } else {
                     return_result = this.result.play(this.playUrl)
