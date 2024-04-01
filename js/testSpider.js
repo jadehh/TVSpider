@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './bqg_open.js';
+import {__jsEvalReturn} from './copymanga.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,11 +50,11 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'douban';
+    let siteKey = 'copymanga';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
-            "token": "302ef8e4b4d7430db6d82de284978359", "box": "TV", "code": "1", "from": "justlive1", "danmu": true
+            "token": "302ef8e4b4d7430db6d82de284978359", "box": "CatOpen", "code": "1", "from": "justlive1", "danmu": true
         }
     });
 
@@ -67,13 +67,15 @@ async function test() {
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
+    //测试分类列表
+    let catePage = JSON.parse(await spider.category("c1", "1", undefined, {}));
+    console.debug(JSON.stringify(catePage));
+
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("http://m.dj0898.com/dance/play/id/202181"))
+    let detail1 = JSON.parse(await spider.detail("wangzinvhaiduanpianji"))
     await testPlay(detail1)
 
-    //测试分类列表
-    let catePage = JSON.parse(await spider.category("1", "1", undefined, {}));
-    console.debug(JSON.stringify(catePage));
+
 
 
 

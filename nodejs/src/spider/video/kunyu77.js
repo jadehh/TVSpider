@@ -1,4 +1,4 @@
-import {Spider} from "../spider.js";
+import {NodeJSSpider} from "../spider.js";
 import {formatPlayUrl, randDeviceWithId, jsonParse, randUUID} from '../../util/misc.js';
 import dayjs from 'dayjs';
 import NodeRSA from 'node-rsa';
@@ -20,7 +20,7 @@ swIDAQAB
 });
 
 
-class KunYun77Spider extends Spider {
+class KunYun77Spider extends NodeJSSpider {
     constructor() {
         super();
         this.siteUrl = 'https://api.tyun77.cn';

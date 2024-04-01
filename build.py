@@ -50,7 +50,9 @@ def config_to_nodejs(ali_token):
     with open("nodejs/src/index.config.js","wb") as f:
         f.write(write_content.encode("utf-8"))
 def js_to_nodejs(js_file_list, type="video"):
-    CreateSavePath("nodejs/src/spider/{}".format(type))
+    CreateSavePath("nodejs/src/spider/video")
+    CreateSavePath("nodejs/src/spider/book")
+    CreateSavePath("nodejs/src/spider/pan")
     for js_file in js_file_list:
         jsMoudle = JSMoudle(os.path.join("js", js_file))
         modleName = jsMoudle.getName()
@@ -65,7 +67,7 @@ def js_to_nodejs(js_file_list, type="video"):
         if jsMoudle.getType() == "3" :
             with open("nodejs/src/spider/{}/{}".format(type, js_file), "wb") as f:
                 f.write(write_content.encode("utf-8"))
-        elif jsMoudle.getType() == "10":
+        elif jsMoudle.getType() == "10" or jsMoudle.getType() == "20":
             with open("nodejs/src/spider/{}/{}".format("book", js_file), "wb") as f:
                 f.write(write_content.encode("utf-8"))
 
