@@ -11,7 +11,6 @@ class HaiWaiKanSpider extends VodSpider {
     constructor() {
         super();
         this.siteUrl = "https://haiwaikan.com"
-        this.apiUrl = "https://api.haiwaikan.com"
         this.remove18 = true
         this.type_id_18 = 0
     }
@@ -33,7 +32,7 @@ class HaiWaiKanSpider extends VodSpider {
     }
 
     getName() {
-        return "☕┃海外看┃☕"
+        return "☕┃海外看┃☕墙"
     }
 
     getJSName() {
