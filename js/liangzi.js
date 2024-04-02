@@ -7,6 +7,7 @@
 * @Desc     : 量子资源
 */
 import {VodSpider} from "./vodSpider.js";
+
 class LiangziSpider extends VodSpider {
     constructor() {
         super();
@@ -28,6 +29,17 @@ class LiangziSpider extends VodSpider {
 
     getType() {
         return 3
+    }
+
+    async spiderInit(inReq) {
+        await super.spiderInit(inReq);
+    }
+
+
+    async init(cfg) {
+        await super.init(cfg);
+        await this.spiderInit(null)
+
     }
 }
 
@@ -77,4 +89,5 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+
 export {spider}

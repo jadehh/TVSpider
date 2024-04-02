@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './sp360.js';
+import {__jsEvalReturn} from './haiwaikan.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'sp360';
+    let siteKey = 'haiwaikan';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
@@ -58,9 +58,7 @@ async function test() {
         }
     });
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("PkPmasHbYo3uED+4"))
-    await testPlay(detail1)
+
 
 
     let classes = JSON.parse(await spider.home(true));
@@ -75,9 +73,12 @@ async function test() {
 
 
     //测试分类列表
-    let catePage = JSON.parse(await spider.category("riman", "1", undefined, {"4":"hits"}));
+    let catePage = JSON.parse(await spider.category("21", "1", undefined, {}));
     console.debug(JSON.stringify(catePage));
 
+        // 测试详情
+    let detail1 = JSON.parse(await spider.detail("97207"))
+    await testPlay(detail1)
 
     // 测试搜索
     let search_page = JSON.parse(await spider.search("海贼王"))

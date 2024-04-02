@@ -24,12 +24,24 @@ class FeiFan18Spider extends VodSpider {
     getName() {
         return "🔞┃非凡资源18+┃🔞"
     }
+
     getJSName() {
         return "feifan18"
     }
 
     getType() {
         return 3
+    }
+
+    async spiderInit(inReq) {
+        await super.spiderInit(inReq);
+    }
+
+
+    async init(cfg) {
+        await super.init(cfg);
+        await this.spiderInit(null)
+
     }
 
 }
@@ -80,4 +92,5 @@ export function __jsEvalReturn() {
         proxy: proxy
     };
 }
+
 export {spider}

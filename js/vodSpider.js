@@ -19,6 +19,19 @@ class VodSpider extends Spider {
         this.type_id_18 = 34
     }
 
+    async spiderInit(inReq) {
+        if (inReq !== null) {
+            this.detailProxy = await js2Proxy(inReq, "detail", this.getHeader());
+        } else {
+            this.detailProxy = await js2Proxy(true, this.siteType, this.siteKey, 'detail/', this.getHeader());
+        }
+    }
+
+    async init(cfg) {
+        await super.init(cfg);
+        await this.spiderInit(null)
+    }
+
     async parseVodShortListFromJson(obj, isSearch = false) {
         let vod_list = []
         let vodShort;
@@ -42,6 +55,7 @@ class VodSpider extends Spider {
         }
         return vod_list
     }
+
 
     parseVodDetail(vod_data) {
         let vodDetail = new VodDetail()
@@ -75,7 +89,7 @@ class VodSpider extends Spider {
         let content = await this.fetch(this.siteUrl + "/api.php/provide/vod/from", {"ac": "list"}, this.getHeader())
         let content_json = JSON.parse(content)
         for (const class_dic of content_json["class"]) {
-            if (class_dic["type_pid"] === 0) {
+            if (class_dic["type_pid"] !== 0) {
                 this.classes.push(this.getTypeDic(class_dic["type_name"], class_dic["type_id"]))
             }
         }
@@ -105,7 +119,7 @@ class VodSpider extends Spider {
 
                 }
                 if (!this.remove18) {
-                    this.classes = [this.getTypeDic("最近更新","最近更新"),this.getTypeDic(this.type_name_18, this.type_id_18)]
+                    this.classes = [this.getTypeDic("最近更新", "最近更新"), this.getTypeDic(this.type_name_18, this.type_id_18)]
                 } else {
                     this.filterObj[type_id] = [extend_dic]
                 }
@@ -166,4 +180,5 @@ class VodSpider extends Spider {
 
 
 }
+
 export {VodSpider}
