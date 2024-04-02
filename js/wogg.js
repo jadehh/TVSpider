@@ -22,7 +22,7 @@ class WoggSpider extends Spider {
 
     async init(cfg) {
         await super.init(cfg);
-        await this.initAli(this.cfgObj["token"]);
+        await initAli(this.cfgObj["token"]);
         this.danmuStaus = true
     }
 
