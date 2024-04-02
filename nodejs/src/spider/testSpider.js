@@ -6,14 +6,14 @@
 * @Software : Samples
 * @Desc     :
 */
-import base_spider from "./video/sp360.js"
+import base_spider from "./video/haiwaikan.js"
 import {Config, JsonDB} from "node-json-db";
 function getInreq() {
-    let prefix = "/spider/video/sp360"
+    let prefix = "/spider/video/haiwaikan"
     let db = new JsonDB(new Config((process.env['NODE_PATH'] || '.') + '/db.json', true, true, '/', true));
     class Server {
         constructor() {
-            this.config = {"sp360": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"}
+            this.config = {"haiwaikan": {}, "alitoken": "6827db23e5474d02a07fd7431d3d5a5a"}
             this.db = db
             this.prefix = prefix
         }
