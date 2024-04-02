@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './ikanbot.js';
+import {__jsEvalReturn} from './wogg.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,11 +50,11 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'ikanbot';
+    let siteKey = 'wogg';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
-            "token": "302ef8e4b4d7430db6d82de284978359", "box": "CatOpen", "code": "1", "from": "justlive1", "danmu": true
+            "token": "6827db23e5474d02a07fd7431d3d5a5a", "box": "CatOpen", "code": "1", "from": "justlive1", "danmu": true
         }
     });
 
@@ -73,11 +73,11 @@ async function test() {
 
 
     //测试分类列表
-    let catePage = JSON.parse(await spider.category("/category/", "1", undefined, {}));
+    let catePage = JSON.parse(await spider.category("1", "1", undefined, {}));
     console.debug(JSON.stringify(catePage));
 
         // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/play/847213"))
+    let detail1 = JSON.parse(await spider.detail("/index.php/voddetail/83371.html"))
     await testPlay(detail1)
 
     // 测试搜索
