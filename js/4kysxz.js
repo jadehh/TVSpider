@@ -4,7 +4,7 @@
 * @Date     : 2024/1/24 16:47
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     : 4k高清网 已失效
+* @Desc     : 4k高清网 (已失效)
 */
 import {_} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"

@@ -4,7 +4,7 @@
 * @Date     : 2024/1/18 13:20
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     :
+* @Desc     : 猫狸盘搜
 */
 
 import {_, load} from "../lib/cat.js";

@@ -4,7 +4,7 @@
 * @Date     : 2024/3/1 13:26
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     :
+* @Desc     : 磁力多
 */
 
 import {_, load} from '../lib/cat.js';

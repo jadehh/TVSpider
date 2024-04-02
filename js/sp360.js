@@ -4,7 +4,7 @@
 * @Date     : 2024/3/21 11:18
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     :
+* @Desc     : SP360(需要用到解析)
 */
 import {Spider} from "./spider.js";
 import {_, Crypto, load} from "../lib/cat.js";

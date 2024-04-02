@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './haiwaikan.js';
+import {__jsEvalReturn} from './ikanbot.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'haiwaikan';
+    let siteKey = 'ikanbot';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
@@ -73,11 +73,11 @@ async function test() {
 
 
     //测试分类列表
-    let catePage = JSON.parse(await spider.category("21", "1", undefined, {}));
+    let catePage = JSON.parse(await spider.category("/category/", "1", undefined, {}));
     console.debug(JSON.stringify(catePage));
 
         // 测试详情
-    let detail1 = JSON.parse(await spider.detail("97207"))
+    let detail1 = JSON.parse(await spider.detail("/play/847213"))
     await testPlay(detail1)
 
     // 测试搜索

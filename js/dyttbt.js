@@ -4,7 +4,7 @@
 * @Date     : 2024/1/19 10:26
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     : 电影天堂
+* @Desc     : 电影天堂(已失效)
 */
 import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"

@@ -4,7 +4,7 @@
 * @Date     : 2024/1/31 15:56
 * @Email    : jadehh@1ive.com
 * @Software : Samples
-* @Desc     :
+* @Desc     : 音乐之声
 */
 import {Spider} from "./spider.js";
 import {BookShort} from "../lib/book.js";

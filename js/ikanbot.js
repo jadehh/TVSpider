@@ -68,6 +68,7 @@ class IKanBotSpider extends Spider {
     getAppName() {
         return "爱看机器人"
     }
+
     getJSName() {
         return "ikanbot"
     }
@@ -76,10 +77,10 @@ class IKanBotSpider extends Spider {
         return 3
     }
 
-    async spiderInit(inReq=null) {
-        if (inReq !== null){
-            this.jsBase = await js2Proxy(inReq,"img",this.getHeader());
-        }else{
+    async spiderInit(inReq = null) {
+        if (inReq !== null) {
+            this.jsBase = await js2Proxy(inReq, "img", this.getHeader());
+        } else {
             this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getHeader());
         }
 
@@ -104,14 +105,22 @@ class IKanBotSpider extends Spider {
         return vod_list
     }
 
+    getChildren(detail, index) {
+        try {
+            return detail[index].children[0].data;
+        } catch (e) {
+            return ""
+        }
+    }
+
     async parseVodDetailFromDoc($) {
         const detail = $('div.detail > .meta');
         let vodDetail = new VodDetail();
         vodDetail.vod_pic = this.jsBase + Utils.base64Encode($('div.item-root > img')[0].attribs['data-src'])
-        vodDetail.vod_name = detail[0].children[0].data;
-        vodDetail.vod_year = detail[2].children[0].data;
-        vodDetail.vod_area = detail[3].children[0].data;
-        vodDetail.vod_actor = detail[4].children[0].data;
+        vodDetail.vod_name = this.getChildren(detail, 0)
+        vodDetail.vod_year = this.getChildren(detail, 1)
+        vodDetail.vod_area = this.getChildren(detail, 3);
+        vodDetail.vod_actor = this.getChildren(detail, 4);
 
         let id = Utils.getStrByRegex(/<input type="hidden" id="current_id" value="(.*?)"/, $.html())
         let token = Utils.getStrByRegex(/<input type="hidden" id="e_token" value="(.*?)"/, $.html())
@@ -306,4 +315,5 @@ export function __jsEvalReturn() {
         search: search,
     };
 }
+
 export {spider}
