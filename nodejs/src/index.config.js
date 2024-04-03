@@ -2,6 +2,8 @@ export default {
 
     alitoken:"6827db23e5474d02a07fd7431d3d5a5a",
 
+    bilicookie:"",
+
     ffm3u8: {
 
         url: 'https://cj.ffzyapi.com/api.php/provide/vod/from/ffm3u8/',
