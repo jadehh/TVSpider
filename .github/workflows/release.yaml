@@ -1,8 +1,6 @@
 name: Spider
 on:
-  push:
-    tags:
-      - V[0-9]+.*
+  workflow_dispatch:
 jobs:
   build:
     name: TVSpider
@@ -64,7 +62,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GH_PAT }}
-          repository: jadehh/TVSpider
+          repository: ${{ secrets.GitHubPath }}
           directory: .
           branch: js
           force: true
@@ -76,7 +74,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GT_TOKEN }}
-          repository: jadehh_743/TVSpider
+          repository: ${{ secrets.GiteePath }}
           directory: .
           branch: js
           force: true
@@ -115,7 +113,7 @@ jobs:
       - name: 上传Github分支
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GH_PAT }}
+          github_token: ${{ secrets.GitHubPath }}
           repository: jadehh/TVSpider
           directory: .
           branch: dist
@@ -128,7 +126,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GT_TOKEN }}
-          repository: jadehh_743/TVSpider
+          repository: ${{ secrets.GiteePath }}
           directory: .
           branch: dist
           force: true
@@ -174,7 +172,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GH_PAT }}
-          repository: jadehh/TVSpider
+          repository: ${{ secrets.GitHubPath }}
           directory: .
           branch: 18_dist
           force: true
@@ -186,7 +184,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GT_TOKEN }}
-          repository: jadehh_743/TVSpider
+          repository: ${{ secrets.GiteePath }}
           directory: .
           branch: 18_dist
           force: true
