@@ -11,6 +11,7 @@ import {Spider} from "../../../js/spider.js";
 import {JadeLogging} from "../util/log.js";
 import {_,} from "../../../lib/cat.js"
 import {VodDetail} from "../../../lib/vod.js";
+import * as wasi from "wasi";
 
 
 class NodeJSSpider extends Spider {
@@ -185,7 +186,7 @@ class NodeJSSpider extends Spider {
                         }
                         await this.jadeLog.debug(`嗅探成功,播放连接为:${sniffer.url}`)
                         return_result = JSON.stringify({parse: 0, url: sniffer.url, header: hds, "jx": "0"});
-                    }else{
+                    } else {
                         await this.jadeLog.error("解析失败,无法嗅探到播放连接")
                         return_result = JSON.stringify({parse: 0, url: "", "jx": "0"});
                     }
@@ -225,13 +226,20 @@ class NodeJSSpider extends Spider {
             const headers = JSON.parse(inReq.params.ids);
             const purl = decodeURIComponent(inReq.params.end);
             let resp = JSON.parse(await this.setProxy([what, purl], headers))
-            if (resp.code === 200) {
+            if (what === "dash") {
+                await this.jadeLog.debug(`dash:${JSON.stringify(resp)}`)
                 outResp.code(resp.code).headers(resp.headers);
-                return Buffer.from(resp.content, 'base64')
+                return resp.content
             } else {
-                outResp.code(500)
-                return ""
+                if (resp.code === 200) {
+                    outResp.code(resp.code).headers(resp.headers);
+                    return Buffer.from(resp.content, 'base64')
+                } else {
+                    outResp.code(500)
+                    return ""
+                }
             }
+
         } catch (e) {
             await this.jadeLog.error(`代理回调失败,失败原因为:${e}`)
         }
