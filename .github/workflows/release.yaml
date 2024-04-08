@@ -15,16 +15,12 @@ jobs:
         with:
           repository: jadehh/TVSpider
           fetch-depth: 0
-          token: ${{ secrets.GH_PAT }}
       - name: 下载代码
         uses: actions/checkout@v3
         with:
           repository: jadehh/TVSpider
           path: code
           fetch-depth: 0  # 显示所有提交的日志
-          token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
-
-
       - name: TV Config文件生成
         run: |
           cd code
