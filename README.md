@@ -9,6 +9,7 @@
 本管理者保留随时更改或补充此免责声明的权利。一旦使用、复制、转载、发布、修改了本文内容，则视为您已接受此免责声明。否则后果自负。
 本接口无公众号、无盈利、无引流、免费分享给小白使用，请勿轻信他人，谨防上当受骗。
 
+[Wiki](https://github.com/jadehh/TVSpider/wiki)
 
 ## TVBox互联网发布地址
 [TV发布地址](https://github.com/FongMi/Release/tree/main/apk/release)
