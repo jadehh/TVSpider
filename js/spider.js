@@ -32,6 +32,8 @@ class Result {
         this.pagecount = 0
         this.limit = 0;
         this.total = 0;
+        this.extra = {}
+
     }
 
     get() {
@@ -71,6 +73,7 @@ class Result {
                 "format": this.format,
                 "subs": this.subs,
                 "danmaku": this.danmaku,
+                "extra":this.extra,
                 "jx": this.jx
             })
         } else {
@@ -80,6 +83,7 @@ class Result {
                 "header": this.header,
                 "format": this.format,
                 "subs": this.subs,
+                "extra":this.extra,
                 "jx": this.jx
             })
         }

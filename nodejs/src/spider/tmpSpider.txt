@@ -28,12 +28,12 @@ class tempSpider extends NodeJSSpider {
 
     async init(inReq, _outResp) {
         dataBase = inReq.server.db
-        await spider.spiderInit(inReq)
         if (this.getAppName().indexOf("阿里") > -1 || this.getAppName() === "push_agent") {
             await spider.initAli(inReq.server.config["alitoken"])
         }else if (this.getAppName() ===  "哔哩哔哩"){
             await spider.initCookie(inReq.server.config["bilicookie"])
         }
+        await spider.spiderInit(inReq)
         spider.classes.push({"type_name": "最近更新", "type_id": "最近更新"})
         await super.init(inReq, _outResp)
     }
