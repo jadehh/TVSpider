@@ -35,6 +35,7 @@ class tempSpider extends NodeJSSpider {
         }
         await spider.spiderInit(inReq)
         spider.cfgObj["code"] = 0
+        spider.catOpenStatus = true
         spider.classes.push({"type_name": "最近更新", "type_id": "最近更新"})
         await super.init(inReq, _outResp)
     }
