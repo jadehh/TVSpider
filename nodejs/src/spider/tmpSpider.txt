@@ -34,6 +34,7 @@ class tempSpider extends NodeJSSpider {
             await spider.initCookie(inReq.server.config["bilicookie"])
         }
         await spider.spiderInit(inReq)
+        spider.cfgObj["code"] = 0
         spider.classes.push({"type_name": "最近更新", "type_id": "最近更新"})
         await super.init(inReq, _outResp)
     }

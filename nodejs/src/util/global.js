@@ -12,19 +12,18 @@ import qs from "qs";
 import axios, {toFormData} from "axios";
 import https from "https";
 import crypto from "crypto";
+import tunnel from "tunnel";
 
 let confs = {};
 globalThis.dataBase = null
 
 globalThis.local = {
     get: async function (storage, key) {
-        return  await localGet(storage, key);
+        return await localGet(storage, key);
     }, set: async function (storage, key, val) {
         await localSet(storage, key, val);
     },
 };
-
-
 
 
 async function localGet(storage, key) {
@@ -60,7 +59,7 @@ function initLocalLogStorage() {
 }
 
 function localLogSet(value) {
-    fs.writeFileSync('log/info.log', initLocalLogStorage() + "\n" +value );
+    fs.writeFileSync('log/info.log', initLocalLogStorage() + "\n" + value);
 }
 
 globalThis.req = request;
@@ -72,6 +71,7 @@ async function request(url, opt) {
         let returnBuffer = opt ? opt.buffer || 0 : 0;
         let timeout = opt ? opt.timeout || 5000 : 5000;
         let redirect = (opt ? opt.redirect || 1 : 1) === 1;
+        let proxy = opt.proxy ?? false;
 
         let headers = opt ? opt.headers || {} : {};
         if (postType === 'form') {
@@ -85,12 +85,18 @@ async function request(url, opt) {
             data = toFormData(data);
         }
         let respType = returnBuffer === 1 || returnBuffer === 2 ? 'arraybuffer' : undefined;
-        // const agent = tunnel.httpsOverHttp({
-        //     proxy: {
-        //         host: '127.0.0.1', port: 7890,
-        //     }
-        // });
-
+        let agent;
+        if (proxy) {
+            agent = tunnel.httpsOverHttp({
+                proxy: {
+                    host: '127.0.0.1', port: "7890",
+                }
+            });
+        } else {
+            agent = https.Agent({
+                rejectUnauthorized: false,
+            })
+        }
         let resp = await axios(url, {
             responseType: respType,
             method: opt ? opt.method || 'get' : 'get',
@@ -98,9 +104,7 @@ async function request(url, opt) {
             data: data,
             timeout: timeout,
             maxRedirects: !redirect ? 0 : null,
-            httpsAgent: https.Agent({
-                rejectUnauthorized: false,
-            }), // httpsAgent: agent,
+            httpsAgent: agent
 
         });
         data = resp.data;
@@ -147,9 +151,11 @@ async function request(url, opt) {
 
 
 globalThis.md5X = md5;
+
 function md5(text) {
     return crypto.createHash('md5').update(Buffer.from(text, 'utf8')).digest('hex');
 }
+
 let charStr = 'abacdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789';
 
 function randStr(len, withNum) {
@@ -161,7 +167,8 @@ function randStr(len, withNum) {
     }
     return _str;
 }
-globalThis.js2Proxy = function (inReq,url,headers) {
-    let hd = Object.keys(headers).length === 0 ? '_' : encodeURIComponent(JSON.stringify(headers));
+
+globalThis.js2Proxy = function (inReq, url, headers) {
+    let hd = Object.keys(headers).length === 0 ? ' ' : encodeURIComponent(JSON.stringify(headers));
     return inReq.server.address().dynamic + inReq.server.prefix + "/proxy/" + encodeURIComponent(url) + "/" + hd + '/'
 };
