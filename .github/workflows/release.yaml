@@ -91,8 +91,8 @@ jobs:
           git config --global user.email "jadehh@live.com"
           git config --global user.name "jade"
           checkname=$(git rev-list --max-parents=0 HEAD)
-          git checkout  $checkname -b dist  ##分支不存在用这个
-          # git checkout dist  ## 分支已存在用这个
+          #git checkout  $checkname -b dist  ##分支不存在用这个
+          git checkout dist  ## 分支已存在用这个
           cp -r code/nodejs/dist/* ./
           cp -r code/nodejs/readme.md ./README.md
           git add index.config.js
@@ -149,8 +149,8 @@ jobs:
           git config --global user.email "jadehh@live.com"
           git config --global user.name "jade"
           checkname=$(git rev-list --max-parents=0 HEAD)
-          git checkout  $checkname -b 18_dist  ##分支不存在用这个
-          # git checkout 18_dist  ## 分支已存在用这个
+          #git checkout  $checkname -b 18_dist  ##分支不存在用这个
+          git checkout 18_dist  ## 分支已存在用这个
           cp -r code/nodejs/dist/* ./
           cp -r code/nodejs/readme.md ./README.md
           git add index.config.js
