@@ -54,17 +54,6 @@ jobs:
           commit_msg="* 更新TVConfig和OpenConfig"
           git commit -a -m "$commit_msg"
 
-      - name: Config上传Github分支
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          repository: ${{ secrets.GitHubPath }}
-          directory: .
-          branch: js
-          force: true
-          tags: true
-        env:
-          GITHUB_ACTOR: jadehh
 
       - name: Config上传Gitee分支
         uses: ad-m/github-push-action@master
@@ -106,18 +95,7 @@ jobs:
       - name: 查看分支
         run: |
           ls -l
-      - name: 上传Github分支
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          repository: ${{ secrets.GitHubPath }}
-          directory: .
-          branch: dist
-          force: true
-          tags: true
-        env:
-          GITHUB_ACTOR: jadehh
-
+      
       - name: 上传Gitee分支
         uses: ad-m/github-push-action@master
         with:
@@ -164,18 +142,6 @@ jobs:
       - name: 18+查看分支
         run: |
           ls -l
-      - name: 18+上传Github分支
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          repository: ${{ secrets.GitHubPath }}
-          directory: .
-          branch: 18_dist
-          force: true
-          tags: true
-        env:
-          GITHUB_ACTOR: jadehh
-
       - name: 18+上传Gitee分支
         uses: ad-m/github-push-action@master
         with:
