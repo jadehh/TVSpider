@@ -223,7 +223,11 @@ class NodeJSSpider extends Spider {
     async proxy(inReq, outResp) {
         try {
             const what = inReq.params.what;
-            const headers = JSON.parse(inReq.params.ids);
+            let headers = {}
+            try {
+              headers = JSON.parse(inReq.params.ids);
+            }catch (e) {
+            }
             const purl = decodeURIComponent(inReq.params.end);
             let resp = JSON.parse(await this.setProxy([what, purl], headers))
             if (what === "dash") {

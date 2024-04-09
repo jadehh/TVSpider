@@ -25,7 +25,7 @@ jobs:
         run: |
           cd code
           pip install https://github.com/jadehh/pythonTools/releases/download/JadeV2.1.7/jade-2.1.7-py3-none-any.whl
-          python build.py --aliToken "${{ secrets.Ali_TOKEN }}"
+          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" 
 
 
       - name: 上传Config
@@ -54,18 +54,6 @@ jobs:
           commit_msg="* 更新TVConfig和OpenConfig"
           git commit -a -m "$commit_msg"
 
-      - name: Config上传Github分支
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          repository: ${{ secrets.GitHubPath }}
-          directory: .
-          branch: js
-          force: true
-          tags: true
-        env:
-          GITHUB_ACTOR: jadehh
-
       - name: Config上传Gitee分支
         uses: ad-m/github-push-action@master
         with:
@@ -79,10 +67,25 @@ jobs:
         env:
           GITHUB_ACTOR: jadehh
 
+
+      - name: Config上传Github分支
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          repository: ${{ secrets.GithubPath }}
+          directory: .
+          branch: js
+          force: true
+          tags: true
+        env:
+          GITHUB_ACTOR: jadehh
+
+
       - name: 发布版本
         run: |
           cd code/nodejs
           npm install qs --save
+          npm install tunnel  --save
           npm install 
           npm run build
 
