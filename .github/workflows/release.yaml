@@ -33,8 +33,8 @@ jobs:
           git config --global user.email "jadehh@live.com"
           git config --global user.name "jade"
           checkname=$(git rev-list --max-parents=0 HEAD)
-          git checkout  $checkname -b js  ##分支不存在用这个
-          # git checkout dist  ## 分支已存在用这个
+          # git checkout  $checkname -b js  ##分支不存在用这个
+           git checkout dist  ## 分支已存在用这个
           cp -r code/18_open_config.json ./
           cp -r code/18_tv_config.json ./
           cp -r code/open_config.json ./
