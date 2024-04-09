@@ -85,6 +85,7 @@ jobs:
         run: |
           cd code/nodejs
           npm install qs --save
+          npm install tunnel  --save
           npm install 
           npm run build
 
