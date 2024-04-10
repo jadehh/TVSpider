@@ -71,7 +71,7 @@ async function request(url, opt) {
         let returnBuffer = opt ? opt.buffer || 0 : 0;
         let timeout = opt ? opt.timeout || 5000 : 5000;
         let redirect = (opt ? opt.redirect || 1 : 1) === 1;
-        let proxy = opt.proxy ?? false;
+        let vpn_proxy = opt.proxy ?? false;
 
         let headers = opt ? opt.headers || {} : {};
         if (postType === 'form') {
@@ -86,10 +86,10 @@ async function request(url, opt) {
         }
         let respType = returnBuffer === 1 || returnBuffer === 2 ? 'arraybuffer' : undefined;
         let agent;
-        if (proxy) {
+        if (vpn_proxy) {
             agent = tunnel.httpsOverHttp({
                 proxy: {
-                    host: '127.0.0.1', port: "7890",
+                    host: '127.0.0.1',port:7890,
                 }
             });
         } else {
