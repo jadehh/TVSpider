@@ -695,12 +695,12 @@ class Spider {
 
     async getImg(url, headers) {
         let resp;
-        let use_proxy = false // 使用代理不需要加headers
+        let vpn_proxy = false // 使用代理不需要加headers
         if (_.isEmpty(headers)) {
             headers = {Referer: url, 'User-Agent': Utils.CHROME}
-            use_proxy = true
+            vpn_proxy = true
         }
-        resp = await req(url, {buffer: 2, headers: headers,proxy:use_proxy});
+        resp = await req(url, {buffer: 2, headers: headers,proxy:vpn_proxy});
         try {
             Utils.base64Decode(resp.content)
             await this.jadeLog.error(`图片代理获取失败,重连失败`, true)
