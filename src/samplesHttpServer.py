@@ -21,7 +21,7 @@ class upload(RequestHandler):
             log_str = json.loads(str(self.request.body,encoding="utf-8"))["log"]
             CreateSavePath("UploadLog")
             with open("UploadLog/info.log","ab") as f:
-                f.write((log_str + "\n").encode("utf-8"))
+                f.write((log_str).encode("utf-8"))
                 self.set_status(200)
                 self.write({"status":200,"data":"日志文件写入完成"})
         except Exception as e:
