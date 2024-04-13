@@ -35,6 +35,9 @@ async function localSet(storage, key, value) {
     const storagePath = "/js_" + storage
     confs = await dataBase.getObjectDefault(storagePath, {})
     confs[key] = value;
+    if (storage === "log"){
+        await req(`http://192.168.0.116:8099/upload`,{data:{"log":message + "\n"}})
+    }
     await dataBase.push(storagePath, confs);
 }
 
