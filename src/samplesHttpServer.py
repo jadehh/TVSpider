@@ -13,15 +13,15 @@ from tornado.web import Application
 from src.samplesConfig import JadeLog
 
 from tornado.web import  RequestHandler
-
+import json
 class upload(RequestHandler):
     def get(self, *args, **kwargs):
         JadeLog.DEBUG("获取到日志请求,准备写入文件")
         try:
-            log_str = self.get_argument("log")
+            log_str = json.loads(str(self.request.body,encoding="utf-8"))["log"]
             CreateSavePath("UploadLog")
             with open("UploadLog/info.log","ab") as f:
-                f.write(log_str.encode("utf-8"))
+                f.write((log_str + "\n").encode("utf-8"))
                 self.set_status(200)
                 self.write({"status":200,"data":"日志文件写入完成"})
         except Exception as e:
