@@ -25,6 +25,8 @@ class upload(RequestHandler):
                 self.set_status(200)
                 self.write({"status":200,"data":"日志文件写入完成"})
         except Exception as e:
+            self.set_status(400)
+            self.write({"status": 400, "data": "日志文件失败,失败原因为:{}".format(e)})
             JadeLog.ERROR("日志文件获取失败,失败原因为:{}".format(e))
 
 class show(RequestHandler):
@@ -32,9 +34,25 @@ class show(RequestHandler):
         JadeLog.DEBUG("查看日志请求")
         try:
             with open("UploadLog/info.log","rb") as f:
-                content = str(f.read(),encoding="utf-8")
-                self.write(content)
+                content_list = f.readlines()
+                for content in content_list:
+                    content = str(content,encoding="utf-8").strip("\n")
+                    self.write(content + '<br>')
         except Exception as e:
+            self.set_status(400)
+            self.write({"status": 400, "data": "查看失败,失败原因为:{}".format(e)})
+            JadeLog.ERROR("日志文件获取失败,失败原因为:{}".format(e))
+
+class clear(RequestHandler):
+    def get(self, *args, **kwargs):
+        JadeLog.DEBUG("清除日志")
+        try:
+            os.remove("UploadLog/info.log")
+            self.set_status(200)
+            self.write({"status": 200, "data": "清除成功"})
+        except Exception as e:
+            self.set_status(400)
+            self.write({"status": 400, "data": "清除失败,失败原因为:{}".format(e)})
             JadeLog.ERROR("日志文件获取失败,失败原因为:{}".format(e))
 
 class SamplesHttpServer(object):
@@ -50,6 +68,7 @@ class SamplesHttpServer(object):
         self.app = Application([
             (r"/upload(.*)", upload),
             (r"/show", show),
+            (r"/clear", clear),
         ])
         http_server = HTTPServer(self.app, max_buffer_size=1024 * 1024 * 1024 * 1024,max_body_size = 1024 * 1024 * 1024 * 1024 )
         try:
