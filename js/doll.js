@@ -17,12 +17,17 @@ class Doll extends Spider {
         super();
         this.siteUrl = "https://hongkongdollvideo.com"
     }
+    getImgHeader(){
+        let headers = this.getHeader()
+        headers["Proxy"] = true
+        return headers
+    }
 
     async spiderInit(inReq = null) {
         if (inReq !== null) {
-            this.jsBase = await js2Proxy(inReq, "img", {});
+            this.jsBase = await js2Proxy(inReq, "img", this.getImgHeader());
         } else {
-            this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
+            this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getImgHeader());
         }
     }
 

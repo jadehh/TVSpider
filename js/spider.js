@@ -695,22 +695,25 @@ class Spider {
 
     async getImg(url, headers) {
         let resp;
-        let vpn_proxy = false // 使用代理不需要加headers
+        let vpn_proxy = headers["Proxy"] // 使用代理不需要加headers
         if (_.isEmpty(headers)) {
             headers = {Referer: url, 'User-Agent': Utils.CHROME}
-            vpn_proxy = true
         }
         resp = await req(url, {buffer: 2, headers: headers,proxy:vpn_proxy});
         try {
             //二进制文件是不能使用Base64编码格式的
             Utils.base64Decode(resp.content)
             if (vpn_proxy){
-                await this.jadeLog.error(`VPN代理,图片代理失败,输出内容为:${ Utils.base64Decode(resp.content)}`)
+                await this.jadeLog.error(`使用VPN代理,图片地址为:${url},代理失败,准备重连,输出内容为:${JSON.stringify(resp)}`)
             }else {
-                await this.jadeLog.error(`普通代理,图片代理获取失败,重连失败,输出内容为:${Utils.base64Decode(resp.content)}`)
+                await this.jadeLog.error(`使用普通代理,图片地址为:${url},代理失败,准备重连,输出内容为:${JSON.stringify(resp)}`)
             }
-            this.reconnectTimes = 0
-            return {"code": 500, "headers": headers, "content": "加载失败"}
+            if (this.reconnectTimes < this.maxReconnectTimes){
+                this.reconnectTimes = this.reconnectTimes + 1
+                return await this.getImg(url,headers)
+            }else{
+                return {"code": 500, "headers": headers, "content": "加载失败"}
+            }
         } catch (e) {
             await this.jadeLog.debug("图片代理成功", true)
             this.reconnectTimes = 0

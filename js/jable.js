@@ -21,12 +21,20 @@ class JableTVSpider extends Spider {
 
     async spiderInit(inReq = null) {
         if (inReq !== null) {
-            this.jsBase = await js2Proxy(inReq, "img", {});
+            this.jsBase = await js2Proxy(inReq, "img", this.getImgHeaders());
         } else {
-            this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', {});
+            this.jsBase = await js2Proxy(true, this.siteType, this.siteKey, 'img/', this.getImgHeaders());
         }
     }
 
+    getImgHeaders(){
+        return {
+            "User-Agent": "PostmanRuntime/7.37.3",
+            "Postman-Token": "c2602692-1a05-4bb0-93cd-270afad97e87",
+            "Host": "assets-cdn.jable.tv",
+            "Proxy": true
+        }
+    }
 
     async init(cfg) {
         await super.init(cfg);
@@ -54,7 +62,7 @@ class JableTVSpider extends Spider {
         let header = {}
         header["User-Agent"] = "PostmanRuntime/7.36.3"
         header["Host"] = "jable.tv"
-        // header["Postman-Token"] = "33290483-3c8d-413f-a160-0d3aea9e6f95"
+        header["Postman-Token"] = "33290483-3c8d-413f-a160-0d3aea9e6f95"
         return header
     }
 
