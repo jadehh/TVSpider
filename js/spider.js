@@ -704,9 +704,9 @@ class Spider {
             //二进制文件是不能使用Base64编码格式的
             Utils.base64Decode(resp.content)
             if (vpn_proxy){
-                await this.jadeLog.error(`使用VPN代理,图片地址为:${url},代理失败,准备重连,输出内容为:${JSON.stringify(resp)}`)
+                await this.jadeLog.error(`使用VPN代理,图片地址为:${url},headers:${JSON.stringify(headers)},代理失败,准备重连,输出内容为:${JSON.stringify(resp)}`)
             }else {
-                await this.jadeLog.error(`使用普通代理,图片地址为:${url},代理失败,准备重连,输出内容为:${JSON.stringify(resp)}`)
+                await this.jadeLog.error(`使用普通代理,图片地址为:${url},headers:${JSON.stringify(headers)},代理失败,准备重连,输出内容为:${JSON.stringify(resp)}`)
             }
             if (this.reconnectTimes < this.maxReconnectTimes){
                 this.reconnectTimes = this.reconnectTimes + 1

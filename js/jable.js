@@ -177,11 +177,12 @@ class JableTVSpider extends Spider {
             let vodShort = new VodShort()
             let vod_pic = $(element).find("img").attr("data-src")
             if (vod_pic !== undefined) {
-                if (this.catOpenStatus) {
-                    vodShort.vod_pic = this.jsBase + Utils.base64Encode(vod_pic)
-                } else {
-                    vodShort.vod_pic = vod_pic
-                }
+                vodShort.vod_pic = vod_pic
+                // if (this.catOpenStatus) {
+                //     vodShort.vod_pic = this.jsBase + Utils.base64Encode(vod_pic)
+                // } else {
+                //     vodShort.vod_pic = vod_pic
+                // }
                 let url = $(element).find("a").attr("href");
                 vodShort.vod_id = url.split("/")[4];
                 vodShort.vod_name = url.split("/")[4];
@@ -205,11 +206,12 @@ class JableTVSpider extends Spider {
         let leftElement = $("[class=\"header-left\"]")
         vodDetail.vod_name = $($(leftElement).find("h4")).text();
         let vod_pic = Utils.getStrByRegex(/<video poster="(.*?)" id=/, $.html())
-        if (this.catOpenStatus) {
-            vodDetail.vod_pic = this.jsBase + Utils.base64Encode(vod_pic)
-        } else {
-            vodDetail.vod_pic = vod_pic
-        }
+        vodDetail.vod_pic = vod_pic
+        // if (this.catOpenStatus) {
+        //     vodDetail.vod_pic = this.jsBase + Utils.base64Encode(vod_pic)
+        // } else {
+        //     vodDetail.vod_pic = vod_pic
+        // }
         vodDetail.vod_year = $($("[class=\"inactive-color\"]")).text()
         let episodeName = $($("[class=\"header-right d-none d-md-block\"] > h6")).text().replaceAll("\n", "").replaceAll("●", "")
         let vodItems = []
