@@ -702,8 +702,13 @@ class Spider {
         }
         resp = await req(url, {buffer: 2, headers: headers,proxy:vpn_proxy});
         try {
+            //二进制文件是不能使用Base64编码格式的
             Utils.base64Decode(resp.content)
-            await this.jadeLog.error(`图片代理获取失败,重连失败`, true)
+            if (vpn_proxy){
+                await this.jadeLog.error(`VPN代理,图片代理失败,输出内容为:${ Utils.base64Decode(resp.content)}`)
+            }else {
+                await this.jadeLog.error(`普通代理,图片代理获取失败,重连失败,输出内容为:${Utils.base64Decode(resp.content)}`)
+            }
             this.reconnectTimes = 0
             return {"code": 500, "headers": headers, "content": "加载失败"}
         } catch (e) {
