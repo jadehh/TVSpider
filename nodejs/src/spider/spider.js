@@ -172,7 +172,7 @@ class NodeJSSpider extends Spider {
                 if (this.result.jx === 1 && this.playUrl.indexOf(".m3u8") < 0) {
                     const sniffer = await inReq.server.messageToDart({
                         action: 'sniff', opt: {
-                            url: id, timeout: 10000, rule: 'http((?!http).){12,}?\\.m3u8(?!\\?)',
+                            url: id, timeout: 60000, rule: 'http((?!http).){12,}?\\.m3u8?',
                         },
                     });
                     if (sniffer && sniffer.url) {
@@ -186,7 +186,7 @@ class NodeJSSpider extends Spider {
                             }
                         }
                         await this.jadeLog.debug(`嗅探成功,播放连接为:${sniffer.url}`)
-                        return_result = JSON.stringify({parse: 0, url: sniffer.url, header: hds, "jx": "0"});
+                        return_result = JSON.stringify({parse: 0, url: sniffer.url, header: sniffer.headers, "jx": "0"});
                     } else {
                         await this.jadeLog.error("解析失败,无法嗅探到播放连接")
                         return_result = JSON.stringify({parse: 0, url: "", "jx": "0"});

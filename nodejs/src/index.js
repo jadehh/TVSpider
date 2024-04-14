@@ -1,11 +1,13 @@
 import fastify from 'fastify';
 import router from './router.js';
-import { JsonDB, Config } from 'node-json-db';
+import {JsonDB, Config} from 'node-json-db';
 import axios from 'axios';
 import {JadeLogging} from "./util/log.js";
+import * as repl from "repl";
 
 let server = null;
-let JadeLog = new JadeLogging("服务管理","DEBUG")
+let JadeLog = new JadeLogging("服务管理", "DEBUG")
+
 /**
  * Start the server with the given configuration.
  *
@@ -37,9 +39,20 @@ export async function start(config) {
             if (port == 0) {
                 return null;
             }
-            await JadeLog.debug(`数据:${JSON.stringify(data)},端口号为:${port}`)
-            const resp = await axios.post(`http://127.0.0.1:${port}/msg`, data);
-            return resp.data;
+            let sniffUrlList = ["https://jx.xmflv.com/?url=", "https://jx.quankan.app/?url=","https://jx.yparse.com/index.php?url="]
+            for (const sniffUrl of sniffUrlList) {
+                data["opt"]["url"] = sniffUrl + data["opt"]["url"]
+                data["opt"]["timeout"] = Math.floor(parseInt(data["opt"]["timeout"]) / sniffUrlList.length)
+                await JadeLog.debug(`嗅探,请求URL为:${`http://127.0.0.1:${port}/msg`},传参:${JSON.stringify(data)}`)
+                const resp = await axios.post(`http://127.0.0.1:${port}/msg`, data);
+                if (resp.data === "sniff timeout") {
+                    await JadeLog.debug(`嗅探失败,返回结果为:${JSON.stringify(resp.data)},继续嗅探`)
+                    continue
+                }
+                await JadeLog.debug(`嗅探成功,返回结果为:${JSON.stringify(resp.data)},headers:${JSON.stringify(resp.headers)}`)
+                return resp.data;
+            }
+
         } catch (error) {
             return null;
         }
@@ -61,7 +74,7 @@ export async function start(config) {
     server.db = new JsonDB(new Config((process.env['NODE_PATH'] || '.') + '/db.json', true, true, '/', true));
     server.register(router);
     // 注意 一定要监听ipv4地址 build后 app中使用时 端口使用0让系统自动分配可用端口
-    server.listen({ port: process.env['DEV_HTTP_PORT'] || 0, host: '127.0.0.1' });
+    server.listen({port: process.env['DEV_HTTP_PORT'] || 0, host: '127.0.0.1'});
 }
 
 /**
