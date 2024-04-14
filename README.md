@@ -58,6 +58,7 @@ python build.py --aliToken aliToken
 * 虎牙弹幕功能无法实现,现在并不支持WebSocket来监听弹幕
 * SP360启用嗅探解析,CatVodOpen目前还不支持嗅探
 * CatVodOpen Windows无法预览Jable和Doll图片,需要手动开启代理加载。
+* TV影视暂不不支持哔哩哔哩DASH文件播放
 
 
 ## 特别说明
