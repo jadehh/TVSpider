@@ -71,8 +71,8 @@ class BilibiliSpider extends Spider {
     }
 
     async init(cfg) {
-        await this.initCookie(cfg["ext"]["cookie"])
         await super.init(cfg);
+        await this.initCookie(this.cfgObj["cookie"])
         await this.spiderInit(null)
         this.danmuStaus = true
     }
