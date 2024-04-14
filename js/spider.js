@@ -57,7 +57,7 @@ class Result {
     }
 
     search(vod_list) {
-        return JSON.stringify({"list": vod_list})
+        return JSON.stringify({"list": vod_list,"page":this.page,"pagecount":this.pagecount,"total":this.total})
     }
 
     detail(vod_detail) {

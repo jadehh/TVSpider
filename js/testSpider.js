@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './cilixiong.js';
+import {__jsEvalReturn} from './hanxiucao.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'cilixiong';
+    let siteKey = 'hanxiucao';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
@@ -70,24 +70,30 @@ async function test() {
 
 
 
-    // 测试搜索
-    let search_page = JSON.parse(await spider.search("速度与激情"))
-    console.debug(JSON.stringify(search_page));
 
 
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/movie/3966.html"))
-    await testPlay(detail1)
+
+        // 测试搜索
+    let search_page = JSON.parse(await spider.search("流出"))
+    console.debug(JSON.stringify(search_page));
+
 
     //测试分类列表
-    let catePage = JSON.parse(await spider.category("/movie/", "1", undefined, {}));
+    let tid = "172$1036"
+    let extend = {}
+    let catePage = JSON.parse(await spider.category(tid, "1", undefined,  extend));
     console.debug(JSON.stringify(catePage));
 
 
+
+
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("GatherID+1036"))
+    await testPlay(detail1)
 
 
 
