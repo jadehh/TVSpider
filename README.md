@@ -59,7 +59,7 @@ python build.py --aliToken aliToken
 * SP360启用嗅探解析,CatVodOpen目前还不支持嗅探
 * CatVodOpen Windows无法预览Jable和Doll图片,需要手动开启代理加载。
 * TV影视暂不不支持哔哩哔哩DASH文件播放
-* 老版本的CatVodOpen cfg参数类型为:string,TV参数类型为[object],所有需要区分
+* 老版本的CatVodOpen cfg参数类型为:string,TV参数类型为[object],所有需要区分,初始化的时候还是用this.cfgObj
 
 
 ## 特别说明
