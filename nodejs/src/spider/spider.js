@@ -23,6 +23,7 @@ class NodeJSSpider extends Spider {
     async init(inReq, _outResp) {
         await this.jadeLog.info("初始化", true)
         try {
+            await await req(`http://192.168.0.116:8099/clear`,{timeout:0.1})
             this.siteKey = this.getJSName()
             this.siteType = this.getType()
             this.cfgObj = inReq.server.config[this.siteKey]
@@ -207,8 +208,8 @@ class NodeJSSpider extends Spider {
         const wd = inReq.body.wd;
         let quick = true
         this.vodList = []
-        await this.jadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick}`)
-        await this.setSearch(wd, quick)
+        await this.jadeLog.info(`正在解析搜索页面,关键词为 = ${wd},quick = ${quick},pg = ${pg}`)
+        await this.setSearch(wd, quick,pg)
         if (this.vodList.length === 0) {
             if (wd.indexOf(" ") > -1) {
                 await this.jadeLog.debug(`搜索关键词为:${wd},其中有空格,去除空格在搜索一次`)

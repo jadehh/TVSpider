@@ -72,9 +72,11 @@ class tempSpider extends NodeJSSpider {
         this.result = spider.result
     }
 
-    async setSearch(wd, quick) {
-        await spider.setSearch(wd, quick)
+    async setSearch(wd, quick,pg) {
+        await spider.setSearch(wd, quick,pg)
         this.vodList = spider.vodList
+        this.result = spider.result
+
     }
 
     async setProxy(segments, headers) {
