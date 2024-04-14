@@ -438,7 +438,7 @@ class HanXiuCaoSpider extends Spider {
             "tags": [],
             "length": 11,
             "page": parseInt(pg),
-            "typeIds": layOutObj["typeIds"],
+            "typeIds": layOutObj["classs"],
             "payType": layOutObj["payType"],
         }
         if (isOrderModel) {
