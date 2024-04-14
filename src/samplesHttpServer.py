@@ -51,7 +51,7 @@ class showInfo(RequestHandler):
                 content_list = f.readlines()
                 for content in content_list:
                     content = str(content,encoding="utf-8").strip("\n")
-                    if " - INFO: " in content:
+                    if " - INFO: " in content or " - ERROR: " in content or " - WARNING: " in content :
                         self.write(content + '<br>')
         except Exception as e:
             self.set_status(400)
