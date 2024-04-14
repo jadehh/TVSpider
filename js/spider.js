@@ -648,7 +648,7 @@ class Spider {
                 if (this.danmuStaus && !this.catOpenStatus) {
                     if (!_.isEmpty(this.danmuUrl)) {
                         await this.jadeLog.debug("播放详情页面有弹幕,所以不需要再查找弹幕")
-                        return_result = this.result.setHeader(this.header).danmu(this.danmuUrl).play(this.playUrl)
+                        return_result = this.result.danmu(this.danmuUrl).play(this.playUrl)
                     } else {
                         let danmuUrl;
                         try {
@@ -656,12 +656,12 @@ class Spider {
                         } catch (e) {
                             await this.jadeLog.error(`弹幕加载失败,失败原因为:${e}`)
                         }
-                        return_result = this.result.setHeader(this.header).danmu(danmuUrl).play(this.playUrl)
+                        return_result = this.result.danmu(danmuUrl).play(this.playUrl)
                     }
 
                 } else {
                     await this.jadeLog.debug("不需要加载弹幕", true)
-                    return_result = this.result.setHeader(this.header).play(this.playUrl)
+                    return_result = this.result.play(this.playUrl)
                 }
             }
             await this.jadeLog.info("播放页面解析完成", true)
