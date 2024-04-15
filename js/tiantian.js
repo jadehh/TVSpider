@@ -204,8 +204,8 @@ class TianTianSpider extends Spider {
     }
 
     async setSearch(wd, quick, pg) {
-        if (pg ===undefined){
-            pg = 1
+        if (pg === undefined) {
+            pg = 2
         }
         const limit = 12;
         const param = {
@@ -215,6 +215,9 @@ class TianTianSpider extends Spider {
         this.vodList = await this.parseVodShortListFromJson(resJson["data"]["list"])
         const page = parseInt(pg);
         let pageCount = page;
+        if (this.vodList.length === limit) {
+            pageCount = page + 1;
+        }
         this.result.setPage(page, pageCount, limit, pageCount)
     }
 }
