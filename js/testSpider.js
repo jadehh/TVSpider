@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './jable.js';
+import {__jsEvalReturn} from './tiantian.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,7 +50,7 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'bilibili';
+    let siteKey = 'tiantian';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
@@ -68,26 +68,39 @@ async function test() {
     console.debug(JSON.stringify(classes))
 
 
+        // 测试搜索
+    let search_page = JSON.parse(await spider.search("王牌"))
+    console.debug(JSON.stringify(search_page));
+
+
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
 
 
-    //测试分类列表
-    let catePage = JSON.parse(await spider.category("历史记录", "1", undefined, {}));
-    console.debug(JSON.stringify(catePage));
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("BV12r421t7nu"))
+    let detail1 = JSON.parse(await spider.detail("53912"))
     await testPlay(detail1)
 
 
 
 
-    // 测试搜索
-    let search_page = JSON.parse(await spider.search("海贼王"))
-    console.debug(JSON.stringify(search_page));
+    let catePage = JSON.parse(await spider.category("2", "1", undefined,  {}));
+    console.debug(JSON.stringify(catePage));
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // 测试详情
