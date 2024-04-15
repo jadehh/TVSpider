@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './sp360.js';
+import {__jsEvalReturn} from './nangua.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -69,7 +69,7 @@ async function test() {
 
 
         // 测试搜索
-    let search_page = JSON.parse(await spider.search("王"))
+    let search_page = JSON.parse(await spider.search("王牌"))
     console.debug(JSON.stringify(search_page));
 
 
