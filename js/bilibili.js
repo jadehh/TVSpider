@@ -402,12 +402,19 @@ class BilibiliSpider extends Spider {
         this.vodList = await this.parseVodShortListFromJson(items)
     }
 
-    async setSearch(wd, quick) {
+    async setSearch(wd, quick, pg) {
         const ext = {
             duration: '0',
         };
-        let resp = JSON.parse(await this.category(wd, 1, true, ext));
+        let page = parseInt(pg)
+        const limit = 20
+        let resp = JSON.parse(await this.category(wd, page, true, ext));
         this.vodList = resp["list"]
+        let pageCount = page;
+        if (this.vodList.length === limit) {
+            pageCount = page + 1;
+        }
+        this.result.setPage(page, pageCount, limit, pageCount)
     }
 
     getDashMedia(dash) {
