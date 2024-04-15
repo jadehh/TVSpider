@@ -9,7 +9,7 @@
 import {Crypto, jinja2, _} from "../lib/cat.js";
 import {Spider} from "./spider.js";
 import {VodDetail, VodShort} from "../lib/vod.js";
-
+import * as Utils from "../lib/utils.js";
 function stripHtmlTag(src) {
     return src
         .replace(/<\/?[^>]+(>|$)/g, '')
@@ -251,14 +251,15 @@ class NanGuaSpider extends Spider {
 
     async parseVodShortListFromJsonBySearch(obj) {
         let videos = [];
-        obj.forEach(function (it) {
-            videos.push({
-                vod_id: it.id,
-                vod_name: it["video_name"],
-                vod_pic: it.img,
-                vod_remarks: it["qingxidu"] + '/' + it.category,
-            });
-        });
+        for (const data of obj){
+            let vodShort = new VodShort()
+            vodShort.vod_id = data["id"]
+            vodShort.vod_name = data["video_name"]
+            vodShort.vod_remarks = data["qingxidu"]
+            vodShort.vod_pic = Utils.formatUrl(data["img"])
+            videos.push(vodShort)
+        }
+
         return videos
     }
 
