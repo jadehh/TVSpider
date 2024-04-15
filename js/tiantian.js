@@ -204,9 +204,6 @@ class TianTianSpider extends Spider {
     }
 
     async setSearch(wd, quick, pg) {
-        if (pg === undefined) {
-            pg = 2
-        }
         const limit = 12;
         const param = {
             keyword: wd, page: pg, limit: limit,
