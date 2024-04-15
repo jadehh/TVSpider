@@ -69,7 +69,7 @@ async function test() {
 
 
         // 测试搜索
-    let search_page = JSON.parse(await spider.search("王牌"))
+    let search_page = JSON.parse(await spider.search("王"))
     console.debug(JSON.stringify(search_page));
 
 
