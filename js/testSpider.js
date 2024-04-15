@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './bilibili.js';
+import {__jsEvalReturn} from './tiantian.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -50,12 +50,12 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'bilibili';
+    let siteKey = 'tiantian';
     let siteType = 0;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
             "token": "6827db23e5474d02a07fd7431d3d5a5a",
-            "box": "bilibili",
+            "box": "TV",
             "code": "1",
             "from": "justlive1",
             "danmu": true,
@@ -68,6 +68,11 @@ async function test() {
     console.debug(JSON.stringify(classes))
 
 
+        // 测试搜索
+    let search_page = JSON.parse(await spider.search("王牌"))
+    console.debug(JSON.stringify(search_page));
+
+
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
@@ -76,17 +81,15 @@ async function test() {
 
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("BV1Pp421R7pn"))
+    let detail1 = JSON.parse(await spider.detail("53912"))
     await testPlay(detail1)
+
 
 
 
     let catePage = JSON.parse(await spider.category("2", "1", undefined,  {}));
     console.debug(JSON.stringify(catePage));
 
-        // 测试搜索
-    let search_page = JSON.parse(await spider.search("王牌"))
-    console.debug(JSON.stringify(search_page));
 
 
 
