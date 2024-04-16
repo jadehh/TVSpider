@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './yiqikan.js';
+import {__jsEvalReturn} from './dubo.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -75,6 +75,11 @@ async function test() {
     console.debug(JSON.stringify(homeVod));
 
 
+        // 测试搜索
+    let search_page = JSON.parse(await spider.search("王牌",false,2))
+    console.debug(JSON.stringify(search_page))
+
+
 
 
     // 测试详情
@@ -82,10 +87,7 @@ async function test() {
     await testPlay(detail1)
 
 
-
-    // 测试搜索
-    let search_page = JSON.parse(await spider.search("王牌"))
-    console.debug(JSON.stringify(search_page));
+;
 
     let catePage = JSON.parse(await spider.category("2", "1", undefined,  {}));
     console.debug(JSON.stringify(catePage));

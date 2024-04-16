@@ -128,7 +128,13 @@ class TianTianSpider extends Spider {
         for (const vodData of vodList) {
             let vodShort = new VodShort()
             vodShort.load_data(vodData)
-            vod_list.push(vodShort)
+            if (_.isEmpty(vodShort.vod_pic) && vodData["vod_pic_thumb"] !== undefined){
+                vodShort.vod_pic = vodData["vod_pic_thumb"]
+            }
+            if (vodShort.vod_name !== "首页轮播"){
+                vod_list.push(vodShort)
+            }
+
         }
         return vod_list
     }
@@ -160,8 +166,21 @@ class TianTianSpider extends Spider {
     }
 
     async setHomeVod() {
-        let resJson = JSON.parse(await this.postData(this.siteUrl + '/v2/home/type_search'))
-        this.homeVodList = await this.parseVodShortListFromJson(resJson["data"]["list"])
+        let resJson = JSON.parse(await this.postData(this.siteUrl + '/v2/type/tj_vod'))
+
+        let vod_list = []
+
+        for (const data of resJson["data"]["type_vod"]) {
+            if (data["type_name"] !== "广告") {
+               vod_list = await this.parseVodShortListFromJson(data["vod"])
+               this.homeVodList = [...this.homeVodList,...vod_list]
+            }
+
+        }
+        vod_list = await this.parseVodShortListFromJson(resJson["data"]["loop"])
+        this.homeVodList = [...this.homeVodList,...vod_list]
+        vod_list = await this.parseVodShortListFromJson(resJson["data"]["cai"])
+        this.homeVodList = [...this.homeVodList,...vod_list]
     }
 
     async setCategory(tid, pg, filter, extend) {
@@ -255,4 +274,4 @@ export function __jsEvalReturn() {
     };
 }
 
-export {spider}
+export {spider, TianTianSpider}
