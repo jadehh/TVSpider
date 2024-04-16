@@ -111,4 +111,4 @@ def test_js_log_to_txt():
         for value in js_log_dic.values():
             f.write((value + "\n").encode("utf-8"))
 if __name__ == '__main__':
-    test_pansou()
+    test_douban()
