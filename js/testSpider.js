@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './douban.js';
+import {__jsEvalReturn} from './dubo.js';
 import * as Utils from "../lib/utils.js";
 
 
@@ -68,14 +68,16 @@ async function test() {
     console.debug(JSON.stringify(classes))
 
 
-    // 测试搜索
-    let search_page = JSON.parse(await spider.search("王牌",false,2))
-    console.debug(JSON.stringify(search_page))
 
 
     // //测试首页列表
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
+
+
+        // 测试搜索
+    let search_page = JSON.parse(await spider.search("王牌",false,2))
+    console.debug(JSON.stringify(search_page))
 
 
 
