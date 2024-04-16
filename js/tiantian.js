@@ -255,4 +255,4 @@ export function __jsEvalReturn() {
     };
 }
 
-export {spider}
+export {spider,TianTianSpider}
