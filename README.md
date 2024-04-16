@@ -60,7 +60,7 @@ python build.py --aliToken aliToken
 * CatVodOpen Windows无法预览Jable和Doll图片,需要手动开启代理加载。
 * TV影视暂不不支持哔哩哔哩DASH文件播放
 * 老版本的CatVodOpen cfg参数类型为:string,TV参数类型为[object],所有需要区分,初始化的时候还是用this.cfgObj
-
+* TV影视没有md5X的函数,所以一起看和天天无法在TV上播放,Post请求方法也不支持"raw"方法 (代码提交TV,等待审核中...)
 
 ## 特别说明
 * 近期CatVodOpen更新移除了quickjs,导致无法使用,请尝试使用旧版本
