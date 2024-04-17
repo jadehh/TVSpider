@@ -35,8 +35,13 @@ def get_import_name(file_list,book_file_list, pan_file_list, video_file_list,is_
                                                                                                           js_name)
             for video_file in video_file_list:
                 js_name = video_file.split(".js")[0]
-                spider_list.append(js_name)
-                write_router_content = write_router_content + "import {} from './spider/video/{}.js';\n".format(js_name,
+                with open("nodejs/src/spider/video/{}".format(video_file),"rb") as f:
+                    content = f.read()
+                if "已失效" in str(content,encoding="utf-8"):
+                    pass
+                else:
+                    spider_list.append(js_name)
+                    write_router_content = write_router_content + "import {} from './spider/video/{}.js';\n".format(js_name,
                                                                                                             js_name)
     return write_router_content + "const spiders = [{}];".format(",".join(spider_list)) + "\n"
 

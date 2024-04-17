@@ -1,3 +1,12 @@
+/*
+* @File     : kunyu77.js
+* @Author   : jade
+* @Date     : 2024-04-16 18:55:12
+* @Email    : jadehh@1ive.com
+* @Software : Samples
+* @Desc     : 酷云77 (已失效)
+*/
+
 import {NodeJSSpider} from "../spider.js";
 import {formatPlayUrl, randDeviceWithId, jsonParse, randUUID} from '../../util/misc.js';
 import dayjs from 'dayjs';
@@ -27,7 +36,7 @@ class KunYun77Spider extends NodeJSSpider {
     }
 
     getName() {
-        return "👒|酷云77|👒"
+        return `👒|酷云77|👒`
     }
 
     getAppName() {
