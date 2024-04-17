@@ -29,7 +29,7 @@ let inReq = getInreq()
 let init = await spider.init(inReq)
 
 
-let searchInReq = {"body": {"wd": "黑丝", "page": 2}}
+let searchInReq = {"body": {"wd": "wang", "page": 2}}
 let search = JSON.parse(await spider.search(searchInReq))
 
 let home = JSON.parse(await spider.home())
