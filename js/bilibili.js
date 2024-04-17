@@ -99,7 +99,7 @@ class BilibiliSpider extends Spider {
         for (const navElement of navElements) {
             this.classes.push(this.getTypeDic($(navElement).text(), $(navElement).text()))
         }
-        if (!_.isEmpty(this.bili_jct)) {
+        if (!_.isEmpty(this.bili_jct) && this.is_login) {
             this.classes.push(this.getTypeDic("历史记录", "历史记录"))
         }
     }
