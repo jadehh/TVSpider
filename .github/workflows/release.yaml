@@ -28,7 +28,7 @@ jobs:
           cd code
           pip install https://github.com/jadehh/pythonTools/releases/download/JadeV2.1.7/jade-2.1.7-py3-none-any.whl
           python build.py --aliToken "${{ secrets.Ali_TOKEN }}" 
-          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" is_18 True
+          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" --is_18 True
 
       - name: 上传Config
         run: |
