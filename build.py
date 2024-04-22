@@ -205,6 +205,7 @@ class Build():
         videoSpiderList.extend(bookSpiderList)
         videoSpiderList.extend(panSpiderList)
         self.writeRouterJs(videoWriteContent+bookWriteContent+panWriteContent,videoSpiderList)
+        self.writeNodeConfig()
     def build(self):
         self.writeTVConfig()
         self.writeOpenConfig()
