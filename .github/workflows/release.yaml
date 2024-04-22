@@ -94,8 +94,9 @@ jobs:
 
       - name: 发布NodeJS版本
         run: |
-          python code/build.py --aliToken "${{ secrets.Ali_TOKEN }}" 
-          cd code/nodejs
+          cd code/
+          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" 
+          cd nodejs
           npm install qs --save
           npm install tunnel  --save
           npm install 
@@ -159,8 +160,9 @@ jobs:
 
       - name: 发布NodeJS 18+版本
         run: |
-          python code/build.py --aliToken "${{ secrets.Ali_TOKEN }}" --is_18 True
-          cd code/nodejs
+          cd code/
+          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" --is_18 True
+          cd  nodejs
           npm install qs --save
           npm install tunnel  --save
           npm install 
