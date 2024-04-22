@@ -26,7 +26,7 @@ jobs:
           cd code
           pip install https://github.com/jadehh/pythonTools/releases/download/JadeV2.1.7/jade-2.1.7-py3-none-any.whl
           python build.py --aliToken "${{ secrets.Ali_TOKEN }}" 
-
+          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" --is_18 True
 
       - name: 上传Config
         run: |
@@ -71,7 +71,7 @@ jobs:
       
 
 
-      - name: 发布版本
+      - name: 发布NodeJS版本
         run: |
           cd code/nodejs
           npm install qs --save
@@ -111,6 +111,16 @@ jobs:
         env:
           GITHUB_ACTOR: jadehh
 
+      - name: 删除Code
+        run: |
+          rm -r code
+
+      - name: 下载代码
+        uses: actions/checkout@v3
+        with:
+          repository: jadehh/TVSpider
+          path: code
+          fetch-depth: 0  # 显示所有提交的日志
 
       - name: 18+Config文件生成
         run: |
