@@ -4,24 +4,26 @@ on:
 jobs:
   build:
     name: TVSpider
-    runs-on: ubuntu-latest  # 如果是镜像中启动无法获取git信息
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [ "ubuntu-latest" ] #, "macos-latest", "windows-latest"
+        os: [ "ubuntu-latest" ]
     steps:
       - name: JS分支下载
         uses: actions/checkout@v3
         with:
           repository: jadehh/TVSpider
           fetch-depth: 0
+
       - name: 下载代码
         uses: actions/checkout@v3
         with:
           repository: jadehh/TVSpider
           path: code
           fetch-depth: 0  # 显示所有提交的日志
-      - name: TV Config文件生成
+
+      - name: Js Config文件生成
         run: |
           cd code
           pip install https://github.com/jadehh/pythonTools/releases/download/JadeV2.1.7/jade-2.1.7-py3-none-any.whl
@@ -67,13 +69,34 @@ jobs:
         env:
           GITHUB_ACTOR: jadehh
 
+      - name: Config上传Github分支
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          repository: ${{ secrets.GithubPath }}
+          directory: .
+          branch: js
+          force: true
+          tags: true
+        env:
+          GITHUB_ACTOR: jadehh
 
-      
+      - name: 删除Code
+        run: |
+          rm -r code
 
+      - name: 下载代码
+        uses: actions/checkout@v3
+        with:
+          repository: jadehh/TVSpider
+          path: code
+          fetch-depth: 0  # 显示所有提交的日志
 
       - name: 发布NodeJS版本
         run: |
-          cd code/nodejs
+          cd code/
+          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" 
+          cd nodejs
           npm install qs --save
           npm install tunnel  --save
           npm install 
@@ -96,7 +119,20 @@ jobs:
           commit_msg="* 发布 CatVodOpen新源"
           git commit -a -m "$commit_msg"
 
-     
+      - name: 查看分支
+        run: |
+          ls -l
+      - name: 上传Github分支
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          repository: ${{ secrets.GitHubPath }}
+          directory: .
+          branch: dist
+          force: true
+          tags: true
+        env:
+          GITHUB_ACTOR: jadehh
 
       - name: 上传Gitee分支
         uses: ad-m/github-push-action@master
@@ -122,15 +158,13 @@ jobs:
           path: code
           fetch-depth: 0  # 显示所有提交的日志
 
-      - name: 18+Config文件生成
+      - name: 发布NodeJS 18+版本
         run: |
-          cd code
+          cd code/
           python build.py --aliToken "${{ secrets.Ali_TOKEN }}" --is_18 True
-
-      - name: 18+发布版本
-        run: |
-          cd code/nodejs
+          cd  nodejs
           npm install qs --save
+          npm install tunnel  --save
           npm install 
           npm run build
 
@@ -140,7 +174,7 @@ jobs:
           git config --global user.name "jade"
           checkname=$(git rev-list --max-parents=0 HEAD)
           git checkout  $checkname -b 18_dist  ##分支不存在用这个
-          #git checkout 18_dist  ## 分支已存在用这个
+          # git checkout 18_dist  ## 分支已存在用这个
           cp -r code/nodejs/dist/* ./
           cp -r code/nodejs/readme.md ./README.md
           git add index.config.js
@@ -154,7 +188,17 @@ jobs:
       - name: 18+查看分支
         run: |
           ls -l
-      
+      - name: 18+上传Github分支
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          repository: ${{ secrets.GitHubPath }}
+          directory: .
+          branch: 18_dist
+          force: true
+          tags: true
+        env:
+          GITHUB_ACTOR: jadehh
 
       - name: 18+上传Gitee分支
         uses: ad-m/github-push-action@master
