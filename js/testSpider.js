@@ -63,6 +63,14 @@ async function test() {
         }
     });
 
+        // 测试搜索
+    let search_page = JSON.parse(await spider.search("万相之王",false,1))
+    console.debug(JSON.stringify(search_page))
+
+            // 测试详情
+    let detail1 = JSON.parse(await spider.detail("/diyi/2449/"))
+    let play = JSON.parse(await spider.play("全卷","/diyi/2449/27800761.html"))
+    await testPlay(detail1)
 
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes))
@@ -81,17 +89,11 @@ async function test() {
 
 
 
-    // 测试搜索
-    let search_page = JSON.parse(await spider.search("万相之王",false,1))
-    console.debug(JSON.stringify(search_page))
 
 
 
 
-        // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/diyi/2449/"))
-    let play = JSON.parse(await spider.play("全卷","/html/2449/1.html"))
-    await testPlay(detail1)
+
 
 
 

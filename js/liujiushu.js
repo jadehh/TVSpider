@@ -159,8 +159,8 @@ class LiuJiuShuSpider extends Spider {
 
     async setPlay(flag, id, flags) {
         let $ = await this.getHtml(this.siteUrl + id)
-        let content = Utils.formatContent($("[class=\"content\"]").html())
-        this.playUrl = {"content": content + '\n\n'}
+        let content = $("[class=\"content\"]").html().trim().replaceAll("<p>","    ").replaceAll("</p>","\n");
+        this.playUrl = {"content": content + "\n"}
     }
 
     async setSearch(wd, quick) {
