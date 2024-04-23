@@ -70,17 +70,6 @@ jobs:
         env:
           GITHUB_ACTOR: jadehh
 
-      - name: Config上传Github分支
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          repository: ${{ secrets.GithubPath }}
-          directory: .
-          branch: js
-          force: true
-          tags: true
-        env:
-          GITHUB_ACTOR: jadehh
       - name: 发布NodeJS版本
         run: |
           rm -r ./code
@@ -109,18 +98,6 @@ jobs:
           git add README.md
           commit_msg="* 发布 CatVodOpen新源"
           git commit -a -m "$commit_msg"
-
-      - name: 上传Github分支
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_PAT }}
-          repository: ${{ secrets.GitHubPath }}
-          directory: .
-          branch: dist
-          force: true
-          tags: true
-        env:
-          GITHUB_ACTOR: jadehh
 
       - name: 上传Gitee分支
         uses: ad-m/github-push-action@master
