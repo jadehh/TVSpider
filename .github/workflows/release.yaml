@@ -20,11 +20,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: jadehh/TVSpider
-          path: code
+          path: tmp
           fetch-depth: 0  # 显示所有提交的日志
 
       - name: Js Config文件生成
         run: |
+          cp -r ./tmp ./code
           cd code
           pip install https://github.com/jadehh/pythonTools/releases/download/JadeV2.1.7/jade-2.1.7-py3-none-any.whl
           python build.py --aliToken "${{ secrets.Ali_TOKEN }}" 
@@ -80,20 +81,10 @@ jobs:
           tags: true
         env:
           GITHUB_ACTOR: jadehh
-
-      - name: 删除Code
-        run: |
-          rm -r code
-
-      - name: 下载代码
-        uses: actions/checkout@v3
-        with:
-          repository: jadehh/TVSpider
-          path: code
-          fetch-depth: 0  # 显示所有提交的日志
-
       - name: 发布NodeJS版本
         run: |
+          rm -r ./code
+          cp -r ./tmp ./code
           cd code/
           python build.py --aliToken "${{ secrets.Ali_TOKEN }}" 
           cd nodejs
@@ -119,9 +110,6 @@ jobs:
           commit_msg="* 发布 CatVodOpen新源"
           git commit -a -m "$commit_msg"
 
-      - name: 查看分支
-        run: |
-          ls -l
       - name: 上传Github分支
         uses: ad-m/github-push-action@master
         with:
@@ -147,19 +135,10 @@ jobs:
         env:
           GITHUB_ACTOR: jadehh
 
-      - name: 删除Code
-        run: |
-          rm -r code
-
-      - name: 下载代码
-        uses: actions/checkout@v3
-        with:
-          repository: jadehh/TVSpider
-          path: code
-          fetch-depth: 0  # 显示所有提交的日志
-
       - name: 发布NodeJS 18+版本
         run: |
+          rm -r ./code
+          cp -r ./tmp ./code
           cd code/
           python build.py --aliToken "${{ secrets.Ali_TOKEN }}" --is_18 True
           cd  nodejs
