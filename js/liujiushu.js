@@ -162,7 +162,7 @@ class LiuJiuShuSpider extends Spider {
         let $ = await this.getHtml(this.siteUrl + id_list[1])
         let content = id_list[0] + "\n\n"
         content = content +  $("[class=\"content\"]").html().trim().replaceAll("<p>","    ").replaceAll("</p>","\n");
-        this.playUrl = {"content": content + "\n\n"}
+        this.playUrl = {"content": content}
     }
 
     async setSearch(wd, quick) {
