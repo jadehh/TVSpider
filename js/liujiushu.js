@@ -50,16 +50,16 @@ class LiuJiuShuSpider extends Spider {
     parseVodShortFromElement($, element) {
         let bookShort = new BookShort()
         let bookShortElements = $(element).find("a")
-        bookShort.book_remarks = $(bookShortElements[1]).text()
-        bookShort.book_name = $(bookShortElements[0]).text()
+        bookShort.book_remarks = $(bookShortElements[2]).text()
+        bookShort.book_name = $(bookShortElements[1]).text()
         bookShort.book_id = bookShortElements[0].attribs.href
-        bookShort.book_pic = this.jsBase + Utils.base64Encode(bookShort.book_id)
+        bookShort.book_pic = $(element).find("img")[0].attribs["src"]
         return bookShort
     }
 
     async parseVodShortListFromDoc($) {
         let books = []
-        let bookElements = $($("[class=\"popular odd\"]")[0]).find("li")
+        let bookElements = $($("[class=\"flex\"]")[0]).find("li")
         for (const bookElement of bookElements) {
             let bookShort = this.parseVodShortFromElement($, bookElement)
             books.push(bookShort)
@@ -163,7 +163,7 @@ class LiuJiuShuSpider extends Spider {
         this.playUrl = {"content": content + '\n\n'}
     }
 
-    async search(wd, quick) {
+    async setSearch(wd, quick) {
         let params = {"searchkey": wd, "searchtype": "all", "Submit": ""}
         let content = await this.fetch(this.siteUrl + "/search/", params, this.getHeader())
         let $ = load(content)
