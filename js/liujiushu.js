@@ -159,9 +159,14 @@ class LiuJiuShuSpider extends Spider {
 
     async setPlay(flag, id, flags) {
         let id_list = id.split("-")
-        let $ = await this.getHtml(this.siteUrl + id_list[1])
+        id = id_list[1]
         let content = id_list[0] + "\n\n"
-        content = content +  $("[class=\"content\"]").html().trim().replaceAll("<p>","    ").replaceAll("</p>","\n");
+        while (true) {
+            let $ = await this.getHtml(this.siteUrl + id)
+            content += Utils.formatContent($("[class=\"content\"]").html().trim().replaceAll("<p>", "    ").replaceAll("</p>", "\n"));
+            id = $("[id=\"next_url\"]")[0].attribs.href;
+            if (id.indexOf('_') < 0) break;
+        }
         this.playUrl = {"content": content}
     }
 

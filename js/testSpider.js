@@ -69,7 +69,7 @@ async function test() {
 
             // 测试详情
     let detail1 = JSON.parse(await spider.detail("/diyi/2449/"))
-    let play = JSON.parse(await spider.play("全卷","/diyi/2449/27800761.html"))
+    let play = JSON.parse(await spider.play("全卷","闻萱-/diyi/2449/43822990.html"))
     await testPlay(detail1)
 
     let classes = JSON.parse(await spider.home(true));
