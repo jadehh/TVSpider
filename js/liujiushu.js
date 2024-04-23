@@ -116,7 +116,7 @@ class LiuJiuShuSpider extends Spider {
             let vodItems = []
             for (const urlEle of $(urlElemnet).find("a")) {
                 const epName = $(urlEle).text();
-                const playUrl = urlEle.attribs.href;
+                const playUrl = epName + "-" + urlEle.attribs.href;
                 vodItems.push(epName + '$' + playUrl)
             }
             let name = $($(urlElemnet).find("[class=\"title jcc\"]")).text()
@@ -158,9 +158,11 @@ class LiuJiuShuSpider extends Spider {
     }
 
     async setPlay(flag, id, flags) {
-        let $ = await this.getHtml(this.siteUrl + id)
-        let content = $("[class=\"content\"]").html().trim().replaceAll("<p>","    ").replaceAll("</p>","\n");
-        this.playUrl = {"content": content + "\n"}
+        let id_list = id.split("-")
+        let $ = await this.getHtml(this.siteUrl + id_list[1])
+        let content = id_list[0] + "\n\n"
+        content = content +  $("[class=\"content\"]").html().trim().replaceAll("<p>","    ").replaceAll("</p>","\n");
+        this.playUrl = {"content": content + "\n\n"}
     }
 
     async setSearch(wd, quick) {
