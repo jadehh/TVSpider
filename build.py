@@ -76,7 +76,7 @@ class Build():
         baseObj["key"] = jsMoudle.js_name
         baseObj["name"] = jsMoudle.getName()
         baseObj["ext"] = {"box": tvType}
-        baseObj["api"] = jsMoudle.js_file
+        baseObj["api"] = "./" + jsMoudle.js_file
         baseObj["type"] = jsMoudle.getType()
         return baseObj
 
