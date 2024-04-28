@@ -103,7 +103,9 @@ class CNTVSpider extends Spider {
         let vod_list = []
         for (const item of items) {
             let vodShort = new VodShort()
-            vodShort.vod_id = "play-" + item["id"]
+            //关键是如何获取GUID 2d3224585904496ea837f682da0c4aa6
+            let id = item["vsetid"].replaceAll("VSET1h", "")
+            vodShort.vod_id = "play-" + md5X(id)
             vodShort.vod_name = item["title"]
             vodShort.vod_pic = item["image"]
             vodShort.vod_remarks = item["sc"]
@@ -147,8 +149,18 @@ class CNTVSpider extends Spider {
         return playList
     }
 
+    async getPlayUrl(obj) {
+        let url = `https://api.app.cctv.com/api/getVideoPageDetail?videoGuid=${obj["vid"]}&videoSetContentId=${obj["vsetid"]}`
+        let resJson = JSON.parse(await this.fetch(url, null, this.getHeader()))
+        let playUrlList = []
+        for (const data of resJson["data"]["videoRoughCut"]){
+            playUrlList.push(data["title"]+"$" + data["guid"])
+        }
+        return {"中央影视": playUrlList.join("#")}
+    }
+
     async getVideoUrl(guid) {
-        return {"中央影视": ['点击播放' + '$' + 'https://hls.cntv.myhwcdn.cn/asp/hls/2000/0303000a/3/default/' + guid + '/2000.m3u8'].join("#")}
+        return {"中央影视": ['点击播放' + '$' + guid].join("#")}
     }
 
     async parseVodDetailfromJson(id, obj, pic) {
@@ -164,9 +176,7 @@ class CNTVSpider extends Spider {
             vodDetail.vod_director = obj["vset_title"]
             if (!_.isEmpty(obj["url"])) {
                 $ = await this.getHtml(obj["url"])
-            }else{
             }
-
         } else {
             if (_.isEmpty(obj["lvUrl"])) {
                 vodDetail.vod_name = obj["channelName"]
@@ -189,10 +199,10 @@ class CNTVSpider extends Spider {
         let playlist
         if (_.isEmpty(guid) && obj["url"] === undefined) {
             playlist = await this.getLiveUrl(id, obj)
-        } else if (obj["url"] === ""){
-            let x = 0
-        }
-        else {
+        } else if (obj["url"] === "") {
+            //这是视频点播连接，关键是如何获取guid
+            playlist = await this.getPlayUrl(obj)
+        } else {
             playlist = await this.getVideoUrl(guid)
         }
         vodDetail.vod_play_url = _.values(playlist).join('$$$');
@@ -265,6 +275,14 @@ class CNTVSpider extends Spider {
             pageCount = page + 1;
         }
         this.result.setPage(page, pageCount, limit, pageCount)
+    }
+
+    async setPlay(flag, id, flags) {
+        if (id.startsWith("http")) {
+            this.playUrl = id
+        } else {
+            this.playUrl = 'https://hls.cntv.myhwcdn.cn/asp/hls/2000/0303000a/3/default/' + id + '/2000.m3u8'
+        }
     }
 }
 

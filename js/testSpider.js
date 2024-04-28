@@ -73,14 +73,13 @@ async function test() {
     console.debug(JSON.stringify(homeVod));
 
     //测试分类
-    let catePage = JSON.parse(await spider.category("电视剧", "1", undefined,    {"zimu":"","leixing":"","nianfen":"2024","diqu":""}));
+    let catePage = JSON.parse(await spider.category("电视剧", "1", undefined,    {"zimu":"","leixing":"","nianfen":"","diqu":""}));
     console.debug(JSON.stringify(catePage));
 
 
 
-
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("play-VIDA6OZdoxKDBvTWaPocCJxD240401"))
+    let detail1 = JSON.parse(await spider.detail("play-2d3224585904496ea837f682da0c4aa6"))
     await testPlay(detail1)
 
 
