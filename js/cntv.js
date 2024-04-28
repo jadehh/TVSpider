@@ -149,11 +149,11 @@ class CNTVSpider extends Spider {
     }
 
     async getLiveUrl(channel_id, obj) {
-        let liveApiUrl = `https://vdn.live.cntv.cn/api2/live.do?channel=pa://cctv_p2p_hd${channel_id}`
+        let liveApiUrl = `https://vdn.live.cntv.cn/api2/live.do?channel=pd://cctv_p2p_hd${channel_id}&client=iosapp`
         let liveResponse = await req(liveApiUrl, {"headers": this.getHeader()})
         let liveJson = JSON.parse(liveResponse["content"])
         let playList = {}
-        playList["直播"] = ["点击播放$" + liveJson["hls_url"]["hls1"]]
+        playList["直播"] = ["点击播放$" + liveJson["hls_url"]["hls2"]]
         await this.jadeLog.info(`liveJson:${JSON.stringify(liveJson)}`)
         let vod_items = []
         for (const data of obj["program"]) {
@@ -300,6 +300,9 @@ class CNTVSpider extends Spider {
     async setPlay(flag, id, flags) {
         if (id.startsWith("http")) {
             this.playUrl = id
+            let headers = this.getHeader()
+            headers["Referer"] = "https://tv.cctv.com/"
+            this.result.header = headers
         } else {
             this.playUrl = 'https://hls.cntv.myhwcdn.cn/asp/hls/2000/0303000a/3/default/' + id + '/2000.m3u8'
         }
