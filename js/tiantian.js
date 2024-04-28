@@ -16,9 +16,8 @@ class TianTianSpider extends Spider {
         super();
         this.siteUrl = "http://op.ysdqjs.cn"
         this.cookie = ""
-        this.extendObj = {"extend": "类型", "area": "地区", "lang": "语言", "year": "年代"}
+        this.extendObj = {"extend": "类型", "area": "地区", "year": "年代"}
         this.parseMap = {};
-
     }
 
     async request(reqUrl, method, data) {
@@ -74,28 +73,25 @@ class TianTianSpider extends Spider {
 
     async init(cfg) {
         await super.init(cfg);
-        this.danmuStaus = false
+        this.danmuStaus = true
     }
 
     generateParam(tid, pg, extend, limit) {
         const param = {
             type_id: tid, page: pg, limit: limit,
         };
-        if (extend.class) {
-            param.class = extend.class;
+        if (extend["extend"] !== undefined && extend["extend"] !== "全部") {
+            param.class = extend["extend"];
         }
-        if (extend.area) {
+        if (extend["area"] !== undefined && extend["area"] !== "全部") {
             param.area = extend.area;
         }
-        if (extend.lang) {
+        if (extend["lang"] !== undefined && extend["lang"] !== "全部") {
             param.lang = extend.lang;
         }
-        if (extend.year) {
+        if (extend["year"] !== undefined && extend["year"] !== "全部") {
             param.year = extend.year;
         }
-        // if (extend.order) {
-        //     param.order = extend.order;
-        // }
         return param;
     }
 
@@ -103,11 +99,25 @@ class TianTianSpider extends Spider {
         let extend_list = []
         Object.keys(data).forEach(key => {
             if (Array.isArray(data[key])) {
-                let extend_dic = {"key": key, "name": this.extendObj[key], "value": []}
-                for (const extend_data of data[key]) {
-                    extend_dic["value"].push({"n": extend_data, "v": extend_data})
+                if (!_.isEmpty(this.extendObj[key])) {
+                    let extend_dic = {"key": key, "name": this.extendObj[key], "value": []}
+                    let add_year_status = false
+                    for (const extend_data of data[key]) {
+                        if (key === "year") {
+                            if (!data[key].includes("2024") && extend_data !== "全部" && !add_year_status) {
+                                extend_dic["value"].push({"n": "2024", "v": "2024"})
+                                add_year_status = true
+                            }
+                        }
+                        if (!_.isEmpty(extend_data)) {
+                            extend_dic["value"].push({"n": extend_data, "v": extend_data})
+                        }
+
+                    }
+                    if (extend_dic["value"].length > 1) {
+                        extend_list.push(extend_dic)
+                    }
                 }
-                extend_list.push(extend_dic)
             }
         })
         return extend_list
@@ -128,10 +138,10 @@ class TianTianSpider extends Spider {
         for (const vodData of vodList) {
             let vodShort = new VodShort()
             vodShort.load_data(vodData)
-            if (_.isEmpty(vodShort.vod_pic) && vodData["vod_pic_thumb"] !== undefined){
+            if (_.isEmpty(vodShort.vod_pic) && vodData["vod_pic_thumb"] !== undefined) {
                 vodShort.vod_pic = vodData["vod_pic_thumb"]
             }
-            if (vodShort.vod_name !== "首页轮播"){
+            if (vodShort.vod_name !== "首页轮播") {
                 vod_list.push(vodShort)
             }
 
@@ -172,15 +182,15 @@ class TianTianSpider extends Spider {
 
         for (const data of resJson["data"]["type_vod"]) {
             if (data["type_name"] !== "广告") {
-               vod_list = await this.parseVodShortListFromJson(data["vod"])
-               this.homeVodList = [...this.homeVodList,...vod_list]
+                vod_list = await this.parseVodShortListFromJson(data["vod"])
+                this.homeVodList = [...this.homeVodList, ...vod_list]
             }
 
         }
         vod_list = await this.parseVodShortListFromJson(resJson["data"]["loop"])
-        this.homeVodList = [...this.homeVodList,...vod_list]
+        this.homeVodList = [...this.homeVodList, ...vod_list]
         vod_list = await this.parseVodShortListFromJson(resJson["data"]["cai"])
-        this.homeVodList = [...this.homeVodList,...vod_list]
+        this.homeVodList = [...this.homeVodList, ...vod_list]
     }
 
     async setCategory(tid, pg, filter, extend) {
@@ -201,7 +211,6 @@ class TianTianSpider extends Spider {
     async setPlay(flag, id, flags) {
         const parsers = this.parseMap[flag];
         if (flag.indexOf("芒果") > -1 || flag.indexOf("腾讯") > -1 || flag.indexOf("爱奇艺") > -1) {
-            this.danmuStaus = true
             if (!this.catOpenStatus) {
                 this.danmuUrl = await this.danmuSpider.downloadDanmu("https://dmku.thefilehosting.com/?ac=dm&url=" + id)
             }

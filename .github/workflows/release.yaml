@@ -10,34 +10,34 @@ jobs:
       matrix:
         os: [ "ubuntu-latest" ]
     steps:
-      - name: JS分支下载
+      - name: Clone Base Repository
         uses: actions/checkout@v3
         with:
-          repository: jadehh/TVSpider
+          repository: ${{ secrets.GH_PATH}}
           fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN}}
 
-      - name: 下载代码
+      - name: Clone TVSpider Repository
         uses: actions/checkout@v3
         with:
           repository: jadehh/TVSpider
           path: tmp
           fetch-depth: 0  # 显示所有提交的日志
 
-      - name: Js Config文件生成
+      - name: Build JS Config
         run: |
           cp -r ./tmp ./code
           cd code
           pip install https://github.com/jadehh/pythonTools/releases/download/JadeV2.1.7/jade-2.1.7-py3-none-any.whl
-          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" 
-          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" --is_18 True
+          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"
+          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}" --is_18 True
 
-      - name: 上传Config
+      - name:  Commit JS Config files
         run: |
-          git config --global user.email "jadehh@live.com"
-          git config --global user.name "jade"
+          git config --global user.email "${{ secrets.GT_EMAIL }}"
+          git config --global user.name "${{ secrets.GT_ACTOR }}"
           checkname=$(git rev-list --max-parents=0 HEAD)
           git checkout  $checkname -b js  ##分支不存在用这个
-          # git checkout dist  ## 分支已存在用这个
           cp -r code/18_open_config.json ./
           cp -r code/18_tv_config.json ./
           cp -r code/open_config.json ./
@@ -57,49 +57,47 @@ jobs:
           commit_msg="* 更新TVConfig和OpenConfig"
           git commit -a -m "$commit_msg"
 
-      - name: Config上传Gitee分支
+      - name: Push JS Config Changes To Gitee
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GT_TOKEN }}
-          repository: ${{ secrets.GiteePath }}
+          github_token: ${{ secrets.GE_TOKEN }}
+          repository: ${{ secrets.GE_PATH }}
           directory: .
           branch: js
           force: true
-          tags: true
           github_url: https://gitee.com
         env:
-          GITHUB_ACTOR: jadehh
+          GITHUB_ACTOR: ${{ secrets.GH_ACTOR }}
 
-      - name: Config上传Github分支
+      - name: Push JS Config Changes To Github
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GH_PAT }}
-          repository: ${{ secrets.GithubPath }}
+          github_token: ${{ secrets.GH_TOKEN }}
+          repository: ${{ secrets.GH_PATH }}
           directory: .
           branch: js
           force: true
-          tags: true
         env:
-          GITHUB_ACTOR: jadehh
-      - name: 发布NodeJS版本
+          GITHUB_ACTOR: ${{ secrets.GH_ACTOR }}
+
+      - name:  Build NodeJS Config files
         run: |
           rm -r ./code
           cp -r ./tmp ./code
           cd code/
-          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" 
+          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"
           cd nodejs
           npm install qs --save
           npm install tunnel  --save
           npm install 
           npm run build
 
-      - name: 新建分支
+      - name: Commit NodeJS Config files
         run: |
-          git config --global user.email "jadehh@live.com"
-          git config --global user.name "jade"
+          git config --global user.email "${{ secrets.GT_EMAIL }}"
+          git config --global user.name "${{ secrets.GT_ACTOR }}"
           checkname=$(git rev-list --max-parents=0 HEAD)
           git checkout  $checkname -b dist  ##分支不存在用这个
-          # git checkout dist  ## 分支已存在用这个
           cp -r code/nodejs/dist/* ./
           cp -r code/nodejs/readme.md ./README.md
           git add index.config.js
@@ -110,50 +108,49 @@ jobs:
           commit_msg="* 发布 CatVodOpen新源"
           git commit -a -m "$commit_msg"
 
-      - name: 上传Github分支
+      - name: Push NodelJS Config Changes To Gitee
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GH_PAT }}
-          repository: ${{ secrets.GitHubPath }}
+          github_token: ${{ secrets.GE_TOKEN }}
+          repository: ${{ secrets.GE_PATH }}
           directory: .
           branch: dist
           force: true
-          tags: true
-        env:
-          GITHUB_ACTOR: jadehh
-
-      - name: 上传Gitee分支
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GT_TOKEN }}
-          repository: ${{ secrets.GiteePath }}
-          directory: .
-          branch: dist
-          force: true
-          tags: true
           github_url: https://gitee.com
         env:
-          GITHUB_ACTOR: jadehh
+          GITHUB_ACTOR: ${{ secrets.GH_ACTOR }}
 
-      - name: 发布NodeJS 18+版本
+      - name: Push NodelJS Config Changes To Github
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          repository: ${{ secrets.GH_PATH }}
+          directory: .
+          branch: dist
+          force: true
+        env:
+          GITHUB_ACTOR: ${{ secrets.GH_ACTOR }}
+
+
+
+      - name: Build 18+ NodeJS Config files
         run: |
           rm -r ./code
           cp -r ./tmp ./code
           cd code/
-          python build.py --aliToken "${{ secrets.Ali_TOKEN }}" --is_18 True
+          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"  --is_18 True
           cd  nodejs
           npm install qs --save
           npm install tunnel  --save
           npm install 
           npm run build
 
-      - name: 新建18+分支
+      - name: Commit 18+ NodeJS Config files
         run: |
-          git config --global user.email "jadehh@live.com"
-          git config --global user.name "jade"
+          git config --global user.email "${{ secrets.GT_EMAIL }}"
+          git config --global user.name "${{ secrets.GT_ACTOR }}"
           checkname=$(git rev-list --max-parents=0 HEAD)
           git checkout  $checkname -b 18_dist  ##分支不存在用这个
-          # git checkout 18_dist  ## 分支已存在用这个
           cp -r code/nodejs/dist/* ./
           cp -r code/nodejs/readme.md ./README.md
           git add index.config.js
@@ -163,31 +160,27 @@ jobs:
           git add README.md
           commit_msg="* 发布 CatVodOpen 18+ 新源"
           git commit -a -m "$commit_msg"
-
-      - name: 18+查看分支
-        run: |
-          ls -l
-      - name: 18+上传Github分支
+      
+      - name: Push NodelJS Config Changes To Gitee
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GH_PAT }}
-          repository: ${{ secrets.GitHubPath }}
+          github_token: ${{ secrets.GE_TOKEN }}
+          repository: ${{ secrets.GE_PATH }}
           directory: .
           branch: 18_dist
           force: true
-          tags: true
-        env:
-          GITHUB_ACTOR: jadehh
-
-      - name: 18+上传Gitee分支
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GT_TOKEN }}
-          repository: ${{ secrets.GiteePath }}
-          directory: .
-          branch: 18_dist
-          force: true
-          tags: true
           github_url: https://gitee.com
         env:
-          GITHUB_ACTOR: jadehh
+          GITHUB_ACTOR: ${{ secrets.GH_ACTOR }}
+
+      - name: Push NodelJS Config Changes To Github
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          repository: ${{ secrets.GH_PATH }}
+          directory: .
+          branch: 18_dist
+          force: true
+        env:
+          GITHUB_ACTOR: ${{ secrets.GH_ACTOR }}
+
