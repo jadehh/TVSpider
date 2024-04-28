@@ -23,7 +23,7 @@ class NodeJSSpider extends Spider {
     async init(inReq, _outResp) {
         await this.jadeLog.info("初始化", true)
         try {
-            await await req(`http://192.168.0.116:8099/clear`,{timeout:0.1})
+            await await req(`http://127.0.0.1:8099/clear`,{timeout:0.1})
             this.siteKey = this.getJSName()
             this.siteType = this.getType()
             this.cfgObj = inReq.server.config[this.siteKey]
