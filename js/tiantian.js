@@ -18,7 +18,7 @@ class TianTianSpider extends Spider {
         this.cookie = ""
         this.extendObj = {"extend": "类型", "area": "地区", "year": "年代"}
         this.parseMap = {};
-
+        this.danmuStaus = true
     }
 
     async request(reqUrl, method, data) {
@@ -212,7 +212,6 @@ class TianTianSpider extends Spider {
     async setPlay(flag, id, flags) {
         const parsers = this.parseMap[flag];
         if (flag.indexOf("芒果") > -1 || flag.indexOf("腾讯") > -1 || flag.indexOf("爱奇艺") > -1) {
-            this.danmuStaus = true
             if (!this.catOpenStatus) {
                 this.danmuUrl = await this.danmuSpider.downloadDanmu("https://dmku.thefilehosting.com/?ac=dm&url=" + id)
             }
