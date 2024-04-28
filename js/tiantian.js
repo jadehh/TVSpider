@@ -18,7 +18,6 @@ class TianTianSpider extends Spider {
         this.cookie = ""
         this.extendObj = {"extend": "类型", "area": "地区", "year": "年代"}
         this.parseMap = {};
-        this.danmuStaus = true
     }
 
     async request(reqUrl, method, data) {
@@ -74,7 +73,7 @@ class TianTianSpider extends Spider {
 
     async init(cfg) {
         await super.init(cfg);
-        this.danmuStaus = false
+        this.danmuStaus = true
     }
 
     generateParam(tid, pg, extend, limit) {

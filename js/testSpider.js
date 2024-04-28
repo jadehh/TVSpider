@@ -51,7 +51,7 @@ async function testMusicPlay(vodDetail) {
 
 async function test() {
     let siteKey = 'tiantian';
-    let siteType = 0;
+    let siteType = 3;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
             "token": "6827db23e5474d02a07fd7431d3d5a5a",
@@ -71,6 +71,9 @@ async function test() {
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
 
+    // 测试详情
+    let detail1 = JSON.parse(await spider.detail("54141"))
+    await testPlay(detail1)
 
     //测试分类
     let catePage = JSON.parse(await spider.category("1", "2", undefined,  {"extend":"动作"}));
@@ -80,10 +83,6 @@ async function test() {
     let search_page = JSON.parse(await spider.search("万相之王",false,1))
     console.debug(JSON.stringify(search_page))
 
-            // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/diyi/2449/"))
-    let play = JSON.parse(await spider.play("全卷","闻萱-/diyi/2449/43822990.html"))
-    await testPlay(detail1)
 
 
 
