@@ -246,6 +246,10 @@ class Spider {
     getTypeDic(type_name, type_id) {
         return {"type_name": type_name, "type_id": type_id}
     }
+    getFliterDic(type_name, type_id) {
+        return {"n": type_name, "v": type_id}
+    }
+
 
     async getHtml(url = this.siteUrl, proxy = false, headers = this.getHeader()) {
         let html = await this.fetch(url, null, headers, false, false, 0, proxy)
