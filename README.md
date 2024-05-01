@@ -15,7 +15,7 @@
 ## TVBox互联网发布地址
 [TV发布地址](https://github.com/FongMi/Release/tree/main/apk/release)
 ```bash
-https://gh.con.sh/https://raw.githubusercontent.com/jadehh/TVSpider/js/tv_config.json
+https://gh.con.sh/https://raw.githubusercontent.com/MINGERTAI/TVSpider/js/tv_config.json
 ```
 > 配置信息见js分支分支
 
