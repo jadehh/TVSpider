@@ -131,7 +131,14 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ secrets.GH_ACTOR }}
 
+      - name: Archive dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: |
+            code/nodejs/dist/*
 
+############### Build 18+ NodeJS Config files ###############
 
       - name: Build 18+ NodeJS Config files
         run: |
@@ -184,10 +191,10 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ secrets.GH_ACTOR }}
         
-      - name: Archive dist
+      - name: Archive distA
         uses: actions/upload-artifact@v4
         with:
-          name: dist
+          name: distA
           path: |
             code/nodejs/dist/*
 
