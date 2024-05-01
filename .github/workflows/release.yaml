@@ -189,5 +189,5 @@ jobs:
         with:
           name: dist
           path: |
-            nodejs/dist
+            code/nodejs/dist/*
 
