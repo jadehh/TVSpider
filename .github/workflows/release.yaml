@@ -183,4 +183,11 @@ jobs:
           force: true
         env:
           GITHUB_ACTOR: ${{ secrets.GH_ACTOR }}
+        
+      - name: Archive dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: |
+            nodejs/dist
 
