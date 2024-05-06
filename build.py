@@ -67,7 +67,7 @@ class Build():
         js_path = "js"
         fileList = os.listdir(js_path)
         for fileName in fileList:
-            jsMoudle = JSMoudle(os.path.join(js_path, fileName))
+            jsMoudle = JSMoudle(js_path + "/" + fileName)
             if jsMoudle.getName() is not None:
                 jsMoudleList.append(jsMoudle)
         return jsMoudleList

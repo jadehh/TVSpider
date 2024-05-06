@@ -41,11 +41,13 @@ class LoveMovieSpider extends Spider {
 
     async getHtml(url = this.siteUrl, proxy = false, headers = this.getHeader()) {
         let buffer = await this.fetch(url, null, headers, false, false, 1, proxy)
+
         let html = Utils.decode(buffer, "gb2312")
+        await this.jadeLog.debug(`html content:${html}`)
         if (!_.isEmpty(html)) {
             return load(html)
         } else {
-            await this.jadeLog.error(`html获取失败`, true)
+            return load(gbkDecode(buffer))
         }
     }
 
@@ -323,4 +325,4 @@ export function __jsEvalReturn() {
     };
 }
 
-export {spider,LoveMovieSpider}
+export {spider, LoveMovieSpider}
