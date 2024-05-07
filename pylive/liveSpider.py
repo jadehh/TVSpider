@@ -37,11 +37,11 @@ class LiveSpider(object):
         self.liveRoomPath = "liveRoom"
         self.maxPage = 1
         self.maxReconnect = 3
-        self.maxTsDownloadTimes = 3
+        self.maxTsDownloadTimes = 2
         self.reconnect = 0
         self.sleepTime = 3
         self.timeout = 3
-        self.maxSize = 1024*1024*10
+        self.maxSize = 1024*1024*5
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"}
         self.tmpPath = CreateSavePath("tmp")
@@ -69,22 +69,23 @@ class LiveSpider(object):
             with open(os.path.join(self.liveRoomPath, fileName), "rb") as f:
                 fileName = fileName.split(".")[0]
                 contentList = f.readlines()
-                with open(os.path.join(self.saveLivePath, "{}_live.txt".format(fileName)), "ab") as f1:
+                with open(os.path.join(self.saveLivePath, "{}_live.txt".format(fileName)), "wb") as f1:
                     f1.write("{},#genre#\n".format(fileName).encode("utf-8"))
                     for content in contentList:
                         name = str(content, encoding="utf-8").strip()
-                        playUrl = self.spiderSearch(name)
-                        playJson[name] = playUrl
-                        f1.write(("{},{}".format(name,playUrl) + "\n").encode("utf-8"))
-                        with open(os.path.join(self.saveJsonPath, "{}_live.json".format(fileName)), "wb") as f2:
-                            f2.write(json.dumps(playJson, indent=4, ensure_ascii=False).encode("utf-8"))
+                        if name:
+                            playUrl = self.spiderSearch(name)
+                            playJson[name] = playUrl
+                            f1.write(("{},{}".format(name,playUrl) + "\n").encode("utf-8"))
+                            with open(os.path.join(self.saveJsonPath, "{}_live.json".format(fileName)), "wb") as f2:
+                                f2.write(json.dumps(playJson, indent=4, ensure_ascii=False).encode("utf-8"))
                     f1.write("\n".encode("utf-8"))
     def getParams(self, name):
         return {"search": f"{name}", "Submit": " "}
 
     def fetch(self, url, headers, data, verify):
         try:
-            res = requests.get(url, headers=headers, data=data, verify=verify)
+            res = requests.get(url, headers=headers, data=data, verify=verify,timeout=self.timeout)
             if res.status_code == 200:
                 self.reconnect = 0
                 return res
@@ -135,7 +136,7 @@ class LiveSpider(object):
 
     def tsGet(self, url):
         try:
-            res = requests.get(url)
+            res = requests.get(url,timeout=(self.timeout))
             if res.status_code == 200:
                 return res
             else:
@@ -158,9 +159,12 @@ class LiveSpider(object):
         index = 1
         threadList = []
         for segement in segements:
+            downloadStartTime = time.time()
             JadeLog.DEBUG("正在下载:{}文件".format(segement.absolute_uri))
             res = self.tsGet(segement.absolute_uri)
-            if res:
+            use_time = time.time()-downloadStartTime
+            JadeLog.DEBUG("文件:{},下载完成,耗时:{}s".format(segement.absolute_uri,("%.2f" % (use_time))))
+            if res is not None and use_time < 5:
                 mp4Info = Mp4Info(res.content)
                 totalSize = totalSize + len(res.content)
                 index = index + 1
@@ -206,6 +210,7 @@ class LiveSpider(object):
     def selectBestUrl(self, name, m3u8List):
         maxQulity = 0
         maxQulityUrl = ""
+        startTime = time.time()
         JadeLog.INFO("名称为:{},开始寻找最好的播放连接".format(name),True)
         threadList = []
         bestSpeed = 0
@@ -227,7 +232,7 @@ class LiveSpider(object):
                     maxQulityUrl = m3u8Url
                     bestSpeed = speed
                     bestAspect = aspect
-        JadeLog.INFO("名称为:{},最优播放链接为:{},速度为:{}MB/s,分辨率为:{}".format(name,maxQulityUrl,("%.2f" % bestSpeed),bestAspect))
+        JadeLog.INFO("名称为:{},最优播放链接为:{},速度为:{}MB/s,分辨率为:{},耗时:{}".format(name,maxQulityUrl,("%.2f" % bestSpeed),bestAspect,("%.2f" % (time.time()-startTime))))
         return maxQulityUrl
     def parseXML(self,name, html, m3u8List):
         root = etree.HTML(html)
