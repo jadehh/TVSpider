@@ -47,7 +47,7 @@ class LiveSpider(object):
         self.tmpPath = CreateSavePath("tmp")
         self.saveJsonPath = CreateSavePath("json")
         self.saveLivePath = CreateSavePath("live")
-        self.sortKeys = ["央视","卫视","港台"]
+        self.sortKeys = ["cctv","lstv","hktv"]
 
         super().__init__()
 
@@ -63,27 +63,22 @@ class LiveSpider(object):
 
     def getSearchResult(self):
         fileList = self.sortFileList(os.listdir(self.liveRoomPath))
-        playDic = {}
-        playJson = {}
         for fileName in fileList:
+            playJson = {}
             playList = []
             with open(os.path.join(self.liveRoomPath, fileName), "rb") as f:
+                fileName = fileName.split(".")[0]
                 contentList = f.readlines()
-                for content in contentList:
-                    name = str(content, encoding="utf-8").strip()
-                    playUrl = self.spiderSearch(name)
-                    playJson[name] = playUrl
-                    playList.append("{},{}".format(name,playUrl))
-            playDic[fileName] = playList
-        with open(os.path.join(self.saveLivePath,"live.txt"),"wb") as f:
-            for key in playDic.keys():
-                f.write("{},#genre#\n".format(key).encode("utf-8"))
-                for playUrl in playDic[key]:
-                    f.write((playUrl+"\n").encode("utf-8"))
-                f.write("\n".encode("utf-8"))
-
-        with open(os.path.join(self.saveJsonPath,"live.json"),"wb") as f:
-            f.write(json.dumps(playJson, indent=4, ensure_ascii=False).encode("utf-8"))
+                with open(os.path.join(self.saveLivePath, "{}_live.txt".format(fileName)), "ab") as f1:
+                    f1.write("{},#genre#\n".format(fileName).encode("utf-8"))
+                    for content in contentList:
+                        name = str(content, encoding="utf-8").strip()
+                        playUrl = self.spiderSearch(name)
+                        playJson[name] = playUrl
+                        f1.write(("{},{}".format(name,playUrl) + "\n").encode("utf-8"))
+                        with open(os.path.join(self.saveJsonPath, "{}_live.json".format(fileName)), "wb") as f2:
+                            f2.write(json.dumps(playJson, indent=4, ensure_ascii=False).encode("utf-8"))
+                    f1.write("\n".encode("utf-8"))
     def getParams(self, name):
         return {"search": f"{name}", "Submit": " "}
 
@@ -91,6 +86,7 @@ class LiveSpider(object):
         try:
             res = requests.get(url, headers=headers, data=data, verify=verify)
             if res.status_code == 200:
+                self.reconnect = 0
                 return res
             elif res.status_code != 200 and self.reconnect < self.maxReconnect:
                 time.sleep(self.sleepTime)
@@ -109,6 +105,7 @@ class LiveSpider(object):
         try:
             res = requests.post(url, headers=headers, data=data, cookies=cookies, verify=verify)
             if res.status_code == 200:
+                self.reconnect = 0
                 return res
             elif res.status_code != 200 and self.reconnect < self.maxReconnect:
                 time.sleep(self.sleepTime)
