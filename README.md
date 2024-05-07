@@ -58,7 +58,9 @@ python build.py --aliToken aliToken
 ```bash
 python searchLive.py
 ```
-> 会在live文件夹生成live.txt直播源文件
+> 根据网络地区，直播文件可能存在差异，建议在本地运行
+
+> live文件夹生成live.txt直播源文件
 
 
 ## 遇到的问题

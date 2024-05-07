@@ -6,8 +6,6 @@
 # @Email    : jadehh@1ive.com
 # @Software : Samples
 # @Desc     : 搜索直播Main函数
-import socket
-socket.setdefaulttimeout(5)
 from pylive.liveSpider import LiveSpider
 
 if __name__ == '__main__':
