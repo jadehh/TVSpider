@@ -28,7 +28,7 @@ jobs:
         run: |
           cp -r ./tmp ./code
           cd code
-          pip install https://github.com/jadehh/pythonTools/releases/download/JadeV2.1.7/jade-2.1.7-py3-none-any.whl
+          pip install -r requirements.txt
           python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"
           python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}" --is_18 True
 
