@@ -53,6 +53,10 @@ python build.py --aliToken aliToken
 >
 > nodejs 部分只生成代码，需要手动build，区分18+
 
+## 直播源生成
+> 见[jadehh/LiveSpider](https://github.com/jadehh/LiveSpider)
+
+
 ## 遇到的问题
 * 玩偶姐姐播放不了,需要切换VPN节点
 * m3u8遇到跨域的问题可以尝试使用代理来进行加载，如果没有跨域使用代理会引起死循环

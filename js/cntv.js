@@ -15,6 +15,7 @@ class CNTVSpider extends Spider {
         super();
         this.siteUrl = "https://tv.cctv.com/m/index.shtml"
         this.apiUrl = "https://api.app.cctv.com"
+        this.liveJsonUrl = "https://gh.con.sh/https://github.com/jadehh/LiveSpider/blob/main/json/live.json"
 
     }
 
@@ -34,6 +35,15 @@ class CNTVSpider extends Spider {
         return 3
     }
 
+    async spiderInit() {
+        await super.spiderInit();
+        this.liveJson = JSON.parse(await this.fetch(this.liveJsonUrl,null,null))
+    }
+
+    async init(cfg) {
+        await super.init(cfg);
+        await this.spiderInit()
+    }
 
     async getFilterByLive(dataList) {
         let extend_list = []
@@ -150,12 +160,13 @@ class CNTVSpider extends Spider {
         let liveResponse = await req(liveApiUrl, {"headers": this.getHeader()})
         let liveJson = JSON.parse(liveResponse["content"])
         let playList = {}
-        playList["直播"] = ["点击播放$" + liveJson["hls_url"]["hls2"]]
+        let liveUrl = this.liveJson[channel_id] ?? liveJson["hls_url"]["hls2"]
+        playList["直播"] = ["点击播放$" + liveUrl]
         await this.jadeLog.info(`liveJson:${JSON.stringify(liveJson)}`)
         let vod_items = []
         for (const data of obj["program"]) {
             let episodeName = data["showTime"] + "-" + data["t"]
-            let episodeUrl = liveJson["hls_url"]["hls1"] + `?begintimeabs=${data["st"] * 1000}&endtimeabs=${data["et"] * 1000}`
+            let episodeUrl = liveUrl + `?begintimeabs=${data["st"] * 1000}&endtimeabs=${data["et"] * 1000}`
             vod_items.push(episodeName + "$" + episodeUrl)
         }
         playList["点播"] = vod_items.join("#")
