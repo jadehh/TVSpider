@@ -284,7 +284,6 @@ globalThis.aesX = aes;
 globalThis.desX = des;
 
 globalThis.req = request;
-globalThis.gbkDecode = GBK;
 
 
 /**
