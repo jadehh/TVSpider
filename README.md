@@ -54,13 +54,7 @@ python build.py --aliToken aliToken
 > nodejs 部分只生成代码，需要手动build，区分18+
 
 ## 直播源生成
-
-```bash
-python searchLive.py
-```
-> 根据网络地区，直播文件可能存在差异，建议在本地运行
-
-> live文件夹生成live.txt直播源文件
+> 见[jadehh/LiveSpider](https://github.com/jadehh/LiveSpider)
 
 
 ## 遇到的问题
