@@ -71,11 +71,11 @@ async function test() {
     let homeVod = JSON.parse(await spider.homeVod())
     console.debug(JSON.stringify(homeVod));
     // 测试分类
-    let catePage = JSON.parse(await spider.category("72", "2", undefined, {}));
+    let catePage = JSON.parse(await spider.category("72", "2", undefined, {"live":"101"}));
     console.debug(JSON.stringify(catePage))
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("live-cctv1-https://app.cctv.com/special/appchannellogo/rectangle/l/cctv1.png?q=75"))
+    let detail1 = JSON.parse(await spider.detail("live-cctv2-https://app.cctv.com/special/appchannellogo/rectangle/l/cctv1.png?q=75"))
     await testPlay(detail1)
 
     // 测试搜索
