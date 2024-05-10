@@ -1,6 +1,15 @@
 local
 node_modules
 .idea
+log
+local
+open_config.json
+test.py
+tv_config.json
+nodejs/dist
+nodejs/node_modules
+nodejs/src
+releases/日志上传服务V1.0.1/Windows/
 
 
 
