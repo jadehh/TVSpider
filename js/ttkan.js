@@ -285,10 +285,10 @@ class TTKanSpider extends Spider {
         let newBookContentList = []
         for (const bookContent of bookContentList){
             if (!_.isEmpty(bookContent.replaceAll(" ",""))){
-                newBookContentList.push(bookContent.replaceAll("            ","    "))
+                newBookContentList.push(bookContent.replaceAll("            ","     "))
             }
         }
-        content = content + "    " + newBookContentList.join("\n\n")
+        content = content + "     " + newBookContentList.join("\n\n")
         this.playUrl = {"content": content}
     }
 }
