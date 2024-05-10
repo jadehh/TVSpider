@@ -281,7 +281,14 @@ class TTKanSpider extends Spider {
         id = id_list[1]
         let content = id_list[0] + "\n\n"
         let $ = await this.getHtml(this.siteUrl + "/novel/pagea/" + id)
-        content += $('[class="content"]').text().trim().replaceAll("章节报错 分享给朋友：","")
+        let bookContentList = $('[class="content"]').text().trim().replaceAll("章节报错 分享给朋友：","").replaceAll("              ","").split("\n")
+        let newBookContentList = []
+        for (const bookContent of bookContentList){
+            if (!_.isEmpty(bookContent.replaceAll(" ",""))){
+                newBookContentList.push(bookContent)
+            }
+        }
+        content = content + "            " + newBookContentList.join("\n")
         this.playUrl = {"content": content}
     }
 }
