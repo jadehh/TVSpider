@@ -288,7 +288,7 @@ class TTKanSpider extends Spider {
                 newBookContentList.push(bookContent.replaceAll.replaceAll("            ","  "))
             }
         }
-        content = content + "  " + newBookContentList.join("\n")
+        content = content + "  " + newBookContentList.join("\n\n")
         this.playUrl = {"content": content}
     }
 }
