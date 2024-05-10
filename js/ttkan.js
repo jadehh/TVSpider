@@ -156,7 +156,7 @@ class TTKanSpider extends Spider {
             allVodItems.push(epName + '$' + playUrl)
         }
         playBook["目录"] = allVodItems.join("#")
-        bookDetail.volumes = _.keys(playBook).join('$$$');
+                bookDetail.volumes = _.keys(playBook).join('$$$');
         bookDetail.urls = _.values(playBook).join('$$$');
         return bookDetail
     }
@@ -285,10 +285,10 @@ class TTKanSpider extends Spider {
         let newBookContentList = []
         for (const bookContent of bookContentList){
             if (!_.isEmpty(bookContent.replaceAll(" ",""))){
-                newBookContentList.push(bookContent)
+                newBookContentList.push(bookContent.replaceAll.replaceAll("            ","  "))
             }
         }
-        content = content + "            " + newBookContentList.join("\n")
+        content = content + "  " + newBookContentList.join("\n")
         this.playUrl = {"content": content}
     }
 }
