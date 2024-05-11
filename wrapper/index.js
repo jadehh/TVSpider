@@ -64,7 +64,16 @@ async function request(url, opt) {
         //         host: '127.0.0.1', port: 7890,
         //     }
         // });
-
+        let agent;
+        if (opt.proxy){
+            agent = tunnel.httpsOverHttp({
+                    proxy: {
+                        host: '127.0.0.1', port: 7890,
+                    }
+                });
+        }else{
+            agent = https.Agent({ rejectUnauthorized: false,})
+        }
         var resp = await axios(url, {
             responseType: respType,
             method: opt ? opt.method || 'get' : 'get',
@@ -72,10 +81,7 @@ async function request(url, opt) {
             data: data,
             timeout: timeout,
             maxRedirects: !redirect ? 0 : null,
-            httpsAgent: https.Agent({
-                rejectUnauthorized: false,
-            }),
-            // httpsAgent: agent,
+            httpsAgent: agent
 
         });
         var data = resp.data;
