@@ -146,7 +146,7 @@ class TTKanSpider extends Spider {
             const playUrl = epName + "+" +  `${id.replaceAll("/novel/chapters/","")}_${page}.html` ;
             nearVodItems.push(epName + '$' + playUrl)
         }
-        playBook["最近章节"] = nearVodItems.join("#")
+        playBook["最近章节"] = nearVodItems.reverse().join("#")
         let params = {"language":"cn","novel_id":id.replaceAll("/novel/chapters/",""),"__amp_source_origin":encodeURIComponent(this.siteUrl)}
         let resJSon = JSON.parse(await this.fetch(this.apiUrl + "/nq/amp_novel_chapters" ,params,this.getHeader()))
         let allVodItems = []
