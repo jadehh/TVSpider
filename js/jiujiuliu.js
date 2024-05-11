@@ -15,7 +15,7 @@ import * as Utils from "../lib/utils.js";
 class JiuJiuLiuSpider extends Spider {
     constructor() {
         super();
-        this.siteUrl = "https://www.cs1369.com"
+        this.siteUrl = "https://www.ojig519d8se.icu/”
     }
 
     getName() {
