@@ -156,7 +156,7 @@ class TTKanSpider extends Spider {
             allVodItems.push(epName + '$' + playUrl)
         }
         playBook["目录"] = allVodItems.join("#")
-                bookDetail.volumes = _.keys(playBook).join('$$$');
+        bookDetail.volumes = _.keys(playBook).join('$$$');
         bookDetail.urls = _.values(playBook).join('$$$');
         return bookDetail
     }

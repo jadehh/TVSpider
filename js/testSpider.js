@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './liujiushu.js';
+import {__jsEvalReturn} from './bqg_open.js';
 
 import * as Utils from "../lib/utils.js";
 
@@ -51,7 +51,7 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'liujiushu';
+    let siteKey = 'bqg_open';
     let siteType = 10;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
@@ -74,7 +74,7 @@ async function test() {
 
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/diyi/1222/"))
+    let detail1 = JSON.parse(await spider.detail("/html/31575/"))
     await testMusicPlay(detail1)
 
     // 测试分类
