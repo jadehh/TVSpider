@@ -1,11 +1,12 @@
-
+import {JadeLogging} from "../../util/log.js";
+let JadeLog = new JadeLogging("网盘", "DEBUG")
 const http = async function (url, options = {}) {
     if (options.method == 'POST' && options.data) {
         options.body = JSON.stringify(options.data);
         options.headers = Object.assign({ 'content-type': 'application/json' }, options.headers);
     }
     const res = await req(url, options);
-    res.json = () => (res.data ? res.data : null);
+    res.json = () => {try{ return JSON.parse(res.content)}catch { return {}}} 
     res.text = () => res.content;
     return res;
 };
@@ -30,6 +31,7 @@ async function get_drives(name) {
     if (settings.v3 == null) {
         //获取 设置
         settings.v3 = false;
+        let x = (await http.get(server + '/api/public/settings'))["content"]
         const data = (await http.get(server + '/api/public/settings')).json().data;
         if (Array.isArray(data)) {
             settings.title = data.find((x) => x.key == 'title')?.value;
@@ -52,13 +54,14 @@ async function get_drives(name) {
 }
 
 async function init(inReq, _outResp) {
+    await JadeLog.info(`网盘初始化:${JSON.stringify(inReq.server.config.alist)}`)
     inReq.server.config.alist.forEach(
         (item) =>
             (__drives[item.name] = {
                 name: item.name,
                 server: item.server.endsWith('/') ? item.server.substring(0, item.server.length - 1) : item.server,
                 startPage: item.startPage || '/', //首页
-                showAll: item.showAll === true, //默认只显示 视频和文件夹，如果想显示全部 showAll 设置true
+                showAll: item.showAll ?? true, //默认只显示 视频和文件夹，如果想显示全部 showAll 设置true
                 params: item.params || {},
                 _path_param: item.params
                     ? Object.keys(item.params).sort(function (x, y) {
@@ -92,7 +95,7 @@ async function init(inReq, _outResp) {
                 },
                 isVideo(data) {
                     //判断是否是 视频文件
-                    return this.settings.v3 ? data.type == 2 : data.type == 3;
+                    return this.settings.v3 ? data.type == 2 || data.type === 3 : data.type == 3;
                 },
                 isSubtitle(data) {
                     if (data.type == 1) return false;
@@ -143,6 +146,7 @@ async function init(inReq, _outResp) {
 }
 
 async function dir(inReq, _outResp) {
+    await JadeLog.info(`网盘地址为:${inReq.body.path},页数为:${inReq.body.page}`)
     const dir = inReq.body.path;
     let pg = inReq.body.page || 1;
     for (const k in __subtitle_cache) {
@@ -164,6 +168,7 @@ async function dir(inReq, _outResp) {
     }
 
     let { drives, path } = await get_drives_path(dir);
+
     const id = dir.endsWith('/') ? dir : dir + '/';
     const list = await drives.getPath(path);
     let subtList = [];
@@ -199,6 +204,7 @@ async function dir(inReq, _outResp) {
 }
 
 async function file(inReq, _outResp) {
+    await JadeLog.info(`网盘文件地址为:${inReq.body.path}`)
     const file = inReq.body.path;
     let { drives, path } = await get_drives_path(file);
     const item = await drives.getFile(path);
@@ -307,5 +313,7 @@ export default {
         fastify.post('/dir', dir);
         fastify.post('/file', file);
         fastify.get('/test', test);
-    },
+    },spider: {
+        init: init, dir: dir, file: file,test:test
+    }
 };
