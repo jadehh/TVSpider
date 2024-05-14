@@ -95,9 +95,9 @@ class JianPianSpider extends Spider {
         vodDetail.vod_id = obj["id"]
         vodDetail.vod_year = obj["year"]["title"]
         if (!this.catOpenStatus) {
-            vodShort.vod_pic = obj["thumbnail"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353@JPAUTH=y261ow7kF2dtzlxh1GS9EB8nbTxNmaK/QQIAjctlKiEv"
+            vodDetail.vod_pic = obj["thumbnail"] + "@Referer=www.jianpianapp.com@User-Agent=jianpian-version353@JPAUTH=y261ow7kF2dtzlxh1GS9EB8nbTxNmaK/QQIAjctlKiEv"
         } else {
-            vodShort.vod_pic = this.jsBase + Utils.base64Encode(obj["thumbnail"])
+            vodDetail.vod_pic = this.jsBase + Utils.base64Encode(obj["thumbnail"])
         }
         vodDetail.type_name = obj["category"][0]["title"]
         vodDetail.vod_name = obj["title"]
