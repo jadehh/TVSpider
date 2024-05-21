@@ -28,10 +28,10 @@ class tempSpider extends NodeJSSpider {
 
     async init(inReq, _outResp) {
         dataBase = inReq.server.db
-        if (this.getAppName().indexOf("阿里") > -1 || this.getAppName() === "push_agent") {
-            await spider.initAli(inReq.server.config["alitoken"])
+        if (this.getAppName().indexOf("阿里") > -1 || this.getAppName().indexOf("厂长") > -1 || this.getAppName() === "push_agent") {
+            await spider.initCloud(inReq.server.config)
         }else if (this.getAppName() ===  "哔哩哔哩"){
-            await spider.initCookie(inReq.server.config["bilicookie"])
+            await spider.initCookie(inReq.server.config["biliCookie"])
         }
         await spider.spiderInit(inReq)
         spider.cfgObj["code"] = 0
