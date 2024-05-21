@@ -11,7 +11,6 @@ import {Spider} from "../../../js/spider.js";
 import {JadeLogging} from "../util/log.js";
 import {_,} from "../../../lib/cat.js"
 import {VodDetail} from "../../../lib/vod.js";
-import * as wasi from "wasi";
 
 
 class NodeJSSpider extends Spider {

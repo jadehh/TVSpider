@@ -8,7 +8,7 @@
  */
 import {_, load} from '../lib/cat.js';
 import {VodDetail, VodShort} from "../lib/vod.js"
-import {initCloud, detailContent,playContent} from '../lib/cloud.js';
+import {initCloud, detailContent,playContent,getHeaders} from '../lib/cloud.js';
 import * as Utils from "../lib/utils.js";
 import {Spider} from "./spider.js";
 
@@ -258,8 +258,8 @@ class WoggSpider extends Spider {
     }
 
     async setPlay(flag, id, flags) {
-        let playObjStr = await playContent(flag, id, flags);
-        this.playUrl = JSON.parse(playObjStr)["url"]
+        this.playUrl = await playContent(flag, id, flags);
+        this.result.setHeader(getHeaders(flag))
     }
 
 
