@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './wogg.js';
+import {__jsEvalReturn} from './alipansou.js';
 
 import * as Utils from "../lib/utils.js";
 
@@ -51,7 +51,7 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'wogg';
+    let siteKey = 'alipansou';
     let siteType = 3;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
@@ -68,15 +68,15 @@ async function test() {
     let classes = JSON.parse(await spider.home(true));
     console.debug(JSON.stringify(classes))
 
+
+    
+    //测试首页列表
+    let homeVod = JSON.parse(await spider.homeVod())
+    console.debug(JSON.stringify(homeVod));
+
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail('/index.php/voddetail/84217.html'))
+    let detail1 = JSON.parse(await spider.detail("/search?k=%e5%ba%86%e4%bd%99%e5%b9%b4%e7%ac%ac%e4%ba%8c%e5%ad%a3"))
     await testPlay(detail1)
-
-
-
-
-
-
 
 
     // 测试搜索
@@ -86,9 +86,6 @@ async function test() {
     
 
 
-    //测试首页列表
-    let homeVod = JSON.parse(await spider.homeVod())
-    console.debug(JSON.stringify(homeVod));
 
     
 
