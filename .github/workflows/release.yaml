@@ -85,7 +85,7 @@ jobs:
           rm -r ./code
           cp -r ./tmp ./code
           cd code/
-          python build.py --aliToken --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"  --quarkCookie "${{ secrets.QUARK_COOKIE}}"
+          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"  --quarkCookie "${{ secrets.QUARK_COOKIE}}"
           cd nodejs
           npm install qs --save
           npm install tunnel  --save
