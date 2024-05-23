@@ -29,8 +29,8 @@ jobs:
           cp -r ./tmp ./code
           cd code
           pip install -r requirements.txt
-          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"
-          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}" --is_18 True
+          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"  --quarkCookie "${{ secrets.QUARK_COOKIE}}"
+          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"  --quarkCookie "${{ secrets.QUARK_COOKIE}}" --is_18 True
 
       - name:  Commit JS Config files
         run: |
@@ -85,7 +85,7 @@ jobs:
           rm -r ./code
           cp -r ./tmp ./code
           cd code/
-          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"
+          python build.py --aliToken --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"  --quarkCookie "${{ secrets.QUARK_COOKIE}}"
           cd nodejs
           npm install qs --save
           npm install tunnel  --save
@@ -138,7 +138,7 @@ jobs:
           rm -r ./code
           cp -r ./tmp ./code
           cd code/
-          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"  --is_18 True
+          python build.py --aliToken "${{ secrets.ALI_TOKEN }}" --biliCookie "${{ secrets.BILI_COOKIE}}"  --quarkCookie "${{ secrets.QUARK_COOKIE}}" --is_18 True
           cd  nodejs
           npm install qs --save
           npm install tunnel  --save
