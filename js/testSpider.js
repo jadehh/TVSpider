@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from './jiujiuliu.js';
+import {__jsEvalReturn} from './wogg.js';
 
 import * as Utils from "../lib/utils.js";
 
@@ -51,11 +51,11 @@ async function testMusicPlay(vodDetail) {
 }
 
 async function test() {
-    let siteKey = 'jiujiuliu';
+    let siteKey = 'wogg';
     let siteType = 3;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
-            "aliToken": "51427b95ab9d47a6921a27951ebd3f1e",
+            "aliToken": "26fc6787afff43e78b78992e782502f1",
             "box": "TV",
             "code": "1",
             "from": "star",
@@ -78,15 +78,14 @@ async function test() {
 
 
     
-    // 测试分类
-    let catePage = JSON.parse(await spider.category("/vod/type/id/1.html", "1", undefined, {}));
-    console.debug(JSON.stringify(catePage))
 
 
 
     // 测试详情
-    let detail1 = JSON.parse(await spider.detail("/detail/192466.html"))
+    let detail1 = JSON.parse(await spider.detail("/index.php/voddetail/83980.html"))
     await testPlay(detail1)
+
+
 
     
     // 测试搜索
