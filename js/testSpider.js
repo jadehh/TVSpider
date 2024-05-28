@@ -55,7 +55,7 @@ async function test() {
     let siteType = 3;
     await spider.init({
         skey: siteKey, stype: siteType, ext: {
-            "aliToken": "26fc6787afff43e78b78992e782502f1",
+            "aliToken": "a0debd28d10e4aa5a431e7de586e6e42",
             "box": "TV",
             "code": "1",
             "from": "star",
