@@ -72,7 +72,12 @@ python build.py --aliToken aliToken
 * main分支用于代码测试(不包含任何配置信息)，js分支发布支持quickjs爬虫配置信息，dist分支发布支持nodejs爬虫配置信息
 * 所有的配置信息都通过Github Actions发布，通过创建tag来生成新的配置信息并自动发布
 * fork仓库时去掉仅复制main分支的&#x2714;，这样就可以fork所有的分支了
+  
+## ✨ Star 数
 
+[![][starchart-shield]][starchart-link]
+
+---
 
 ## 赞助
 如果觉得此项目有用，可以考虑赞助我喝杯咖啡，感谢star❤
