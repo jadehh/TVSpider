@@ -76,7 +76,6 @@ python build.py --aliToken aliToken
 ## ✨ Star 数
 
 [![Star History Chart](https://api.star-history.com/svg?repos=jadehh/TVSpider&type=Date)](https://star-history.com/#jadehh/TVSpider&Date)
-
 ---
 
 ## 赞助
