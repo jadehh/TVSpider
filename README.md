@@ -82,13 +82,13 @@ python build.py --aliToken aliToken
 
 加入我们吧
 
-<img src="./assets/image.png" alt="telegram" width="256" height="256" align="left" />
+<img src="./assets/image.png" alt="telegram" width="256" height="256" align="left" /> 
+<br><br><br><br><br><br><br><br><br><br>
 
----
+----
 
 ## 赞助
 
 如果觉得此项目有用，可以考虑赞助我喝杯咖啡，感谢star❤
-<div>
+
 <img src="./resources/wechat.jpg" alt="微信" width="256" height="256" align="left" />
-</div>
