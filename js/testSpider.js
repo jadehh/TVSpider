@@ -1,4 +1,4 @@
-import {__jsEvalReturn} from '../js/jianpian.js';
+import {__jsEvalReturn} from '../js/dubo.js';
 
 import * as Utils from "../lib/utils.js";
 
@@ -74,9 +74,9 @@ async function test() {
     console.debug(JSON.stringify(homeVod));
 
     
-    // 测试详情
-    let detail1 = JSON.parse(await spider.detail("562381"))
-    await testPlay(detail1)
+    // // 测试详情
+    // let detail1 = JSON.parse(await spider.detail("562381"))
+    // await testPlay(detail1)
 
     /***
      * 
@@ -96,8 +96,8 @@ async function test() {
 
     
     // 测试搜索
-    let search_page = JSON.parse(await spider.search("庆余年", false, 1))
-    console.debug(JSON.stringify(search_page))
+    // let search_page = JSON.parse(await spider.search("庆余年", false, 1))
+    // console.debug(JSON.stringify(search_page))
 
 
 
@@ -116,18 +116,18 @@ async function test() {
 
 
     // 测试详情
-    if (search_page.list && search_page.list.length > 0) {
-        for (const k in search_page.list) {
-            // console.debug(k)
-            if (k >= 1) break;
-            let obj = search_page.list[k]
-            let spVid = search_page.list[k].vod_id
-            console.debug("===", spVid)
-            var detail = JSON.parse(await spider.detail(spVid || search_page.list[k].vod_id));
+    // if (search_page.list && search_page.list.length > 0) {
+    //     for (const k in search_page.list) {
+    //         // console.debug(k)
+    //         if (k >= 1) break;
+    //         let obj = search_page.list[k]
+    //         let spVid = search_page.list[k].vod_id
+    //         console.debug("===", spVid)
+    //         var detail = JSON.parse(await spider.detail(spVid || search_page.list[k].vod_id));
 
-            await testPlay(detail);
-        }
-    }
+    //         await testPlay(detail);
+    //     }
+    // }
 }
 
 export {test};

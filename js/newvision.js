@@ -54,6 +54,7 @@ class NewVisionSpider extends Spider {
             extend_dic["name"] = name
             extend_dic["value"].push({"n": "全部", "v": "0"})
             for (const ele of $(elements[i]).find("a").slice(1)) {
+                console.debug(ele.attribs.href)
                 let type_id_list = Utils.getStrByRegex(/\/vodshow\/(.*?).html/, ele.attribs.href).split("-")
                 extend_dic["value"].push({
                     "n": $(ele).text(), "v": decodeURIComponent(type_id_list[type_key_list[i]])

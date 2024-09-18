@@ -78,6 +78,9 @@ python build.py --aliToken aliToken
 [![Star History Chart](https://api.star-history.com/svg?repos=jadehh/TVSpider&type=Date)](https://star-history.com/#jadehh/TVSpider&Date)
 ---
 
+## 飞机群
+![加入我们吧](./assets/image.png)
+
 ## 赞助
 如果觉得此项目有用，可以考虑赞助我喝杯咖啡，感谢star❤
 
