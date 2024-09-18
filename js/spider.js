@@ -252,6 +252,7 @@ class Spider {
 
     async getHtml(url = this.siteUrl, proxy = false, headers = this.getHeader()) {
         let html = await this.fetch(url, null, headers, false, false, 0, proxy)
+        await this.jadeLog.info(html)
         if (!_.isEmpty(html)) {
             return load(html)
         } else {

@@ -74,6 +74,9 @@ python build.py --aliToken aliToken
 * fork仓库时去掉仅复制main分支的&#x2714;，这样就可以fork所有的分支了
 
 
+## 飞机群
+![加入我们吧](./assets/image.png)
+
 ## 赞助
 如果觉得此项目有用，可以考虑赞助我喝杯咖啡，感谢star❤
 
