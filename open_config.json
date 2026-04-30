@@ -1,0 +1,395 @@
+{
+    "video": {
+        "sites": [
+            {
+                "key": "aliyunpanshare",
+                "name": "🥏‍┃阿里云盘分享┃🥏‍",
+                "api": "./js/aliyunpanshare.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen",
+                    "aliToken": "",
+                    "quarkCookie": ""
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "gitcafe",
+                "name": "🦊┃阿里纸条┃🦊",
+                "api": "./js/gitcafe.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen",
+                    "aliToken": "",
+                    "quarkCookie": ""
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "jianpian",
+                "name": "🌼┃荐片┃🌼",
+                "api": "./js/jianpian.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "newvision",
+                "name": "🐼┃新视觉影院┃🐼",
+                "api": "./js/newvision.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "tiantian",
+                "name": "⛄┃天天影视┃⛄",
+                "api": "./js/tiantian.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "alipansou",
+                "name": "😸┃阿里猫狸┃😸",
+                "api": "./js/alipansou.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen",
+                    "aliToken": "",
+                    "quarkCookie": ""
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "nangua",
+                "name": "🎃┃南瓜影视┃🎃",
+                "api": "./js/nangua.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "dygangs",
+                "name": "🏖️┃电影港┃🏖️",
+                "api": "./js/dygangs.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "mp4movie",
+                "name": "🍚┃Mp4电影┃🍚",
+                "api": "./js/mp4movie.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "pan_search",
+                "name": "🗂️┃阿里盘搜┃🗂️",
+                "api": "./js/pan_search.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen",
+                    "aliToken": "",
+                    "quarkCookie": ""
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "douban",
+                "name": "🍥┃豆瓣┃🍥",
+                "api": "./js/douban.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "kankan70",
+                "name": "📺┃70看看┃📺",
+                "api": "./js/kankan70.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "kuaikan",
+                "name": "🛥︎┃快看视频┃🛥︎",
+                "api": "./js/kuaikan.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "changzhang",
+                "name": "🏭️┃厂长直连┃🏭️",
+                "api": "./js/changzhang.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen",
+                    "aliToken": "",
+                    "quarkCookie": ""
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "cntv",
+                "name": "🤵‍♂️┃中央影视┃🤵‍♂️",
+                "api": "./js/cntv.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "nivod",
+                "name": "👑‍┃泥视频┃墙👑",
+                "api": "./js/nivod.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen",
+                    "code": 0
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "bilibili",
+                "name": "🏰┃哔哩哔哩┃🏰",
+                "api": "./js/bilibili.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen",
+                    "cookie": ""
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "sp360",
+                "name": "🥎┃360影视┃🥎",
+                "api": "./js/sp360.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "mxanime",
+                "name": "🍒┃MX动漫┃🍒",
+                "api": "./js/mxanime.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "aiyingshi",
+                "name": "🚀‍┃爱影视┃🚀",
+                "api": "./js/aiyingshi.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "cilixiong",
+                "name": "🐻┃磁力熊┃🐻",
+                "api": "./js/cilixiong.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "wogg",
+                "name": "💂‍┃阿里玩偶┃💂",
+                "api": "./js/wogg.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen",
+                    "aliToken": "",
+                    "quarkCookie": ""
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "huya",
+                "name": "🐯┃虎牙直播┃🐯",
+                "api": "./js/huya.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "xb6v",
+                "name": "🧲┃磁力新6V┃🧲",
+                "api": "./js/xb6v.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "dubo",
+                "name": "🛶┃独播影视┃🛶",
+                "api": "./js/dubo.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "star",
+                "name": "☄️┃星视界┃墙☄️",
+                "api": "./js/star.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "lovemovie",
+                "name": "💕┃爱情电影网┃💕",
+                "api": "./js/lovemovie.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            },
+            {
+                "key": "haiwaikan",
+                "name": "☕┃海外看┃☕墙",
+                "api": "./js/haiwaikan.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "playerType": 0,
+                "type": 3
+            }
+        ]
+    },
+    "read": {
+        "sites": [
+            {
+                "key": "bookan",
+                "name": "🎵┃看书┃🎵",
+                "api": "./js/bookan.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "type": 10
+            },
+            {
+                "key": "ttkan",
+                "name": "📚︎┃天天看小说┃📚︎",
+                "api": "./js/ttkan.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "type": 10
+            },
+            {
+                "key": "dj0898_book_open",
+                "name": "🎵┃世纪DJ音乐网┃🎵",
+                "api": "./js/dj0898_book_open.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "type": 10
+            },
+            {
+                "key": "liujiushu",
+                "name": "📚︎┃六九书吧┃📚︎",
+                "api": "./js/liujiushu.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "type": 10
+            },
+            {
+                "key": "audiomack",
+                "name": "🎵┃音声┃🎵",
+                "api": "./js/audiomack.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "type": 10
+            },
+            {
+                "key": "bqg_open",
+                "name": "📚︎┃笔趣阁┃📚︎",
+                "api": "./js/bqg_open.js",
+                "timeout": 30,
+                "ext": {
+                    "box": "CatOpen"
+                },
+                "type": 10
+            }
+        ]
+    },
+    "pan": {
+        "sites": []
+    }
+}
